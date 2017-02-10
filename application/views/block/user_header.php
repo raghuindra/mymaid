@@ -14,7 +14,7 @@
 	<!-- GLOBAL STYLES -->
 	<!-- PAGE LEVEL STYLES -->
 	<link rel="stylesheet" href="<?php echo plugin_url("bootstrap/css/bootstrap.css") ?>">
-	<link rel="stylesheet" href="<?php echo css_url("css/app.css") ?>">
+	<link rel="stylesheet" href="<?php echo css_url("app") ?>">
 	<!-- END PAGE LEVEL STYLES -->
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
