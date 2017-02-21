@@ -286,7 +286,7 @@
             <div class="text-center"><strong>Dont have Account?</strong></div>
             <div class="row">
                 <div class="col-lg-5 col-xs-4">
-                    <div class="button facebook btn btn-danger"><a class="" href="./user-register.html">Register</a> </div>
+                    <div class="button facebook btn btn-danger"><a class="" href="./user_register.html">Register</a> </div>
                 </div>
                 <div class="col-lg-7 col-xs-8">
                     <div class="button google"><i class="fa fa-google-plus"></i>Signup with Google</div>
