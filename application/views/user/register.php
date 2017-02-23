@@ -17,14 +17,14 @@
                                 <p class="head_login_005">Sign Up New User</p>
                                 <input type="email" placeholder="Email id" class="form-control" name="email" required>
                                 <input type="password" placeholder="Password" class="form-control" name="password" required>
-                                <input type="password" placeholder="Confirm Password" class="form-control" name="passwordrequired" required>
+                                <input type="password" placeholder="Confirm Password" class="form-control" name="repassword" required>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <input type="text" placeholder="First Name" class="form-control" name="firstName" required> </div>
                                     <div class="col-lg-6">
                                         <input type="text" placeholder="Last Name" class="form-control" name="lastName" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Middle name" class="form-control" name="middleName" required> </div>
+                                    <!-- <div class="col-lg-6">
+                                        <input type="text" placeholder="Middle name" class="form-control" name="middleName" required> </div> -->
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -36,7 +36,7 @@
                                     <div class="col-lg-6">
                                         <input type="number" placeholder="Postal Code" class="form-control" name="zipcode" required> </div>
                                     <div class="col-lg-6">
-                                        <select placeholder="Middle name" class="form-control" name="city" required>
+                                        <select placeholder="select city" class="form-control" name="city" required>
                                     <option>City 1</option>
                                     <option>City 2</option>
                                     <option>City 3</option>
@@ -44,14 +44,14 @@
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="col-lg-6">
-                                        <select placeholder="Middle name" name="state" class="form-control" required>
+                                        <select placeholder="Select state" name="state" class="form-control" required>
                                     <option>State 1</option>
                                     <option>State 2</option>
                                     <option>State 3</option>
                                 </select>
                                     </div>
                                     <div class="col-lg-6">
-                                        <select placeholder="Middle name" name="country" class="form-control" required>
+                                        <select placeholder="Select country" name="country" class="form-control" required>
                                     <option>Country 1</option>
                                     <option>Country 2</option>
                                     <option>Country 3</option>

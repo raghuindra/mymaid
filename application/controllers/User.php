@@ -23,9 +23,10 @@ class User extends CI_Controller {
         public function register(){
             
             $data = array();
+            
             if(isset($_POST['userName'])){
-                if($this -> user_lib -> _update_member($person_id)){                          
-                        redirect('member_profile.html','refresh');
+                if($this -> user_lib -> _register_user()){                          
+                        redirect('home.html','refresh');
                         exit;
                 }
                 
