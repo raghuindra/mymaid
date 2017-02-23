@@ -25,4 +25,4 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 
-<body class="nobg loginPage">
+<body>

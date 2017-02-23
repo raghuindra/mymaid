@@ -1,8 +1,5 @@
-<?php
-
-?>
-
-<div class="overlay">
+<div class="nobg loginPage">
+            <div class="overlay">
                 <div class="topNav">
                     <div class="userNav">
                         <ul>
@@ -138,3 +135,4 @@
 
                 <!-- END BODY -->
             </div>
+        </div>
