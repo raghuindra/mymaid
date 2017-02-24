@@ -53,8 +53,8 @@ $route['default_controller'] = 'user';
 
 
 /* ........User Module Routing............................ */
-$route['user_login.html'] = "user/login";
-$route['user_register.html'] = "user/register";
+$route['user_login.html']       = "person/userLogin";
+$route['user_register.html']    = "person/userRegister";
 
 
 
