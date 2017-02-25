@@ -4,6 +4,7 @@
             <div class="userNav">
                 <ul>
                     <li><a href="#" title="" role="button" data-toggle="modal" data-target="#login-modal"><i class="icon-user"></i><span>Login</span></a></li>
+                    <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
                         <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>

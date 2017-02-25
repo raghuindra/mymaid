@@ -13,7 +13,7 @@
                 <div class="container animated fadeInDown">
                     <div class="tab-content ">
                         <div id="login" class="tab-pane active">
-                            <form class="form-signin" id="login_box">
+                            <form class="form-signin" id="login_box" action="<?php echo base_url().'vendor_home.html'?>">
                                 <p class="head_login_005">Vendor/Freelancer Login</p>
                                 <input type="email" placeholder="Email id" class="form-control" name="email" id="email" required>
                                 <input type="password" placeholder="Password" class="form-control" name="password" id="password" required>
