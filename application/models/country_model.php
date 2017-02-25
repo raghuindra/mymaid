@@ -1,6 +1,6 @@
 <?php
 
-class Country_model extends Np_model 
+class Country_model extends Mm_model 
 {
 	function __construct() {
             parent::__construct();

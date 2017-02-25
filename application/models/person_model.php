@@ -4,7 +4,7 @@
  * person_model is model to carryout all Db operations related to person  
  *
  */
-class Person_model extends Np_model {
+class Person_model extends Mm_model {
 
     function __construct() {
         parent::__construct();
@@ -42,5 +42,7 @@ class Person_model extends Np_model {
         $this->db->select('email');
         return $this->db->get($this->_table);
     }
+    
+    
 
 }

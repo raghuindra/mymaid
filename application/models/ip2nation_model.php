@@ -1,6 +1,6 @@
 <?php
 
-class Ip2nation_model extends Np_model 
+class Ip2nation_model extends Mm_model 
 {
 	function __construct() {
 		parent::__construct();

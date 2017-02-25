@@ -16,6 +16,12 @@
 	<link rel="stylesheet" href="<?php echo plugin_url("bootstrap/css/bootstrap.css") ?>">
 	<link rel="stylesheet" media="all" href="<?php echo css_url("app") ?>">
         <link rel="stylesheet" media="all" href="<?php echo css_url("fonts") ?>">
+       
+        <!-- Notyfy Notifications Plugin -->
+        <link href="<?php echo plugin_url("notifications/notyfy/jquery.notyfy.css") ?>" rel="stylesheet" />
+        <link href="<?php echo plugin_url("notifications/notyfy/themes/default.css") ?>" rel="stylesheet" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<!-- END PAGE LEVEL STYLES -->
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>

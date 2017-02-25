@@ -12,7 +12,7 @@
  * @version		1.0
  */
 
-class Np_model extends CI_Model 
+class Mm_model extends CI_Model 
 {
 	function __construct() {
 		parent::__construct();

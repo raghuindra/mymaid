@@ -7,7 +7,7 @@
                             <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                         </ul>
                     </div>
-                    <div class="logo-section">Logo</div>
+                                <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
                 </div>
                 <!-- PAGE CONTENT -->
                 <div class="container animated fadeInDown">

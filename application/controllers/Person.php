@@ -5,10 +5,10 @@ if (!defined('BASEPATH'))
 
 class Person extends CI_Controller {
 
-    public $data = array();
+    public  $data = array();
     private $_bLang = 'english';
     private $_bLang_code = 'en';
-    public $uLang = '';
+    public  $uLang = '';
     
     
     public function __construct() 
@@ -35,22 +35,22 @@ class Person extends CI_Controller {
     function userRegister(){
        $data = array();
             
-        if(isset($_POST['userName'])){
+        if(isset($_POST['email'])){
             if($this -> person_lib -> _register_user()){                          
                     redirect('home.html','refresh');
                     exit;
             }
-
-        }else{
-            $this->load->model('np_model');
-            $states = $this->np_model->get_tb('mm_state','*')->result();
+        }
+       
+            $this->load->model('mm_model');
+            $states = $this->mm_model->get_tb('mm_state','*')->result();
             $data['state'] = $states;
 
 
             $data['content']    = "user/register.php";
             $data['user']       = 1;
             $this->load->view('template',$data);
-        } 
+         
     }
     
     

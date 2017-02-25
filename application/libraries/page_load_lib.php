@@ -14,7 +14,7 @@
 class Page_load_lib {
 	function __construct() {
 		$this->ci =& get_instance();
-		//$this->get_lang();
+		$this->get_lang();
 		//$this->get_url();
 		//$this->get_config();
                 //$this->check_maintenance();
@@ -30,7 +30,7 @@ class Page_load_lib {
 	 * 
 	 */
 	function get_lang(){
-		$this->ci->lang->load("np","english");
+		$this->ci->lang->load("mm","english");
 	}
 	
 	 /**
