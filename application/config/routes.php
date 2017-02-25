@@ -60,9 +60,14 @@ $route['user_register.html']    = "person/userRegister";
 
 
 /* ........Vendor/Freelance Module Routing................... */
-$route['vendor_home.html'] = "vendor";
-$route['vendor_login.html'] = "vendor/login";
-$route['vendor_register.html'] = "vendor/register";
+$route['vendor_home.html']                  = "vendor";
+$route['vendor_login.html']                 = "vendor/login";
+$route['vendor_register.html']              = "vendor/register";
+$route['vendor_newjobs.html']               = "vendor/newJobList";
+$route['vendor_canceledjobs.html']          = "vendor/canceledJobList";
+$route['vendor_completedjobs.html']         = "vendor/completedJobList";
+$route['vendor_reschedulejobs.html']        = "vendor/rescheduleJobList";
+$route['vendor_activejobs.html']            = "vendor/activeJobList";
 
 $route['home.html'] = "user";
 

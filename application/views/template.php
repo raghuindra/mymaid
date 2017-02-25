@@ -11,7 +11,14 @@ if(isset($user) && $user==1)
     $this->load->view("".$content);
     $this->load->view("block/vendor_footer");
     
-}else{
+}else if(isset($newVendor) && $newVendor == 1){
+    
+    $this->load->view("block/header");
+    $this->load->view("".$content);
+    $this->load->view("block/footer");
+    
+}
+else{
     $this->load->view("block/header");
     $this->load->view("".$content);
     $this->load->view("block/footer");

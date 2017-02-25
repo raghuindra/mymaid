@@ -1,0 +1,20 @@
+.label {
+    border: none;
+    margin: 6px;
+    padding: 8px;
+}
+
+.label:hover {
+    opacity: 0.5;
+}
+
+#example1 .action:after {
+    display: none;
+}
+
+#example1 .status {
+    vertical-align: middle;
+    font-size: 16px;
+    text-align: center;
+    border: solid 5px #fff;
+}
