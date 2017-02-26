@@ -14,10 +14,15 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button);
+    
+    // To make Pace works on Ajax calls
+    $(document).ajaxStart(function() { Pace.restart(); });
 
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<?php echo plugin_url('bootstrap/js/bootstrap.min.js');?>"></script>
+<!-- PACE -->
+<script src="<?php echo plugin_url('plugins/pace/pace.min.js');?>"></script>
 <!-- Morris.js charts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="<?php echo plugin_url('plugins/morris/morris.min.js');?>"></script>
