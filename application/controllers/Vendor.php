@@ -40,7 +40,7 @@ class Vendor extends CI_Controller {
         public function newJobList(){
             $this->data['content']  = "vendor/newJob.php";
             $this->data['newVendor']     = 1;
-            $this->data['active']        = "myjob||newjob"; 
+            $this->data['active']        = "myjob||new"; 
             $this -> load -> view('template', $this->data);
         }
         
@@ -48,7 +48,7 @@ class Vendor extends CI_Controller {
             
             $this->data['content']  = "vendor/activeJob.php";
             $this->data['newVendor']     = 1;
-            $this->data['active']        = "myjob||newjob"; 
+            $this->data['active']        = "myjob||active"; 
             $this -> load -> view('template', $this->data);
             
         }
@@ -57,7 +57,7 @@ class Vendor extends CI_Controller {
             
             $this->data['content']  = "vendor/canceledJob.php";
             $this->data['newVendor']     = 1;
-            $this->data['active']        = "myjob||canceljob"; 
+            $this->data['active']        = "myjob||cancel"; 
             $this -> load -> view('template', $this->data);
             
         }
@@ -66,18 +66,60 @@ class Vendor extends CI_Controller {
             
             $this->data['content']  = "vendor/completedJob.php";
             $this->data['newVendor']     = 1;
-            $this->data['active']        = "myjob||completejob"; 
+            $this->data['active']        = "myjob||completed"; 
             $this -> load -> view('template', $this->data);
             
         }
         
         public function rescheduleJobList(){
             
-            $this->data['content']  = "vendor/rescheduleJob.php";
-            $this->data['newVendor']     = 1;
-            $this->data['active']        = "myjob||reschedulejob"; 
+            $this->data['content']          = "vendor/rescheduleJob.php";
+            $this->data['newVendor']        = 1;
+            $this->data['active']           = "myjob||reschedule"; 
             $this -> load -> view('template', $this->data);
             
+        }
+        
+        
+        public function walletPendingPay(){
+            
+            $this->data['content']          = "vendor/walletPendingPay.php";
+            $this->data['newVendor']        = 1;
+            $this->data['active']           = "wallet||pending"; 
+            $this -> load -> view('template', $this->data);
+            
+        }
+        
+        public function walletRequestPay(){
+            
+            $this->data['content']          = "vendor/walletRequestPay.php";
+            $this->data['newVendor']        = 1;
+            $this->data['active']           = "wallet||request"; 
+            $this -> load -> view('template', $this->data);
+            
+        }
+        
+        public function walletReport(){
+            
+            $this->data['content']          = "vendor/walletReport.php";
+            $this->data['newVendor']        = 1;
+            $this->data['active']           = "wallet||report"; 
+            $this -> load -> view('template', $this->data);
+            
+        }
+        
+        public function myAccount(){
+            $this->data['content']          = "vendor/myaccount.php";
+            $this->data['newVendor']        = 1;
+            $this->data['active']           = "myaccount||vendor"; 
+            $this -> load -> view('template', $this->data);
+        }
+
+        public function myAccountFreelance(){
+            $this->data['content']          = "vendor/myaccount_freelance.php";
+            $this->data['newVendor']        = 1;
+            $this->data['active']           = "myaccount||freelance"; 
+            $this -> load -> view('template', $this->data); 
         }
 }
 

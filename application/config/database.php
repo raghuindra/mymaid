@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'mymaid',
+	'database' => 'mymaidz',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -94,3 +94,19 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+/*
+ * Server DB crede:
+        'username' => 'p_mymaid',
+	'password' => 'mymaid',
+ * 
+ * FTP:
+ *     p_mymaid@mymaidz.com
+ *     mymaid
+ * 
+ * Hosting server details:
+ * 
+ *  Hostname/IP: 43.255.154.67
+ *  user: 
+ *  pass: 
+ *  */

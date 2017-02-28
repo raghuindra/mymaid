@@ -68,6 +68,11 @@ $route['vendor_canceledjobs.html']          = "vendor/canceledJobList";
 $route['vendor_completedjobs.html']         = "vendor/completedJobList";
 $route['vendor_reschedulejobs.html']        = "vendor/rescheduleJobList";
 $route['vendor_activejobs.html']            = "vendor/activeJobList";
+$route['vendor_wallet_pending.html']        = "vendor/walletPendingPay";
+$route['vendor_wallet_request.html']        = "vendor/walletRequestPay";
+$route['vendor_wallet_report.html']         = "vendor/walletReport";
+$route['vendor_myaccount.html']             = "vendor/myAccount";
+$route['freelance_myaccount.html']          = "vendor/myAccountFreelance";
 
 $route['home.html'] = "user";
 
