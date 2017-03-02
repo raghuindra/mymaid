@@ -3,7 +3,13 @@
         <div class="topNav">
             <div class="userNav">
                 <ul>
-                    <li><a href="#" title="" role="button" data-toggle="modal" data-target="#login-modal"><i class="icon-user"></i><span>Login</span></a></li>
+                    <?php if(!$this->session->userdata('user_id'))
+                    {?>
+                        <li><a href="#" title="" role="button" data-toggle="modal" data-target="#login-modal"><i class="icon-user"></i><span>Login</span></a></li>
+                    <?php }else{  ?>
+                        <li style="text-decoration: none;color:white;"> Hello, <?php echo $this->session->userdata('user_fullname');?></li>
+                        <li><a href="logout.html" title="" role="button"><i class="icon-user"></i><span>Log Out</span></a></li>
+                    <?php } ?>
                     <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>

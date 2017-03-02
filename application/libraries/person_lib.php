@@ -66,7 +66,7 @@ class Person_lib {
             $info['person_identity_card']       =   $this -> ci -> input -> post('idcard', true);
             $info['person_identity_card_number']=   $this -> ci -> input -> post('idcardnumber', true);
             $info['person_lang_code']           =   "en";
-            $info['person_type']                =   1;
+            $info['person_type']                =   1; /* Person_type = 1 ==> 'user' type */
             
             $this -> ci->load -> library('user_lib');
             if($this->ci->user_lib->check_user_email($info['person_email']))
@@ -100,16 +100,60 @@ class Person_lib {
             }else{
                 $this->ci->session->set_flashdata('error_message',  $this -> ci -> lang -> line('mm_email_available'));
             }      
-            
-            
-            
-            
+          
             
         }
                            
         
     }
     
+    
+    /*
+     * 
+     *      
+     */
+    function _login_user(){
+        
+        $this->ci->load->library('form_validation');
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        
+        $this->ci->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|encode_php_tags|valid_email');
+        $this->ci->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|encode_php_tags');
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci-> data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
+            $this->ci->session->set_flashdata('error_message',$this -> ci -> data['error_message'] );		
+            redirect('user_login.html', 'refresh');
+            exit;
+        }else{
+            
+            $user_data['email'] = $this -> ci -> input -> post('email', true);
+            $user_data['password'] = hash('sha512', $this -> ci -> input -> post('password', true));
+            
+            $user = $this->model->getUserDetails('person_id, person_email, person_first_name, person_last_name, user_id, person_type_name, user_lang_code, user_status, user_profile_image, person_country_code', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'],'user_status'=>1)) -> row();
+            
+            if(isset($user->person_id) && strlen($user->person_id) > 0){ 
+                $this->ci->data['user_type']= 'user';
+                $this->_set_last_ip_and_last_login($user->person_id);
+                $this->_set_session($this->ci->data['user_type'],$user);
+                
+                $this->ci-> data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
+                $this->ci->session->set_flashdata('success_message',$this -> ci -> data['success_message'] );	
+                $this->redirect_home();
+                exit;
+                
+            }else{
+                
+                $this->ci-> data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
+                $this->ci->session->set_flashdata('error_message',$this -> ci -> data['error_message'] );		
+                redirect('user_login.html', 'refresh');
+                exit;
+            }
+        }
+    }
+
+
     /**
 	 *
 	 * Create new person in the Db 
@@ -121,6 +165,76 @@ class Person_lib {
 	function create_person($person_data){
             $person_id=$this->model->insert($person_data);
             return $person_id;
+	}
+        
+    /**
+	 *Set last ip and last login function when user login
+	 *
+	 */
+	function _set_last_ip_and_last_login($user_id)
+	{
+
+		$updateTable="mm_".$this->ci->data['user_type'];
+		
+                $field=$this->ci->data['user_type']."_person_id";
+                $prevIp=$this->ci->data['user_type']."_last_ip";
+                $prevLogin=$this->ci->data['user_type']."_last_login";
+
+		$user_data[$prevIp] = $this->ci->input->ip_address();
+		$user_data[$prevLogin] = date('Y-m-d H:i:s', strtotime('now'));
+		
+		$this->ci->backend_model->update_table($updateTable,$user_data,array($field => $user_id));
+	}
+        
+        /**
+	 * sets the session for active logged in user
+	 */
+        
+	function _set_session($type,$data) {
+		// Set session data array
+		
+		$user = array(
+		'user_id'           => $data -> person_id, 
+		'user_email'        => $data -> person_email, 
+		'user_type'         => $type, 
+		'user_fullname'     => $data -> person_first_name . " " . $data -> person_last_name,
+		'user_firstname'    => $data -> person_first_name,
+		'user_country_code' => $data -> person_country_code,
+                'user_profile_image'=> $data -> user_profile_image,
+                'user_lang_code'    => $data -> user_lang_code,
+		'user_status'       => $data -> user_status,
+                'user_lang'         => 'english',
+                'user_lang_code'    => 'en');
+		$this -> ci -> session -> set_userdata($user);
+                //$all_languages['languages'] = $this->get_all_language();
+                //$this -> ci -> session -> set_userdata($all_languages);
+                
+	}
+        
+        /**
+	 *
+	 * Redirects the controll to the correct home page based on user type 
+	 *
+	 */
+	function redirect_home(){
+		if($this->ci->session->userdata('user_id') != NULL) {
+			//echo $this->ci->session->userdata['user_type'];exit;
+		switch ($this->ci->session->userdata['user_type']) {
+			case 'admin':
+					$redirect_url="admin_home.html";
+				break;
+			case 'user':
+					$redirect_url="home.html";
+				break;
+			case 'vendor':
+					$redirect_url="vendor_home.html";
+				break;
+			case 'freelancer':
+					$redirect_url="vendor_home.html";
+				break;		
+		} 
+		redirect($redirect_url, 'refresh');
+		}
 	}
 
 }

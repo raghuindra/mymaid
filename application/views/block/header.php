@@ -15,11 +15,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo plugin_url('dist/css/AdminLTE.min.css');?>">
+    <?php if(!isset($login)){ ?>
         <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo plugin_url('dist/css/skins/_all-skins.min.css');?>">
         <!-- iCheck -->
-        <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/flat/blue.css');?>">
+        <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/flat/blue.css');?>"> 
         <!-- Morris chart -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/morris/morris.css');?>">
         <!-- jvectormap -->
@@ -32,7 +33,10 @@
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>">
           <!-- Pace style -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/pace/pace.min.css');?>">
-
+    <?php } else { ?>
+        <!-- iCheck -->
+        <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/square/blue.css');?>">
+    <?php } ?>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -40,6 +44,12 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
     </head>
+<?php if(isset($login)){?>
 
+    <body class="hold-transition login-page"> 
+        
+<?php } else { ?>
+        
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
+<?php } ?>

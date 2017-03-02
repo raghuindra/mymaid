@@ -3,8 +3,8 @@ $lang['Validation_error']  = 'Please provide all the required information.';
 $lang['something_problem'] = 'An error occurred.';
 $lang['mm_email_available'] = 'Sorry, it looks like this email belongs to an existing account.';
 $lang['mm_user_created_successfully'] = 'You have successfully Signed Up. Please login to procced further.';
-
-
+$lang['mm_frontend_login_error_login_incorrect'] = 'Incorrect email and password combination. ';
+$lang['mm_user_login_welcome'] = 'Logged in Successfully..!!';
 
 
 $lang['np_success'] = 'Success';
@@ -21,7 +21,6 @@ $lang['np_frontend_login_label_email'] = 'Email';
 $lang['np_frontend_login_label_password'] = 'Password';
 $lang['np_frontend_login_label_login'] = 'Log In';
 $lang['np_frontend_login_success'] = 'Log in successful';
-$lang['np_frontend_login_error_login_incorrect'] = 'Incorrect email and password combination. ';
 $lang['np_frontend_login_label_remember_me'] = 'Keep me logged in';
 $lang['np_frontend_login_label_forget_password'] = 'Forgot password?';
 $lang['np_frontend_footer_link_text_contact'] = 'Contact Us to Sign Up';

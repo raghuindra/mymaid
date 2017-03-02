@@ -10,10 +10,10 @@ class Person_model extends Mm_model {
         parent::__construct();
         $this->_table = 'mm_person';
         $this->_country_table = 'mm_country';
-//        $this->_administrator_table = 'np_administrator';
-//        $this->_editor_table = 'np_editor';
-//        $this->_member_table = 'np_member';
-//        $this->_manager_table = 'np_manager';
+        $this->_admin_table = 'mm_admin';
+        $this->_user_table = 'mm_user';
+        $this->_vendor_table = 'mm_vendor';
+        $this->_person_type_table = 'mm_person_type';
 //        $this->_catagory_table = 'np_catagory';
     }
 
@@ -40,6 +40,58 @@ class Person_model extends Mm_model {
     function getAllEmails() {
         $this->db->where('email !=', "");
         $this->db->select('email');
+        return $this->db->get($this->_table);
+    }
+    
+    function getUserDetails($fields = 'person_id', $condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true){
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_user_table, 'user_person_id = person_id','left');
+        $this->db->join($this->_person_type_table, 'person_type_id = person_type','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0)
+                return $this->db->get($this->_table, $row_count, $offset);
+          return $this->db->get($this->_table);
+         $this->db->last_query(); exit;
+    }
+    
+    function getVendorDetails($fields = 'person_id', $condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true){
+        
+        $this->db->select($fields);
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_vendor_table, 'user_person_id = person_id','left');
+        $this->db->join($this->_person_type_table, 'user_person_type_id = person_type','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0)
+                return $this->db->get($this->_table, $row_count, $offset);
+        return $this->db->get($this->_table);
+        
+    }
+    
+    function getAdminDetails($fields = 'person_id', $condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true){
+        
+        $this->db->select($fields);
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_admin_table, 'user_person_id = person_id','left');
+        $this->db->join($this->_person_type_table, 'user_person_type_id = person_type','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0)
+                return $this->db->get($this->_table, $row_count, $offset);
         return $this->db->get($this->_table);
     }
     

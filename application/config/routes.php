@@ -57,12 +57,16 @@ $route['user_login.html']       = "person/userLogin";
 $route['user_register.html']    = "person/userRegister";
 
 
+/* ........Admin Module Routing................... */
+$route['admin_home.html']                  = "admin";
+$route['admin_login.html']                 = "person/adminLogin";
+
 
 
 /* ........Vendor/Freelance Module Routing................... */
 $route['vendor_home.html']                  = "vendor";
-$route['vendor_login.html']                 = "vendor/login";
-$route['vendor_register.html']              = "vendor/register";
+$route['vendor_login.html']                 = "person/vendorLogin";
+$route['vendor_register.html']              = "person/vendorRegister";
 $route['vendor_newjobs.html']               = "vendor/newJobList";
 $route['vendor_canceledjobs.html']          = "vendor/canceledJobList";
 $route['vendor_completedjobs.html']         = "vendor/completedJobList";

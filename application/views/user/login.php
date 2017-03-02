@@ -10,7 +10,7 @@
         <div class="topNav">
             <div class="userNav">
                 <ul>
-                    <li><a href="./user_login.html" title=""><i class="icon-user"></i><span>User Login</span></a></li>
+<!--                    <li><a href="./user_login.html" title=""><i class="icon-user"></i><span>User Login</span></a></li>-->
                     <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
@@ -20,7 +20,7 @@
         <div class="container animated fadeInDown">
             <div class="tab-content ">
                 <div id="login" class="tab-pane active">
-                    <form class="form-signin" id="login_box">
+                    <form class="form-signin" id="login_box" action="user_login.html" method="post">
                         <p class="head_login_005">Login Detail</p>
                         <input type="email" placeholder="Email id" class="form-control" name="email" required>
                         <input type="password" placeholder="Password" class="form-control" name="password" required>

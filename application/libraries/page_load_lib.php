@@ -102,7 +102,7 @@ class Page_load_lib {
 	 */
 	function validate_user($user){
 		if($user == "") {
-			redirect('np_member.html', 'refresh');
+			redirect('home.html', 'refresh');
 		}
 		elseif($user==$this->ci->session->userdata('user_type') && $this->ci->session->userdata('user_id')!='')
                 {
@@ -110,17 +110,17 @@ class Page_load_lib {
                 }elseif($user!=$this->ci->session->userdata('user_type')){
                         $type = $this->ci->session->userdata('user_type');
                         switch ($type) {
-                             case 'administrator':
+                             case 'admin':
+                                             $redirect_url="admin_home.html";
+                                     break;
+                             case 'vendor':
+                                             $redirect_url="vendor_home.html";
+                                     break;
+                             case 'freelancer':
+                                             $redirect_url="vendor_home.html";
+                                     break;
+                             case 'user':
                                              $redirect_url="home.html";
-                                     break;
-                             case 'editor':
-                                             $redirect_url="Ehome.html";
-                                     break;
-                             case 'member':
-                                             $redirect_url="dashboard.html";
-                                     break;
-                             case 'manager':
-                                             $redirect_url="manager_reservations.html";
                                      break;
                              default: $redirect_url="np_member.html";
                      }
