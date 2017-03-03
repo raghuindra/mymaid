@@ -5,7 +5,7 @@
                 <ul>
                     <?php if(!$this->session->userdata('user_id'))
                     {?>
-                        <li><a href="#" title="" role="button" data-toggle="modal" data-target="#login-modal"><i class="icon-user"></i><span>Login</span></a></li>
+                        <li><a href="./user_login.html" title="" role="button" ><i class="icon-user"></i><span>Login</span></a></li>
                     <?php }else{  ?>
                         <li style="text-decoration: none;color:white;"> Hello, <?php echo $this->session->userdata('user_fullname');?></li>
                         <li><a href="logout.html" title="" role="button"><i class="icon-user"></i><span>Log Out</span></a></li>
@@ -286,7 +286,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Begin # Login Form -->
-                <form class="form-signin" id="login_box">
+                <form class="form-signin" id="login_box" method="post" action="user_login.html">
 
                     <p class="head_login_005">Login Detail <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span class="" aria-hidden="true">X</span>

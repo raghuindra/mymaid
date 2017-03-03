@@ -84,6 +84,11 @@ class Person extends CI_Controller {
         $this->data['login'] = 1;
         $this->load->view('template', $this->data);
     }
+    
+    function logout()
+    {
+	$this->person_lib->logout();
+    }
 
 }
 

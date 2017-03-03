@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'user';
-
+$route['logout.html']        = "person/logout";
 
 /* ........User Module Routing............................ */
 $route['user_login.html']       = "person/userLogin";

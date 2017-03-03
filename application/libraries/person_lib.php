@@ -236,5 +236,27 @@ class Person_lib {
 		redirect($redirect_url, 'refresh');
 		}
 	}
+        
+        /**
+     * removes active(user) session.
+     */
+	function logout() {
+		// Delete login		
+		$type=$this->ci->session->userdata('user_type');
+		if($type=='admin'){
+			$redirect_url='admin_login.html';
+                        
+		}else if($type=='vendor' || $type=='freelancer'){
+                    
+			$redirect_url='vendor_login.html';
+		}else{
+			$redirect_url='home.html';
+		}
+		$this->ci->session->sess_destroy();
+		//$this->ci->session->sess_create();
+		
+		$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('np_frontend_message_logout_successfully'));
+		redirect($redirect_url, 'refresh');
+	}
 
 }
