@@ -5,6 +5,8 @@ $lang['mm_email_available'] = 'Sorry, it looks like this email belongs to an exi
 $lang['mm_user_created_successfully'] = 'You have successfully Signed Up. Please login to procced further.';
 $lang['mm_frontend_login_error_login_incorrect'] = 'Incorrect email and password combination. ';
 $lang['mm_user_login_welcome'] = 'Logged in Successfully..!!';
+$lang['mm_vendor_registration_successfull'] = 'Registration successfull...!! Please wait for admin approval by mail for further process. Thank You.';
+
 
 
 $lang['np_success'] = 'Success';

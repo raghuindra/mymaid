@@ -110,19 +110,19 @@ class Page_load_lib {
                 }elseif($user!=$this->ci->session->userdata('user_type')){
                         $type = $this->ci->session->userdata('user_type');
                         switch ($type) {
-                             case 'admin':
+                             case Globals::PERSON_TYPE_ADMIN_NAME:
                                              $redirect_url="admin_home.html";
                                      break;
-                             case 'vendor':
+                             case Globals::PERSON_TYPE_VENDOR_NAME:
                                              $redirect_url="vendor_home.html";
                                      break;
-                             case 'freelancer':
-                                             $redirect_url="vendor_home.html";
+                             case Globals::PEROSN_TYPE_FREELANCER_NAME:
+                                             $redirect_url="freelance_home.html";
                                      break;
-                             case 'user':
+                             case Globals::PERSON_TYPE_USER_NAME:
                                              $redirect_url="home.html";
                                      break;
-                             default: $redirect_url="np_member.html";
+                             default: $redirect_url="home.html";
                      }
                      redirect($redirect_url, 'refresh');
                 }else{

@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Vendor extends CI_Controller {
+class Freelancer extends CI_Controller {
 
     public $data = array();
 
@@ -14,18 +14,18 @@ class Vendor extends CI_Controller {
         $this->lang->load("mm", $this->uLang);
         //$this->lang->load("vendor_msg", $this->uLang);
         //$this->lang->load("vendor_leftbar", $this->uLang);
-        $this->page_load_lib->validate_user('vendor');
+        $this->page_load_lib->validate_user('freelancer');
     }
 
     public function index() {
 
-        $this->data['content'] = "vendor/home.php";
+        $this->data['content'] = "freelancer/home.php";
         $this->data['vendor'] = 1;
         $this->load->view('template', $this->data);
     }
 
     public function newJobList() {
-        $this->data['content'] = "vendor/newJob.php";
+        $this->data['content'] = "freelancer/newJob.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myjob||new";
         $this->load->view('template', $this->data);
@@ -33,7 +33,7 @@ class Vendor extends CI_Controller {
 
     public function activeJobList() {
 
-        $this->data['content'] = "vendor/activeJob.php";
+        $this->data['content'] = "freelancer/activeJob.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myjob||active";
         $this->load->view('template', $this->data);
@@ -41,7 +41,7 @@ class Vendor extends CI_Controller {
 
     public function canceledJobList() {
 
-        $this->data['content'] = "vendor/canceledJob.php";
+        $this->data['content'] = "freelancer/canceledJob.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myjob||cancel";
         $this->load->view('template', $this->data);
@@ -49,7 +49,7 @@ class Vendor extends CI_Controller {
 
     public function completedJobList() {
 
-        $this->data['content'] = "vendor/completedJob.php";
+        $this->data['content'] = "freelancer/completedJob.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myjob||completed";
         $this->load->view('template', $this->data);
@@ -57,7 +57,7 @@ class Vendor extends CI_Controller {
 
     public function rescheduleJobList() {
 
-        $this->data['content'] = "vendor/rescheduleJob.php";
+        $this->data['content'] = "freelancer/rescheduleJob.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myjob||reschedule";
         $this->load->view('template', $this->data);
@@ -65,7 +65,7 @@ class Vendor extends CI_Controller {
 
     public function walletPendingPay() {
 
-        $this->data['content'] = "vendor/walletPendingPay.php";
+        $this->data['content'] = "freelancer/walletPendingPay.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "wallet||pending";
         $this->load->view('template', $this->data);
@@ -73,7 +73,7 @@ class Vendor extends CI_Controller {
 
     public function walletRequestPay() {
 
-        $this->data['content'] = "vendor/walletRequestPay.php";
+        $this->data['content'] = "freelancer/walletRequestPay.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "wallet||request";
         $this->load->view('template', $this->data);
@@ -81,24 +81,18 @@ class Vendor extends CI_Controller {
 
     public function walletReport() {
 
-        $this->data['content'] = "vendor/walletReport.php";
+        $this->data['content'] = "freelancer/walletReport.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "wallet||report";
         $this->load->view('template', $this->data);
     }
 
     public function myAccount() {
-        $this->data['content'] = "vendor/myaccount.php";
+        $this->data['content'] = "freelancer/myaccount.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myaccount||vendor";
         $this->load->view('template', $this->data);
     }
-
-    public function myAccountFreelance() {
-        $this->data['content'] = "vendor/myaccount_freelance.php";
-        $this->data['vendor'] = 1;
-        $this->data['active'] = "myaccount||freelance";
-        $this->load->view('template', $this->data);
-    }
+    
 
 }

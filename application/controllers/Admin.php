@@ -12,6 +12,7 @@ class Admin extends CI_Controller {
             $this -> load -> helper(array('form', 'language'));
             //$this->uLang = $this->session->userdata('user_lang');               
             //$this -> lang -> load("np", $this->uLang);
+            $this->page_load_lib->validate_user('admin');
         }
         
 	public function index(){

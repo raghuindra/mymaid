@@ -3,7 +3,8 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Person extends CI_Controller {
+
+class Person extends CI_Controller{
 
     public $data = array();
     private $_bLang = 'english';
@@ -14,7 +15,7 @@ class Person extends CI_Controller {
         parent::__construct();
         $this->load->library(array('person_lib', 'page_load_lib'));
         $this->load->helper(array('form', 'language'));
-        //$this->uLang = $this->session->userdata('user_lang'); 
+        $this->uLang = $this->session->userdata('user_lang'); 
         //$lang = $this -> session -> userdata('browser_lang');
 //        if($lang!=''){
 //            $this->_bLang = $lang;
@@ -24,8 +25,8 @@ class Person extends CI_Controller {
     }
 
     function userLogin() {
-        
-        if (isset($_POST['email'])) {
+        if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
+        if (isset($_POST['email'])) {           
             if ($this->person_lib->_login_user()) {
                 redirect('home.html', 'refresh');
                 exit;
@@ -38,11 +39,10 @@ class Person extends CI_Controller {
     }
 
     function userRegister() {
-        $data = array();
-
+        if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
         if (isset($_POST['email'])) {
-            if ($this->person_lib->_register_user()) {
-                redirect('home.html', 'refresh');
+            if ($this->person_lib->_register_user()) {    
+                //redirect('user_register.html', 'refresh');
                 exit;
             }
         }
@@ -58,27 +58,45 @@ class Person extends CI_Controller {
     }
 
     public function vendorLogin() {
+        if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
+        if (isset($_POST['email'])) {           
+            if ($this->person_lib->_login_vendor()) {                
+                exit;
+            }
+        }
+        
         $this->data['content'] = "vendor/login.php";
         $this->data['oldvendor'] = 1;
         $this->load->view('template', $this->data);
     }
 
     public function vendorRegister() {
+        if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
+        if (isset($_POST['email'])) {
 
-        $data = array();
-        if (isset($_POST['userName'])) {
-            if ($this->user_lib->_update_member($person_id)) {
-                redirect('vendor_profile.html', 'refresh');
+            if ($this->person_lib->_register_vendor()) {
+                //redirect('vendor_register.html', 'refresh');
                 exit;
             }
-        } else {
-            $data['content'] = "vendor/register.php";
-            $data['oldvendor'] = 1;
-            $this->load->view('template', $data);
-        }
+        } 
+        $this->load->model('mm_model');
+        $states = $this->mm_model->get_tb('mm_state', '*')->result();
+        $data['state'] = $states;
+        $data['content'] = "vendor/register.php";
+        $data['oldvendor'] = 1;
+        $this->load->view('template', $data);
+        
     }
     
     public function adminLogin() {
+        if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
+        
+        if (isset($_POST['email'])) {         
+            if ($this->person_lib->_login_admin()) {                
+                exit;
+            }
+        }
+        
         $this->data['content'] = "admin/login.php";
         $this->data['admin'] = 1;
         $this->data['login'] = 1;

@@ -76,7 +76,21 @@ $route['vendor_wallet_pending.html']        = "vendor/walletPendingPay";
 $route['vendor_wallet_request.html']        = "vendor/walletRequestPay";
 $route['vendor_wallet_report.html']         = "vendor/walletReport";
 $route['vendor_myaccount.html']             = "vendor/myAccount";
-$route['freelance_myaccount.html']          = "vendor/myAccountFreelance";
+
+/* ........Vendor/Freelance Module Routing................... */
+$route['freelance_home.html']                  = "freelance";
+$route['freelance_login.html']                 = "freelance/vendorLogin";
+$route['freelance_register.html']              = "freelance/vendorRegister";
+$route['freelance_newjobs.html']               = "freelance/newJobList";
+$route['freelance_canceledjobs.html']          = "freelance/canceledJobList";
+$route['freelance_completedjobs.html']         = "freelance/completedJobList";
+$route['freelance_reschedulejobs.html']        = "freelance/rescheduleJobList";
+$route['freelance_activejobs.html']            = "freelance/activeJobList";
+$route['freelance_wallet_pending.html']        = "freelance/walletPendingPay";
+$route['freelance_wallet_request.html']        = "freelance/walletRequestPay";
+$route['freelance_wallet_report.html']         = "freelance/walletReport";
+$route['freelance_myaccount.html']             = "freelance/myAccount";
+
 
 $route['home.html'] = "user";
 

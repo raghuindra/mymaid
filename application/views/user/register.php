@@ -18,8 +18,11 @@
                 <div id="login" class="tab-pane active">
                     <form class="form-signin" id="login_box" method="post">
                         <p class="head_login_005">Sign Up</p>                       
-                        
-                        <input type="email" placeholder="Email id" class="form-control" name="email" required value="<?php echo set_value('email'); ?>">
+                         <div class="row">
+                            <div class="col-lg-12">
+                             <input type="email" placeholder="Email id" class="form-control" name="email" required value="<?php echo set_value('email'); ?>">
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-6"><input type="password" placeholder="Password" class="form-control" name="password" required></div>
                             <div class="col-lg-6"><input type="password" placeholder="Confirm Password" class="form-control" name="repassword" required></div>

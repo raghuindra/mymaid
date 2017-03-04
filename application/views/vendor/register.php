@@ -1,138 +1,190 @@
 <div class="nobg loginPage">
-            <div class="overlay">
-                <div class="topNav">
-                    <div class="userNav">
-                        <ul>
-                            <li><a href="./user_login.html" title=""><i class="icon-user"></i><span>User Login</span></a></li>
-                            <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
-                        </ul>
-                    </div>
-                                <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
-                </div>
-                <!-- PAGE CONTENT -->
-                <div class="container animated fadeInDown">
-                    <div class="tab-content ">
-                        <div id="login" class="tab-pane active">
-                            <form class="form-signin" id="login_box">
-                                <p class="head_login_005">Sign Up New Vendor/Freelancer</p>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <input type="email" placeholder="Email id" class="form-control" name="email" id="" required>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <input type="password" placeholder="Password" class="form-control" name="password" id="" required>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <input type="password" placeholder="Confirm Password" class="form-control" name="passwordconfirm" id="" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <input type="text" placeholder="First Name" class="form-control" name="firstName" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Last Name" class="form-control" name="lastName" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Middle name" class="form-control" name="middleName" id="" required> </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <input type="text" placeholder="Address" class="form-control" name="address" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Address Line 1" class="form-control" name="address1" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Address Line 2" class="form-control" name="address2" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="number" placeholder="Postal Code" class="form-control" name="address3" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <select placeholder="Middle name" class="form-control" required>
-                                    <option>City 1</option>
-                                    <option>City 2</option>
-                                    <option>City 3</option>
-                                </select>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="col-lg-6">
-                                        <select placeholder="Middle name" class="form-control" required>
-                                    <option>State 1</option>
-                                    <option>State 2</option>
-                                    <option>State 3</option>
-                                </select>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <select placeholder="country" class="form-control" required>
-                                    <option>Country 1</option>
-                                    <option>Country 2</option>
-                                    <option>Country 3</option>
-                                </select>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Id (Ic/Passport Number)" class="form-control" name="passport" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="number" placeholder="Mobile number" class="form-control" name="mobile" id="" required> </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 custom-radiobox">
-                                        <div class="col-lg-4">
-                                            <input type="radio" id="radio01" name="radio2" required />
-                                            <label for="radio01"><span></span>Vendor</label>
-                                        </div>
+    <div class="overlay">
+        <div class="topNav">
+            <div class="userNav">
+                <ul>
+                    <li><a href="./user_login.html" title=""><i class="icon-user"></i><span>User Login</span></a></li>
+                    <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
+                </ul>
+            </div>
+            <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
+        </div>
+        <!-- PAGE CONTENT -->
+        <div class="container animated fadeInDown">
+            <div class="tab-content ">
+                <div id="login" class="tab-pane active">
+                    <form class="form-signin" id="login_box" method="post" action="vendor_register.html">
+                        <p class="head_login_005">Sign Up New Vendor/Freelancer</p>
+                        <div class="row">
+                            <div class="col-lg-12" id="error_message" style="color:red">
+                               
+                            </div>
 
-                                        <div class="col-lg-5">
-                                            <input type="radio" id="radio02" name="radio1" required />
-                                            <label for="radio02"><span></span>Freelancer </label>
-                                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="email" placeholder="Email id" class="form-control" name="email" id="" required value="<?php echo set_value('email'); ?>">
+                            </div>
 
-                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6"><input type="password" placeholder="Password" class="form-control" name="password" required> </div>
+                            <div class="col-lg-6"><input type="password" placeholder="Confirm Password" class="form-control" name="repassword" required ></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="text" placeholder="First Name" class="form-control" name="firstname" required value="<?php echo set_value('firstname'); ?>"> </div>
+                            <div class="col-lg-12">
+                                <input type="text" placeholder="Last Name" class="form-control" name="lastname" required value="<?php echo set_value('lastname'); ?>"> </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="text" placeholder="Address" class="form-control" name="address" required value="<?php echo set_value('address'); ?>"> </div>
+                            <div class="col-lg-12">
+                                <input type="text" placeholder="Address Line 1" class="form-control" name="address1" required value="<?php echo set_value('address1'); ?>"> </div>                                   
+
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12">
+                                <input type="text" placeholder="Enter city" class="form-control" name="city" required value="<?php echo set_value('city'); ?>">
+                            </div>
+
+                            <div class="col-lg-12">
+                                <select type="text" placeholder="Select state" name="state" id="state" class="form-control" required value="<?php echo set_value('state[]'); ?>">
+                                    <option value=""> Select State </option>
+                                    <?php
+                                    foreach ($state as $key => $value) {
+                                        echo '<option value="' . $value->state_code . '" >' . $value->state_name . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <input type="number" placeholder="Postal Code" class="form-control" name="pincode" required value="<?php echo set_value('pincode'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div>
+                            <!-- <div class="col-lg-6">
+                                <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
+                                </select>     -->
+
+                            <div class="clearfix"></div>
+                            <div class="col-lg-6">
+                                <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
+                                    <option value="">Select Id Card</option>
+                                    <option value="Govt Id Card" >Govt Id Card</option>
+                                    <option value="passport">Passport</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Id Card Number" class="form-control" name="idcardnumber" required value="<?php echo set_value('idcardnumber'); ?>"> 
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 custom-radiobox">
+                                <div class="col-lg-4">
+                                    <input type="radio" id="radio01" name="type" class="vendor_type" checked value='1' required />
+                                    <label for="radio01"><span></span>Vendor</label>
                                 </div>
-                                <div class="row" id="company-details">
-                                    <div class="col-lg-12">
-                                        <input type="text" placeholder="Company Name" class="form-control" name="compName" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Company Registration Id" class="form-control" name="compRegister" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Company Address" class="form-control" name="compAddress" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="number" placeholder="Company Pin Code" class="form-control" name="compPin" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="number" placeholder="Mobile" class="form-control" name="mobile1" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="number" placeholder="Land phone" class="form-control" name="landPhone" id="" required> </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="FAX" class="form-control" name="fax" id="" required> </div>
-                                    <div class="col-lg-12">
-                                        <label>Number of Employees Range</label>
-                                        <div class="row">
-                                            <div class="col-lg-4">
-                                                <input type="number" placeholder="min" class="form-control" name="min" id="" required>
-                                            </div>
-                                            <div class="col-lg-1 text-center line-height-input">to</div>
-                                            <div class="col-lg-4">
-                                                <input type="number" placeholder="max" class="form-control" name="max" id="" required>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                <div class="col-lg-5">
+                                    <input type="radio" id="radio02" name="type" class="vendor_type" value='2' required />
+                                    <label for="radio02"><span></span>Freelancer </label>
                                 </div>
-                                <hr>
+
+                            </div>
+                        </div>
+                        <div class="row" id="company-details">
+                            <div class="col-lg-12">
+                                <input type="text" placeholder="Company Name" class="form-control" name="compName" id="compName" required value="<?php echo set_value('compName'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Company Registration Id" class="form-control" name="compRegister" id="compRegister" required  value="<?php echo set_value('compRegister'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Company Address" class="form-control" name="compAddress" id="compAddress" required value="<?php echo set_value('compAddress'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="number" placeholder="Company Pin Code" class="form-control" name="compPin" id="compPin" required value="<?php echo set_value('compPin'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="number" placeholder="Mobile" class="form-control" name="compMobile" id="compMobile" required value="<?php echo set_value('compMobile'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="number" placeholder="Land phone" class="form-control" name="compLandPhone" id="compLandPhone" required value="<?php echo set_value('compLandPhone'); ?>"> </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="FAX" class="form-control" name="compFax" id="compFax" required value="<?php echo set_value('compFax'); ?>"> </div>
+                            <div class="col-lg-12">
+                                <label>Number of Employees Range</label>
                                 <div class="row">
                                     <div class="col-lg-4">
-                                        <button class="form-control btn btn-primary" value="Login" type="submit"><strong>Sign Up</strong></button>
+                                        <input type="number" placeholder="min" class="form-control" name="compEmpMin" id="compEmpMin" required value="<?php echo set_value('compEmpMin'); ?>">
                                     </div>
-                                    <div class="col-lg-6">
-                                        <p><a href="./vendor_login.html"><strong>Already Have Account?</strong></a></p>
-                                    </div>
-                                </div>
-                                <div class="text-center"><strong>Or</strong></div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="button google"><i class="fa fa-google-plus"></i>Signup with Google</div>
+                                    <div class="col-lg-1 text-center line-height-input">to</div>
+                                    <div class="col-lg-4">
+                                        <input type="number" placeholder="max" class="form-control" name="compEmpMax" id="compEmpMax" required value="<?php echo set_value('compEmpMax'); ?>">
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <button class="form-control btn btn-primary" value="Login" type="submit"><strong>Sign Up</strong></button>
+                            </div>
+                            <div class="col-lg-6">
+                                <p><a href="./vendor_login.html"><strong>Already Have Account?</strong></a></p>
+                            </div>
+                        </div>
+                        <div class="text-center"><strong>Or</strong></div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="button google"><i class="fa fa-google-plus"></i>Signup with Google</div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- END BODY -->
             </div>
         </div>
+
+        <!-- END BODY -->
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.vendor_type').click(function(){
+            if($('.vendor_type').val() === 1){
+                setRequired();
+            }else{
+                unSetRequired();
+            }
+        });
+        
+
+    });
+
+    function setRequired() {
+        $('#compName').attr('required', true);
+        $('#compRegister').attr('required', true);
+        $('#compAddress').attr('required', true);
+        $('#compPin').attr('required', true);
+        $('#compMobile').attr('required', true);
+        $('#compLandPhone').attr('required', true);
+        $('#compFax').attr('required', true);
+        $('#compEmpMin').attr('required', true);
+        $('#compEmpMax').attr('required', true);
+    }
+
+    function unSetRequired() {
+        $('#compName').attr('required', false);
+        $('#compRegister').attr('required', false);
+        $('#compAddress').attr('required', false);
+        $('#compPin').attr('required', false);
+        $('#compMobile').attr('required', false);
+        $('#compLandPhone').attr('required', false);
+        $('#compFax').attr('required', false);
+        $('#compEmpMin').attr('required', false);
+        $('#compEmpMax').attr('required', false);
+    }
+
+</script>
+
+

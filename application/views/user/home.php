@@ -324,29 +324,4 @@
     </div>
 </div>
 <!-- END # MODAL LOGIN -->
-
-
-<script>
-    $(function () {
-<?php if ($this->session->flashdata('error_message') != null) { ?>
-            notyfy({
-                text: "<?php echo $this->session->flashdata('error_message'); ?>",
-                type: "error",
-                dismissQueue: true,
-                layout: 'top'
-            });
-
-<?php } else if ($this->session->flashdata('success_message') != null) { ?>
-
-            notyfy({
-                text: "<?php echo $this->session->flashdata('success_message'); ?>",
-                type: "success",
-                dismissQueue: true,
-                layout: 'top'
-            });
-
-<?php } ?>
-
-    });
-
-</script>        
+       

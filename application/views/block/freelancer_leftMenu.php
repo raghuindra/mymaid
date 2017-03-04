@@ -29,7 +29,7 @@
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="treeview">
-                <a href="<?php echo base_url() . 'admin_home.html'; ?>"
+                <a href="<?php echo base_url() . 'freelance_home.html'; ?>"
                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -40,8 +40,8 @@
                                     <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
                                 </ul>-->
             </li>
-<!--            <li class="treeview">
-                <a href="index.html">
+            <li class="treeview">
+                <a href="<?php echo base_url() . 'freelance_newjobs.html'; ?>">
                     <i class="fa fa-arrow-circle-right"></i> <span>My Jobs</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -49,7 +49,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="active">
-                        <a href="<?php //echo base_url() . 'admin_newjobs.html'; ?>">
+                        <a href="<?php echo base_url() . 'freelance_newjobs.html'; ?>">
                             <i class="fa fa-shopping-cart"></i>
                             <span>New Jobs</span>
                             <span class="pull-right-container">
@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php //echo base_url() . 'admin_activejobs.html'; ?>">
+                        <a href="<?php echo base_url() . 'freelance_activejobs.html'; ?>">
                             <i class="fa fa-send"></i>
                             <span>Active Jobs</span>
                             <span class="pull-right-container">
@@ -67,7 +67,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php //echo base_url() . 'admin_canceledjobs.html'; ?>">
+                        <a href="<?php echo base_url() . 'freelance_canceledjobs.html'; ?>">
                             <i class="fa fa-close"></i>
                             <span>Canceled Job</span>
                             <span class="pull-right-container">
@@ -76,7 +76,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php //echo base_url() . 'admin_completedjobs.html'; ?>">
+                        <a href="<?php echo base_url() . 'freelance_completedjobs.html'; ?>">
                             <i class="fa fa-check"></i>
                             <span>Completed Job</span>
                             <span class="pull-right-container">
@@ -85,7 +85,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php //echo base_url() . 'admin_reschedulejobs.html'; ?>">
+                        <a href="<?php echo base_url() . 'freelance_reschedulejobs.html'; ?>">
                             <i class="fa fa-calendar-minus-o"></i>
                             <span>Reschedule Request</span>
                             <span class="pull-right-container">
@@ -94,9 +94,66 @@
                         </a>
                     </li>
                 </ul>
-            </li>              -->
+            </li>           
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-money"></i> <span>My Wallet</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'freelance_wallet_pending.html'; ?>">
+                            <i class="fa fa-hourglass-2"></i>
+                            <span>Pending Pay</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green">4</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'freelance_wallet_request.html'; ?>">
+                            <i class="fa fa-exchange"></i>
+                            <span>Request Payment</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green">4</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'freelance_wallet_report.html'; ?>">
+                            <i class="fa fa-external-link"></i>
+                            <span>Payment report </span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green">4</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <!-- settings links -->
-            
+            <li class="treeview">
+                <a href="<?php echo base_url() . 'freelance_myaccount.html'; ?>">
+                    <i class="fa fa-wrench"></i> <span>My Account/Setting</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'freelance_myaccount.html'; ?>">
+                            <i class="fa fa-info-circle"></i>
+                            <span>Vendor</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green">4</span>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </li>
+            <!-- settings links -->
             <!--
             <li class="treeview">
                 <a href="#">

@@ -10,7 +10,7 @@
                 <img src="<?php echo plugin_url('dist/img/user2-160x160.jpg'); ?>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Praveen Nelge</p>
+                <p><?php echo $this->session->userdata('user_fullname');?></p>
                 <a href="#" class="hidden"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>

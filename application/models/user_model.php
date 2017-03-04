@@ -18,7 +18,6 @@ class User_model extends Mm_model{
                     ->get()
                     ->result();
 
-
     }
         
         
