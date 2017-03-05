@@ -222,7 +222,7 @@ class Person_lib {
                 $info['person_type'] = Globals::PERSON_TYPE_VENDOR; /* Person_type = 2 ==> 'vendor' type */
                 $role = Globals::ROLE_VENDOR;
             } else {
-                $info['person_type'] = Globals::PEROSN_TYPE_FREELANCER; /* Person_type = 4 ==> 'freelancer' type */
+                $info['person_type'] = Globals::PERSON_TYPE_FREELANCER; /* Person_type = 4 ==> 'freelancer' type */
                 $role = Globals::ROLE_FREELANCER;
             }
 
@@ -434,7 +434,7 @@ class Person_lib {
                 case Globals::PERSON_TYPE_VENDOR_NAME:
                     $redirect_url = "vendor_home.html";
                     break;
-                case Globals::PEROSN_TYPE_FREELANCER_NAME:
+                case Globals::PERSON_TYPE_FREELANCER_NAME:
                     $redirect_url = "freelance_home.html";
                     break;
             }
@@ -461,6 +461,142 @@ class Person_lib {
 
         $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('np_frontend_message_logout_successfully'));
         redirect($redirect_url, 'refresh');
+    }
+
+    function _forgotpass() {
+        $this->ci->load->library('form_validation');
+        $this->data['error_message'] = '';
+
+        $this->ci->form_validation->set_rules('id', 'required mail id', 'trim|required|xss_clean|encode_php_tags|valid_email');
+
+        if ($this->ci->form_validation->run() != FALSE) {
+
+            $user_data['user_email'] = $this->ci->input->post('id', true);
+            $type = $this->ci->input->post('type', true);
+
+            $user = $this->model->get('person_id, person_type, person_email,person_first_name,person_last_name,person_delete_status', array('person_email' => $user_data['user_email']))->row();
+            //print_r($user);
+            //exit;
+            if (isset($user->person_id) && strlen($user->person_id) > 0 && $user->person_delete_status != 1) {
+                $reset_data['pass_reset_person_id'] = $user->person_id;
+                $reset_data['pass_reset_person_type'] = $user->person_type;
+                $reset_data['pass_reset_token_key'] = md5(microtime() . rand());
+                $reset_data['pass_reset_generated_at'] = date('Y-m-d H:i:s');
+                $reset_data['pass_reset_expires_at'] = date('Y-m-d H:i:s', strtotime('+1 day'));
+                $result = $this->model->get_tb('mm_password_reset', 'pass_reset_person_id', array('pass_reset_person_id' => $user->person_id))->row();
+                if (!empty($result) && count($result) > 0) {
+                    $this->model->delete_tb('mm_password_reset', array('pass_reset_person_id' => $user->person_id));
+                }
+                $this->model->insert_tb('mm_password_reset', $reset_data);
+                $this->ci->load->library('page_load_lib');
+
+                $sender = $this->ci->data['config']['sender_email'];
+                $recipient = $user->person_email;
+                $reset_token_key = $reset_data['pass_reset_token_key'];
+                $subject = "Change your MyMaidz Password";
+                $message = "<html><body>";
+                $message .= "<p>Dear Member,</p><br>";
+                $message .= "<p>You have requested to change your MyMaidz password. If you did not make this request, please just ignore this email. This link will be active for only 24 hours.</p>";
+                $message .= "<p><a href='" . base_url() . "reset_password.html/'" . $reset_token_key . "'>Click here to change your password.</a></p><br />";
+                $message .= "<p>Otherwise, please copy the link below and paste it into your browser.</p>";
+                $message .= "<p><span style='color:#295CC2;'>" . base_url() . "reset_password.html/" . $reset_token_key . "</span></p><br/>";
+                $message .= "<p>If you have any questions, do not hesitate to contact us.</p><br/>";
+                $message .= "<p>Sincerely,</p><br>";
+                $message .= "<p>The MyMaidz Team</p><br>";
+                //$message .= "<p><img src='".base_url()."/assets/img/Find_Out.png' alt='MyMaidz'/></p>";
+                $message .= "<p><a href='" . base_url() . "'>" . base_url() . "</a></p><br>";
+                $message .= "<p>Copyright &copy; 2017 MyMaidz. All Rights Reserved.</p><br>";
+                $message .= "</body></html>";
+                //$attachement = "assets/img/Find_Out.png";
+                $this->ci->page_load_lib->send_np_email($sender, $recipient, $subject, $message, array('mailtype' => 'html'));
+                $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_forgotpass_resetlink_sent'));
+                redirect('forgotPass.html', 'refresh');
+                exit;
+            } else {
+                $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('mm_email_not_exists'));
+            }
+        } else {
+            $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('Validation_error'));
+        }
+    }
+
+    function _resetpass($token) {
+
+        $this->ci->load->library('form_validation');
+        $this->ci->data['error_message'] = '';
+
+        $this->ci->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|encode_php_tags');
+        $this->ci->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|encode_php_tags');
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('Validation_error'));
+            return;
+        } else {
+            $pass = trim($this->ci->input->post('password', true));
+            $confirm_pass = trim($this->ci->input->post('confirm_password', true));
+            if ($pass == $confirm_pass) {
+                $new_pass = hash('sha512', $pass);
+                $result = $this->model->get_tb('mm_password_reset', '*', array('pass_reset_token_key' => $token))->row();
+                if($result) {
+
+                    $person_id = $result->pass_reset_person_id;
+
+                    if ($result->pass_reset_person_type == Globals::PERSON_TYPE_USER) {
+                        $update = $this->model->update_tb('mm_user', array('user_person_id' => $person_id), array('user_password' => $new_pass));
+                    } elseif ($result->pass_reset_person_type == Globals::PERSON_TYPE_ADMIN) {
+                        $update = $this->model->update_tb('mm_admin', array('admin_person_id' => $person_id), array('admin_password' => $new_pass));
+                    } else if ($result->pass_reset_person_type == Globals::PERSON_TYPE_VENDOR || $result->pass_reset_person_type == Globals::PERSON_TYPE_FREELANCER) {
+                        $update = $this->model->update_tb('mm_vendor', array('vendor_person_id' => $person_id), array('vendor_password' => $new_pass));
+                    } else {
+                        return;
+                    }
+                    $p_update = $this->model->update_tb('mm_person', array('person_id' => $person_id), array('person_password' => $new_pass));
+
+                    if ($p_update) {
+                        $redirect_link = "";
+                        $update = $this->model->update_tb('mm_password_reset', array('pass_reset_token_key' => $token), array('pass_reset_status' => 1));
+                        $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_password_changed_success'));
+                        $user_data = $this->model->get_tb('mm_person', '*', array('person_id' => $person_id))->row();
+
+                        $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $user_data->person_email;
+                        $subject = "Password has been successfully updated";
+                        $message = "<html><body>";
+                        $message .= "<p>Dear " . $user_data->person_first_name . ",</p><br>";
+                        $message .= "<p>Password has been successfully updated:</p>";
+                        $message .= "<p>Password: &nbsp; <b>" . $pass . "</b></p>";
+                        if ($result->pass_reset_person_type == Globals::PERSON_TYPE_ADMIN ) {
+                            $message .= "<p><a href='". base_url()."admin_login.html'>Click here</a> to login</p>";
+                            $message .= "<p>Or copy the login link:<b> ". base_url()."admin_login.html </b></p>";
+                            $redirect_link =  base_url()."admin_login.html";
+                        } elseif ($result->pass_reset_person_type == Globals::PERSON_TYPE_VENDOR || $result->pass_reset_person_type == Globals::PERSON_TYPE_FREELANCER) {
+                            $message .= "<p><a href='". base_url()."vendor_login.html'>Click here</a> to login</p>";
+                            $message .= "<p>Or copy the login link:<b> ". base_url()."vendor_login.html </b></p>";
+                            $redirect_link =  base_url()."vendor_login.html";
+                        } elseif($result->pass_reset_person_type == Globals::PERSON_TYPE_USER){
+                            $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
+                            $message .= "<p>Or copy the login link:<b> ". base_url()."user_login.html </b></p>";
+                            $redirect_link =  base_url()."user_login.html";
+                        }
+
+                        $message .= "</body></html>";
+                        $this->ci->page_load_lib->send_np_email($sender, $recipient, $subject, $message, array('mailtype' => 'html'));
+
+                        redirect($redirect_link, 'refresh');
+                        exit;
+                    } else {
+                        $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('something_problem'));
+
+                        return;
+                    }
+                } else {
+                    $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('mm_invalid_token'));
+                    return;
+                }
+            } else {
+                $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('mm_passsword_mismatch'));
+                return;
+            }
+        }
     }
 
     function check_person_email($email) {

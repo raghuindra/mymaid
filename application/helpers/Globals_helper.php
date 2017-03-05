@@ -11,11 +11,23 @@ class Globals
     const PERSON_TYPE_USER          = 1;
     const PERSON_TYPE_VENDOR        = 2;
     const PERSON_TYPE_ADMIN         = 3;
-    const PEROSN_TYPE_FREELANCER    = 4;
+    const PERSON_TYPE_FREELANCER    = 4;
     
     const PERSON_TYPE_USER_NAME          = 'user';
     const PERSON_TYPE_VENDOR_NAME        = 'vendor';
     const PERSON_TYPE_ADMIN_NAME         = 'admin';
-    const PEROSN_TYPE_FREELANCER_NAME    = 'freelancer';
+    const PERSON_TYPE_FREELANCER_NAME    = 'freelancer';
+    
+    public static function getPersonTypeName($person_type_id){
+        
+        switch ($person_type_id){
+            case self::PERSON_TYPE_USER : return self::PERSON_TYPE_USER_NAME; 
+            case self::PERSON_TYPE_VENDOR : return self::PERSON_TYPE_VENDOR_NAME;
+            case self::PERSON_TYPE_ADMIN : return self::PERSON_TYPE_ADMIN_NAME;
+            case self::PERSON_TYPE_FREELANCER : return self::PERSON_TYPE_FREELANCER_NAME;
+                
+        }
+        
+    }
     
 }

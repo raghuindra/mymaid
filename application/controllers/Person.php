@@ -107,6 +107,56 @@ class Person extends CI_Controller{
     {
 	$this->person_lib->logout();
     }
+    
+    function forgotPassword(){
+        if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}        
+        
+        if (isset($_POST['id'])) { 
+            $this->person_lib->_forgotpass();
+        }
+        
+        $this->data['content'] = "forgotPassword.php";
+         $this->data['login'] = 1;
+        $this->load->view('template', $this->data);
+    }
+    
+    /**
+     * Reset Password
+      * @param	string	$token	unique token key
+     */
+    function resetpassword($token)
+    {
+        $token  = mysql_real_escape_string(trim($token));
+        
+            $now  = date('Y-m-d H:i:s');
+            $this->load->model('person_model');
+            $result = $this->person_model->get_tb('np_password_reset','*',array('pass_reset_token_key'=>$token))->row();
+            //echo "<pre>";   print_r($result);
+            if(!empty($result) && count($result)>0)
+            {
+                if( ($now <= $result->pass_reset_expires_at) && ($result->pass_reset_status==0) )
+                {
+                    if(isset($_POST['password']))
+                    {
+                        $this->person_lib->_resetpass($token);
+                    }    
+                }else{
+                    $this -> session -> set_flashdata('error_message', "URL has expired!!");
+                    redirect('', 'refresh');
+                    exit;
+                }
+            }else{
+                $this -> session -> set_flashdata('error_message', "Wrong url request!!");
+                redirect('', 'refresh');
+                    exit;
+            }  
+
+        $this->data['content']  = "resetpassword.php";
+        $this->data['token']    = $token;
+        $this->data['login']    = 1;
+        $this->load->view('template',$this->data);
+        
+    }
 
 }
 

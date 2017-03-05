@@ -1,7 +1,7 @@
     
 <div class="login-box">
     <div class="login-logo">
-        <a href="../../index2.html"><b>Admin</b>LTE</a>
+        <a href="<?php echo base_url().'home.html'; ?>"><b>MyMaid</b>z</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -41,7 +41,7 @@
         </div>
         <!-- /.social-auth-links -->
 
-        <a href="#">I forgot my password</a><br>
+        <a href="<?php echo base_url().'forgotPass.html'; ?>">I forgot my password</a><br>
 <!--        <a href="register.html" class="text-center">Register a new membership</a>-->
 
     </div>

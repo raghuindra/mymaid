@@ -23,7 +23,7 @@
                                         <button class="form-control btn btn-primary" value="Login" type="submit"><strong>Login</strong></button>
                                     </div>
                                     <div class="col-lg-6" id="sednmail-group">
-                                        <p><a href="#"><strong>Forgot Password?</strong></a></p>
+                                        <p><a href="<?php echo base_url().'forgotPass.html' ?>?>"><strong>Forgot Password?</strong></a></p>
                                         <div>
                                             <div class="input-group">
                                                 <input type="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">

@@ -49,47 +49,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'user';
-$route['logout.html']        = "person/logout";
+$route['default_controller']                    = 'user';
+$route['logout.html']                           = "person/logout";
+$route['forgotPass.html']                       = "person/forgotPassword";
+$route['reset_password.html/(:any)']            = "person/resetpassword/$1";
+
 
 /* ........User Module Routing............................ */
-$route['user_login.html']       = "person/userLogin";
-$route['user_register.html']    = "person/userRegister";
+$route['user_login.html']                       = "person/userLogin";
+$route['user_register.html']                    = "person/userRegister";
 
 
 /* ........Admin Module Routing................... */
-$route['admin_home.html']                  = "admin";
-$route['admin_login.html']                 = "person/adminLogin";
+$route['admin_home.html']                       = "admin";
+$route['admin_login.html']                      = "person/adminLogin";
 
 
 
 /* ........Vendor/Freelance Module Routing................... */
-$route['vendor_home.html']                  = "vendor";
-$route['vendor_login.html']                 = "person/vendorLogin";
-$route['vendor_register.html']              = "person/vendorRegister";
-$route['vendor_newjobs.html']               = "vendor/newJobList";
-$route['vendor_canceledjobs.html']          = "vendor/canceledJobList";
-$route['vendor_completedjobs.html']         = "vendor/completedJobList";
-$route['vendor_reschedulejobs.html']        = "vendor/rescheduleJobList";
-$route['vendor_activejobs.html']            = "vendor/activeJobList";
-$route['vendor_wallet_pending.html']        = "vendor/walletPendingPay";
-$route['vendor_wallet_request.html']        = "vendor/walletRequestPay";
-$route['vendor_wallet_report.html']         = "vendor/walletReport";
-$route['vendor_myaccount.html']             = "vendor/myAccount";
+$route['vendor_home.html']                      = "vendor";
+$route['vendor_login.html']                     = "person/vendorLogin";
+$route['vendor_register.html']                  = "person/vendorRegister";
+$route['vendor_newjobs.html']                   = "vendor/newJobList";
+$route['vendor_canceledjobs.html']              = "vendor/canceledJobList";
+$route['vendor_completedjobs.html']             = "vendor/completedJobList";
+$route['vendor_reschedulejobs.html']            = "vendor/rescheduleJobList";
+$route['vendor_activejobs.html']                = "vendor/activeJobList";
+$route['vendor_wallet_pending.html']            = "vendor/walletPendingPay";
+$route['vendor_wallet_request.html']            = "vendor/walletRequestPay";
+$route['vendor_wallet_report.html']             = "vendor/walletReport";
+$route['vendor_myaccount.html']                 = "vendor/myAccount";
 
 /* ........Vendor/Freelance Module Routing................... */
-$route['freelance_home.html']                  = "freelance";
-$route['freelance_login.html']                 = "freelance/vendorLogin";
-$route['freelance_register.html']              = "freelance/vendorRegister";
-$route['freelance_newjobs.html']               = "freelance/newJobList";
-$route['freelance_canceledjobs.html']          = "freelance/canceledJobList";
-$route['freelance_completedjobs.html']         = "freelance/completedJobList";
-$route['freelance_reschedulejobs.html']        = "freelance/rescheduleJobList";
-$route['freelance_activejobs.html']            = "freelance/activeJobList";
-$route['freelance_wallet_pending.html']        = "freelance/walletPendingPay";
-$route['freelance_wallet_request.html']        = "freelance/walletRequestPay";
-$route['freelance_wallet_report.html']         = "freelance/walletReport";
-$route['freelance_myaccount.html']             = "freelance/myAccount";
+$route['freelance_home.html']                   = "freelance";
+//$route['freelance_login.html']                  = "freelance/vendorLogin";
+//$route['freelance_register.html']               = "freelance/vendorRegister";
+$route['freelance_newjobs.html']                = "freelance/newJobList";
+$route['freelance_canceledjobs.html']           = "freelance/canceledJobList";
+$route['freelance_completedjobs.html']          = "freelance/completedJobList";
+$route['freelance_reschedulejobs.html']         = "freelance/rescheduleJobList";
+$route['freelance_activejobs.html']             = "freelance/activeJobList";
+$route['freelance_wallet_pending.html']         = "freelance/walletPendingPay";
+$route['freelance_wallet_request.html']         = "freelance/walletRequestPay";
+$route['freelance_wallet_report.html']          = "freelance/walletReport";
+$route['freelance_myaccount.html']              = "freelance/myAccount";
 
 
 $route['home.html'] = "user";

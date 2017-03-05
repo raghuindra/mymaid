@@ -6,6 +6,11 @@ $lang['mm_user_created_successfully'] = 'You have successfully Signed Up. Please
 $lang['mm_frontend_login_error_login_incorrect'] = 'Incorrect email and password combination. ';
 $lang['mm_user_login_welcome'] = 'Logged in Successfully..!!';
 $lang['mm_vendor_registration_successfull'] = 'Registration successfull...!! Please wait for admin approval by mail for further process. Thank You.';
+$lang['mm_forgotpass_resetlink_sent'] = 'Password reset link has been sent to mail. Please check mail.';
+$lang['mm_email_not_exists'] = "The email you entered doesn't appear to belong to an account. Please check your email address.";
+$lang['mm_passsword_mismatch'] = "Password and Confrim password doesn't matched..!!";
+$lang['mm_password_changed_success']  = "Password successfully changed!!";
+$lang['mm_invalid_token'] = "Invalid Token..!!";
 
 
 

@@ -16,7 +16,7 @@ class Page_load_lib {
 		$this->ci =& get_instance();
 		$this->get_lang();
 		//$this->get_url();
-		//$this->get_config();
+		$this->get_config();
                 //$this->check_maintenance();
 		//$this->get_json();
 		//$this->validate_user();
@@ -116,7 +116,7 @@ class Page_load_lib {
                              case Globals::PERSON_TYPE_VENDOR_NAME:
                                              $redirect_url="vendor_home.html";
                                      break;
-                             case Globals::PEROSN_TYPE_FREELANCER_NAME:
+                             case Globals::PERSON_TYPE_FREELANCER_NAME:
                                              $redirect_url="freelance_home.html";
                                      break;
                              case Globals::PERSON_TYPE_USER_NAME:
