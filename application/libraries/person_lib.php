@@ -98,7 +98,19 @@ class Person_lib {
                     $user_id = $this->_create_user('mm_user', $user_info);
                     if ($user_id != '') {
                         $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_user_created_successfully'));
-
+                        
+                        $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $info['person_email'];
+                        $subject = "Login Information";
+                        $message = "<html><body>";
+                        $message .= "<p>Dear User,</p><br>";
+                        $message .= "<p>Your Login Credentials:</p>";
+                        $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
+                        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
+                        $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
+                        $message .= "</body></html>";
+                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+                                                
                         redirect('home.html', 'refresh');
                         exit;
                     }
@@ -272,7 +284,20 @@ class Person_lib {
 
                     if ($user_id != '') {
                         $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_vendor_registration_successfull'));
+                        
+                        $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $info['person_email'];
+                        $subject = "Login Information";
+                        $message = "<html><body>";
+                        $message .= "<p>Dear User,</p><br>";
+                        $message .= "<p>Your Login Credentials:</p>";
+                        $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
+                        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
+                        $message .= "<p><a href='". base_url()."vendor_login.html'>Click here</a> to login</p>";
+                        $message .= "</body></html>";
+                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
 
+                        
                         redirect('vendor_register.html', 'refresh');
                         exit;
                     }
@@ -497,7 +522,7 @@ class Person_lib {
                 $message = "<html><body>";
                 $message .= "<p>Dear Member,</p><br>";
                 $message .= "<p>You have requested to change your MyMaidz password. If you did not make this request, please just ignore this email. This link will be active for only 24 hours.</p>";
-                $message .= "<p><a href='" . base_url() . "reset_password.html/'" . $reset_token_key . "'>Click here to change your password.</a></p><br />";
+                $message .= "<p><a href='" . base_url() . "reset_password.html/" . $reset_token_key . "'>Click here to change your password.</a></p><br />";
                 $message .= "<p>Otherwise, please copy the link below and paste it into your browser.</p>";
                 $message .= "<p><span style='color:#295CC2;'>" . base_url() . "reset_password.html/" . $reset_token_key . "</span></p><br/>";
                 $message .= "<p>If you have any questions, do not hesitate to contact us.</p><br/>";
@@ -542,13 +567,8 @@ class Person_lib {
 
                     if ($result->pass_reset_person_type == Globals::PERSON_TYPE_USER) {
                         $update = $this->model->update_tb('mm_user', array('user_person_id' => $person_id), array('user_password' => $new_pass));
-                    } elseif ($result->pass_reset_person_type == Globals::PERSON_TYPE_ADMIN) {
-                        $update = $this->model->update_tb('mm_admin', array('admin_person_id' => $person_id), array('admin_password' => $new_pass));
-                    } else if ($result->pass_reset_person_type == Globals::PERSON_TYPE_VENDOR || $result->pass_reset_person_type == Globals::PERSON_TYPE_FREELANCER) {
-                        $update = $this->model->update_tb('mm_vendor', array('vendor_person_id' => $person_id), array('vendor_password' => $new_pass));
-                    } else {
-                        return;
                     }
+                    
                     $p_update = $this->model->update_tb('mm_person', array('person_id' => $person_id), array('person_password' => $new_pass));
 
                     if ($p_update) {

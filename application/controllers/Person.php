@@ -126,12 +126,13 @@ class Person extends CI_Controller{
      */
     function resetpassword($token)
     {
-        $token  = mysql_real_escape_string(trim($token));
+        $db = get_instance()->db->conn_id;
+        $token  = mysqli_real_escape_string($db,trim($token));
         
             $now  = date('Y-m-d H:i:s');
             $this->load->model('person_model');
-            $result = $this->person_model->get_tb('np_password_reset','*',array('pass_reset_token_key'=>$token))->row();
-            //echo "<pre>";   print_r($result);
+            $result = $this->person_model->get_tb('mm_password_reset','*',array('pass_reset_token_key'=>$token))->row();
+            //echo "<pre>";   print_r($result); exit;
             if(!empty($result) && count($result)>0)
             {
                 if( ($now <= $result->pass_reset_expires_at) && ($result->pass_reset_status==0) )
@@ -151,7 +152,7 @@ class Person extends CI_Controller{
                     exit;
             }  
 
-        $this->data['content']  = "resetpassword.php";
+        $this->data['content']  = "resetPassword.php";
         $this->data['token']    = $token;
         $this->data['login']    = 1;
         $this->load->view('template',$this->data);
