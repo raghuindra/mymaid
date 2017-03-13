@@ -40,18 +40,18 @@
                                     <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
                                 </ul>-->
             </li>
-<!--            <li class="treeview">
+            <li class="treeview">
                 <a href="index.html">
-                    <i class="fa fa-arrow-circle-right"></i> <span>My Jobs</span>
+                    <i class="fa fa-arrow-circle-right"></i> <span>Services</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
                     <li class="active">
-                        <a href="<?php //echo base_url() . 'admin_newjobs.html'; ?>">
+                        <a href="<?php echo base_url() . 'services.html'; ?>">
                             <i class="fa fa-shopping-cart"></i>
-                            <span>New Jobs</span>
+                            <span>Service Add / List</span>
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right bg-green">4</span>
                             </span>
@@ -94,7 +94,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>              -->
+            </li>            
             <!-- settings links -->
             
             <!--

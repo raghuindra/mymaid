@@ -37,6 +37,16 @@
         <!-- iCheck -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/square/blue.css');?>">
     <?php } ?>
+        
+                
+        <!-- jQuery 2.2.3 -->
+        <script src="<?php echo plugin_url('plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
+        <!-- Datatable -->
+        <link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/jquery.dataTables.min.css');?>">
+        <link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/dataTables.bootstrap.css');?>">
+        <script src="<?php echo plugin_url('plugins/datatables/jquery.datatables.min.js'); ?>"></script>
+        <script src="<?php echo plugin_url('plugins/datatables/datatables.bootstrap.min.js'); ?>"></script>
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

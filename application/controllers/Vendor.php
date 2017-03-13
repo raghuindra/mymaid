@@ -87,18 +87,19 @@ class Vendor extends CI_Controller {
         $this->load->view('template', $this->data);
     }
 
-    public function myAccount() {
-        $this->data['content'] = "vendor/myaccount.php";
+    public function myAccountCompany() {
+        $this->data['content'] = "vendor/myaccount_company.php";
         $this->data['vendor'] = 1;
-        $this->data['active'] = "myaccount||vendor";
+        $this->data['active'] = "myaccount||company";
         $this->load->view('template', $this->data);
     }
-
-    public function myAccountFreelance() {
-        $this->data['content'] = "vendor/myaccount_freelance.php";
+    
+    public function myAccountBank() {
+        $this->data['content'] = "vendor/myaccount_bank.php";
         $this->data['vendor'] = 1;
-        $this->data['active'] = "myaccount||freelance";
+        $this->data['active'] = "myaccount||bank";
         $this->load->view('template', $this->data);
     }
+   
 
 }

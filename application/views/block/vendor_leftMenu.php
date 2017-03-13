@@ -135,25 +135,25 @@
             <!-- settings links -->
             <li class="treeview">
                 <a href="<?php echo base_url() . 'vendor_myaccount.html'; ?>">
-                    <i class="fa fa-wrench"></i> <span>My Account/Setting</span>
+                    <i class="fa fa-wrench"></i> <span>My Account</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
                     <li class="active">
-                        <a href="<?php echo base_url() . 'vendor_myaccount.html'; ?>">
+                        <a href="<?php echo base_url() . 'vendor_myaccount_company.html'; ?>">
                             <i class="fa fa-info-circle"></i>
-                            <span>Vendor</span>
+                            <span>Company Details</span>
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right bg-green">4</span>
                             </span>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="<?php echo base_url() . 'freelance_myaccount.html'; ?>">
+                        <a href="<?php echo base_url() . 'vendor_myaccount_bank.html'; ?>">
                             <i class="fa fa-male"></i>
-                            <span>Freelance</span>
+                            <span>Bank Details</span>
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right bg-green">4</span>
                             </span>

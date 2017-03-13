@@ -8,13 +8,13 @@ $this->load->view("block/vendor_leftMenu");
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1 class="hidden">
-            Basic Information
+        <h1 class="">
+            Company Details
             <small class="hidden">advanced tables</small>
         </h1>
-        <ol class="breadcrumb hidden">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Basic Information</li>
+        <ol class="breadcrumb ">
+            <li><a href="./vendor_home.html"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Company Details</li>
         </ol>
     </section>
 
@@ -25,7 +25,7 @@ $this->load->view("block/vendor_leftMenu");
                 <div class="col-xs-12">
                     <div class="box box-default box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Basic Information</h3>
+                            <h3 class="box-title">Company Information</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -80,31 +80,31 @@ $this->load->view("block/vendor_leftMenu");
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Address Line 1*:</label>
+                                            <label for="address" class="col-sm-2 control-label">Address Line 1*:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" required class="form-control" id="addr" name="addr" placeholder="Address Line 1">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Address Line 2:</label>
+                                            <label for="address" class="col-sm-2 control-label">Address Line 2:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" id="addr2" name="addr2" placeholder="Address Line 2">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">City*:</label>
+                                            <label for="city" class="col-sm-2 control-label">City*:</label>
                                             <div class="col-sm-10">
                                                 <input type="text" required class="form-control" name="city" id="city" placeholder="City">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Postcode*:</label>
+                                            <label for="postcode" class="col-sm-2 control-label">Postcode*:</label>
                                             <div class="col-sm-10">
                                                 <input type="number" required class="form-control" id="postalcode" name="postalcode" placeholder="Postcode">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Country*:</label>
+                                            <label for="country" class="col-sm-2 control-label">Country*:</label>
                                             <div class="col-sm-10">
                                                 <select required id="country" name="country" class="form-control">
                                                     <option>option 1</option>
@@ -116,7 +116,7 @@ $this->load->view("block/vendor_leftMenu");
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">State*:</label>
+                                            <label for="state" class="col-sm-2 control-label">State*:</label>
                                             <div class="col-sm-10">
                                                 <select id="state" name="state" required class="form-control">
                                                     <option>option 1</option>
@@ -128,28 +128,28 @@ $this->load->view("block/vendor_leftMenu");
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-2 control-label">Email ID*:</label>
+                                            <label for="email" class="col-sm-2 control-label">Email ID*:</label>
 
                                             <div class="col-sm-10">
                                                 <input type="email" name="email" required class="form-control" id="email" placeholder="Email ID">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-4 control-label"><h3>Upload Document:</h3></label>
+                                            <label for="fileupload" class="col-sm-4 control-label"><h3>Upload Document:</h3></label>
 
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-2 control-label">SSM:</label>
+                                            <label for="fileupload" class="col-sm-2 control-label">SSM:</label>
 
                                             <div class="col-sm-10">
-                                                <input type="file" id="exampleInputFile1">
+                                                <input type="file" id="ssmFileUpload" name="ssmFile">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputPassword3" class="col-sm-2 control-label">Identity card:</label>
+                                            <label for="fileupload" class="col-sm-2 control-label">Identity card:</label>
 
                                             <div class="col-sm-10">
-                                                <input type="file" id="exampleInputFile1">
+                                                <input type="file" id="idcardupload" name="idcard">
                                             </div>
                                         </div>
                                     </div>
@@ -157,11 +157,18 @@ $this->load->view("block/vendor_leftMenu");
                                 </div>
                                 <!-- /.box-body -->
                             </div>
+                                                     
                         </div>
                         <!-- /.box -->
-
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="button" class="btn btn-default btn-lg bg-red">Cancel</button>
+                                <button type="submit" class="btn btn-info pull-right btn-lg bg-green">Save</button>
+                            </div>
+                            <!-- /.box-footer -->
                     </div>
                     <div class="clearfix"></div>
+                    <?php /* 
                     <div class="box box-default box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Bank Information</h3>
@@ -220,15 +227,13 @@ $this->load->view("block/vendor_leftMenu");
                         </div>
                         <!-- /.box -->
                         <!-- /.col -->
-                    </div>
+                    </div> */ ?>
                     <!-- /.row -->
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-default btn-lg bg-red">Cancel</button>
-                        <button type="submit" class="btn btn-info pull-right btn-lg bg-green">Save</button>
-                    </div>
-                    <!-- /.box-footer -->
+                    
+                    
+                </div>
             </form>
+        </div>
     </section>
     <!-- /.content -->
 </div>

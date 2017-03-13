@@ -4,14 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller {
    
         public $data = array();
-        public $uLang = '';
+        public $uLang = 'en';
         
         public function __construct() {
             parent::__construct();
             $this->load->library(array('admin_lib', 'page_load_lib'));
             $this -> load -> helper(array('form', 'language'));
-            //$this->uLang = $this->session->userdata('user_lang');               
-            //$this -> lang -> load("np", $this->uLang);
+            $this->uLang = $this->session->userdata('user_lang');               
+            $this -> lang -> load("admin", $this->uLang);
             $this->page_load_lib->validate_user('admin');
         }
         
@@ -21,6 +21,27 @@ class Admin extends CI_Controller {
             $this->data['admin']     = 1;
             $this -> load -> view('template', $this->data);
 	}
+        
+        public function services(){
+            $this->data['content']  = "admin/serviceList.php";
+            $this->data['admin']     = 1;
+            $this -> load -> view('template', $this->data);
+        }
+        
+        public function addService(){
+            
+            if(isset($_POST['serviceName'])){
+                $response = $this->admin_lib->_addService();
+                echo json_encode($response);
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('inavlid_data')
+                );
+                $this->session->set_flashdata('error_message', $this->lang->line('inavlid_data'));
+                echo json_encode($response);
+            }
+        }
         
         
 }

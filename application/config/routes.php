@@ -63,6 +63,8 @@ $route['user_register.html']                    = "person/userRegister";
 /* ........Admin Module Routing................... */
 $route['admin_home.html']                       = "admin";
 $route['admin_login.html']                      = "person/adminLogin";
+$route['services.html']                         = "admin/services";
+$route['addService.html']                       = "admin/addService";
 
 
 
@@ -78,7 +80,9 @@ $route['vendor_activejobs.html']                = "vendor/activeJobList";
 $route['vendor_wallet_pending.html']            = "vendor/walletPendingPay";
 $route['vendor_wallet_request.html']            = "vendor/walletRequestPay";
 $route['vendor_wallet_report.html']             = "vendor/walletReport";
-$route['vendor_myaccount.html']                 = "vendor/myAccount";
+$route['vendor_myaccount_company.html']         = "vendor/myAccountCompany";
+$route['vendor_myaccount_bank.html']            = "vendor/myAccountBank";
+
 
 /* ........Vendor/Freelance Module Routing................... */
 $route['freelance_home.html']                   = "freelance";
