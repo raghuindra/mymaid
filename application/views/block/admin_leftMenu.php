@@ -57,7 +57,7 @@
                             </span>
                         </a>
                     </li>
-                    <li>
+<!--                    <li>
                         <a href="<?php //echo base_url() . 'admin_activejobs.html'; ?>">
                             <i class="fa fa-send"></i>
                             <span>Active Jobs</span>
@@ -92,7 +92,7 @@
                                 <span class="label label-primary pull-right bg-blue">4</span>
                             </span>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </li>            
             <!-- settings links -->
