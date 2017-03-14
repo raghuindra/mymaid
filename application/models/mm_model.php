@@ -222,5 +222,9 @@ class Mm_model extends CI_Model
 	function tempqry($str){
 		return $this->db->query($str);
 	} 
+        
+        function getAffectedRowCount(){
+            return $this->db->affected_rows();
+        }
 }
 ?>

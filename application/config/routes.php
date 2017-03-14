@@ -64,7 +64,9 @@ $route['user_register.html']                    = "person/userRegister";
 $route['admin_home.html']                       = "admin";
 $route['admin_login.html']                      = "person/adminLogin";
 $route['services.html']                         = "admin/services";
-$route['addService.html']                       = "admin/addService";
+$route['addService.html']                       = "admin/postAddService";
+$route['editService.html']                      = "admin/postEditService";
+$route['listService.html']                      = "admin/postServiceList";
 
 
 

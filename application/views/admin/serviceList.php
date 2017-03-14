@@ -90,7 +90,7 @@ $this->load->view("block/admin_leftMenu");
                             <div class="form-horizontal">
                                 <!-- /.box-header -->
                                 <div class="box-body">
-                                    <table id="service_list" class="table table-bordered table-striped tables-button-edit">
+                                    <table id="service_list" class="table table-bordered table-striped tables-button-edit responsive">
                                         <thead>
                                             <tr>
                                                 <th>ID </th>
@@ -108,7 +108,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <td> text</td>
                                                 <td class=""> 
                                                     <div class="text-center">
-                                                        <a href="#myModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-whatever="First service"><i class="fa fa-edit"></i></a>
+                                                        <a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-whatever="First service"><i class="fa fa-edit"></i></a>
                                                         <a class="btn btn-social-icon " title="Archive"><i class="fa fa-archive"></i></a>
                                                     </div>
                                                 </td>
@@ -120,7 +120,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <td> text</td>
                                                 <td class=""> 
                                                     <div class="text-center">
-                                                        <a href="#myModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-whatever="First service"><i class="fa fa-edit"></i></a>
+                                                        <a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-whatever="First service"><i class="fa fa-edit"></i></a>
                                                         <a class="btn btn-social-icon " title="Archive"><i class="fa fa-archive"></i></a>
                                                     </div>
                                                 </td>
@@ -156,9 +156,9 @@ $this->load->view("block/admin_leftMenu");
 <!-- /.content-wrapper -->
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="serviceEditModal" tabindex="-1" role="dialog" aria-labelledby="serviceEditModalLabel">
     <div class="modal-dialog" role="document">
-        <form action="editService.html" method="POST">
+        
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -168,7 +168,8 @@ $this->load->view("block/admin_leftMenu");
 
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Service Name:</label>
-                        <input type="text" name="serviceName" class="form-control" id="serviceName">
+                        <input type="text" name="editServiceName" class="form-control" id="editServiceName">
+                        <input type="hidden" name="editServiceId" class="form-control" id="editServiceId">
                     </div>
 
 
@@ -178,29 +179,44 @@ $this->load->view("block/admin_leftMenu");
                     <button type="button" class="btn btn-primary" type="submit" id="saveServiceEdit">Save changes</button>
                 </div>
             </div>
-        </form>
     </div>
 </div>
 
 
 <script>
     $(function () {
-        $('#service_list').DataTable({
+        var serviceListTable = $('#service_list').DataTable({
+            "responsive": true,
             "paging": true,
             "lengthChange": true,
             "searching": true,
             "ordering": true,
             "info": true,
             "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
             "ajax": {
-            "url": "<?php echo base_url().'listService.html';?>",
-            "type": "POST"
+                "url": '<?php echo base_url().'listService.html';?>',
+                "type": "POST",
+                "dataSrc": 'data'
             },
             "columns": [
                 { "data": "service_id" },
                 { "data": "service_name" },
                 { "data": "service_created_on" },
-                { "data": "service_created_by" }
+                { "data": "service_updated_on" },
+                { "data": null }
+            ],
+            "columnDefs": [
+                  { "responsivePriority":'2', "targets": [0, 1, 2, 3], searchable: true, orderable: true },
+                  { "responsivePriority":'1', "targets": [4], searchable: false, orderable: false,data:null,
+                      "render": function(data,type,row){ 
+                        var string =' <td class=""> <div class="text-center">'
+                                    +'<a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-name="'+row.service_name+'" data-id = "'+row.service_id+'"><i class="fa fa-edit"></i></a>'
+                                    +'<a class="btn btn-social-icon serviceArchive" title="Archive" data-id = "'+row.service_id+'"><i class="fa fa-archive"></i></a></div></td>';
+                            return string;
+                      }
+                  }
             ]
         });
         
@@ -218,7 +234,30 @@ $this->load->view("block/admin_leftMenu");
                     
                     if(result.status === true){
                         notifyMessage('success', result.message);
-                       
+                        serviceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                    }else{
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+        
+        /* Edit Service name AJAX Call */
+        $("#saveServiceEdit").click(function(){
+            var serviceName = $("#editServiceName").val().trim();
+            var id          = $("#editServiceId").val().trim();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url().'editService.html'?>",
+                data: {'serviceName':serviceName, 'serviceId':id},
+                cache: false,
+                success: function(res){
+                    var result = JSON.parse(res);
+                    
+                    if(result.status === true){
+                        notifyMessage('success', result.message);
+                        serviceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                        $("#serviceEditModal").modal('hide');
                     }else{
                         notifyMessage('error', result.message);
                     }
@@ -227,18 +266,19 @@ $this->load->view("block/admin_leftMenu");
         });
         
         
+        /* Pass the service name to modal text field */
+        $('#serviceEditModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var serviceName = button.data('name');// Extract info from data-* attributes
+            var serviceId   = button.data('id');
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this);
+            // modal.find('.modal-title').text('New message to ' + recipient)
+            modal.find('.modal-body #editServiceName').val(serviceName);
+            modal.find('.modal-body #editServiceId').val(serviceId);
+        });
+        
     });
 
-    $('#myModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var recipient = button.data('whatever') // Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var modal = $(this)
-        // modal.find('.modal-title').text('New message to ' + recipient)
-        modal.find('.modal-body input').val(recipient)
-    });
-    
-    
-    
 </script>

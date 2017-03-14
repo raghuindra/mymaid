@@ -28,7 +28,7 @@ class Admin extends CI_Controller {
             $this -> load -> view('template', $this->data);
         }
         
-        public function addService(){
+        public function postAddService(){
             
             if(isset($_POST['serviceName'])){
                 $response = $this->admin_lib->_addService();
@@ -38,9 +38,27 @@ class Admin extends CI_Controller {
                     'status' => false,
                     'message' => $this->lang->line('inavlid_data')
                 );
-                $this->session->set_flashdata('error_message', $this->lang->line('inavlid_data'));
+                //$this->session->set_flashdata('error_message', $this->lang->line('inavlid_data'));
                 echo json_encode($response);
             }
+        }
+        
+        public function postServiceList(){
+            $response = $this->admin_lib->_getServiceList();
+            
+            echo json_encode($response);
+        }
+        
+        public function postEditService(){
+            if(isset($_POST['serviceName'])){
+                $response = $this->admin_lib->_editService();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('inavlid_data')
+                );
+            }
+            echo json_encode($response);
         }
         
         
