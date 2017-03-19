@@ -101,30 +101,7 @@ $this->load->view("block/admin_leftMenu");
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1234</td>
-                                                <td>Shiva</td>
-                                                <td>2/20/2017 - 10:25 AM</td>
-                                                <td> text</td>
-                                                <td class=""> 
-                                                    <div class="text-center">
-                                                        <a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-whatever="First service"><i class="fa fa-edit"></i></a>
-                                                        <a class="btn btn-social-icon " title="Archive"><i class="fa fa-archive"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>1234</td>
-                                                <td>Shiva</td>
-                                                <td>2/20/2017 - 10:25 AM</td>
-                                                <td> text</td>
-                                                <td class=""> 
-                                                    <div class="text-center">
-                                                        <a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-whatever="First service"><i class="fa fa-edit"></i></a>
-                                                        <a class="btn btn-social-icon " title="Archive"><i class="fa fa-archive"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            
 
                                         </tbody>
             <!--                            <tfoot class="hidden">

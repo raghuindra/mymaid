@@ -113,7 +113,7 @@ class Admin extends CI_Controller {
             $db = get_instance()->db->conn_id;
             $serveId  = mysqli_real_escape_string($db,trim($serviceId));
                         //echo "<pre>";print_r($service_detail); echo "<pre/>";            
-            $response = $this->admin_lib->_getServicePackageList($serviceId);
+            $response = $this->admin_lib->_getServicePackageList($serveId);
             
             echo json_encode($response);
         }
