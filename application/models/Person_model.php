@@ -58,7 +58,7 @@ class Person_model extends Mm_model {
         if ($offset >= 0 AND $row_count > 0)
                 return $this->db->get($this->_table, $row_count, $offset);
           return $this->db->get($this->_table);
-         $this->db->last_query(); exit;
+         //$this->db->last_query();
     }
     
     function getVendorDetails($fields = 'person_id', $condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true){

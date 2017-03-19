@@ -23,7 +23,8 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<?php echo plugin_url('bootstrap/js/bootstrap.min.js'); ?>"></script>
-
+ <!-- iCheck -->
+    <script src="<?php echo plugin_url('plugins/iCheck/icheck.min.js'); ?>"></script>
 
 <?php if (!isset($login)) { ?>
     <!-- PACE -->
@@ -56,20 +57,18 @@
     <!-- AdminLTE for demo purposes -->
     <script src="<?php echo plugin_url('dist/js/demo.js'); ?>"></script>
 
-<?php } else { ?>
-    <!-- iCheck -->
-    <script src="<?php echo plugin_url('plugins/iCheck/icheck.min.js'); ?>"></script>
+<?php } ?>
+
+   
     <script>
         $(function () {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
+            $('input[type="checkbox"], input[type="radio"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue',
                 increaseArea: '20%' // optional
             });
         });
     </script>
-<?php } ?>
-    
     
 <script>
     $(function(){

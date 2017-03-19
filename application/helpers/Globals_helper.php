@@ -18,6 +18,10 @@ class Globals
     const PERSON_TYPE_ADMIN_NAME         = 'admin';
     const PERSON_TYPE_FREELANCER_NAME    = 'freelancer';
     
+    const ARCHIVE                   = 1;
+    const UN_ARCHIVE                = 0;
+
+
     public static function getPersonTypeName($person_type_id){
         
         switch ($person_type_id){

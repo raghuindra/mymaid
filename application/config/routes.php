@@ -67,7 +67,14 @@ $route['services.html']                         = "admin/services";
 $route['addService.html']                       = "admin/postAddService";
 $route['editService.html']                      = "admin/postEditService";
 $route['listService.html']                      = "admin/postServiceList";
-
+$route['archiveService.html']                   = "admin/postArchiveService";
+$route['packages.html']                         = "admin/packages";
+$route['service_details.html/(:num)']           = "admin/serviceDetail/$1";
+$route['service_details.html/(:any)']           = "admin/services";
+$route['addServicePackage.html']                = "admin/createServicepackage";
+$route['listServicepackage.html/(:num)']        = "admin/postServicePackageList/$1";
+$route['editServicePackage.html/(:num)']        = "admin/editServicePackage/$1";
+$route['archiveServicePackage.html']            = "admin/postArchiveServicePackage";
 
 
 /* ........Vendor/Freelance Module Routing................... */

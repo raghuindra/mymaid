@@ -8,6 +8,10 @@ class Admin_model extends Mm_model{
         $this->_person_table = 'mm_person';
         $this->_country_table = 'mm_country';
         $this->_lang_table  = 'mm_language';
+        $this->_service_table = "mm_services";
+        $this->_service_package_table = "mm_service_package";
+        $this->_service_building_table = "mm_building";
+        $this->_service_area_table  = "mm_area";
     }
     
     function check_email($email)
@@ -19,6 +23,23 @@ class Admin_model extends Mm_model{
                     ->result();
 
 
+    }
+    
+    function getServicePackages($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_service_table, 'service_id = service_package_service_id','left');
+        $this->db->join($this->_service_building_table, 'building_id = service_package_building_id','left');
+        $this->db->join($this->_service_area_table, 'area_id = service_package_building_area_id','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0)
+                return $this->db->get($this->_service_package_table, $row_count, $offset);
+          return $this->db->get($this->_service_package_table);
     }
         
         

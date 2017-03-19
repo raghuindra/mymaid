@@ -57,15 +57,16 @@
                             </span>
                         </a>
                     </li>
-<!--                    <li>
-                        <a href="<?php //echo base_url() . 'admin_activejobs.html'; ?>">
+<!--                  <li>
+                        <a href="<?php //echo base_url() . 'packages.html'; ?>">
                             <i class="fa fa-send"></i>
-                            <span>Active Jobs</span>
+                            <span>Package</span>
                             <span class="pull-right-container">
                                 <span class="label pull-right bg-blue">4</span>
                             </span>
                         </a>
-                    </li>
+                    </li>-->
+                    <!--  
                     <li>
                         <a href="<?php //echo base_url() . 'admin_canceledjobs.html'; ?>">
                             <i class="fa fa-close"></i>

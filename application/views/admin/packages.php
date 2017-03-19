@@ -9,12 +9,12 @@ $this->load->view("block/admin_leftMenu");
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1 class="">
-            Services
+            Service Packages
             <small class="hidden">advanced tables</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Services Add/List</li>
+            <li class="active">Service Packages</li>
         </ol>
     </section>
 
@@ -24,8 +24,9 @@ $this->load->view("block/admin_leftMenu");
 
             <div class="col-xs-12">
                 <div class="box box-default box-solid">
+                    
                     <div class="box-header with-border">
-                        <h3 class="box-title ">Add Service</h3>
+                        <h3 class="box-title ">Create Service Package</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -43,11 +44,107 @@ $this->load->view("block/admin_leftMenu");
                                 <div class="box-body">
                                    
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="col-sm-2 control-label">Service Name *:</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required class="form-control" id="serviceName" name="serviceName" placeholder="Service Name">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Service Name *:</label>
+                                        <div class="col-sm-6">
+                                            <select class="form-control select2" style="width: 100%;">
+                                                <option selected="selected" value="">Select service</option>
+                                                <?php 
+                                                    if(isset($$buildingsservice_names) && !empty($service_names)){
+                                                         foreach($service_names as $service){
+                                                             echo "<option value='".$service->service_id."'>".$service->service_name."</option>";
+                                                         }
+                                                     } 
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Building Type *:</label>
+                                        <div class="col-sm-6">
+                                            <select class="form-control select2" style="width: 100%;">
+                                                <option selected="selected" value="">Select building type</option>
+                                                <?php 
+                                                    if(isset($buildings) && !empty($buildings)){
+                                                         foreach($buildings as $building){
+                                                             echo "<option value='".$building->building_id."'>".$building->building_name."</option>";
+                                                         }
+                                                     } 
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Bedrooms *:</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" name="bathrooms" class="form-control" min="1" max="50" required id="bathrooms" placeholder="Number of bedrooms" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Bathrooms *:</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" name="bedrooms" class="form-control" min="1" max="50" required id="bedrooms" placeholder="Number of bathrooms">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Building Area :</label>
+                                        <div class="col-sm-6">
+                                            <select class="form-control select2" style="width: 100%;">
+                                                <option selected="selected" value="">Select building area</option>
+                                                <?php 
+                                                    if(isset($area_sizes) && !empty($area_sizes)){
+                                                         foreach($area_sizes as $area){
+                                                             echo "<option value='".$area->area_id."'>".$area->area_size." - ".$area->area_measurement."</option>";
+                                                         }
+                                                     } 
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Crew/s *:</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" name="crews" class="form-control" min="1" max="100" required id="crews" placeholder="Number of crew/s">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Package Hours *:</label>
+                                        <div class="col-sm-6">
+                                           <input type="number" name="hours" class="form-control" min="1" max="100" required id="hours" placeholder="Number of hours">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Package Price *:</label>
+                                        <div class="col-sm-6">
+                                           <input type="number" name="price" class="form-control" min="1" max="10000" required id="price" placeholder="Enter price">
+                                        </div>                                       
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Calculate Price by *:</label>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group" role="group" aria-label="Calculate Price by">
+                                                <button type="button" class="btn margin btn-primary btn-sm active price_cal_type" data-val="hour">Per Hour</button>
+                                                <button type="button" class="btn margin btn-primary btn-sm price_cal_type" data-val="package">Per Package</button>
+                                                <input type="hidden" name="price_cal" class="form-control" required id="price_cal" value="hour">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Package Description *:</label>
+                                        <div class="col-sm-6">
+                                           <textarea class="form-control col-sm-3" rows="3" style="max-height: 100px;max-width: 600px;" placeholder="Enter short description about package, any information for the user"></textarea>
+                                     
+                                        </div>                                       
+                                    </div>
+                                                                                                        
                                     <!-- /.box-body -->
                                     <div class="box-footer">
                                         <div class="col-sm-11">
@@ -58,11 +155,11 @@ $this->load->view("block/admin_leftMenu");
                                         </div>
                                     </div>
                                     <!-- /.box-footer -->
-
                                 </div>
-
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- form End -->
+                            
                         </div>
                     </div>
                     <!-- /.box -->
@@ -183,32 +280,17 @@ $this->load->view("block/admin_leftMenu");
 </div>
 
 
-<!-- Confirm Modal -->
-<div class="modal fade" id="archiveConfirmModal" tabindex="-1" role="dialog" aria-labelledby="archiveConfirmModalLabel">
-    <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Archive Service</h4>
-                </div>
-                <div class="modal-body">
-                    <!-- 
-                        Modal Body
-                    -->
-                    Are you sure you want to archive service?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" type="submit" id="archiveConfirm">Yes</button>
-                </div>
-            </div>
-    </div>
-</div>
-<!-- Confirm Modal END -->
-
-
 <script>
     $(function () {
+        
+        /* Price calulation type click event */
+        $(".btn-group button").click(function () {
+            $(".btn-group button").removeClass('active');
+            $(this).addClass('active');
+            $("#price_cal").val($(this).data('val'));
+        });
+        
+        
         var serviceListTable = $('#service_list').DataTable({
             "responsive": true,
             "paging": true,
@@ -219,11 +301,6 @@ $this->load->view("block/admin_leftMenu");
             "autoWidth": false,
             "scrollX": true,
             "processing": true,
-            "buttons": [
-               'excel', 'pdf'
-            ],
-            //"dom": 'Bfrtip',
-            //"select": true,
             "ajax": {
                 "url": '<?php echo base_url().'listService.html';?>',
                 "type": "POST",
@@ -237,18 +314,12 @@ $this->load->view("block/admin_leftMenu");
                 { "data": null }
             ],
             "columnDefs": [
-                  { "responsivePriority":'2', "targets": [0, 2, 3], searchable: true, orderable: true },
-                  { "responsivePriority":'2', "targets": [1], searchable: true, orderable: true, data:null,
-                        "render": function(data,type,row){
-                            var string =' <td class=""><a href="./service_details.html/'+row.service_id+'" class="" title="Service detail" >'+row.service_name+'</a></td>';
-                            return string;
-                        }
-                  },
+                  { "responsivePriority":'2', "targets": [0, 1, 2, 3], searchable: true, orderable: true },
                   { "responsivePriority":'1', "targets": [4], searchable: false, orderable: false,data:null,
                       "render": function(data,type,row){ 
                         var string =' <td class=""> <div class="text-center">'
                                     +'<a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-name="'+row.service_name+'" data-id = "'+row.service_id+'"><i class="fa fa-edit"></i></a>'
-                                    +'<a href="#" class="btn btn-social-icon serviceArchive" title="Archive" data-id = "'+row.service_id+'"><i class="fa fa-archive"></i></a></div></td>';
+                                    +'<a class="btn btn-social-icon serviceArchive" title="Archive" data-id = "'+row.service_id+'"><i class="fa fa-archive"></i></a></div></td>';
                             return string;
                       }
                   }
@@ -312,36 +383,6 @@ $this->load->view("block/admin_leftMenu");
             // modal.find('.modal-title').text('New message to ' + recipient)
             modal.find('.modal-body #editServiceName').val(serviceName);
             modal.find('.modal-body #editServiceId').val(serviceId);
-        });
-        
-        /* Archive service Modal */
-        $(document).on('click','.serviceArchive',function(e){
-            e.preventDefault();
-
-            var serviceId = $(this).data('id');
-            $('#archiveConfirmModal').modal().one('click', '#archiveConfirm', function(e) {
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url() . 'archiveService.html';?>",
-                    data: {'serviceId': serviceId},
-                    cache: false,
-                    success: function (res) {                      
-                        var result = JSON.parse(res);
-
-                        if (result.status === true) {
-                            notifyMessage('success', result.message);
-                            serviceListTable.ajax.reload(); //call datatable to reload the Ajax resource
-                            $('#archiveConfirmModal').modal('hide');
-                        } else {
-                            notifyMessage('error', result.message);
-                        }
-
-                    },
-                    error: function( jqXHR, textStatus, errorThrown){
-                       notifyMessage('error', errorThrown);
-                    }
-                });
-            });
         });
         
     });

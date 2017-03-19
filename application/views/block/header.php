@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="<?php echo plugin_url('dist/css/skins/_all-skins.min.css');?>">
         <!-- iCheck -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/flat/blue.css');?>"> 
+<!--        <link rel="stylesheet" href="<?php //echo plugin_url('plugins/iCheck/square/blue.css');?>">-->
         <!-- Morris chart -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/morris/morris.css');?>">
         <!-- jvectormap -->
@@ -35,14 +36,14 @@
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/pace/pace.min.css');?>">
     <?php } else { ?>
         <!-- iCheck -->
-        <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/square/blue.css');?>">
+<!--        <link rel="stylesheet" href="<?php //echo plugin_url('plugins/iCheck/square/blue.css');?>">-->
     <?php } ?>
         
                 
         <!-- jQuery 2.2.3 -->
         <script src="<?php echo plugin_url('plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
         <!-- Datatable -->
-        <link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/jquery.dataTables.min.css');?>">
+<!--        <link rel="stylesheet" href="<?php //echo plugin_url('plugins/datatables/jquery.dataTables.min.css');?>">-->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/dataTables.bootstrap.css');?>">
         <script src="<?php echo plugin_url('plugins/datatables/jquery.datatables.min.js'); ?>"></script>
         <script src="<?php echo plugin_url('plugins/datatables/datatables.bootstrap.min.js'); ?>"></script>
