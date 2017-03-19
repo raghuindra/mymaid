@@ -122,7 +122,13 @@ class Admin_lib {
                     'data' => $result
                 );
                 //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
-            }
+            }else {
+                    $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('no_records_found'),
+                        'data' => array()
+                    );
+                }
         } else {
             $response = array(
                 'status' => false,
