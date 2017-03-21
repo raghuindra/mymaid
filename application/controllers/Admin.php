@@ -36,7 +36,7 @@ class Admin extends CI_Controller {
             }else{
                 $response = array(
                     'status' => false,
-                    'message' => $this->lang->line('inavlid_data')
+                    'message' => $this->lang->line('invalid_data')
                 );
                 //$this->session->set_flashdata('error_message', $this->lang->line('inavlid_data'));
                 echo json_encode($response);
@@ -55,7 +55,7 @@ class Admin extends CI_Controller {
             }else{
                 $response = array(
                     'status' => false,
-                    'message' => $this->lang->line('inavlid_data'),
+                    'message' => $this->lang->line('invalid_data'),
                     'data' => array()
                 );
             }
@@ -85,6 +85,9 @@ class Admin extends CI_Controller {
                 $this->data['buildings']        = $this->admin_model-> get_tb('mm_building','building_id,building_name',array('building_status'=>1))->result();
                 $this->data['area_sizes']       = $this->admin_model-> get_tb('mm_area','area_id,area_size,area_measurement',array('area_status'=>1))->result();
                 $this->data['service_detail']   = $service_detail;
+                $this->data['service_frequency']= $this->admin_model-> getServiceFrequencyOffers($serviceId);
+               // echo "<pre>"; print_r($this->data['service_frequency']); exit;
+                
             }else{
                 redirect('services.html', 'refresh');
             }
@@ -102,7 +105,7 @@ class Admin extends CI_Controller {
             }else{
                 $response = array(
                     'status' => false,
-                    'message' => $this->lang->line('inavlid_data'),
+                    'message' => $this->lang->line('invalid_data'),
                     'data' => array()
                 );
             }
@@ -125,7 +128,7 @@ class Admin extends CI_Controller {
             }else{
                 $response = array(
                     'status' => false,
-                    'message' => $this->lang->line('inavlid_request'),
+                    'message' => $this->lang->line('invalid_request'),
                     'data' => array()
                 );
             }
@@ -156,12 +159,64 @@ class Admin extends CI_Controller {
             }else{
                 $response = array(
                     'status' => false,
-                    'message' => $this->lang->line('inavlid_request'),
+                    'message' => $this->lang->line('invalid_request'),
                     'data' => array()
                 );
             }
             echo json_encode($response);
         }
         
+        
+        public function createServiceFrequencyOfferPrice(){
+           
+            if(isset($_POST['add_frequency_service_id'])){
+                $response = $this->admin_lib->_createServiceFrequencyOfferPrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+
+        public function postFrequencyOfferList($serviceId){
+            
+            $db = get_instance()->db->conn_id;
+            $serveId  = mysqli_real_escape_string($db,trim($serviceId));
+            
+            $response = $this->admin_lib->_getFrequencyOfferList($serveId);
+            
+            echo json_encode($response);
+            
+        }
+        
+        public function postArchiveServiceFrequencyOffer(){
+            if(isset($_POST['frequencyId'])){
+                $response = $this->admin_lib->_archiveServiceFrequencyOffer();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        public function postUpdateServiceFrequencyOffer(){
+            if(isset($_POST['offerVal'])){
+                $response = $this->admin_lib->_updateServiceFrequencyOffer();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
         
 }

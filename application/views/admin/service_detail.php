@@ -10,7 +10,7 @@ $this->load->view("block/admin_leftMenu");
     <section class="content-header">
         <h1 class="">
             Service:
-            <medium class=""><?php echo $service_detail[0]->service_name;?></medium>
+            <medium class=""><?php echo $service_detail[0]->service_name; ?></medium>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -36,7 +36,7 @@ $this->load->view("block/admin_leftMenu");
                         <!-- Service Packages TAB Start -->
                         <div role="tabpanel" class="tab-pane active" id="packages_tab_content">
                             <div class="box box-default box-solid">
-
+                                <!-- /.box-header -->
                                 <div class="box-header with-border">
                                     <h3 class="box-title ">Create Service Package</h3>
 
@@ -47,17 +47,16 @@ $this->load->view("block/admin_leftMenu");
                                     <!-- /.box-tools -->
                                 </div>
                                 <!-- /.box-header -->
+
                                 <div class="box-body" >
                                     <div class="box box-primary">
 
-                                        <!-- /.box-header -->
-                                        <!-- form start -->
                                         <div class="form-horizontal">
                                             <div class="box-body">
                                                 <!-- Service Package Creation Form Start -->
                                                 <form action="" name="servicePackageCreationForm" id="servicePackageCreationForm">
                                                     <div class="form-group">
-                                                        <input type="hidden" name="package_service_id" class="form-control" id="package_service_id" value="<?php echo $service_detail[0]->service_id;?>">
+                                                        <input type="hidden" name="package_service_id" class="form-control" id="package_service_id" value="<?php echo $service_detail[0]->service_id; ?>">
                                                     </div>
 
                                                     <div class="form-group">
@@ -162,19 +161,19 @@ $this->load->view("block/admin_leftMenu");
                                             </div>
                                             <!-- /.box-body -->
                                         </div>
-                                        <!-- form End -->
+
 
                                     </div>
 
-
-
                                 </div>
                                 <!-- /.box body-->
+
                             </div>
 
                             <div class="clearfix"></div>
 
                             <div class="box box-default box-solid">
+                                <!-- /.box-header -->
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Service Package List</h3>
 
@@ -187,13 +186,21 @@ $this->load->view("block/admin_leftMenu");
                                 <!-- /.box-header -->
                                 <div class="box-body" style="display: block;">
                                     <div class="box box-primary">
-                                        <div class="box-header with-border hidden">
-                                            <h3 class="box-title">Package List</h3>
+                                        <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="service_package_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active service_package_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button> 
+                                                        <button type="button" class="btn margin btn-primary btn-sm service_package_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                                                             
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- /.box-header -->
                                         <!-- form start -->
                                         <div class="form-horizontal">
-                                            <!-- /.box-header -->
+
                                             <div class="box-body">
                                                 <table id="servicepackage_list" class="table table-bordered table-striped tables-button-edit responsive">
                                                     <thead>
@@ -210,18 +217,10 @@ $this->load->view("block/admin_leftMenu");
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        
+
 
                                                     </tbody>
-                        <!--                            <tfoot class="hidden">
-                                                        <tr>
-                                                            <th>Rendering engine</th>
-                                                            <th>Browser</th>
-                                                            <th>Platform(s)</th>
-                                                            <th>Engine version</th>
-                                                            <th>CSS grade</th>
-                                                        </tr>
-                                                    </tfoot>-->
+
                                                 </table>
                                             </div>
 
@@ -229,14 +228,108 @@ $this->load->view("block/admin_leftMenu");
 
                                     </div>
                                 </div>
-                                <!-- /.box header-->
+                                <!-- /.box body-->
                             </div>
                             <!-- /.box -->
                         </div>
                         <!-- Service Packages TAB End -->
 
+                        <!-- Service Frequency Price Settings TAB START -->
+                        <div role="tabpanel" class="tab-pane fade" id="frequency_tab_content">
+                            <div class="box-body" >
+                                <div class="box box-primary">
 
-                        <div role="tabpanel" class="tab-pane fade" id="frequency_tab_content">ehdghjd.</div>
+                                    <div class="form-horizontal">
+                                        <div class="box-body">
+                                            <!-- Service Package Creation Form Start -->
+                                            <form action="" name="serviceFrequencyOfferCreationForm" id="serviceFrequencyOfferCreationForm">
+                                                <div class="form-group">
+                                                    <input type="hidden" name="add_frequency_service_id" class="form-control" id="add_frequency_service_id" value="<?php echo $service_detail[0]->service_id; ?>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Frequency *:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control select2" style="width: 100%;" name="add_service_frequency" id="add_service_frequency" required>
+                                                            <option selected="selected" value="">Select frequency</option>
+                                                            <?php
+                                                            if (isset($service_frequency) && !empty($service_frequency)) {
+                                                                foreach ($service_frequency as $freq) {
+                                                                    echo "<option value='" . $freq->service_frequency_id . "'>" . $freq->service_frequency_name . "</option>";
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Discount(%) *:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" name="add_frequency_discount" class="form-control" min="1" max="10000" required id="frequency_discount" placeholder="Enter discount percentage">
+                                                    </div>                                       
+                                                </div>
+
+                                                <!-- /.box-footer -->
+                                                <div class="box-footer">
+                                                    <div class="col-sm-11">
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red">Clear</button>
+                                                    </div> 
+                                                    <div class="col-sm-1">
+                                                        <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceFrequencyOffer">Add</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.box-footer -->
+
+                                            </form>
+                                            <!-- Service Package Creation Form End -->
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="clearfix"></div>                          
+
+                            <div class="box-body" style="display: block;">
+                                <div class="box box-primary">
+                                        <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="service_frequency_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active service_frequency_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                        <button type="button" class="btn margin btn-primary btn-sm service_frequency_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body col-sm-12">
+                                            <table id="frequency_discount_list" class="table table-bordered table-striped dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Frequency</th>
+                                                        <th>Offer Percentage</th>
+                                                        <th>Added On</th>
+                                                        <th>Updated On</th>
+                                                        <th>Updated By</th>
+                                                        <th class="action">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box body-->
+                        </div>
                         <div role="tabpanel" class="tab-pane fade" id="addons_tab_content">.dsdfjhsj.</div>
                         <div role="tabpanel" class="tab-pane fade" id="specialrequest_tab_content">...dsahdfjhskj</div>
                     </div>
@@ -260,7 +353,7 @@ $this->load->view("block/admin_leftMenu");
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Edit Service Package</h4>
+                    <h4 class="modal-title" id="servicePackageEditModalLabel">Edit Service Package</h4>
                 </div>
                 <div class="modal-body">
                     <!-- 
@@ -279,26 +372,27 @@ $this->load->view("block/admin_leftMenu");
 <!-- Confirm Modal -->
 <div class="modal fade" id="archiveConfirmModal" tabindex="-1" role="dialog" aria-labelledby="archiveConfirmModalLabel">
     <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Archive Service Package</h4>
-                </div>
-                <div class="modal-body">
-                    <!-- 
-                        Modal Body
-                    -->
-                    Are you sure you want to archive package?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" type="submit" id="archiveConfirm">Yes</button>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="archiveConfirmModalLabel">Archive Service Package</h4>
             </div>
+            <div class="modal-body">
+                <!-- 
+                    Modal Body
+                -->
+                Are you sure you want to archive?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" type="submit" id="archiveConfirm">Yes</button>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Confirm Modal END -->
 
+<!-- Service Package Tab Scripts START-->
 <script>
     $(function () {
 
@@ -308,19 +402,20 @@ $this->load->view("block/admin_leftMenu");
             $(this).addClass('active');
             $("#package_price_cal").val($(this).data('val'));
         });
-        
+                 
+
         /* Service Package creation form handling.. */
-        $("#servicePackageCreationForm").submit(function(e){
+        $("#servicePackageCreationForm").submit(function (e) {
             e.preventDefault();
             var data = $("#servicePackageCreationForm").serializeArray();
-            
+
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url() . 'addServicePackage.html' ?>",
                 data: data,
                 cache: false,
                 success: function (res) {
-                     
+
                     var result = JSON.parse(res);
 
                     if (result.status === true) {
@@ -344,9 +439,13 @@ $this->load->view("block/admin_leftMenu");
             "autoWidth": false,
             "scrollX": true,
             "processing": true,
+            "serverSide":false,
             "ajax": {
-                "url": '<?php echo base_url() . 'listServicepackage.html/'.$service_detail[0]->service_id; ?>',
+                "url": '<?php echo base_url() . 'listServicepackage.html/' . $service_detail[0]->service_id; ?>',
                 "type": "POST",
+                "data": function(d){                     
+                    d.archived = $("#service_package_status").attr('data-val'); 
+                },
                 "dataSrc": 'data'
             },
             "columns": [
@@ -359,42 +458,54 @@ $this->load->view("block/admin_leftMenu");
                 {"data": "service_package_min_crew_member"},
                 {"data": "service_package_onetime_price"},
                 {"data": null},
-                
             ],
             "columnDefs": [
                 {"responsivePriority": '2', "targets": [0, 1, 2, 3, 5, 6], searchable: true, orderable: true},
                 {"responsivePriority": '2', "targets": [4], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
-                        var string = ' <td class="">'+row.area_size+' '+ row.area_measurement+' </td>';
+                        var string = ' <td class="">' + row.area_size + ' ' + row.area_measurement + ' </td>';
                         return string;
                     }
                 },
                 {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
-                        var string = ' <td class="">'+row.service_package_onetime_price+' / '+ row.service_package_price_cal_by+' </td>';
+                        var string = ' <td class="">' + row.service_package_onetime_price + ' / ' + row.service_package_price_cal_by + ' </td>';
                         return string;
                     }
                 },
                 {"responsivePriority": '1', "targets": [8], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
+                        var archived = $("#service_package_status").attr('data-val');
                         var string = ' <td class=""> <div class="text-center">'
-                                + '<a href="#" class="editModalWindow btn btn-social-icon " title="Edit" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-edit"></i></a>'
-                                + '<a href="#" class="btn btn-social-icon servicePackageArchive" title="Archive" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                                + '<a href="#" class="editModalWindow btn btn-social-icon " title="Edit" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-edit"></i></a>';
+                        if(archived == '0'){
+                              string  += '<a href="#" class="btn btn-social-icon servicePackageArchive" title="Archive" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                          }else{
+                              string  += '<a href="#" class="btn btn-social-icon servicePackageUnArchive" title="Un Archive" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                          }
                         return string;
                     }
                 }
             ]
         });
 
+        /* Archive / Un Archive Datatable list event */
+        $(".btn-group .service_package_status_archive, .service_package_status_unarchive").click(function () {
+            $(".btn-group#service_package_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#service_package_status").attr('data-val',$(this).data('val'));           
+            servicePackageListTable.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
 
         /* Edit Service Package AJAX Call */
         $("#saveServicePackageEdit").click(function (e) {
-        e.preventDefault();
-        var data = $("#editServicePackageForm").serializeArray();
-        var package_id = $("#edit_package_id").val();
+            e.preventDefault();
+            var data = $("#editServicePackageForm").serializeArray();
+            var package_id = $("#edit_package_id").val();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url() . 'editServicePackage.html/' ?>"+package_id,
+                url: "<?php echo base_url() . 'editServicePackage.html/' ?>" + package_id,
                 data: data,
                 cache: false,
                 success: function (res) {
@@ -408,81 +519,322 @@ $this->load->view("block/admin_leftMenu");
                         notifyMessage('error', result.message);
                     }
                 },
-                error: function( jqXHR, textStatus, errorThrown){
-                   notifyMessage('error', errorThrown);
+                error: function (jqXHR, textStatus, errorThrown) {
+                    notifyMessage('error', errorThrown);
                 }
             });
         });
 
         /* Fetching the Service Package Details  */
-        $(document).on('click', '.editModalWindow', function(e){
-        
+        $(document).on('click', '.editModalWindow', function (e) {
+
             e.preventDefault();
             var packageId = $(this).data('id');
 
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url() . 'editServicePackage.html/';?>"+packageId,
+                url: "<?php echo base_url() . 'editServicePackage.html/'; ?>" + packageId,
                 //data: null, //{'servicePackageId': packageId},
                 cache: false,
-                success: function (res) {                      
+                success: function (res) {
                     $("#servicePackageEditModal .modal-body").html(res);
                     $("#servicePackageEditModal").modal('show');
-                    
+
                 },
-                error: function( jqXHR, textStatus, errorThrown){
-                   notifyMessage('error', errorThrown);
+                error: function (jqXHR, textStatus, errorThrown) {
+                    notifyMessage('error', errorThrown);
                 }
             });
-            
+
         });
-        
-        /* Archive the Service Package  */
-        $(document).on('click', '.servicePackageArchive', function(e){
-        
+
+        /* Archive/UnArchive the Service Package  */
+        $(document).on('click', '.servicePackageArchive, .servicePackageUnArchive', function (e) {
+
             e.preventDefault();
             var packageId = $(this).data('id');
             var serviceId = $(this).data('service');
-            $('#archiveConfirmModal').modal().one('click', '#archiveConfirm', function(e) {
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url() . 'archiveServicePackage.html';?>",
-                    data: {'servicePackageId': packageId, 'serviceId': serviceId},
-                    cache: false,
-                    success: function (res) {                      
-                        var result = JSON.parse(res);
+            if($(this).hasClass('servicePackageUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
 
-                        if (result.status === true) {
-                            notifyMessage('success', result.message);
-                            servicePackageListTable.ajax.reload(); //call datatable to reload the Ajax resource
-                            $('#archiveConfirmModal').modal('hide');
-                        } else {
-                            notifyMessage('error', result.message);
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm:{ 
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveServicePackage.html'; ?>",
+                                data: {'servicePackageId': packageId, 'serviceId': serviceId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        servicePackageListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        $('#archiveConfirmModal').modal('hide');
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
                         }
-
                     },
-                    error: function( jqXHR, textStatus, errorThrown){
-                       notifyMessage('error', errorThrown);
+                    cancel:{
+                        btnClass: 'btn-red',
+                        action: function () {
+
+                        }
                     }
-                });
+                }
             });
-                      
+
         }); /* Archive the Service Package  END */
+              
 
     });
 
 </script>
+<!-- Service Package Tab Scripts END-->
 
 <!-- AJAX Response Event Handlers List-->
 <script>
     $(function () {
-        
-         /* Price calulation type click event for Edit Package */
+
+        /* Price calulation type click event for Edit Package */
         $(document).on('click', ".btn-group .edit_price_cal_type", function () {
             $(".btn-group .edit_price_cal_type").removeClass('active');
             $(this).addClass('active');
             $("#edit_package_price_cal").val($(this).data('val'));
         });
-        
+
     });
+</script>
+
+<!-- Frequency Settings Script START-->
+<script>
+    $(function () {
+
+        //$("#add_frequency_select2").select2();
+
+        var frequencyListTable = $('#frequency_discount_list').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
+            "ajax": {
+                "url": '<?php echo base_url() . 'listFrequencyOffer.html/' . $service_detail[0]->service_id; ?>',
+                "type": "POST",
+                "dataSrc": 'data',
+                "data": function(d){                     
+                    d.archived = $("#service_frequency_status").attr('data-val'); 
+                }
+            },
+            "columns": [
+                {"data": "service_frequency_name"},
+                {"data": "service_frequency_offer_value"},
+                {"data": "service_frequency_offer_created_on"},
+                {"data": "service_frequency_offer_updated_on"},
+                {"data": "service_frequency_offer_created_by"},
+                {"data": null},
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var archived = $("#service_frequency_status").attr('data-val');
+                        var string = ' <td class=""> <div class="text-center">'
+                                + '<a href="#" class="editFrequencyOfferWindow btn btn-social-icon " title="Edit" data-service="' + row.service_frequency_offer_service_id + '" data-freqid = "' + row.service_frequency_offer_frequency_id + '" data-id="' + row.service_frequency_offer_id + '"><i class="fa fa-edit"></i></a>';
+                        if(archived == '0'){
+                            string += '<a href="#" class="btn btn-social-icon frequencyPriceArchive" title="Archive" data-service="' + row.service_frequency_offer_service_id + '" data-freqid = "' + row.service_frequency_offer_frequency_id + '" data-id = "' + row.service_frequency_offer_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                        }else{
+                            string += '<a href="#" class="btn btn-social-icon frequencyPriceUnArchive" title="Archive" data-service="' + row.service_frequency_offer_service_id + '" data-freqid = "' + row.service_frequency_offer_frequency_id + '" data-id = "' + row.service_frequency_offer_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                        }
+                        return string;
+                    }
+                }
+            ]
+        });
+
+        /* Archived / Un Archived Datatable list event */
+        $(".btn-group .service_frequency_status_archive, .service_frequency_status_unarchive").click(function () {
+            $(".btn-group#service_frequency_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#service_frequency_status").attr('data-val',$(this).data('val'));           
+            frequencyListTable.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+
+        /* Service Frequency Offer Price creation form handling.. */
+        $("#serviceFrequencyOfferCreationForm").submit(function (e) {
+            e.preventDefault();
+            var data = $("#serviceFrequencyOfferCreationForm").serializeArray();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'addServiceFrequencyOfferPrice.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        frequencyListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.editFrequencyOfferWindow', function(e){
+            e.preventDefault();      
+            var thisClick = $(this);
+            var rowData = frequencyListTable.row($(this).closest('tr')).data();
+            console.log(rowData);
+            $.confirm({
+                title: 'Update Offer Discount!',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'content': '' +
+                    '<div class="form-group">' +
+                    '<label>Frequency</label>' +
+                    '<input type="text" disabled placeholder="Your name" value="'+rowData.service_frequency_name+'" class="name form-control" />' +
+                    '</div>'+
+                    '<div class="form-group">' +
+                    '<label>Discount(%)</label>' +
+                    '<input type="text" placeholder="Offer Discount" class="discount form-control" value="'+rowData.service_frequency_offer_value+'"required />' +
+                    '</div>',
+                buttons: {
+                    update: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                                var offerVal = this.$content.find('.discount').val();
+                                if(offerVal <=0){ $.alert('provide a valid discount'); return false;}
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'updateServiceFrequencyOffer.html'; ?>",
+                                data: {'freqOfferId': rowData.service_frequency_offer_id, 'serviceId': rowData.service_frequency_offer_service_id, 'frequencyId':rowData.service_frequency_offer_frequency_id, 'offerVal':offerVal},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        frequencyListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                        $(thisClick).trigger('click');
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                    
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+                            //close window
+                        }
+                    }
+                }
+            });
+        
+        });
+
+        /* Archive/UnArchive the Service Frequency Offer  */
+        $(document).on('click', '.frequencyPriceUnArchive, .frequencyPriceArchive', function (e) {
+
+            e.preventDefault();
+            var freqOfferId = $(this).data('id');
+            var serviceId = $(this).data('service');
+            var freqId = $(this).data('freqid');
+            
+            if($(this).hasClass('frequencyPriceUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveServiceFrequencyOffer.html'; ?>",
+                                data: {'freqOfferId': freqOfferId, 'serviceId': serviceId, 'frequencyId':freqId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        frequencyListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        $('#archiveConfirmModal').modal('hide');
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive the Service Frequency Offer  END */
+
+
+    });
+
 </script>

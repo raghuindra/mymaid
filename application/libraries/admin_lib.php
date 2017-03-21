@@ -256,14 +256,14 @@ class Admin_lib {
 
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
-
+        $archived = 0;
         $response = array();
 
         if ($this->ci->session->userdata('user_id') != null) {
-
+        $archived = $this->ci->input->post('archived', true);
             $service_detail = $this->model->get_tb('mm_services', 'service_id', array('service_archived' => 0, 'service_id' => $serviceId))->result();
             if (!empty($service_detail)) {
-                $result = $this->model->getServicePackages('*', array("service_package_service_id" => $serviceId, "service_package_archive"=>0))->result();
+                $result = $this->model->getServicePackages('*', array("service_package_service_id" => $serviceId, "service_package_archive"=>$archived))->result();
 
                 if ($result) {
                     $response = array(
@@ -377,8 +377,8 @@ class Admin_lib {
     
     function _archiveServicePackage(){
         
-        $this->ci->data['success_message'] = "";
-        $this->ci->data['error_message'] = "";
+        $this->ci->data['success_message']  = "";
+        $this->ci->data['error_message']    = "";
         $person_id = $this->ci->session->userdata('user_id');
 
         $this->ci->load->library('form_validation');
@@ -386,6 +386,7 @@ class Admin_lib {
         $response = array();
         $this->ci->form_validation->set_rules('servicePackageId', 'Service Package Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
@@ -396,17 +397,18 @@ class Admin_lib {
             $info = array();
             $package_id = $this->ci->input->post('servicePackageId', true);
             $service_id = $this->ci->input->post('serviceId', true);
-
+            $archive    = intval($this->ci->input->post('archive', true));
+            
             $result = $this->model->get_tb('mm_service_package', 'service_package_id', array('service_package_id' => $package_id, 'service_package_service_id' => $service_id))->result();
             if (!empty($result)) {
-                $info['service_package_archive']    = Globals::ARCHIVE;               
+                $info['service_package_archive']    = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE ;               
                 $info['service_package_updated_by'] = $person_id;
 
                 $val = $this->model->update_tb('mm_service_package', array('service_package_id' => $package_id, 'service_package_service_id' => $service_id), $info);
-
+                $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_package_archived') : $this->ci->lang->line('service_package_unarchived') ;
                 $response = array(
                     'status' => true,
-                    'message' => $this->ci->lang->line('service_package_archived'),
+                    'message' => $msg,
                 );
                 //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
             } else {
@@ -420,4 +422,266 @@ class Admin_lib {
         }
     }
 
+    
+    function _createServiceFrequencyOfferPrice(){
+        $this->ci->load->library('form_validation');
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $response = array();
+
+        $this->ci->form_validation->set_rules('add_frequency_service_id', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('add_service_frequency', 'Service Frequency', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('add_frequency_discount', 'Service Frequency Discount', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
+
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('service_name_missing');
+            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $service_freq = $this->ci->input->post('add_service_frequency', true);
+            $service_id   = $this->ci->input->post('add_frequency_service_id', true);
+            
+            $result = $this->model->get_tb('mm_service_frequency', 'service_frequency_id', array('service_frequency_id' => $service_freq))->result();
+            
+            if (!empty($result)) {
+                
+                $result = $this->model->get_tb('mm_services', 'service_id', array('service_id' => $service_id))->result();
+                
+                if(!empty($result)){
+                    
+                    if($this->checkFrequencyOfferAdded($service_freq, $service_id)){
+                        return $response = array(
+                            'status' => false,
+                            'message' => $this->ci->lang->line('service_frequency_offer_already_created'),
+                        );
+                    }
+
+                    $offerVal  = $this->ci->input->post('add_frequency_discount', true);
+                    $insert_id = $this->createFrequencyOffer($service_freq, $service_id, $offerVal, $person_id);
+                    
+                    if ($insert_id > 0) {
+                        $response = array(
+                            'status' => true,
+                            'message' => $this->ci->lang->line('service_frequency_offer_created'),
+                        );
+                        //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                    }else{
+                        $response = array(
+                            'status' => false,
+                            'message' => $this->ci->lang->line('something_problem'),
+                        );
+                    }
+                }else{
+                   $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('invalid_data'),
+                    ); 
+                }
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+                //$this->ci->session->set_flashdata('error_message', $this->ci->lang->line('service_name_already_available'));                    
+            }
+
+            return $response;
+        }
+        
+    }
+     
+    
+    function checkFrequencyOfferAdded($frequencyId, $serviceId){
+        
+        $result = $this->model->get_tb('mm_service_frequency_offer', 'service_frequency_offer_id', array('service_frequency_offer_frequency_id' => $frequencyId, 'service_frequency_offer_service_id'=>$serviceId, 'service_frequency_offer_archived'=>0))->result();
+        if(!empty($result)){
+            return true;
+        } else{
+            return false;           
+        }       
+    }
+    
+    function createFrequencyOffer($freqId, $serviceId, $offerVal, $person_id, $offerIn = Globals::FREQUENCY_OFFER_IN_PERCENTAGE ){
+        $info = array();
+        $info['service_frequency_offer_frequency_id']   = $freqId;
+        $info['service_frequency_offer_service_id']     = $serviceId;
+        $info['service_frequency_offer_value']          = $offerVal;
+        $info['service_frequency_offer_in']             = $offerIn;
+        $info['service_frequency_offer_created_on']     = date('Y-m-d H:i:s', strtotime('now'));
+        $info['service_frequency_offer_created_by']     = $person_id;
+
+        return $insert_id = $this->model->insert_tb('mm_service_frequency_offer', $info);
+    }
+    
+    /* Function to check the Offer history available in User service booking*/
+    function checkFrequencyOfferHistoryAvailable(){
+        return false;
+    }
+            
+    function _getFrequencyOfferList($serviceId){
+        
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $archived = 0;
+        $response = array();
+        if ($this->ci->session->userdata('user_id') != null) {
+            $archived = $this->ci->input->post('archived', true);
+            $result = $this->model->getFrequencyOfferPriceList('*', array('service_frequency_offer_service_id'=>$serviceId,'service_frequency_offer_archived'=>$archived))->result();
+            if ($result) {
+                $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $result
+                );
+                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+            }else {
+                    $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('no_records_found'),
+                        'data' => array()
+                    );
+                }
+        } else {
+            $response = array(
+                'status' => false,
+                'message' => $this->ci->lang->line('invalid_request'),
+                'data' => array()
+            );
+            //$this->ci->session->set_flashdata('error_message', $this->ci->lang->line('invalid_request'));                    
+        }
+
+        return $response;
+        
+    }
+    
+    function _archiveServiceFrequencyOffer(){
+        $this->ci->data['success_message']  = "";
+        $this->ci->data['error_message']    = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $response = array();
+        $this->ci->form_validation->set_rules('freqOfferId', 'Service Frequency Offer Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('frequencyId', 'Service Frequency Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $info = array();
+            $freqOffer_id   = $this->ci->input->post('freqOfferId', true);
+            $freqId         = $this->ci->input->post('frequencyId', true);
+            $service_id     = $this->ci->input->post('serviceId', true);
+            $archive        = intval($this->ci->input->post('archive', true));
+            
+            $result = $this->model->get_tb('mm_service_frequency_offer', 'service_frequency_offer_id', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id'=>$service_id))->result();
+            if (!empty($result)) {
+                
+                $msg = $this->archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, $archive, $person_id);
+         
+                $response = array(
+                    'status' => true,
+                    'message' => $msg,
+                );
+                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+            }
+
+            return $response;
+        }
+
+    }
+    
+    
+    /*  */
+    function archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, $archive, $person_id ){
+        $info['service_frequency_offer_archived']    = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE ;               
+        $info['service_frequency_offer_updated_by'] = $person_id;
+
+        $this->model->update_tb('mm_service_frequency_offer', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id'=>$service_id), $info);
+        return $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_frequency_offer_archived') : $this->ci->lang->line('service_frequency_offer_unarchived') ;
+        
+    }
+
+
+    /*   */
+    function _updateServiceFrequencyOffer(){
+        
+        $this->ci->data['success_message']  = "";
+        $this->ci->data['error_message']    = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $response = array();
+        $this->ci->form_validation->set_rules('freqOfferId', 'Service Frequency Offer Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('frequencyId', 'Service Frequency Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('offerVal', 'Offer Discount Value', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $info = array();
+            $freqOffer_id   = $this->ci->input->post('freqOfferId', true);
+            $freqId         = $this->ci->input->post('frequencyId', true);
+            $service_id     = $this->ci->input->post('serviceId', true);
+            $offerVal        = intval($this->ci->input->post('offerVal', true));
+            
+            $result = $this->model->get_tb('mm_service_frequency_offer', 'service_frequency_offer_id', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id'=>$service_id))->result();
+            if (!empty($result)) {
+                
+                if(!$this->checkFrequencyOfferHistoryAvailable()){
+                    $info['service_frequency_offer_value']      = $offerVal;               
+                    $info['service_frequency_offer_updated_by'] = $person_id;
+
+                    $this->model->update_tb('mm_service_frequency_offer', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id'=>$service_id), $info);
+                    
+                    $response = array(
+                        'status' => true,
+                        'message' => $this->ci->lang->line('service_frequency_offer_updated'),
+                    );
+                }else{
+                    
+                    $msg = $this->archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, Globals::ARCHIVE, $person_id);
+                    $insert_id = $this->createFrequencyOffer($freqId, $service_id, $offerVal, $person_id);
+                    
+                    if($insert_id >0){
+                        $response = array(
+                            'status' => false,
+                            'message' => $msg,
+                        );
+                    }
+                }
+                
+                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+            }
+
+            return $response;
+        }
+        
+    }
+    
+    
 }

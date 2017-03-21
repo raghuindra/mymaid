@@ -20,6 +20,9 @@ class Globals
     
     const ARCHIVE                   = 1;
     const UN_ARCHIVE                = 0;
+    
+    const FREQUENCY_OFFER_IN_PERCENTAGE = "Percentage";
+    const FREQUENCY_OFFER_IN_PRICE      = "Price";
 
 
     public static function getPersonTypeName($person_type_id){

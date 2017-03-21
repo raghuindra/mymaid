@@ -34,6 +34,10 @@
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>">
           <!-- Pace style -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/pace/pace.min.css');?>">
+          <!-- Select2 -->
+        <link rel="stylesheet" href="<?php echo plugin_url('plugins/select2/select2.min.css'); ?>">
+        <!-- Jquery-Confirm -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.css">
     <?php } else { ?>
         <!-- iCheck -->
 <!--        <link rel="stylesheet" href="<?php //echo plugin_url('plugins/iCheck/square/blue.css');?>">-->
@@ -47,7 +51,9 @@
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/dataTables.bootstrap.css');?>">
         <script src="<?php echo plugin_url('plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
         <script src="<?php echo plugin_url('plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
-
+        
+        <!-- Jquery-Confirm -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

@@ -21,9 +21,9 @@
     });
 
 </script>
-<!-- Bootstrap 3.3.6 -->
-<script src="<?php echo plugin_url('bootstrap/js/bootstrap.min.js'); ?>"></script>
- <!-- iCheck -->
+    <!-- Bootstrap 3.3.6 -->
+    <script src="<?php echo plugin_url('bootstrap/js/bootstrap.min.js'); ?>"></script>
+    <!-- iCheck -->
     <script src="<?php echo plugin_url('plugins/iCheck/icheck.min.js'); ?>"></script>
 
 <?php if (!isset($login)) { ?>
@@ -56,6 +56,8 @@
     <script src="<?php echo plugin_url('dist/js/pages/dashboard.js'); ?>"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="<?php echo plugin_url('dist/js/demo.js'); ?>"></script>
+    <!-- Select2 -->
+    <script src="<?php echo plugin_url('plugins/select2/select2.full.min.js');?>"></script>
 
 <?php } ?>
 
