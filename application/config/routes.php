@@ -58,6 +58,7 @@ $route['reset_password.html/(:any)']            = "person/resetpassword/$1";
 /* ........User Module Routing............................ */
 $route['user_login.html']                       = "person/userLogin";
 $route['user_register.html']                    = "person/userRegister";
+$route['booking.html']                          = "user/booking";
 
 
 /* ........Admin Module Routing................... */

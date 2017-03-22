@@ -5,15 +5,15 @@
                 <ul>
                     <?php if(!$this->session->userdata('user_id'))
                     {?>
-                        <li><a href="./user_login.html" title="" role="button" ><i class="icon-user"></i><span>Login</span></a></li>
+                    <li><a href="<?php echo base_url().'user_login.html';?>" title="" role="button" ><i class="icon-user"></i><span>Login</span></a></li>
                     <?php }else{  ?>
                         <li style="text-decoration: none;color:white;"> Hello, <?php echo $this->session->userdata('user_fullname');?></li>
-                        <li><a href="logout.html" title="" role="button"><i class="icon-user"></i><span>Log Out</span></a></li>
+                        <li><a href="<?php echo base_url().'logout.html';?>" title="" role="button"><i class="icon-user"></i><span>Log Out</span></a></li>
                     <?php } ?>
-                    <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
+                    <li><a href="<?php echo base_url().'vendor_login.html';?>" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
-                        <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
+                        <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
         </div>
         <!-- PAGE CONTENT -->
         <div class="container-fluid animated fadeInDown">
@@ -24,7 +24,7 @@
                             <div class="table-outer">
                                 <div class="table-inner">
                                     <div class="div-inline">
-                                        <form id="search-service">
+                                        <form id="search-service" action="<?php echo base_url().'booking.html';?>" method="post">
                                             <h1>Book your Maid now </h1>
                                             <h4>From $10000 per hour</h4>
                                             <hr>
@@ -311,7 +311,7 @@
                     <div class="text-center"><strong>Dont have Account?</strong></div>
                     <div class="row">
                         <div class="col-lg-5 col-xs-4">
-                            <div class="button facebook btn btn-danger"><a class="" href="./user_register.html">Register</a> </div>
+                            <div class="button facebook btn btn-danger"><a class="" href="<?php echo base_url().'user_register.html';?>">Register</a> </div>
                         </div>
                         <div class="col-lg-7 col-xs-8">
                             <div class="button google"><i class="fa fa-google-plus"></i>Signup with Google</div>

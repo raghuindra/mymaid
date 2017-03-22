@@ -1,0 +1,266 @@
+/* primary color */
+
+#ct {
+    color: #666666 !important;
+}
+
+#ct .ct-main-left .ct-list-header .ct-logged-in-user a.ct-link, #ct .ct-complete-booking-main .ct-link, #ct .ct-discount-coupons a.ct-apply-coupon.ct-link {
+    color: #3d3d3d !important;
+}
+
+#ct .ct-link:hover, #ct .ct-main-left .ct-list-header .ct-logged-in-user a.ct-link:hover, #ct .ct-complete-booking-main .ct-link:hover, #ct .ct-discount-coupons a.ct-apply-coupon.ct-link:hover {
+    color: #e74700 !important;
+}
+
+#ct a, #ct .ct-link, #ct .ct-addon-count .ct-btn-group .ct-btn-text {
+    color: #666666 !important;
+}
+
+#ct a.ct-back-to-top i.icon-arrow-up, #ct .calendar-wrapper .calendar-header a.next-date:hover .icon-arrow-right:before, #ct .calendar-wrapper .calendar-header a.previous-date:hover .icon-arrow-left:before {
+    color: #ffffff !important;
+}
+
+#ct .calendar-body .ct-week:hover a span, #ct .ct-extra-services-list ul.addon-service-list li .ct-addon-ser:hover .addon-price {
+    color: #ffffff !important;
+}
+
+#ct #ct-type-2 .service-selection-main .ct-services-dropdown .ct-service-list:hover, #ct #ct-type-method .ct-services-method-dropdown .ct-service-method-list:hover, #ct .common-selection-main .common-data-dropdown .data-list:hover {
+    color: #ffffff !important;
+    background: #3d3d3d !important;
+}
+
+#ct .selected-is:hover, #ct #ct-type-2 .service-is:hover, #ct #ct-type-method .service-method-is:hover {
+    border-color: #3d3d3d !important;
+}
+
+#ct .ct-extra-services-list ul.addon-service-list li .ct-addon-ser:hover span:before {
+    border-top-color: #3d3d3d !important;
+}
+
+#ct .calendar-wrapper .calendar-header a.next-date:hover, #ct .calendar-wrapper .calendar-header a.previous-date:hover, #ct .calendar-body .ct-week:hover {
+    background: #e74700 !important;
+}
+
+#ct .calendar-body .ct-show-time .time-slot-container ul li.time-slot {
+    background: #3d3d3d !important;
+}
+
+#ct .calendar-body .dates .ct-week.by_default_today_selected.active_today span, #ct .calendar-body .ct-show-time .time-slot-container ul li.time-slot, #ct .calendar-body .dates .ct-week.active span {
+    color: #ffffff !important;
+}
+
+#ct .calendar-header a.previous-date, #ct .calendar-header a.next-date {
+    color: #ffffff !important;
+}
+
+#ct .ct-custom-checkbox ul.ct-checkbox-list label:hover span, #ct .ct-custom-radio ul.ct-radio-list label:hover span {
+    border: 1px solid #e74700 !important;
+}
+
+#ct-login .ct-main-forget-password .ct-info-btn, #ct button, #ct #ct-front-forget-password .ct-front-forget-password .ct-info-btn, #ct .ct-button {
+    color: #ffffff !important;
+    background: #3d3d3d !important;
+    border: 2px solid #3d3d3d !important;
+}
+
+#ct .ct-display-coupon-code .ct-coupon-value {
+    color: #ffffff !important;
+    background: #e74700 !important;
+}
+
+
+/* for front date legends */
+
+#ct .calendar-body .ct-show-time .time-slot-container .ct-slot-legends .ct-available-new {
+    background: #3d3d3d !important;
+}
+
+#ct .calendar-body .ct-show-time .time-slot-container .ct-slot-legends .ct-selected-new {
+    background: #e74700 !important;
+}
+
+
+/* seconday color */
+
+.nicescroll-cursors {
+    background-color: #e74700 !important;
+}
+
+#ct .calendar-body .dates .ct-week.active, #ct .calendar-body .ct-show-time.shown {
+    background: #e74700 !important;
+}
+
+
+/* background color all css  HOVER */
+
+#ct .ct-selected, #ct .ct-selected-data, #ct .ct-list-services ul.services-list li input[type='radio']:checked+lable span, #ct .ct-extra-services-list ul.addon-service-list li input[type='checkbox']:checked label span, #ct .ct-discount-list ul.ct-discount-often li input[type='radio']:checked+.ct-btn-discount, #ct #ct-tslots .ct-date-time-main .time-slot-selection-main .time-slot.ct-selected, #ct .ct-button:hover, #ct-login .ct-main-forget-password .ct-info-btn:hover, #ct #ct-front-forget-password .ct-front-forget-password .ct-info-btn:hover, #ct input[type='submit']:hover, #ct input[type='reset']:hover, #ct input[type='button']:hover, #ct button:hover {
+    color: #ffffff !important;
+    background: #e74700 !important;
+    border-color: #e74700 !important;
+}
+
+#ct .ct-step-heading {
+    color: #ffffff !important;
+    background: #3d3d3d !important;
+    border-color: #3d3d3d !important;
+}
+
+
+/*#ct #ct-price-scroll {
+    border-color: #3d3d3d !important;
+    box-shadow: 0px 0px 10px #3d3d3d !important;
+}*/
+
+#ct .ct-cart-wrapper .ct-cart-label-total-amount, #ct .ct-cart-wrapper .ct-cart-total-amount {
+    color: #e74700 !important;
+}
+
+#ct .ct-list-services ul.services-list li input[type='radio']:checked+.ct-service, #ct .ct-extra-services-list ul.addon-service-list li input[type='checkbox']:checked+.ct-addon-ser {
+    border-color: #e74700 !important;
+    box-shadow: 0 0 0 1px #e74700 inset !important;
+}
+
+#ct .ct-extra-services-list ul.addon-service-list li input[type='checkbox']:checked+.ct-addon-ser span:before {
+    border-top-color: #e74700 !important;
+}
+
+#ct .ct-extra-services-list ul.addon-service-list li input[type='checkbox']:checked+.ct-addon-ser .addon-price {
+    color: #ffffff !important;
+}
+
+#ct .border-c:hover, #ct .ct-list-services ul.services-list li .ct-service:hover, #ct .ct-list-services ul.addon-service-list li .ct-addon-ser:hover, #ct #ct-meth-unit-type-2.ct-meth-unit-count .bedroom-box .ct-bedroom-btn:hover, #ct #ct-meth-unit-type-2.ct-meth-unit-count .bathroom-box .ct-bathroom-btn:hover, #ct #ct-duration-main.ct-service-duration .ct-duration-list .duration-box .ct-duration-btn:hover, #ct .ct-extra-services-list .ct-addon-extra-count .ct-common-addon-list .ct-addon-box .ct-addon-btn:hover, #ct .ct-discount-list ul.ct-discount-often li .ct-btn-discount:hover, #ct .ct-custom-radio ul.ct-radio-list label:hover span, #ct .ct-custom-checkbox ul.ct-checkbox-list label:hover span {
+    border-color: #3d3d3d !important;
+}
+
+#ct .ct-custom-checkbox ul.ct-checkbox-list input[type='checkbox']:checked+label span {
+    border: 1px solid #e74700 !important;
+    background: #e74700 !important;
+}
+
+#ct .ct-custom-radio ul.ct-radio-list input[type='radio']:checked+label span {
+    border: 5px solid #e74700 !important;
+}
+
+#ct #ct-meth-unit-type-2.ct-meth-unit-count .bedroom-box .ct-bedroom-btn.ct-bed-selected, #ct #ct-meth-unit-type-2.ct-meth-unit-count .bathroom-box .ct-bathroom-btn.ct-bath-selected, #ct #ct-duration-main.ct-service-duration .ct-duration-list .duration-box .ct-duration-btn.duration-box-selected, #ct .ct-extra-services-list .ct-addon-extra-count .ct-common-addon-list .ct-addon-box .ct-addon-selected {
+    background: #e74700 !important;
+    color: #ffffff !important;
+    border-color: #e74700 !important;
+}
+
+#ct .ct-button.ct-btn-abs, #ct .calendar-header, #ct .panel-login .panel-heading .col-xs-6, #ct a.ct-back-to-top {
+    background-color: #3d3d3d !important;
+}
+
+#ct a.ct-back-to-top:hover, #ct .weekdays {
+    background-color: #e74700 !important;
+}
+
+#ct .calendar-body .dates .ct-week.by_default_today_selected {
+    background-color: #3d3d3d !important;
+}
+
+#ct .calendar-body .dates .ct-week.by_default_today_selected a span {
+    color: #ffffff !important;
+}
+
+#ct .calendar-body .dates .ct-week.selected_date.active {
+    background-color: #e74700 !important;
+    border-bottom: thin solid #e74700 !important;
+}
+
+#ct .calendar-body .ct-show-time .time-slot-container ul li.time-slot:hover, #ct .calendar-body .ct-show-time .time-slot-container ul li.time-slot.ct-booked, #ct .calendar-body .ct-show-time.shown {
+    background-color: #e74700 !important;
+}
+
+#ct #ct-meth-unit-type-2.ct-meth-unit-count .bedroom-box .ct-bedroom-btn.ct-bed-selected, #ct #ct-meth-unit-type-2.ct-meth-unit-count .bathroom-box .ct-bathroom-btn.ct-bath-selected, #ct #ct-duration-main.ct-service-duration .ct-duration-list .duration-box .ct-duration-btn.duration-box-selected, #ct .ct-extra-services-list .ct-addon-extra-count .ct-common-addon-list .ct-addon-box .ct-addon-selected {
+    /* background: #e74700 !important; */
+}
+
+
+/* hover inputs */
+
+#ct input[type='text']:hover, #ct input[type='password']:hover, #ct input[type='email']:hover, #ct input[type='url']:hover, #ct input[type='tel']:hover, #ct input[type='number']:hover, #ct input[type='range']:hover, #ct input[type='date']:hover, #ct textarea:hover, #ct select:hover, #ct input[type='search']:hover, #ct input[type='submit']:hover, #ct input[type='button']:hover {
+    border-color: #3d3d3d !important;
+}
+
+
+/* Focus inputs */
+
+#ct input[type='text']:focus, #ct input[type='password']:focus, #ct input[type='email']:focus, #ct input[type='url']:focus, #ct input[type='tel']:focus, #ct input[type='number']:focus, #ct input[type='range']:focus, #ct input[type='date']:focus, #ct textarea:focus, #ct select:focus, #ct input[type='search']:focus, #ct input[type='submit']:focus, #ct input[type='button']:focus {
+    border-color: #e74700 !important;
+    /* box-shadow: 0 0 0 1.5px #e74700 inset !important; */
+}
+
+.icon-arrow-up.icons:before {
+    content: "↑";
+    font-size: 27px;
+}
+
+.icon-arrow-up.icons {
+    text-align: center;
+    font-size: 27px;
+    margin-top: -6px !important;
+}
+
+.icon-arrow-left.icons:before {
+    content: "〈";
+}
+
+.icon-arrow-right.icons:before {
+    content: "〉";
+}
+
+#select-date .ui-datepicker {
+    display: block;
+    width: 90% !important;
+    margin: 0 auto !important;
+}
+
+.ui-datepicker-prev span {
+    position: relative;
+}
+
+.ui-datepicker-prev span:after {
+    content: "sdf";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+}
+
+.ui-datepicker-prev {}
+
+.home-service, .plumbing-service, .handyman-service {
+    display: none;
+}
+
+.empty_cart_error {
+    color: red;
+}
+
+#ct-price-scroll-new {
+    z-index: 9999;
+    background: #fff;
+}
+
+.ct-price-scroll {
+    bottom: inherit !important;
+}
+
+#ct .fl {
+    z-index: 9999;
+    float: none;
+    background: #fff;
+}
+
+.ct-summary {
+    text-align: center;
+}
+
+#ct .not-scroll-custom {
+    margin-top: 20px;
+}
+
+
+/* for custom css option */
+
+*/ */

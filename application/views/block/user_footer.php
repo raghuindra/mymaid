@@ -41,10 +41,34 @@
 
 </script>
 
-<!-- Notyfy Notifications Plugin -->
-<script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
-<script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
+    <script>
+       var ct_postalcode_statusObj = {
+           'ct_postalcode_status': 'Y'
+       };
+       function myFunction() {
+            var input = document.getElementById('coupon_val')
+            var div = document.getElementById('display_code');
+            div.innerHTML = input.value;
+        }
 
+    </script>
+        
+<!-- Notyfy Notifications Plugin -->
+    <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
+    <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
+
+    <script src="<?php echo js_url('ct-common-jquery');?>" type="text/javascript"></script>
+    <script src="<?php echo js_url('jquery-ui.min');?>" type="text/javascript"></script>
+    
+    <script src="<?php echo js_url('jquery.nicescroll.min');?>" type="text/javascript"></script>
+
+    <script src="<?php echo js_url('jquery.payment.min');?>" type="text/javascript"></script>
+
+
+
+    <script src="<?php echo js_url('jquery.validate.min');?>"></script>
+    <script src="<?php echo js_url('jquery.sticky-kit.min');?>" type="text/javascript"></script>
+    <script src="<?php echo js_url('booking');?>"></script>
 </body>
 <!-- END BODY -->
 </html>

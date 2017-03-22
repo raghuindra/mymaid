@@ -14,10 +14,31 @@
 	<!-- GLOBAL STYLES -->
 	<!-- PAGE LEVEL STYLES -->
 	<link rel="stylesheet" href="<?php echo plugin_url("bootstrap/css/bootstrap.css") ?>">
-	<link rel="stylesheet" media="all" href="<?php echo css_url("app") ?>">
+	<?php if(isset($home) && $home == 1){ ?>
+            <link rel="stylesheet" media="all" href="<?php echo css_url("app") ?>">
+        <?php } ?>
         <link rel="stylesheet" media="all" href="<?php echo css_url("fonts") ?>">
-       
+        <link rel="stylesheet" href="<?php echo css_url('ct-main');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('ct-common');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('login-style');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('ct-responsive');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('ct-reset.min');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('jquery-ui.min');?>" type="text/css" media="all">       
+        <link rel="stylesheet" href="<?php echo css_url('jquery-ui.theme.min');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('intlTelInput');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('simple-line-icons');?>" type="text/css" media="all">
+        <link rel="stylesheet" href="<?php echo css_url('booking');?>" type="text/css" media="all">
+         <!-- **Google - Fonts** -->
+        <link href="<?php echo css_url('css');?>" rel="stylesheet">
+         <style>
+            .error {
+                color: red;
+            }
+
+        </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--            <script src="<?php //echo js_url('utils');?>" type="text/javascript"></script>
+<script src="<?php //echo js_url('intlTelInput');?>" type="text/javascript"></script>-->
 	<!-- END PAGE LEVEL STYLES -->
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -29,4 +50,4 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 
-<body>
+<body style="overflow: hidden;">

@@ -18,8 +18,15 @@ class User extends CI_Controller {
 
             $this->data['content']  = "user/home.php";
             $this->data['user']     = 1;
+            $this->data['home']     = 1;
             $this -> load -> view('template', $this->data);
 	}
+        
+        public function booking(){
+            $this->data['content']  = "user/booking.php";
+            $this->data['user']     = 1;
+            $this -> load -> view('template', $this->data);
+        }
         
         
 }
