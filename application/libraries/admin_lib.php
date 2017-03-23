@@ -437,7 +437,7 @@ class Admin_lib {
 
         
         if ($this->ci->form_validation->run() == FALSE) {
-            $this->ci->data['error_message'] = $this->ci->lang->line('service_name_missing');
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
             //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
             return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
         } else {
@@ -526,7 +526,7 @@ class Admin_lib {
         
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
-        $archived = 0;
+        $archived = Globals::UN_ARCHIVE;
         $response = array();
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
@@ -608,6 +608,7 @@ class Admin_lib {
     
     /*  */
     function archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, $archive, $person_id ){
+        $info = array();
         $info['service_frequency_offer_archived']    = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE ;               
         $info['service_frequency_offer_updated_by'] = $person_id;
 
@@ -642,7 +643,7 @@ class Admin_lib {
             $freqOffer_id   = $this->ci->input->post('freqOfferId', true);
             $freqId         = $this->ci->input->post('frequencyId', true);
             $service_id     = $this->ci->input->post('serviceId', true);
-            $offerVal        = intval($this->ci->input->post('offerVal', true));
+            $offerVal       = $this->ci->input->post('offerVal', true);
             
             $result = $this->model->get_tb('mm_service_frequency_offer', 'service_frequency_offer_id', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id'=>$service_id))->result();
             if (!empty($result)) {
@@ -671,6 +672,263 @@ class Admin_lib {
                 }
                 
                 //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+            }
+
+            return $response;
+        }
+        
+    }
+    
+    
+    function _getServiceAddonsPriceList(){
+     
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $archived = Globals::UN_ARCHIVE;
+        $response = array();
+        if ($this->ci->session->userdata('user_id') != null) {
+            $archived = $this->ci->input->post('archived', true);
+            $serviceId = $this->ci->input->post('serviceId', true);
+            $result = $this->model->getServiceAddonsPriceList('*', array('service_addon_price_service_id'=>$serviceId,'service_addon_price_archived'=>$archived))->result();
+            if ($result) {
+                $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $result
+                );
+               
+            }else {
+                    $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('no_records_found'),
+                        'data' => array()
+                    );
+                }
+        } else {
+            $response = array(
+                'status' => false,
+                'message' => $this->ci->lang->line('invalid_request'),
+                'data' => array()
+            );
+                
+        }
+
+        return $response;
+        
+    }
+    
+    
+    function _createServiceAddonsPrice(){
+        
+        $this->ci->load->library('form_validation');
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $response = array();
+
+        $this->ci->form_validation->set_rules('add_addons_price_service_id', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('add_addons_price_addon_id', 'Service Addon Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('add_addon_price', 'Service Addon Price', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
+
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+            
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $addon_id = $this->ci->input->post('add_addons_price_addon_id', true);
+            $service_id   = $this->ci->input->post('add_addons_price_service_id', true);
+            
+            $result = $this->model->get_tb('mm_service_addon', 'service_addon_id', array('service_addon_id' => $addon_id))->result();
+            
+            if (!empty($result)) {
+                
+                $result = $this->model->get_tb('mm_services', 'service_id', array('service_id' => $service_id))->result();
+                
+                if(!empty($result)){
+                    
+                    if($this->checkServiceAddonPriceAdded($addon_id, $service_id)){
+                        return $response = array(
+                            'status' => false,
+                            'message' => $this->ci->lang->line('service_addon_price_already_created'),
+                        );
+                    }
+
+                    $priceVal  = $this->ci->input->post('add_addon_price', true);
+                    $insert_id = $this->createServiceAddonPrice($addon_id, $service_id, $priceVal, $person_id);
+                    
+                    if ($insert_id > 0) {
+                        $response = array(
+                            'status' => true,
+                            'message' => $this->ci->lang->line('service_addon_price_created'),
+                        );
+                               
+                    }else{
+                        $response = array(
+                            'status' => false,
+                            'message' => $this->ci->lang->line('something_problem'),
+                        );
+                    }
+                }else{
+                   $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('invalid_data'),
+                    ); 
+                }
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+               
+            }
+
+            return $response;
+        }
+        
+    }
+    
+    
+    function checkServiceAddonPriceAdded($addonId, $serviceId){
+        
+        $result = $this->model->get_tb('mm_service_addon_price', 'service_addon_price_id', array('service_addon_price_addon_id' => $addonId, 'service_addon_price_service_id'=>$serviceId, 'service_addon_price_archived'=> Globals::UN_ARCHIVE))->result();
+        if(!empty($result)){
+            return true;
+        } else{
+            return false;           
+        }       
+    }
+    
+    function createServiceAddonPrice($addonId, $serviceId, $priceVal, $person_id){
+        $info = array();
+        $info['service_addon_price_addon_id']       = $addonId;
+        $info['service_addon_price_service_id']     = $serviceId;
+        $info['service_addon_price_price']          = $priceVal;
+        $info['service_addon_price_created_on']     = date('Y-m-d H:i:s', strtotime('now'));;
+        $info['service_addon_price_created_by']     = $person_id;
+
+        return $insert_id = $this->model->insert_tb('mm_service_addon_price', $info);
+    }
+    
+    
+    function _archiveServiceAddonPrice(){
+        
+        $this->ci->data['success_message']  = "";
+        $this->ci->data['error_message']    = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $response = array();
+        $this->ci->form_validation->set_rules('addonPriceId', 'Service Addon Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('addonId', 'Service Addon Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+          
+            $addon_price_id     = $this->ci->input->post('addonPriceId', true);
+            $addon_id           = $this->ci->input->post('addonId', true);
+            $service_id         = $this->ci->input->post('serviceId', true);
+            $archive            = intval($this->ci->input->post('archive', true));
+            
+            $result = $this->model->get_tb('mm_service_addon_price', 'service_addon_price_id', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id'=>$service_id))->result();
+            if (!empty($result)) {
+                
+                $msg = $this->archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, $archive, $person_id);
+         
+                $response = array(
+                    'status' => true,
+                    'message' => $msg,
+                );
+                
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+            }
+
+            return $response;
+        }
+        
+    }
+    
+    /*  */
+    function archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, $archive, $person_id ){
+        $info = array();
+        $info['service_addon_price_archived']       = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE ;               
+        $info['service_addon_price_updated_by']     = $person_id;
+
+        $this->model->update_tb('mm_service_addon_price', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id'=>$service_id), $info);
+        return $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_addon_price_archived') : $this->ci->lang->line('service_addon_price_unarchived');
+        
+    }
+    
+    
+    function _updateServiceAddonPrice(){
+        
+        $this->ci->data['success_message']  = "";
+        $this->ci->data['error_message']    = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $response = array();
+        $this->ci->form_validation->set_rules('addonPriceId', 'Service Addon Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('addonId', 'Service Addon Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('priceVal', 'Service Addon Price', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');           
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $addon_price_id     = $this->ci->input->post('addonPriceId', true);
+            $addon_id           = $this->ci->input->post('addonId', true);
+            $service_id         = $this->ci->input->post('serviceId', true);
+            $priceVal           = $this->ci->input->post('priceVal', true);
+            
+            $result = $this->model->get_tb('mm_service_addon_price', 'service_addon_price_id', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id'=>$service_id))->result();
+            if (!empty($result)) {
+                
+                if(!$this->checkServiceAddonPriceHistoryAvailable()){
+                    $info = array();
+                    $info['service_addon_price_price']      = $priceVal;               
+                    $info['service_addon_price_updated_by'] = $person_id;
+
+                    $this->model->update_tb('mm_service_addon_price', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id'=>$service_id), $info);
+                    
+                    $response = array(
+                        'status' => true,
+                        'message' => $this->ci->lang->line('service_addon_price_updated'),
+                    );
+                }else{
+                    
+                    $msg = $this->archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, Globals::ARCHIVE, $person_id);
+         
+                    $insert_id = $this->createServiceAddonPrice($addon_id, $service_id, $priceVal, $person_id);
+                    
+                    if($insert_id >0){
+                        $response = array(
+                            'status' => false,
+                            'message' => $msg,
+                        );
+                    }
+                }
+                                
             } else {
                 $response = array(
                     'status' => false,

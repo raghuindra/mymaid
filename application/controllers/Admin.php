@@ -85,8 +85,11 @@ class Admin extends CI_Controller {
                 $this->data['buildings']        = $this->admin_model-> get_tb('mm_building','building_id,building_name',array('building_status'=>1))->result();
                 $this->data['area_sizes']       = $this->admin_model-> get_tb('mm_area','area_id,area_size,area_measurement',array('area_status'=>1))->result();
                 $this->data['service_detail']   = $service_detail;
-                $this->data['service_frequency']= $this->admin_model-> getServiceFrequencyOffers($serviceId);
-               // echo "<pre>"; print_r($this->data['service_frequency']); exit;
+                $this->data['service_frequency']= $this->admin_model-> getFrequencyOffersForService($serviceId);
+                $this->data['service_addons']   = $this->admin_model-> getAddonsForService($serviceId);
+                $this->data['spl_request']      = $this->admin_model-> get_tb('mm_spl_request','spl_request_id,spl_request_name,spl_request_description')->result();
+                
+                // echo "<pre>"; print_r($this->data['service_frequency']); exit;
                 
             }else{
                 redirect('services.html', 'refresh');
@@ -209,6 +212,62 @@ class Admin extends CI_Controller {
         public function postUpdateServiceFrequencyOffer(){
             if(isset($_POST['offerVal'])){
                 $response = $this->admin_lib->_updateServiceFrequencyOffer();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        
+        public function postServiceAddonsPriceList(){
+            if(isset($_POST['serviceId'])){
+                $response = $this->admin_lib->_getServiceAddonsPriceList();
+            }else{
+               $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                ); 
+            }
+            echo json_encode($response);
+        }
+        
+        
+        public function createServiceAddonsPrice(){
+           
+            if(isset($_POST['add_addons_price_service_id'])){
+                $response = $this->admin_lib->_createServiceAddonsPrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+        
+        public function postArchiveServiceAddonPrice(){
+            if(isset($_POST['addonPriceId'])){
+                $response = $this->admin_lib->_archiveServiceAddonPrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        public function postUpdateServiceAddonPrice(){
+            if(isset($_POST['priceVal'])){
+                $response = $this->admin_lib->_updateServiceAddonPrice();
             }else{
                 $response = array(
                     'status' => false,

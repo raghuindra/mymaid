@@ -330,8 +330,112 @@ $this->load->view("block/admin_leftMenu");
                             </div>
                             <!-- /.box body-->
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="addons_tab_content">.dsdfjhsj.</div>
+                        <!-- Service Frequency Price Settings TAB ENDS -->
+                        
+                        
+                        <!-- Service Addons Price Settings TAB START -->
+                        <div role="tabpanel" class="tab-pane fade" id="addons_tab_content">
+                            <div class="box-body" >
+                                <div class="box box-primary">
+
+                                    <div class="form-horizontal">
+                                        <div class="box-body">
+                                            <!-- Service Addon Price Creation Form Start -->
+                                            <form action="" name="serviceAddonPriceCreationForm" id="serviceAddonPriceCreationForm">
+                                                <div class="form-group">
+                                                    <input type="hidden" name="add_addons_price_service_id" class="form-control" id="add_addons_price_service_id" value="<?php echo $service_detail[0]->service_id; ?>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Frequency *:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control select2" style="width: 100%;" name="add_addons_price_addon_id" id="add_addons_price_addon_id" required>
+                                                            <option selected="selected" value="">Select frequency</option>
+                                                            <?php
+                                                            if (isset($service_addons) && !empty($service_addons)) {
+                                                                foreach ($service_addons as $addon) {
+                                                                    echo "<option value='" . $addon->service_addon_id . "'>" . $addon->service_addon_name . "</option>";
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Price *:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" name="add_addon_price" class="form-control" min="1" max="10000" required id="addon_price" placeholder="Enter addon price">
+                                                    </div>                                       
+                                                </div>
+
+                                                <!-- /.box-footer -->
+                                                <div class="box-footer">
+                                                    <div class="col-sm-11">
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red">Clear</button>
+                                                    </div> 
+                                                    <div class="col-sm-1">
+                                                        <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceAddonPrice">Add</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.box-footer -->
+
+                                            </form>
+                                            <!-- Service Package Creation Form End -->
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="clearfix"></div>                          
+
+                            <div class="box-body" style="display: block;">
+                                <div class="box box-primary">
+                                        <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="service_addons_price_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active service_addons_price_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                        <button type="button" class="btn margin btn-primary btn-sm service_addons_price_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body col-sm-12">
+                                            <table id="service_addons_price_list" class="table table-bordered table-striped dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Addon</th>
+                                                        <th>Addon Price</th>
+                                                        <th>Added On</th>
+                                                        <th>Updated On</th>
+                                                        <th>Updated By</th>
+                                                        <th class="action">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box body-->
+                            
+                        </div>
+                        <!-- Service Addons Price Settings TAB END -->
+                        
+                        
+                        <!-- Service Special Request Settings TAB START -->
                         <div role="tabpanel" class="tab-pane fade" id="specialrequest_tab_content">...dsahdfjhskj</div>
+                        <!-- Service Special Request Settings TAB EMDS -->
                     </div>
                 </div>
             </div>
@@ -631,8 +735,6 @@ $this->load->view("block/admin_leftMenu");
 <script>
     $(function () {
 
-        //$("#add_frequency_select2").select2();
-
         var frequencyListTable = $('#frequency_discount_list').DataTable({
             "responsive": true,
             "paging": true,
@@ -715,7 +817,7 @@ $this->load->view("block/admin_leftMenu");
             e.preventDefault();      
             var thisClick = $(this);
             var rowData = frequencyListTable.row($(this).closest('tr')).data();
-            console.log(rowData);
+            //console.log(rowData);
             $.confirm({
                 title: 'Update Offer Discount!',
                 'useBootstrap': true,
@@ -838,3 +940,219 @@ $this->load->view("block/admin_leftMenu");
     });
 
 </script>
+<!-- Frequency Settings Script END-->
+
+
+<!-- Service Addons Settings Script START-->
+<script>
+
+$(function () {
+    
+      var addonsPriceListTable = $('#service_addons_price_list').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo base_url() . 'listserviceAddonsPrice.html'; ?>",
+                "type": "POST",
+                "dataSrc": 'data',
+                "data": function(d){                     
+                    d.archived = $("#service_addons_price_status").attr('data-val');
+                    d.serviceId = '<?php echo $service_detail[0]->service_id;?>';
+                }
+            },
+            "columns": [
+                {"data": "service_addon_name"},
+                {"data": "service_addon_price_price"},
+                {"data": "service_addon_price_created_on"},
+                {"data": "service_addon_price_updated_on"},
+                {"data": "service_addon_price_updated_by"},
+                {"data": null},
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var archived = $("#service_addons_price_status").attr('data-val');
+                        var string = ' <td class=""> <div class="text-center">'
+                                + '<a href="#" class="editServiceAddonPriceWindow btn btn-social-icon " title="Edit" data-service="' + row.service_addon_price_service_id + '" data-addonid = "' + row.service_addon_price_addon_id + '" data-id="' + row.service_addon_price_id + '"><i class="fa fa-edit"></i></a>';
+                        if(archived == '0'){
+                            string += '<a href="#" class="btn btn-social-icon serviceAddonPriceArchive" title="Archive" data-service="' + row.service_addon_price_service_id + '" data-addonid = "' + row.service_addon_price_addon_id + '" data-id = "' + row.service_addon_price_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                        }else{
+                            string += '<a href="#" class="btn btn-social-icon serviceAddonPriceUnArchive" title="Archive" data-service="' + row.service_addon_price_service_id + '" data-addonid = "' + row.service_addon_price_addon_id + '" data-id = "' + row.service_addon_price_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                        }
+                        return string;
+                    }
+                }
+            ]
+        });
+
+        /* Archived / Un Archived Datatable list event */
+        $(".btn-group .service_addons_price_status_archive, .service_addons_price_status_unarchive").click(function () {
+            $(".btn-group#service_addons_price_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#service_addons_price_status").attr('data-val',$(this).data('val'));           
+            addonsPriceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+
+        /* Service Addon Price creation form handling.. */
+        $("#serviceAddonPriceCreationForm").submit(function (e) {
+            e.preventDefault();
+            var data = $("#serviceAddonPriceCreationForm").serializeArray();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'addServiceAddonPrice.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        addonsPriceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.editServiceAddonPriceWindow', function(e){
+            e.preventDefault();      
+            var thisClick = $(this);
+            var rowData = addonsPriceListTable.row($(this).closest('tr')).data();
+            console.log(rowData);
+            $.confirm({
+                title: 'Update Addon Price!',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'content': '' +
+                    '<div class="form-group">' +
+                    '<label>Addon</label>' +
+                    '<input type="text" disabled placeholder="Your name" value="'+rowData.service_addon_name+'" class="name form-control" />' +
+                    '</div>'+
+                    '<div class="form-group">' +
+                    '<label>Price</label>' +
+                    '<input type="text" placeholder="Offer Discount" class="price form-control" value="'+rowData.service_addon_price_price+'"required />' +
+                    '</div>',
+                buttons: {
+                    update: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                                var priceVal = this.$content.find('.price').val();
+                                if(priceVal <=0){ $.alert('provide a price'); return false;}
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'updateServiceAddonPrice.html'; ?>",
+                                data: {'addonPriceId': rowData.service_addon_price_id, 'serviceId': rowData.service_addon_price_service_id, 'addonId':rowData.service_addon_price_addon_id, 'priceVal':priceVal},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        addonsPriceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                        $(thisClick).trigger('click');
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                    
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+                            //close window
+                        }
+                    }
+                }
+            });
+        
+        });
+
+        /* Archive/UnArchive the Service Addon Price  */
+        $(document).on('click', '.serviceAddonPriceUnArchive, .serviceAddonPriceArchive', function (e) {
+
+            e.preventDefault();
+            var addonPriceId = $(this).data('id');
+            var serviceId = $(this).data('service');
+            var addonId = $(this).data('addonid');
+            
+            if($(this).hasClass('serviceAddonPriceUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveServiceAddonPrice.html'; ?>",
+                                data: {'addonPriceId': addonPriceId, 'serviceId': serviceId, 'addonId':addonId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        addonsPriceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive the Service Addon Price  END */
+
+    
+    
+});
+
+</script>
+<!-- Service Addons Settings Script END-->

@@ -20,5 +20,10 @@ $lang['service_frequency_offer_already_created']= "Frequency discount already av
 $lang['service_frequency_offer_archived']       = "Service Frequency Offer archived";
 $lang['service_frequency_offer_unarchived']     = "Service Frequency Offer un-archived";
 $lang['service_frequency_offer_updated']        = "Service Frequency Offer Updated";
+$lang['service_addon_price_created']            = "Service Addon price added";
+$lang['service_addon_price_already_created']    = "Service Addon price is laready added";
+$lang['service_addon_price_archived']           = "Service Addon price archived";
+$lang['service_addon_price_unarchived']         = "Service Addon price un archived";
+$lang['service_addon_price_updated']            = "Service Addon price updated";
 ?>
 

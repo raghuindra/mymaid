@@ -80,7 +80,10 @@ $route['listFrequencyOffer.html/(:num)']        = "admin/postFrequencyOfferList/
 $route['addServiceFrequencyOfferPrice.html']    = "admin/createServiceFrequencyOfferPrice";
 $route['archiveServiceFrequencyOffer.html']     = "admin/postArchiveServiceFrequencyOffer";
 $route['updateServiceFrequencyOffer.html']      = "admin/postUpdateServiceFrequencyOffer";
-
+$route['listserviceAddonsPrice.html']           = "admin/postServiceAddonsPriceList";
+$route['addServiceAddonPrice.html']             = "admin/createServiceAddonsPrice";
+$route['updateServiceAddonPrice.html']          = "admin/postUpdateServiceAddonPrice";
+$route['archiveServiceAddonPrice.html']         = "admin/postArchiveServiceAddonPrice";
 
 
 
