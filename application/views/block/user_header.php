@@ -5,7 +5,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Admin | Login Page</title>
+	<title>MyMaidz</title>
 	<meta content="width=device-width,initial-scale=1" name="viewport">
 	<link rel="icon" href="./favicon.ico" type="image/x-icon">
 	<!--[if IE]>
@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="<?php echo plugin_url("bootstrap/css/bootstrap.css") ?>">
 	<?php if(isset($home) && $home == 1){ ?>
             <link rel="stylesheet" media="all" href="<?php echo css_url("app") ?>">
-        <?php } ?>
+        <?php }else { ?>
         <link rel="stylesheet" media="all" href="<?php echo css_url("fonts") ?>">
         <link rel="stylesheet" href="<?php echo css_url('ct-main');?>" type="text/css" media="all">
         <link rel="stylesheet" href="<?php echo css_url('ct-common');?>" type="text/css" media="all">
@@ -36,6 +36,7 @@
             }
 
         </style>
+        <?php } ?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <!--            <script src="<?php //echo js_url('utils');?>" type="text/javascript"></script>
 <script src="<?php //echo js_url('intlTelInput');?>" type="text/javascript"></script>-->

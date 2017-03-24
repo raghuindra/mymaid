@@ -5,7 +5,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Admin | Login Page</title>
+	<title>MyMaidz | Vendor</title>
 	<meta content="width=device-width,initial-scale=1" name="viewport">
 	<link rel="icon" href="./favicon.ico" type="image/x-icon">
 	<!--[if IE]>
@@ -28,4 +28,4 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 
-<body>
+<body style="overflow: hidden;">
