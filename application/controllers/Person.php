@@ -33,8 +33,9 @@ class Person extends CI_Controller{
             }
         }
         
-        $this->data['content'] = "user/login.php";
-        $this->data['user'] = 1;
+        $this->data['content']  = "user/login.php";
+        $this->data['user']     = 1;
+        $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
 
@@ -52,8 +53,9 @@ class Person extends CI_Controller{
         $data['state'] = $states;
 
 
-        $data['content'] = "user/register.php";
-        $data['user'] = 1;
+        $data['content']    = "user/register.php";
+        $data['user']       = 1;
+        $this->data['home'] = 1;
         $this->load->view('template', $data);
     }
 
@@ -65,8 +67,9 @@ class Person extends CI_Controller{
             }
         }
         
-        $this->data['content'] = "vendor/login.php";
-        $this->data['oldvendor'] = 1;
+        $this->data['content']      = "vendor/login.php";
+        $this->data['oldvendor']    = 1;
+        $this->data['home']         = 1;
         $this->load->view('template', $this->data);
     }
 
@@ -83,7 +86,8 @@ class Person extends CI_Controller{
         $states = $this->mm_model->get_tb('mm_state', '*')->result();
         $data['state'] = $states;
         $data['content'] = "vendor/register.php";
-        $data['oldvendor'] = 1;
+        $data['oldvendor']      = 1;
+        $this->data['home']     = 1;
         $this->load->view('template', $data);
         
     }
