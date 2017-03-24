@@ -50,13 +50,13 @@ class Person extends CI_Controller{
 
         $this->load->model('mm_model');
         $states = $this->mm_model->get_tb('mm_state', '*')->result();
-        $data['state'] = $states;
+        $this->data['state'] = $states;
 
 
-        $data['content']    = "user/register.php";
-        $data['user']       = 1;
-        $this->data['home'] = 1;
-        $this->load->view('template', $data);
+        $this->data['content']    = "user/register.php";
+        $this->data['user']       = 1;
+        $this->data['home']     = 1;
+        $this->load->view('template', $this->data);
     }
 
     public function vendorLogin() {
