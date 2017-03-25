@@ -87,7 +87,7 @@ class Admin extends CI_Controller {
                 $this->data['service_detail']   = $service_detail;
                 $this->data['service_frequency']= $this->admin_model-> getFrequencyOffersForService($serviceId);
                 $this->data['service_addons']   = $this->admin_model-> getAddonsForService($serviceId);
-                $this->data['spl_request']      = $this->admin_model-> get_tb('mm_spl_request','spl_request_id,spl_request_name,spl_request_description')->result();
+                $this->data['spl_request']      = $this->admin_model-> get_serviceSplRequest($serviceId);
                 
                 // echo "<pre>"; print_r($this->data['service_frequency']); exit;
                 
@@ -266,6 +266,75 @@ class Admin extends CI_Controller {
         }
         
         public function postUpdateServiceAddonPrice(){
+            if(isset($_POST['priceVal'])){
+                $response = $this->admin_lib->_updateServiceAddonPrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        public function postServiceSplRequestList(){
+            if(isset($_POST['serviceId'])){
+                $response = $this->admin_lib->_getServiceSplRequestList();
+            }else{
+               $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                ); 
+            }
+            echo json_encode($response);
+        }
+        
+        
+        public function createServiceSplRequest(){
+           echo json_encode($response = array(
+                    'status' => false,
+                    'message' => "Under Progress..!!",
+                    'data' => array()
+                )); exit;
+            if(isset($_POST['add_spl_request_id'])){
+                $response = $this->admin_lib->_createServiceSplRequest();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+        
+        public function postUpdateServiceSplRequest(){
+            echo json_encode($response = array(
+                    'status' => false,
+                    'message' => "Under Progress..!!",
+                    'data' => array()
+                )); exit;
+            if(isset($_POST['addonPriceId'])){
+                $response = $this->admin_lib->_archiveServiceAddonPrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        public function postArchiveServiceSplRequest(){
+            echo json_encode($response = array(
+                    'status' => false,
+                    'message' => "Under Progress..!!",
+                    'data' => array()
+                )); exit;
             if(isset($_POST['priceVal'])){
                 $response = $this->admin_lib->_updateServiceAddonPrice();
             }else{

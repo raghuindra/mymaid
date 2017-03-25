@@ -148,7 +148,7 @@ $this->load->view("block/admin_leftMenu");
                                                     <!-- /.box-body -->
                                                     <div class="box-footer">
                                                         <div class="col-sm-11">
-                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-red">Clear</button>
+                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset" >Clear</button>
                                                         </div> 
                                                         <div class="col-sm-1">
                                                             <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServicePackage">Add</button>
@@ -202,7 +202,7 @@ $this->load->view("block/admin_leftMenu");
                                         <div class="form-horizontal">
 
                                             <div class="box-body">
-                                                <table id="servicepackage_list" class="table table-bordered table-striped tables-button-edit responsive">
+                                                <table id="servicepackage_list" class="table table-bordered table-striped tables-button-edit">
                                                     <thead>
                                                         <tr>
                                                             <th>ID </th>
@@ -213,7 +213,7 @@ $this->load->view("block/admin_leftMenu");
                                                             <th>Package Hours</th>
                                                             <th>Package Crew's</th>
                                                             <th>Package Price</th>
-                                                            <th class="action">Action</th>
+                                                            <th class="">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -273,7 +273,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <!-- /.box-footer -->
                                                 <div class="box-footer">
                                                     <div class="col-sm-11">
-                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red">Clear</button>
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
                                                     </div> 
                                                     <div class="col-sm-1">
                                                         <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceFrequencyOffer">Add</button>
@@ -372,7 +372,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <!-- /.box-footer -->
                                                 <div class="box-footer">
                                                     <div class="col-sm-11">
-                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red">Clear</button>
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
                                                     </div> 
                                                     <div class="col-sm-1">
                                                         <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceAddonPrice">Add</button>
@@ -406,7 +406,7 @@ $this->load->view("block/admin_leftMenu");
                                         </div>
                                         <!-- /.box-header -->
                                         <div class="box-body col-sm-12">
-                                            <table id="service_addons_price_list" class="table table-bordered table-striped dataTable">
+                                            <table id="service_addons_price_list" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>Addon</th>
@@ -434,8 +434,104 @@ $this->load->view("block/admin_leftMenu");
                         
                         
                         <!-- Service Special Request Settings TAB START -->
-                        <div role="tabpanel" class="tab-pane fade" id="specialrequest_tab_content">...dsahdfjhskj</div>
-                        <!-- Service Special Request Settings TAB EMDS -->
+                        <div role="tabpanel" class="tab-pane fade" id="specialrequest_tab_content">
+                            
+                            <div class="box-body" >
+                                <div class="box box-primary">
+
+                                    <div class="form-horizontal">
+                                        <div class="box-body">
+                                            <!-- Service Special Request Creation Form Start -->
+                                            <form action="" name="serviceSplRequestCreationForm" id="serviceSplRequestCreationForm">
+                                                <div class="form-group">
+                                                    <input type="hidden" name="add_service_spl_service_id" class="form-control" id="add_service_spl_service_id" value="<?php echo $service_detail[0]->service_id; ?>">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Special Request *:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control select2" style="width: 100%;" name="add_spl_request_id" id="add_spl_request_id" required>
+                                                            <option selected="selected" value="">Select special request</option>
+                                                            <?php
+                                                            if (isset($spl_request) && !empty($spl_request)) {
+                                                                foreach ($spl_request as $request) {
+                                                                    echo "<option value='" . $request->spl_request_id . "'>" . $request->spl_request_name . "</option>";
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Price (if required):</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" name="add_service_spl_request_price" class="form-control" min="1" max="10000"  id="add_service_spl_request_price" placeholder="Enter special request price if required else free">
+                                                    </div>                                       
+                                                </div>
+
+                                                <!-- /.box-footer -->
+                                                <div class="box-footer">
+                                                    <div class="col-sm-11">
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
+                                                    </div> 
+                                                    <div class="col-sm-1">
+                                                        <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceSplRequest">Add</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.box-footer -->
+
+                                            </form>
+                                            <!-- Service Special Request Creation Form End -->
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="clearfix"></div>                          
+
+                            <div class="box-body" style="display: block;">
+                                <div class="box box-primary">
+                                        <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="service_spl_request_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                        <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body col-sm-12">
+                                            <table id="service_spl_request_list" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Addon</th>
+                                                        <th>Addon Price</th>
+                                                        <th>Added On</th>
+                                                        <th>Updated On</th>
+                                                        <th>Updated By</th>
+                                                        <th class="action">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box body-->
+                            
+                        </div>
+                        <!-- Service Special Request Settings TAB ENDS -->
                     </div>
                 </div>
             </div>
@@ -581,7 +677,8 @@ $this->load->view("block/admin_leftMenu");
                     "render": function (data, type, row) {
                         var archived = $("#service_package_status").attr('data-val');
                         var string = ' <td class=""> <div class="text-center">'
-                                + '<a href="#" class="editModalWindow btn btn-social-icon " title="Edit" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-edit"></i></a>';
+                                + '<a href="#" class="editModalWindow btn btn-social-icon " title="Edit" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-edit"></i></a>'
+                                + '<a href="#" class="btn btn-social-icon pincodePrice" title="Pincode Price" ><i class="fa fa-globe"></i></a>';
                         if(archived == '0'){
                               string  += '<a href="#" class="btn btn-social-icon servicePackageArchive" title="Archive" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-archive"></i></a></div></td>';
                           }else{
@@ -713,6 +810,16 @@ $this->load->view("block/admin_leftMenu");
               
 
     });
+    
+    $(".formReset").click(function(){
+        resetForm($(this).closest('form'));
+    });
+    
+    function resetForm($form) {
+        $form.find('input:text, input:password, input:file, select, textarea').val('');
+        $form.find(':input[type=number]').val('');
+        $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+    }
 
 </script>
 <!-- Service Package Tab Scripts END-->
@@ -721,7 +828,7 @@ $this->load->view("block/admin_leftMenu");
 <script>
     $(function () {
 
-        /* Price calulation type click event for Edit Package */
+        /* Price calculation type click event for Edit Package */
         $(document).on('click', ".btn-group .edit_price_cal_type", function () {
             $(".btn-group .edit_price_cal_type").removeClass('active');
             $(this).addClass('active');
@@ -1156,3 +1263,218 @@ $(function () {
 
 </script>
 <!-- Service Addons Settings Script END-->
+
+
+<!-- Service Special Request Script START-->
+<script>
+
+$(function () {
+    
+      var splRequestListTable = $('#service_spl_request_list').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
+            "ajax": {
+                "url": "<?php echo base_url() . 'listserviceSplRequest.html'; ?>",
+                "type": "POST",
+                "dataSrc": 'data',
+                "data": function(d){                     
+                    d.archived = $("#service_spl_request_status").attr('data-val');
+                    d.serviceId = '<?php echo $service_detail[0]->service_id;?>';
+                }
+            },
+            "columns": [
+                {"data": "spl_request_name"},
+                {"data": "service_spl_request_price"},
+                {"data": "service_spl_request_created_on"},
+                {"data": "service_spl_request_updated_on"},
+                {"data": "service_spl_request_updated_by"},
+                {"data": null},
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var archived = $("#service_spl_request_status").attr('data-val');
+                        var string = ' <td class=""> <div class="text-center">'
+                                + '<a href="#" class="editServiceSplRequestWindow btn btn-social-icon " title="Edit" data-service="' + row.service_spl_request_service_id + '" data-splreqid = "' + row.service_spl_request_spl_request_id + '" data-id="' + row.service_spl_request_id + '"><i class="fa fa-edit"></i></a>';
+                        if(archived == '0'){
+                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestArchive" title="Archive" data-service="' + row.service_spl_request_service_id + '" data-splreqid = "' + row.service_spl_request_spl_request_id + '" data-id = "' + row.service_spl_request_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                        }else{
+                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestUnArchive" title="Archive" data-service="' + row.service_spl_request_service_id + '" data-splreqid = "' + row.service_spl_request_spl_request_id + '" data-id = "' + row.service_spl_request_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                        }
+                        return string;
+                    }
+                }
+            ]
+        });
+
+        /* Archived / Un Archived Datatable list event */
+        $(".btn-group .service_spl_request_status_archive, .service_spl_request_status_unarchive").click(function () {
+            $(".btn-group#service_spl_request_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#service_spl_request_status").attr('data-val',$(this).data('val'));           
+            splRequestListTable.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+
+        /* Service Addon Price creation form handling.. */
+        $("#serviceSplRequestCreationForm").submit(function (e) {
+            e.preventDefault();
+            var data = $("#serviceSplRequestCreationForm").serializeArray();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'addServiceSplRequest.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        splRequestListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.editServiceSplRequestWindow', function(e){
+            e.preventDefault();      
+            var thisClick = $(this);
+            var rowData = splRequestListTable.row($(this).closest('tr')).data();
+            console.log(rowData);
+            $.confirm({
+                title: 'Update Spl Request!',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'content': '' +
+                    '<div class="form-group">' +
+                    '<label>Addon</label>' +
+                    '<input type="text" disabled placeholder="Your name" value="'+rowData.spl_request_name+'" class="name form-control" />' +
+                    '</div>'+
+                    '<div class="form-group">' +
+                    '<label>Price</label>' +
+                    '<input type="text" placeholder="Offer Discount" class="price form-control" value="'+rowData.service_spl_request_price+'"required />' +
+                    '</div>',
+                buttons: {
+                    update: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                                var priceVal = this.$content.find('.price').val();
+                                if(priceVal <=0){ $.alert('provide a price'); return false;}
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'updateServiceSplRequest.html'; ?>",
+                                data: {'serviceSplReqId': rowData.service_spl_request_id, 'serviceId': rowData.service_spl_request_service_id, 'splReqId':rowData.service_spl_request_spl_request_id, 'priceVal':priceVal},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        splRequestListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                        $(thisClick).trigger('click');
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                    
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+                            //close window
+                        }
+                    }
+                }
+            });
+        
+        });
+
+        /* Archive/UnArchive the Service Spl Request  */
+        $(document).on('click', '.serviceSplRequestUnArchive, .serviceSplRequestArchive', function (e) {
+
+            e.preventDefault();
+            var serviceSplReqId = $(this).data('id');
+            var serviceId = $(this).data('service');
+            var splReqId = $(this).data('splreqid');
+            
+            if($(this).hasClass('serviceSplRequestUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveServiceSplRequest.html'; ?>",
+                                data: {'serviceSplReqId': serviceSplReqId, 'serviceId': serviceId, 'splReqId':splReqId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        splRequestListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive the Service Spl Request  END */
+
+    
+    
+});
+
+</script>
+<!-- Service Special Request Script END-->

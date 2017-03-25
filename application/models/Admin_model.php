@@ -16,6 +16,8 @@ class Admin_model extends Mm_model{
         $this->_service_frequency_table             = "mm_service_frequency";
         $this->_service_addon_price_table           = "mm_service_addon_price";
         $this->_service_addon_table                 = "mm_service_addon";
+        $this->_spl_request_table                   = "mm_spl_request";
+        $this->_service_spl_request_table           = "mm_service_spl_request";
     }
     
     function check_email($email)
@@ -92,6 +94,29 @@ class Admin_model extends Mm_model{
                 return $this->db->get($this->_service_addon_price_table, $row_count, $offset);
         }
           return $this->db->get($this->_service_addon_price_table);
+    }
+    
+    function get_serviceSplRequest($serviceId){
+        return $this->db->query("SELECT * from mm_spl_request WHERE spl_request_archived=0 AND spl_request_id NOT IN "
+                . "(SELECT service_spl_request_spl_request_id FROM mm_service_spl_request WHERE service_spl_request_archived = 0 AND service_spl_request_service_id = '".$serviceId."')")->result();
+    }
+    
+    function getServiceSplRequestList($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+        
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_spl_request_table, 'spl_request_id = service_spl_request_spl_request_id','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0){
+                return $this->db->get($this->_service_spl_request_table, $row_count, $offset);
+        }
+          return $this->db->get($this->_service_spl_request_table);
+        
     }
         
         

@@ -61,7 +61,7 @@ $route['user_register.html']                    = "person/userRegister";
 $route['booking.html']                          = "user/booking";
 
 
-/* ........Admin Module Routing................... */
+/* ................  Admin Module Routing  ......................... */
 $route['admin_home.html']                       = "admin";
 $route['admin_login.html']                      = "person/adminLogin";
 $route['services.html']                         = "admin/services";
@@ -84,10 +84,13 @@ $route['listserviceAddonsPrice.html']           = "admin/postServiceAddonsPriceL
 $route['addServiceAddonPrice.html']             = "admin/createServiceAddonsPrice";
 $route['updateServiceAddonPrice.html']          = "admin/postUpdateServiceAddonPrice";
 $route['archiveServiceAddonPrice.html']         = "admin/postArchiveServiceAddonPrice";
+$route['listserviceSplRequest.html']            = "admin/postServiceSplRequestList";
+$route['addServiceSplRequest.html']             = "admin/createServiceSplRequest";
+$route['updateServiceSplRequest.html']          = "admin/postUpdateServiceSplRequest";
+$route['archiveServiceSplRequest.html']         = "admin/postArchiveServiceSplRequest";
 
 
-
-/* ........Vendor/Freelance Module Routing................... */
+/* ....................  Vendor/Freelance Module Routing  .............................. */
 $route['vendor_home.html']                      = "vendor";
 $route['vendor_login.html']                     = "person/vendorLogin";
 $route['vendor_register.html']                  = "person/vendorRegister";

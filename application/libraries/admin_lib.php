@@ -942,4 +942,135 @@ class Admin_lib {
     }
     
     
+    function _getServiceSplRequestList(){
+        
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $archived = Globals::UN_ARCHIVE;
+        $response = array();
+        if ($this->ci->session->userdata('user_id') != null) {
+            $archived = $this->ci->input->post('archived', true);
+            $serviceId = $this->ci->input->post('serviceId', true);
+            $result = $this->model->getServiceSplRequestList('*', array('service_spl_request_service_id'=>$serviceId,'service_spl_request_archived'=>$archived))->result();
+            if ($result) {
+                $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $result
+                );
+               
+            }else {
+                    $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('no_records_found'),
+                        'data' => array()
+                    );
+                }
+        } else {
+            $response = array(
+                'status' => false,
+                'message' => $this->ci->lang->line('invalid_request'),
+                'data' => array()
+            );
+                
+        }
+
+        return $response;
+        
+    }
+    
+    
+    function _createServiceSplRequest(){
+        
+        $this->ci->load->library('form_validation');
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $response = array();
+
+        $this->ci->form_validation->set_rules('add_service_spl_service_id', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('add_spl_request_id', 'Service Spl Request Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('add_spl_request_price', 'Service Spl Request Price', 'trim|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
+
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+            
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $splReqId = $this->ci->input->post('add_addons_price_addon_id', true);
+            $service_id   = $this->ci->input->post('add_addons_price_service_id', true);
+            
+            $result = $this->model->get_tb('mm_service_addon', 'service_addon_id', array('service_addon_id' => $addon_id))->result();
+            
+            if (!empty($result)) {
+                
+                $result = $this->model->get_tb('mm_services', 'service_id', array('service_id' => $service_id))->result();
+                
+                if(!empty($result)){
+                    
+                    if($this->checkServiceSplRequestAdded($splReqId, $service_id)){
+                        return $response = array(
+                            'status' => false,
+                            'message' => $this->ci->lang->line('service_addon_price_already_created'),
+                        );
+                    }
+
+                    $priceVal  = $this->ci->input->post('add_addon_price', true);
+                    $insert_id = $this->createServiceSplRequest($splReqId, $service_id, $priceVal, $person_id);
+                    
+                    if ($insert_id > 0) {
+                        $response = array(
+                            'status' => true,
+                            'message' => $this->ci->lang->line('service_addon_price_created'),
+                        );
+                               
+                    }else{
+                        $response = array(
+                            'status' => false,
+                            'message' => $this->ci->lang->line('something_problem'),
+                        );
+                    }
+                }else{
+                   $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('invalid_data'),
+                    ); 
+                }
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                );
+               
+            }
+
+            return $response;
+        }
+        
+    }
+    
+    function checkServiceSplRequestAdded($splReqId, $serviceId){
+        
+        $result = $this->model->get_tb('mm_service_spl_request', 'service_spl_request_id', array('service_spl_request_spl_request_id' => $splReqId, 'service_spl_request_service_id'=>$serviceId, 'service_spl_request_archived'=> Globals::UN_ARCHIVE))->result();
+        if(!empty($result)){
+            return true;
+        } else{
+            return false;           
+        }       
+    }
+    
+    function createServiceSplRequest($splReqId, $serviceId, $priceVal, $person_id){
+        $info = array();
+        $info['service_spl_request_spl_request_id'] = $splReqId;
+        $info['service_spl_request_service_id']     = $serviceId;
+        $info['service_spl_request_price']          = $priceVal;
+        $info['service_spl_request_created_on']     = date('Y-m-d H:i:s', strtotime('now'));;
+        $info['service_spl_request_created_by']     = $person_id;
+
+        return $insert_id = $this->model->insert_tb('mm_service_addon_price', $info);
+    }
+    
 }
