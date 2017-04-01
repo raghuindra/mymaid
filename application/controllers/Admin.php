@@ -347,4 +347,93 @@ class Admin extends CI_Controller {
             echo json_encode($response);
         }
         
+        /* Get the distinct price for a Service package of a service based on Postcode  */
+        public function postGetServicePackagePostcodePrice(){
+            
+            if(isset($_POST['packageId'])){               
+                $this->data['states'] = $this->admin_lib->_getPostalStates();
+                //print_r($this->data['states']);
+                $this -> load -> view('admin/popup/set_package_postal_price', $this->data);
+            }else if(isset($_POST['archived'])){
+                $response =  $this->admin_lib->_getServicePackagePostalPriceList();
+                echo json_encode($response);
+            }
+                                 
+        }
+        
+        public function postGetPostOffices(){
+            if(isset($_POST['stateCode'])){
+               $response =  $this->admin_lib->_getPostOffices();
+            }else{
+               $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                ); 
+            }
+            echo json_encode($response);
+        }
+        
+        public function postGetpostcodes(){
+            if(isset($_POST['areaCode'])){
+               $response =  $this->admin_lib->_getpostcodes();
+            }else{
+               $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                ); 
+            }
+            echo json_encode($response);
+        }
+        
+        /* Set the ditinct price for a Service package of a service based on Postcode  */
+        public function postSetServicePackagePostcodePrice(){
+            //print_r($_POST);exit;
+            if(isset($_POST['packageId'])){
+                
+                $response = $this->admin_lib->_setServicePackagePostalPrice();
+                
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+                                 
+        }
+        
+        
+        public function postArchivePostcodePrice(){
+            
+            if(isset($_POST['postcodePriceId'])){
+                $response = $this->admin_lib->_archiveServicePackagePostcodePrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+        
+        public function postUpdateServicePackagePostcodePrice(){
+            
+            if(isset($_POST['priceVal'])){
+                $response = $this->admin_lib->_updateServicePackagePostcodePrice();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+        
 }

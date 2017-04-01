@@ -124,9 +124,9 @@ class Page_load_lib {
                                      break;
                              default: $redirect_url="home.html";
                      }
-                     redirect($redirect_url, 'refresh');
+                     redirect(base_url().$redirect_url, 'refresh');
                 }else{
-                    redirect($redirect_url, 'refresh');
+                    redirect(base_url().$redirect_url, 'refresh');
                 }
 
 	}

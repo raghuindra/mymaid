@@ -18,10 +18,13 @@ class Admin_model extends Mm_model{
         $this->_service_addon_table                 = "mm_service_addon";
         $this->_spl_request_table                   = "mm_spl_request";
         $this->_service_spl_request_table           = "mm_service_spl_request";
+        $this->_state_table                         = "mm_state";
+        $this->_postcode_table                      = "mm_postcode";
+        $this->_postcode_service_price_table        = "mm_postcode_service_price";      
+        
     }
     
-    function check_email($email)
-    {
+    function check_email($email){
           return $this->db->select('admin_email')
                     ->from($this->_table)
                     ->where('admin_email',$email)
@@ -117,6 +120,45 @@ class Admin_model extends Mm_model{
         }
           return $this->db->get($this->_service_spl_request_table);
         
+    }
+   
+    /* Get the states and state level infromation(Postalcode, area name) */
+    function getStates($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+        
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_state_table.' as st', 'st.state_code = pt.state_code','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0){
+                return $this->db->get($this->_postcode_table.' as pt', $row_count, $offset);
+        }
+          return $this->db->get($this->_postcode_table.' as pt');
+    }
+    
+    function get_postcodes($areacodes, $packageId){
+        return $this->db->query("SELECT DISTINCT(postcode) FROM mm_postcode where post_office IN (".$areacodes.")"
+                . " AND postcode NOT IN (SELECT postcode_service_price_postcode FROM mm_postcode_service_price WHERE postcode_service_price_package_id = ".$packageId.")");
+    }
+    
+    function getServicePackagePriceList($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+         $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        //$this->db->join($this->_spl_request_table, 'spl_request_id = service_spl_request_spl_request_id','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0){
+                return $this->db->get($this->_postcode_service_price_table, $row_count, $offset);
+        }
+        return $this->db->get($this->_postcode_service_price_table);
     }
         
         

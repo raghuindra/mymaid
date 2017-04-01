@@ -568,6 +568,29 @@ $this->load->view("block/admin_leftMenu");
         </form>
     </div>
 </div>
+<!-- /.Package Edit Modal ENDs -->
+
+<!-- Postal Code Modal -->
+<div class="modal fade bs-example-modal-md" id="postalCodeModal" tabindex="-1" role="dialog" aria-labelledby="postalCodeModalLabel">
+    <div class="modal-dialog modal-md" role="document">        
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="postalCodeModalLabel">Set Package Price by Postcode</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 
+                        Modal Body
+                    -->
+                </div>
+<!--                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" type="submit" id="setPostalcodePrice">Save changes</button>
+                </div>-->
+            </div>
+    </div>
+</div>
+<!-- /. Postal code Modal Ends -->
 
 <!-- Confirm Modal -->
 <div class="modal fade" id="archiveConfirmModal" tabindex="-1" role="dialog" aria-labelledby="archiveConfirmModalLabel">
@@ -629,7 +652,7 @@ $this->load->view("block/admin_leftMenu");
         });
 
 
-        var servicePackageListTable = $('#servicepackage_list').DataTable({
+        servicePackageListTable = $('#servicepackage_list').DataTable({
             "responsive": true,
             "paging": true,
             "lengthChange": true,
@@ -678,7 +701,7 @@ $this->load->view("block/admin_leftMenu");
                         var archived = $("#service_package_status").attr('data-val');
                         var string = ' <td class=""> <div class="text-center">'
                                 + '<a href="#" class="editModalWindow btn btn-social-icon " title="Edit" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-edit"></i></a>'
-                                + '<a href="#" class="btn btn-social-icon pincodePrice" title="Pincode Price" ><i class="fa fa-globe"></i></a>';
+                                + '<a href="#" class="btn btn-social-icon pincodePrice" title="Pincode Price" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-globe"></i></a>';
                         if(archived == '0'){
                               string  += '<a href="#" class="btn btn-social-icon servicePackageArchive" title="Archive" data-service="' + row.service_package_service_id + '" data-id = "' + row.service_package_id + '"><i class="fa fa-archive"></i></a></div></td>';
                           }else{
@@ -807,19 +830,21 @@ $this->load->view("block/admin_leftMenu");
             });
 
         }); /* Archive the Service Package  END */
-              
-
+       
+       
     });
     
-    $(".formReset").click(function(){
+    $(document).on("click", ".formReset", function(){
         resetForm($(this).closest('form'));
     });
     
     function resetForm($form) {
         $form.find('input:text, input:password, input:file, select, textarea').val('');
         $form.find(':input[type=number]').val('');
+        $form.find(".select2").val(null).trigger("change");
         $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
     }
+
 
 </script>
 <!-- Service Package Tab Scripts END-->
@@ -837,6 +862,335 @@ $this->load->view("block/admin_leftMenu");
 
     });
 </script>
+
+
+    <!-- JQUERY Events for the form loaded from AJAX(Pincode Price) STARTs -->
+<script>
+    $(function(){
+        var service_package_postal_price;
+         var postcodeDatatableObject = {
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
+            "serverSide":false,
+            "ajax": {
+                "url": "<?php echo base_url() . 'getServicePackagePostalPrice.html'; ?>",
+                "type": "POST",
+                "data": function(d){                     
+                    d.archived = $("#service_package_postal_price_status").attr('data-val');
+                    d.package_id = $("#postalCodeModal").data('val').service_package_id;
+                },
+                "dataSrc": 'data'
+            },
+            "columns": [
+                {"data": "postcode_service_price_package_id"},
+                {"data": "postcode_service_price_postcode"},
+                {"data": "postcode_service_price_price"},
+                {"data": "postcode_service_price_created_on"},
+                {"data": "postcode_service_price_updated_on"},
+                {"data": null},
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var archived = $("#service_package_postal_price_status").attr('data-val');
+                        var string = ' <td class=""> <div class="text-center">'
+                                + '<a href="#" class="btn btn-social-icon editPostcodePrice" title="Edit" data-package="' + row.postcode_service_price_package_id + '" data-id = "' + row.postcode_service_price_id + '"><i class="fa fa-edit"></i></a>';
+                                
+                        if(archived === '0'){
+                              string  += '<a href="#" class="btn btn-social-icon servicePackagePostcodePriceArchive" title="Archive" data-package="' + row.postcode_service_price_package_id + '" data-id = "' + row.postcode_service_price_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                          }else{
+                              string  += '<a href="#" class="btn btn-social-icon servicePackagePostcodePriceUnArchive" title="Un Archive" data-package="' + row.postcode_service_price_package_id + '" data-id = "' + row.postcode_service_price_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                          }
+                        return string;
+                    }
+                }
+            ]
+        };
+        
+        /* Archived / Un Archived Datatable list event */
+        $(document).on("click",".btn-group .service_package_postal_price_status_archive, .service_package_postal_price_status_unarchive",function () {
+            $(".btn-group#service_package_postal_price_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#service_package_postal_price_status").attr('data-val',$(this).data('val'));           
+            service_package_postal_price.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+        
+        /* Load the Pincode Price setting modal window START */           
+        $(document).on('click', '.pincodePrice', function(e){
+        var thisClick = $(this);
+        var rowData = servicePackageListTable.row($(this).closest('tr')).data();
+        console.log(rowData);
+        $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'getServicePackagePostalPrice.html'; ?>",
+                data: {'packageId': rowData.service_package_id},
+                cache: false,
+                success: function (res) {
+                    $("#postalCodeModal .modal-body").html(res);
+                    $("#postalCodeModal").modal('show');
+                    $("#postalCodeModal").data('val',rowData);
+                    $(".stateSelect").select2({
+                        placeholder: "Select state",
+                        allowClear: true
+                    });
+                    $(".areaSelect").select2({
+                        placeholder: "Select areas",
+                        allowClear: true
+                    }).prop("disabled", true);
+                    $(".postcodeSelect").select2({
+                        placeholder: "Select postcodes",
+                        allowClear: true
+                    }).prop("disabled", true);
+                    service_package_postal_price = $('#service_package_postal_price').DataTable(postcodeDatatableObject);
+                    
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    notifyMessage('error', errorThrown);
+                }
+            });
+            
+        });       
+        /* Load the Pincode Price setting modal window END */ 
+              
+            
+        //On change of statecode load areas
+        $(document).on('change', '#stateSelect', function(){
+
+            var stateCode = $(this).val();
+            
+            if(stateCode !== ''){
+                $(".areaSelect").next().block();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() . 'getPostOffices.html'; ?>",
+                    data: {stateCode:stateCode}, //{'servicePackageId': packageId},
+                    cache: false,
+                    success: function (res) {
+                        var result = JSON.parse(res);
+                        if(result.status){
+                            var areas = result.data;
+
+                            $(".areaSelect").empty();
+                            areas.forEach(function(area){
+                                $(".areaSelect").append('<option value="'+area.post_office+'">'+area.post_office+'</option>');
+                            });
+                            $(".areaSelect").prop("disabled", false);
+                            $(".areaSelect").next().unblock();
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        notifyMessage('error', errorThrown);
+                    }
+                });
+            }
+
+        });
+            
+        //On change of areas load pincodes
+        $(document).on('change', '#areaSelect', function(){
+
+            var areaCode = $(this).val(); console.log(areaCode);
+            var rowdata  = $("#postalCodeModal").data('val');
+            var packageId  = rowdata.service_package_id;
+            
+            if(areaCode!== null &&  areaCode.length > 0){
+                $(".postcodeSelect").next().block();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() . 'getPostcodes.html'; ?>",
+                    data: {areaCode:areaCode, packageId: packageId}, //{'servicePackageId': packageId},
+                    cache: false,
+                    success: function (res) {
+                        var result = JSON.parse(res);
+                        if(result.status){ 
+                            var areas = result.data;
+
+                            $(".postcodeSelect").empty();
+                            areas.forEach(function(area){
+                                $(".postcodeSelect").append('<option value="'+area.postcode+'">'+area.postcode+'</option>');
+                            });
+                            $(".postcodeSelect").prop("disabled", false);
+                            $(".postcodeSelect").next().unblock();
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        notifyMessage('error', errorThrown);
+                    }
+                });
+            }
+
+        });
+            
+        /* Postcode Price creation form handling.. */
+        $(document).on("submit","#setPostalcodePriceForm", function (e) {
+            e.preventDefault();
+            var rowdata  = $("#postalCodeModal").data('val');
+            var data = {
+                stateSelect: $(".stateSelect").val(),
+                areaSelect: $(".areaSelect").val(),
+                postcodeSelect: $(".postcodeSelect").val(),
+                postcodePrice: $(".postcodePrice").val(),          
+                packageId: rowdata.service_package_id,
+                serviceId: rowdata.service_package_service_id
+            }
+                console.log(data); 
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'setServicePackagePostalPrice.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+console.log(res);
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        service_package_postal_price.ajax.reload(); //call datatable to reload the Ajax resource
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+              
+        /* Postcode Price Edit popup window START */
+        $(document).on('click', '.editPostcodePrice', function(e){
+            e.preventDefault();      
+            var thisClick = $(this);
+            var rowData = service_package_postal_price.row($(this).closest('tr')).data();
+            //console.log(rowData);
+            $.confirm({
+                title: 'Update Offer Discount!',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'content': '' +
+                    '<div class="form-group">' +
+                    '<label>Frequency</label>' +
+                    '<input type="text" disabled placeholder="postcode" value="'+rowData.postcode_service_price_postcode+'" class="name form-control" />' +
+                    '</div>'+
+                    '<div class="form-group">' +
+                    '<label>Postcode Price</label>' +
+                    '<input type="number" step="0.5" placeholder="Postcode price" class="postcodePrice form-control" value="'+rowData.postcode_service_price_price+'"required />' +
+                    '</div>',
+                buttons: {
+                    update: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                                var priceVal = this.$content.find('.postcodePrice').val();
+                                if( priceVal <= 0){ $.alert('provide a valid price'); return false;}
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'updateServicePackagePostcodePrice.html'; ?>",
+                                data: {'postcodePriceId': rowData.postcode_service_price_id, 'packageId': rowData.postcode_service_price_package_id, 'postcode':rowData.postcode_service_price_postcode, 'priceVal':priceVal},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        service_package_postal_price.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                        $(thisClick).trigger('click');
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                    
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+                            //close window
+                        }
+                    }
+                }
+            });
+        
+        });
+        /* Postcode Price Edit popup window END */
+   
+        /* Archive/UnArchive the Service Package Postcode Price START  */
+        $(document).on('click', '.servicePackagePostcodePriceArchive, .servicePackagePostcodePriceUnArchive', function (e) {
+
+            e.preventDefault();
+            var postCodePriceId = $(this).data('id');
+            var packageId = $(this).data('package');
+            
+            if($(this).hasClass('servicePackagePostcodePriceUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveServicePackagePostcodePrice.html'; ?>",
+                                data: {'packageId': packageId, 'postcodePriceId':postCodePriceId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        service_package_postal_price.ajax.reload(); //call datatable to reload the Ajax resource
+                                        //$('#archiveConfirmModal').modal('hide');
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive the Service Package Postcode Price  END */
+        
+    });
+</script>
+<!-- JQUERY Events for the form loaded from AJAX(Pincode Price) ENDs -->
 
 <!-- Frequency Settings Script START-->
 <script>
@@ -1138,7 +1492,7 @@ $(function () {
             e.preventDefault();      
             var thisClick = $(this);
             var rowData = addonsPriceListTable.row($(this).closest('tr')).data();
-            console.log(rowData);
+            //console.log(rowData);
             $.confirm({
                 title: 'Update Addon Price!',
                 'useBootstrap': true,

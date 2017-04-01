@@ -25,5 +25,9 @@ $lang['service_addon_price_already_created']    = "Service Addon price is laread
 $lang['service_addon_price_archived']           = "Service Addon price archived";
 $lang['service_addon_price_unarchived']         = "Service Addon price un archived";
 $lang['service_addon_price_updated']            = "Service Addon price updated";
+$lang['service_package_postcode_price_added']   = "Postcode price updated for the service package.";
+$lang['package_postcode_price_archived']        = "Package postcode price archived";
+$lang['package_postcode_price_unarchived']      = "Package postcode price unarchived";
+$lang['package_postcode_price_updated']         = "Package postcode price updated";
 ?>
 

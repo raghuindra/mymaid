@@ -7,7 +7,7 @@
     </footer>
     </div>
 <?php } ?>
-
+    <div style="display: none" id='loader'><img  src="<?php echo img_url('default.gif'); ?>"</div>
 
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -58,6 +58,8 @@
     <script src="<?php echo plugin_url('dist/js/demo.js'); ?>"></script>
     <!-- Select2 -->
     <script src="<?php echo plugin_url('plugins/select2/select2.full.min.js');?>"></script>
+    <!-- blockUI -->
+    <script src="<?php echo plugin_url('plugins/blockUI/jquery.blockUI.js');?>"></script>
 
 <?php } ?>
 

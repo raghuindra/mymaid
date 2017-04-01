@@ -88,6 +88,13 @@ $route['listserviceSplRequest.html']            = "admin/postServiceSplRequestLi
 $route['addServiceSplRequest.html']             = "admin/createServiceSplRequest";
 $route['updateServiceSplRequest.html']          = "admin/postUpdateServiceSplRequest";
 $route['archiveServiceSplRequest.html']         = "admin/postArchiveServiceSplRequest";
+$route['getServicePackagePostalPrice.html']     = "admin/postGetServicePackagePostcodePrice";
+$route['getPostOffices.html']                   = "admin/postGetPostOffices";
+$route['getPostcodes.html']                     = "admin/postGetpostcodes";
+$route['setServicePackagePostalPrice.html']     = "admin/postSetServicePackagePostcodePrice";
+$route['archiveServicePackagePostcodePrice.html'] = "admin/postArchivePostcodePrice";
+$route['updateServicePackagePostcodePrice.html']= "admin/postUpdateServicePackagePostcodePrice";
+
 
 
 /* ....................  Vendor/Freelance Module Routing  .............................. */
