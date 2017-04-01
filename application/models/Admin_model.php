@@ -145,7 +145,7 @@ class Admin_model extends Mm_model{
                 . " AND postcode NOT IN (SELECT postcode_service_price_postcode FROM mm_postcode_service_price WHERE postcode_service_price_package_id = ".$packageId.")");
     }
     
-    function getServicePackagePriceList($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+    function getServicePackagePincodePriceList($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
          $this->db->select($fields); 
         if(count($condition) > 0) {
             foreach($condition as $key => $cond) {

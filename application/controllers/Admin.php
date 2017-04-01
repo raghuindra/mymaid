@@ -278,6 +278,7 @@ class Admin extends CI_Controller {
             echo json_encode($response);
         }
         
+        /* Service Special Request List */
         public function postServiceSplRequestList(){
             if(isset($_POST['serviceId'])){
                 $response = $this->admin_lib->_getServiceSplRequestList();
@@ -291,13 +292,9 @@ class Admin extends CI_Controller {
             echo json_encode($response);
         }
         
-        
+        /* Create Service Special Request */
         public function createServiceSplRequest(){
-           echo json_encode($response = array(
-                    'status' => false,
-                    'message' => "Under Progress..!!",
-                    'data' => array()
-                )); exit;
+
             if(isset($_POST['add_spl_request_id'])){
                 $response = $this->admin_lib->_createServiceSplRequest();
             }else{
@@ -311,14 +308,11 @@ class Admin extends CI_Controller {
             
         }
         
+        /* Upadte Service Special Request */
         public function postUpdateServiceSplRequest(){
-            echo json_encode($response = array(
-                    'status' => false,
-                    'message' => "Under Progress..!!",
-                    'data' => array()
-                )); exit;
-            if(isset($_POST['addonPriceId'])){
-                $response = $this->admin_lib->_archiveServiceAddonPrice();
+
+            if(isset($_POST['serviceSplReqId'])){
+                $response = $this->admin_lib->_updateServiceSplRequestPrice();
             }else{
                 $response = array(
                     'status' => false,
@@ -329,14 +323,11 @@ class Admin extends CI_Controller {
             echo json_encode($response);
         }
         
+        /* Archive/Unarchive Service Special Request */
         public function postArchiveServiceSplRequest(){
-            echo json_encode($response = array(
-                    'status' => false,
-                    'message' => "Under Progress..!!",
-                    'data' => array()
-                )); exit;
-            if(isset($_POST['priceVal'])){
-                $response = $this->admin_lib->_updateServiceAddonPrice();
+
+            if(isset($_POST['serviceSplReqId'])){
+                $response = $this->admin_lib->_archiveServiceSplRequest();
             }else{
                 $response = array(
                     'status' => false,
@@ -346,6 +337,7 @@ class Admin extends CI_Controller {
             }
             echo json_encode($response);
         }
+        
         
         /* Get the distinct price for a Service package of a service based on Postcode  */
         public function postGetServicePackagePostcodePrice(){
@@ -361,6 +353,7 @@ class Admin extends CI_Controller {
                                  
         }
         
+        /* Get City name based on sate code selection */
         public function postGetPostOffices(){
             if(isset($_POST['stateCode'])){
                $response =  $this->admin_lib->_getPostOffices();
@@ -374,6 +367,7 @@ class Admin extends CI_Controller {
             echo json_encode($response);
         }
         
+        /* get the Postcodes based on AreaCodes And which not available in Postcode Price list already. */
         public function postGetpostcodes(){
             if(isset($_POST['areaCode'])){
                $response =  $this->admin_lib->_getpostcodes();
@@ -405,7 +399,7 @@ class Admin extends CI_Controller {
                                  
         }
         
-        
+        /* Postcpde Price Archive/UnArchive */
         public function postArchivePostcodePrice(){
             
             if(isset($_POST['postcodePriceId'])){
@@ -421,6 +415,7 @@ class Admin extends CI_Controller {
             
         }
         
+        /* Postcpde Price Updating */
         public function postUpdateServicePackagePostcodePrice(){
             
             if(isset($_POST['priceVal'])){

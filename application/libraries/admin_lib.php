@@ -591,38 +591,47 @@ class Admin_lib {
 
             $result = $this->model->get_tb('mm_service_frequency_offer', 'service_frequency_offer_id', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id' => $service_id))->result();
             if (!empty($result)) {
-
-                $msg = $this->archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, $archive, $person_id);
-
-                $response = array(
-                    'status' => true,
-                    'message' => $msg,
-                );
-                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                
+                $this->archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, $archive, $person_id);
+             
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
+
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
-    /*  */
-
+    /*  Archive / Unarchive the Frequency Offers */
     function archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, $archive, $person_id) {
+        if($archive == Globals::UN_ARCHIVE){
+            if( $this->hasUnArchivedFrequencyOffer($freqId, $service_id) ){               
+               $this->_message  = $this->ci->lang->line('service_frequency_offer_already_exists'); 
+               $this->_status   = false;
+               return;
+            }
+        }
         $info = array();
         $info['service_frequency_offer_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;
         $info['service_frequency_offer_updated_by'] = $person_id;
 
         $this->model->update_tb('mm_service_frequency_offer', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id' => $service_id), $info);
-        return $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_frequency_offer_archived') : $this->ci->lang->line('service_frequency_offer_unarchived');
+        $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_frequency_offer_archived') : $this->ci->lang->line('service_frequency_offer_unarchived'); 
+        $this->_status   = true;
+        return;
+        
+    }
+    
+    /* Function to check same frequency in UnArchive status to block the duplicacy. */
+    function hasUnArchivedFrequencyOffer($freqId, $service_id){
+        
+        $result = $this->model->get_tb('mm_service_frequency_offer', 'service_frequency_offer_id', array('service_frequency_offer_frequency_id'=>$freqId, 'service_frequency_offer_service_id'=>$service_id, 'service_frequency_offer_archived'=>Globals::UN_ARCHIVE))->result();       
+        if(!empty($result)){ return true; }else{ return false; }
     }
 
     /*   */
-
     function _updateServiceFrequencyOffer() {
 
         $this->ci->data['success_message'] = "";
@@ -658,32 +667,23 @@ class Admin_lib {
 
                     $this->model->update_tb('mm_service_frequency_offer', array('service_frequency_offer_id' => $freqOffer_id, 'service_frequency_offer_frequency_id' => $freqId, 'service_frequency_offer_service_id' => $service_id), $info);
 
-                    $response = array(
-                        'status' => true,
-                        'message' => $this->ci->lang->line('service_frequency_offer_updated'),
-                    );
+                    $this->_message  = $this->ci->lang->line('service_frequency_offer_updated'); 
+                    $this->_status   = true;
+                    
                 } else {
 
-                    $msg = $this->archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, Globals::ARCHIVE, $person_id);
+                    $this->archiveFrequencyOffer($freqOffer_id, $freqId, $service_id, Globals::ARCHIVE, $person_id);
                     $insert_id = $this->createFrequencyOffer($freqId, $service_id, $offerVal, $person_id);
 
-                    if ($insert_id > 0) {
-                        $response = array(
-                            'status' => false,
-                            'message' => $msg,
-                        );
-                    }
                 }
 
                 //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
@@ -692,33 +692,25 @@ class Admin_lib {
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
         $archived = Globals::UN_ARCHIVE;
-        $response = array();
+
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
             $serviceId = $this->ci->input->post('serviceId', true);
             $result = $this->model->getServiceAddonsPriceList('*', array('service_addon_price_service_id' => $serviceId, 'service_addon_price_archived' => $archived))->result();
             if ($result) {
-                $response = array(
-                    'status' => true,
-                    'message' => '',
-                    'data' => $result
-                );
+                $this->_message  = ''; 
+                $this->_status   = true;
+                $this->_rdata    = $result;
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('no_records_found'),
-                    'data' => array()
-                );
+                $this->_message  = $this->ci->lang->line('no_records_found'); 
+                $this->_status   = FALSE;
             }
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('invalid_request'),
-                'data' => array()
-            );
+            $this->_message  = $this->ci->lang->line('invalid_request'); 
+            $this->_status   = FALSE;
         }
 
-        return $response;
+        return $this->getResponse();
     }
 
     function _createServiceAddonsPrice() {
@@ -753,40 +745,31 @@ class Admin_lib {
                 if (!empty($result)) {
 
                     if ($this->checkServiceAddonPriceAdded($addon_id, $service_id)) {
-                        return $response = array(
-                            'status' => false,
-                            'message' => $this->ci->lang->line('service_addon_price_already_created'),
-                        );
+                        $this->_message  = $this->ci->lang->line('service_addon_price_already_created'); 
+                        $this->_status   = false;
+                        return $this->getResponse();
                     }
 
                     $priceVal = $this->ci->input->post('add_addon_price', true);
                     $insert_id = $this->createServiceAddonPrice($addon_id, $service_id, $priceVal, $person_id);
 
                     if ($insert_id > 0) {
-                        $response = array(
-                            'status' => true,
-                            'message' => $this->ci->lang->line('service_addon_price_created'),
-                        );
+                        $this->_message  = $this->ci->lang->line('service_addon_price_created'); 
+                        $this->_status   = true;
                     } else {
-                        $response = array(
-                            'status' => false,
-                            'message' => $this->ci->lang->line('something_problem'),
-                        );
+                        $this->_message  = $this->ci->lang->line('something_problem'); 
+                        $this->_status   = false;
                     }
                 } else {
-                    $response = array(
-                        'status' => false,
-                        'message' => $this->ci->lang->line('invalid_data'),
-                    );
+                    $this->_message  = $this->ci->lang->line('invalid_data'); 
+                    $this->_status   = false;
                 }
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
@@ -840,32 +823,41 @@ class Admin_lib {
             $result = $this->model->get_tb('mm_service_addon_price', 'service_addon_price_id', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id' => $service_id))->result();
             if (!empty($result)) {
 
-                $msg = $this->archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, $archive, $person_id);
+                $this->archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, $archive, $person_id);
 
-                $response = array(
-                    'status' => true,
-                    'message' => $msg,
-                );
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
-    /*  */
-
+    /* Archive / UnArchive Addon Price */
     function archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, $archive, $person_id) {
+        if($archive == Globals::UN_ARCHIVE){
+            if( $this->hasUnArchivedServiceAddon($addon_id, $service_id) ){               
+               $this->_message  = $this->ci->lang->line('service_addon_price_already_exists'); 
+               $this->_status   = false;
+               return;
+            }
+        }
         $info = array();
         $info['service_addon_price_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;
         $info['service_addon_price_updated_by'] = $person_id;
 
         $this->model->update_tb('mm_service_addon_price', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id' => $service_id), $info);
-        return $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_addon_price_archived') : $this->ci->lang->line('service_addon_price_unarchived');
+        $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_addon_price_archived') : $this->ci->lang->line('service_addon_price_unarchived'); 
+        $this->_status   = true;
+        return;
+    }
+    
+    /* Function to check same Addon in UnArchive status to block the duplicacy. */
+    function hasUnArchivedServiceAddon($addon_id, $service_id){
+        
+        $result = $this->model->get_tb('mm_service_addon_price', 'service_addon_price_id', array('service_addon_price_addon_id'=>$addon_id, 'service_addon_price_service_id'=>$service_id, 'service_addon_price_archived'=>Globals::UN_ARCHIVE))->result();       
+        if(!empty($result)){ return true; }else{ return false; }
     }
 
     function _updateServiceAddonPrice() {
@@ -902,31 +894,21 @@ class Admin_lib {
 
                     $this->model->update_tb('mm_service_addon_price', array('service_addon_price_id' => $addon_price_id, 'service_addon_price_addon_id' => $addon_id, 'service_addon_price_service_id' => $service_id), $info);
 
-                    $response = array(
-                        'status' => true,
-                        'message' => $this->ci->lang->line('service_addon_price_updated'),
-                    );
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('service_addon_price_updated');
                 } else {
 
-                    $msg = $this->archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, Globals::ARCHIVE, $person_id);
+                    $this->archiveServiceAddonPrice($addon_price_id, $addon_id, $service_id, Globals::ARCHIVE, $person_id);
 
                     $insert_id = $this->createServiceAddonPrice($addon_id, $service_id, $priceVal, $person_id);
-
-                    if ($insert_id > 0) {
-                        $response = array(
-                            'status' => false,
-                            'message' => $msg,
-                        );
-                    }
                 }
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_data');
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
@@ -934,6 +916,7 @@ class Admin_lib {
         return FALSE;
     }
 
+     /* Service Special Request List */
     function _getServiceSplRequestList() {
 
         $this->ci->data['success_message'] = "";
@@ -951,12 +934,10 @@ class Admin_lib {
             } else {
                 $this->_status = false;
                 $this->_message = $this->ci->lang->line('no_records_found');
-                $this->_rdata = array();
             }
         } else {
             $this->_status = false;
             $this->_message = $this->ci->lang->line('invalid_request');
-            $this->_rdata = array();
         }
 
         return $this->getResponse();
@@ -982,10 +963,11 @@ class Admin_lib {
             return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
         } else {
 
-            $splReqId = $this->ci->input->post('add_addons_price_addon_id', true);
-            $service_id = $this->ci->input->post('add_addons_price_service_id', true);
+            $splReqId = $this->ci->input->post('add_spl_request_id', true);
+            $service_id = $this->ci->input->post('add_service_spl_service_id', true);
+            $price      = $this->ci->input->post('add_spl_request_price', true);
 
-            $result = $this->model->get_tb('mm_service_addon', 'service_addon_id', array('service_addon_id' => $addon_id))->result();
+            $result = $this->model->get_tb('mm_spl_request', 'spl_request_id', array('spl_request_id' => $splReqId))->result();
 
             if (!empty($result)) {
 
@@ -994,40 +976,31 @@ class Admin_lib {
                 if (!empty($result)) {
 
                     if ($this->checkServiceSplRequestAdded($splReqId, $service_id)) {
-                        return $response = array(
-                            'status' => false,
-                            'message' => $this->ci->lang->line('service_addon_price_already_created'),
-                        );
+                        $this->_status = FALSE;
+                        $this->_message = $this->ci->lang->line('service_spl_request_already_created');
+                        return $this->getResponse();
                     }
 
-                    $priceVal = $this->ci->input->post('add_addon_price', true);
-                    $insert_id = $this->createServiceSplRequest($splReqId, $service_id, $priceVal, $person_id);
+                    $insert_id = $this->createServiceSplRequest($splReqId, $service_id, $person_id, $price);
 
                     if ($insert_id > 0) {
-                        $response = array(
-                            'status' => true,
-                            'message' => $this->ci->lang->line('service_addon_price_created'),
-                        );
+                        $this->_status = true;
+                        $this->_message = $this->ci->lang->line('service_spl_request_created');
+                        
                     } else {
-                        $response = array(
-                            'status' => false,
-                            'message' => $this->ci->lang->line('something_problem'),
-                        );
+                        $this->_status = FALSE;
+                        $this->_message = $this->ci->lang->line('something_problem');                     
                     }
                 } else {
-                    $response = array(
-                        'status' => false,
-                        'message' => $this->ci->lang->line('invalid_data'),
-                    );
+                    $this->_status = FALSE;
+                    $this->_message = $this->ci->lang->line('invalid_data');
                 }
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_status = FALSE;
+                $this->_message = $this->ci->lang->line('invalid_data');
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
@@ -1041,27 +1014,150 @@ class Admin_lib {
         }
     }
 
-    function createServiceSplRequest($splReqId, $serviceId, $priceVal, $person_id) {
+    function createServiceSplRequest($splReqId, $serviceId, $person_id, $price = null) {
         $info = array();
         $info['service_spl_request_spl_request_id'] = $splReqId;
         $info['service_spl_request_service_id'] = $serviceId;
-        $info['service_spl_request_price'] = $priceVal;
+        $info['service_spl_request_price'] = $price;
         $info['service_spl_request_created_on'] = date('Y-m-d H:i:s', strtotime('now'));
-        ;
         $info['service_spl_request_created_by'] = $person_id;
 
-        return $insert_id = $this->model->insert_tb('mm_service_addon_price', $info);
+        return $insert_id = $this->model->insert_tb('mm_service_spl_request', $info);
+    }
+
+    /* Upadte the service spl request price. */
+    function _updateServiceSplRequestPrice(){
+        
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $response = array();
+        $this->ci->form_validation->set_rules('serviceSplReqId', 'Service Package Postcode Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('serviceId', 'Service Package Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('splReqId', 'Service Package Postcode', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('priceVal', 'Postcode Price', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $service_spl_req_id = $this->ci->input->post('serviceSplReqId', true);
+            $service_id         = $this->ci->input->post('serviceId', true);
+            $priceVal           = $this->ci->input->post('priceVal', true);
+            $spl_req_id         = $this->ci->input->post('splReqId', true);
+
+            $result = $this->model->get_tb('mm_service_spl_request', 'service_spl_request_id', array('service_spl_request_id' => $service_spl_req_id, 'service_spl_request_spl_request_id' => $spl_req_id, 'service_spl_request_service_id'=>$service_id))->result();
+            if (!empty($result)) {
+
+                if (!$this->checkServiceSplRequestHistoryAvailable()) {
+                    $info = array();
+                    $info['service_spl_request_price'] = $priceVal;
+                    $info['service_spl_request_updated_by'] = $person_id;
+
+                    $this->model->update_tb('mm_service_spl_request', array('service_spl_request_id' => $service_spl_req_id, 'service_spl_request_spl_request_id' => $spl_req_id, 'service_spl_request_service_id'=>$service_id), $info);
+                    
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('service_spl_request_updated');
+                    
+                } else {
+
+                    $this->archiveServiceSplRequest($service_spl_req_id, $spl_req_id, $service_id, Globals::ARCHIVE, $person_id);
+
+                    $this->createServiceSplRequest($spl_req_id, $service_id, $person_id, $priceVal);
+
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_data');
+            }
+
+            return $this->getResponse();
+        }
+        
+    }
+    
+    /* Check the Service Spl request history available with user service booking. */
+    function checkServiceSplRequestHistoryAvailable(){
+        
+        return false;
+    }
+    
+    /* Archive / UnArchive Service Special request */
+    function _archiveServiceSplRequest(){
+        
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $response = array();
+        $this->ci->form_validation->set_rules('serviceSplReqId', 'Service Special Request', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('splReqId', 'Special Request Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');           
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+
+            $service_spl_req_id = $this->ci->input->post('serviceSplReqId', true);
+            $spl_req_id = $this->ci->input->post('splReqId', true);
+            $service_id = $this->ci->input->post('serviceId', true);
+            $archive = intval($this->ci->input->post('archive', true));
+
+            $result = $this->model->get_tb('mm_service_spl_request', 'service_spl_request_id', array('service_spl_request_id' => $service_spl_req_id, 'service_spl_request_spl_request_id' => $spl_req_id, 'service_spl_request_service_id' => $service_id))->result();
+            if (!empty($result)) {
+
+                $this->archiveServiceSplRequest($service_spl_req_id, $spl_req_id, $service_id, $archive, $person_id);
+
+            } else {
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
+            }
+
+            return $this->getResponse();
+        }
+    }
+    
+    /* Archive / UnArchive Service Spl Request */
+    function archiveServiceSplRequest($service_spl_req_id, $spl_req_id, $service_id, $archive, $person_id) {
+        if($archive == Globals::UN_ARCHIVE){
+            if( $this->hasUnArchivedServiceSplRequest($spl_req_id, $service_id) ){               
+               $this->_message  = $this->ci->lang->line('service_Spl_request_already_exists'); 
+               $this->_status   = false;
+               return;
+            }
+        }
+        $info = array();
+        $info['service_spl_request_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;
+        $info['service_spl_request_updated_by'] = $person_id;
+
+        $this->model->update_tb('mm_service_spl_request', array('service_spl_request_id' => $service_spl_req_id, 'service_spl_request_spl_request_id' => $spl_req_id, 'service_spl_request_service_id' => $service_id), $info);
+        $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_spl_request_archived') : $this->ci->lang->line('service_spl_request_unarchived'); 
+        $this->_status   = true;
+        return;
+    }
+    
+    /* Function to check same Service SPl request in UnArchive status to block the duplicacy. */
+    function hasUnArchivedServiceSplRequest($spl_req_id, $service_id){
+        
+        $result = $this->model->get_tb('mm_service_spl_request', 'service_spl_request_id', array('service_spl_request_spl_request_id'=>$spl_req_id, 'service_spl_request_service_id'=>$service_id, 'service_spl_request_archived'=>Globals::UN_ARCHIVE))->result();       
+        if(!empty($result)){ return true; }else{ return false; }
     }
 
     /* get the state names of a postal code */
-
     function _getPostalStates() {
 
         return $this->model->getStates('DISTINCT(`pt`.state_code), `st`.state_name')->result();
     }
 
-    /* Get get post office list belongs to state */
-
+    /* Get get City list belongs to state */
     function _getPostOffices() {
         $this->ci->load->library('form_validation');
         $this->ci->data['success_message'] = "";
@@ -1088,6 +1184,7 @@ class Admin_lib {
         }
     }
 
+     /* get the Postcodes based on AreaCodes And which not available in Postcode Price list already. */
     function _getpostcodes() {
         $this->ci->load->library('form_validation');
         $this->ci->data['success_message'] = "";
@@ -1118,6 +1215,7 @@ class Admin_lib {
         }
     }
 
+     /* Set the ditinct price for a Service package of a service based on Postcode  */
     function _setServicePackagePostalPrice() {
 
         $this->ci->data['success_message'] = "";
@@ -1175,6 +1273,7 @@ class Admin_lib {
         return $this->getResponse();
     }
 
+     /* Get the distinct price for a Service package of a service based on Postcode  */
     function _getServicePackagePostalPriceList() {
 
         $this->ci->data['success_message'] = "";
@@ -1184,7 +1283,7 @@ class Admin_lib {
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
             $packageId = $this->ci->input->post('package_id', true);
-            $result = $this->model->getServicePackagePriceList('*', array('postcode_service_price_package_id' => $packageId, 'postcode_service_archived' => $archived))->result();
+            $result = $this->model->getServicePackagePincodePriceList('*', array('postcode_service_price_package_id' => $packageId, 'postcode_service_archived' => $archived))->result();
             if ($result) {
                 $this->_status = true;
                 $this->_message = '';
@@ -1203,6 +1302,7 @@ class Admin_lib {
         return $this->getResponse();
     }
 
+    /* Postcpde Price Archive/UnArchive */
     function _archiveServicePackagePostcodePrice() {
 
         $this->ci->data['success_message'] = "";
@@ -1215,7 +1315,8 @@ class Admin_lib {
         $this->ci->form_validation->set_rules('postcodePriceId', 'Service Package Postcode Price Id', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('packageId', 'Service Package Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
-
+        $this->ci->form_validation->set_rules('postcode', 'Postcode', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
             //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
@@ -1225,36 +1326,49 @@ class Admin_lib {
             $postcode_price_id = $this->ci->input->post('postcodePriceId', true);
             $package_id = $this->ci->input->post('packageId', true);
             $archive = intval($this->ci->input->post('archive', true));
+            $postcode = $this->ci->input->post('postcode', true);
 
             $result = $this->model->get_tb('mm_postcode_service_price', 'postcode_service_price_id', array('postcode_service_price_id' => $postcode_price_id, 'postcode_service_price_package_id' => $package_id))->result();
             if (!empty($result)) {
 
-                $msg = $this->archiveServicePackagePostcodePrice($postcode_price_id, $package_id, $archive, $person_id);
-
-                $response = array(
-                    'status' => true,
-                    'message' => $msg,
-                );
+                $this->archiveServicePackagePostcodePrice($postcode_price_id, $package_id, $postcode, $archive, $person_id);
+                
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
-    function archiveServicePackagePostcodePrice($postcode_price_id, $package_id, $archive, $person_id) {
+    /* Postcpde Price Archive/UnArchive */
+    function archiveServicePackagePostcodePrice($postcode_price_id, $package_id, $postcode, $archive, $person_id) {
+        if($archive == Globals::UN_ARCHIVE){
+            if( $this->hasUnArchivedServicePackagePostcodePrice($postcode_price_id, $package_id, $postcode) ){               
+               $this->_message  = $this->ci->lang->line('package_postcode_price_already_exists'); 
+               $this->_status   = false;
+               return;
+            }
+        }
         $info = array();
         $info['postcode_service_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;
         $info['postcode_service_price_updated_by'] = $person_id;
 
         $this->model->update_tb('mm_postcode_service_price', array('postcode_service_price_id' => $postcode_price_id, 'postcode_service_price_package_id' => $package_id), $info);
-        return $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('package_postcode_price_archived') : $this->ci->lang->line('package_postcode_price_unarchived');
+        $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('package_postcode_price_archived') : $this->ci->lang->line('package_postcode_price_unarchived'); 
+        $this->_status   = true;
+        return;
+    }
+    
+    /* Function to check same Service SPl request in UnArchive status to block the duplicacy. */
+    function hasUnArchivedServicePackagePostcodePrice($postcode_price_id, $package_id, $postcode){
+        
+        $result = $this->model->get_tb('mm_postcode_service_price', 'postcode_service_price_id', array('postcode_service_price_id'=>$postcode_price_id, 'postcode_service_price_package_id'=>$package_id,'postcode_service_price_postcode'=>$postcode, 'postcode_service_archived'=>Globals::UN_ARCHIVE))->result();       
+        if(!empty($result)){ return true; }else{ return false; }
     }
 
+    /* Postcpde Price Updating */
     function _updateServicePackagePostcodePrice() {
 
         $this->ci->data['success_message'] = "";
@@ -1288,39 +1402,33 @@ class Admin_lib {
                     $info['postcode_service_price_updated_by'] = $person_id;
 
                     $this->model->update_tb('mm_postcode_service_price', array('postcode_service_price_id' => $postcode_price_id, 'postcode_service_price_package_id' => $package_id), $info);
-
-                    $response = array(
-                        'status' => true,
-                        'message' => $this->ci->lang->line('package_postcode_price_updated'),
-                    );
+                    
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('package_postcode_price_updated');
+                    
                 } else {
 
-                    $msg = $this->archiveServicePackagePostcodePrice($postcode_price_id, $package_id, Globals::ARCHIVE, $person_id);
+                    $this->archiveServicePackagePostcodePrice($postcode_price_id, $package_id, $postcode, Globals::ARCHIVE, $person_id);
 
-                    $insert_id = $this->createServicePackagePostcodePrice($package_id, $priceVal, $postcode, $person_id);
+                    $this->createServicePackagePostcodePrice($package_id, $priceVal, $postcode, $person_id);
 
-                    if ($insert_id > 0) {
-                        $response = array(
-                            'status' => false,
-                            'message' => $msg,
-                        );
-                    }
                 }
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+
+                $this->_status = FALSE;
+                $this->_message = $this->ci->lang->line('invalid_data');
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
+    /* Check any history attcahed with the Pincode price in the User orders. */
     function checkServicePackagePincodePriceHistoryAvailable() {
         return FALSE;
     }
     
+    /* Create the Service Package Postcode Price. */
     function createServicePackagePostcodePrice($package_id, $priceVal, $postcode, $person_id){        
         $info = array();
         $info['postcode_service_price_package_id']  = $package_id;

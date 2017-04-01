@@ -510,11 +510,10 @@ $this->load->view("block/admin_leftMenu");
                                             <table id="service_spl_request_list" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th>Addon</th>
-                                                        <th>Addon Price</th>
-                                                        <th>Added On</th>
+                                                        <th>Special Request</th>
+                                                        <th>Price</th>
+                                                        <th>Created On</th>
                                                         <th>Updated On</th>
-                                                        <th>Updated By</th>
                                                         <th class="action">Action</th>
                                                     </tr>
                                                 </thead>
@@ -864,7 +863,7 @@ $this->load->view("block/admin_leftMenu");
 </script>
 
 
-    <!-- JQUERY Events for the form loaded from AJAX(Pincode Price) STARTs -->
+<!-- JQUERY Events for the form loaded from AJAX(Pincode Price) STARTs -->
 <script>
     $(function(){
         var service_package_postal_price;
@@ -902,12 +901,12 @@ $this->load->view("block/admin_leftMenu");
                     "render": function (data, type, row) {
                         var archived = $("#service_package_postal_price_status").attr('data-val');
                         var string = ' <td class=""> <div class="text-center">'
-                                + '<a href="#" class="btn btn-social-icon editPostcodePrice" title="Edit" data-package="' + row.postcode_service_price_package_id + '" data-id = "' + row.postcode_service_price_id + '"><i class="fa fa-edit"></i></a>';
+                                + '<a href="#" class="btn btn-social-icon editPostcodePrice" title="Edit"><i class="fa fa-edit"></i></a>';
                                 
                         if(archived === '0'){
-                              string  += '<a href="#" class="btn btn-social-icon servicePackagePostcodePriceArchive" title="Archive" data-package="' + row.postcode_service_price_package_id + '" data-id = "' + row.postcode_service_price_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                              string  += '<a href="#" class="btn btn-social-icon servicePackagePostcodePriceArchive" title="Archive" ><i class="fa fa-archive"></i></a></div></td>';
                           }else{
-                              string  += '<a href="#" class="btn btn-social-icon servicePackagePostcodePriceUnArchive" title="Un Archive" data-package="' + row.postcode_service_price_package_id + '" data-id = "' + row.postcode_service_price_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                              string  += '<a href="#" class="btn btn-social-icon servicePackagePostcodePriceUnArchive" title="Un Archive"><i class="fa fa-folder-open"></i></a></div></td>';
                           }
                         return string;
                     }
@@ -928,7 +927,7 @@ $this->load->view("block/admin_leftMenu");
         $(document).on('click', '.pincodePrice', function(e){
         var thisClick = $(this);
         var rowData = servicePackageListTable.row($(this).closest('tr')).data();
-        console.log(rowData);
+        
         $.ajax({
                 type: "POST",
                 url: "<?php echo base_url() . 'getServicePackagePostalPrice.html'; ?>",
@@ -999,7 +998,7 @@ $this->load->view("block/admin_leftMenu");
         //On change of areas load pincodes
         $(document).on('change', '#areaSelect', function(){
 
-            var areaCode = $(this).val(); console.log(areaCode);
+            var areaCode = $(this).val(); 
             var rowdata  = $("#postalCodeModal").data('val');
             var packageId  = rowdata.service_package_id;
             
@@ -1044,19 +1043,20 @@ $this->load->view("block/admin_leftMenu");
                 packageId: rowdata.service_package_id,
                 serviceId: rowdata.service_package_service_id
             }
-                console.log(data); 
+            var form = $(this);    
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url() . 'setServicePackagePostalPrice.html' ?>",
                 data: data,
                 cache: false,
                 success: function (res) {
-console.log(res);
+
                     var result = JSON.parse(res);
 
                     if (result.status === true) {
                         notifyMessage('success', result.message);
                         service_package_postal_price.ajax.reload(); //call datatable to reload the Ajax resource
+                        form.find('.formReset').trigger('click'); // reset the form
                     } else {
                         notifyMessage('error', result.message);
                     }
@@ -1069,7 +1069,7 @@ console.log(res);
             e.preventDefault();      
             var thisClick = $(this);
             var rowData = service_package_postal_price.row($(this).closest('tr')).data();
-            //console.log(rowData);
+            
             $.confirm({
                 title: 'Update Offer Discount!',
                 'useBootstrap': true,
@@ -1132,8 +1132,10 @@ console.log(res);
         $(document).on('click', '.servicePackagePostcodePriceArchive, .servicePackagePostcodePriceUnArchive', function (e) {
 
             e.preventDefault();
-            var postCodePriceId = $(this).data('id');
-            var packageId = $(this).data('package');
+            var rowData = service_package_postal_price.row($(this).closest('tr')).data();
+            var postCodePriceId = rowData.postcode_service_price_id;
+            var packageId = rowData.postcode_service_price_package_id;
+            var postcode  = rowData.postcode_service_price_postcode;
             
             if($(this).hasClass('servicePackagePostcodePriceUnArchive')){
                 archive = <?php echo Globals::UN_ARCHIVE;?>;
@@ -1157,7 +1159,7 @@ console.log(res);
                             $.ajax({
                                 type: "POST",
                                 url: "<?php echo base_url() . 'archiveServicePackagePostcodePrice.html'; ?>",
-                                data: {'packageId': packageId, 'postcodePriceId':postCodePriceId, 'archive':archive},
+                                data: {'packageId': packageId, 'postcodePriceId':postCodePriceId, 'postcode':postcode,'archive':archive},
                                 cache: false,
                                 success: function (res) {
                                     var result = JSON.parse(res);
@@ -1278,7 +1280,7 @@ console.log(res);
             e.preventDefault();      
             var thisClick = $(this);
             var rowData = frequencyListTable.row($(this).closest('tr')).data();
-            //console.log(rowData);
+            
             $.confirm({
                 title: 'Update Offer Discount!',
                 'useBootstrap': true,
@@ -1492,7 +1494,7 @@ $(function () {
             e.preventDefault();      
             var thisClick = $(this);
             var rowData = addonsPriceListTable.row($(this).closest('tr')).data();
-            //console.log(rowData);
+            
             $.confirm({
                 title: 'Update Addon Price!',
                 'useBootstrap': true,
@@ -1648,20 +1650,19 @@ $(function () {
                 {"data": "service_spl_request_price"},
                 {"data": "service_spl_request_created_on"},
                 {"data": "service_spl_request_updated_on"},
-                {"data": "service_spl_request_updated_by"},
                 {"data": null},
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
-                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [4], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                         var archived = $("#service_spl_request_status").attr('data-val');
                         var string = ' <td class=""> <div class="text-center">'
-                                + '<a href="#" class="editServiceSplRequestWindow btn btn-social-icon " title="Edit" data-service="' + row.service_spl_request_service_id + '" data-splreqid = "' + row.service_spl_request_spl_request_id + '" data-id="' + row.service_spl_request_id + '"><i class="fa fa-edit"></i></a>';
+                                + '<a href="#" class="editServiceSplRequestWindow btn btn-social-icon " title="Edit" ><i class="fa fa-edit"></i></a>';
                         if(archived == '0'){
-                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestArchive" title="Archive" data-service="' + row.service_spl_request_service_id + '" data-splreqid = "' + row.service_spl_request_spl_request_id + '" data-id = "' + row.service_spl_request_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestArchive" title="Archive" ><i class="fa fa-archive"></i></a></div></td>';
                         }else{
-                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestUnArchive" title="Archive" data-service="' + row.service_spl_request_service_id + '" data-splreqid = "' + row.service_spl_request_spl_request_id + '" data-id = "' + row.service_spl_request_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestUnArchive" title="Archive" ><i class="fa fa-folder-open"></i></a></div></td>';
                         }
                         return string;
                     }
@@ -1707,7 +1708,7 @@ $(function () {
             e.preventDefault();      
             var thisClick = $(this);
             var rowData = splRequestListTable.row($(this).closest('tr')).data();
-            console.log(rowData);
+           
             $.confirm({
                 title: 'Update Spl Request!',
                 'useBootstrap': true,
@@ -1769,9 +1770,11 @@ $(function () {
         $(document).on('click', '.serviceSplRequestUnArchive, .serviceSplRequestArchive', function (e) {
 
             e.preventDefault();
-            var serviceSplReqId = $(this).data('id');
-            var serviceId = $(this).data('service');
-            var splReqId = $(this).data('splreqid');
+            var rowData = splRequestListTable.row($(this).closest('tr')).data();
+            
+            var serviceSplReqId = rowData.service_spl_request_id;
+            var serviceId       = rowData.service_spl_request_service_id;
+            var splReqId        = rowData.service_spl_request_spl_request_id;
             
             if($(this).hasClass('serviceSplRequestUnArchive')){
                 archive = <?php echo Globals::UN_ARCHIVE;?>;
