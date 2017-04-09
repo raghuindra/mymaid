@@ -314,7 +314,7 @@ $this->load->view("block/admin_leftMenu");
         getCompanyDetail:  function(rowData, callback){
             console.log(rowData);
             $("#compName").html(rowData.company_name);
-            $("#compEmail").html(rowData.compnay_email_id);
+            $("#compEmail").html(rowData.company_email_id);
             $("#compReg").html(rowData.company_reg_number);
             $("#compAddress").html(rowData.company_address);
             $("#compAddress1").html(rowData.company_address1);
@@ -377,7 +377,7 @@ $this->load->view("block/admin_leftMenu");
                 {"data": null},
                 {"data": "company_name"},
                 {"data": "company_contact_person_name"},
-                {"data": "compnay_email_id"},
+                {"data": "company_email_id"},
                 {"data": "company_reg_number"},
                 {"data": "company_landphone"},
                 {"data": null},

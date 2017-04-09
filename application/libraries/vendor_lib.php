@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-include_once include_once APPPATH . 'libraries/Base_lib.php';
+include_once  APPPATH . 'libraries/Base_lib.php';
 
 class Vendor_lib extends Base_lib {
 
