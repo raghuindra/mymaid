@@ -28,11 +28,11 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
+            <li class="">
                 <a href="<?php echo base_url() . 'admin_home.html'; ?>"
                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
+<!--                        <i class="fa fa-angle-left pull-right"></i>-->
                     </span>
                 </a>
                 <!--                <ul class="treeview-menu">
@@ -57,15 +57,24 @@
                             </span>
                         </a>
                     </li>
-<!--                  <li>
-                        <a href="<?php //echo base_url() . 'packages.html'; ?>">
-                            <i class="fa fa-send"></i>
-                            <span>Package</span>
-                            <span class="pull-right-container">
-                                <span class="label pull-right bg-blue">4</span>
-                            </span>
-                        </a>
-                    </li>-->
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-group"></i>
+                    <span>Vendors</span>
+                    <span class="pull-right-container">
+                        <span class="label pull-right bg-blue">4</span>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url().'vendors_list.html'; ?>"><i class="fa fa-list"></i>Vendors List</a></li>
+                    <li><a href="<?php echo base_url().'vendors_company_list.html'; ?>"><i class="fa fa-bank"></i>Vendors Company</a></li>
+<!--                    <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
+                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
+                </ul>
+            </li>
+                
                     <!--  
                     <li>
                         <a href="<?php //echo base_url() . 'admin_canceledjobs.html'; ?>">

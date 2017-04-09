@@ -3,33 +3,23 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Admin_lib {
+include_once APPPATH . 'libraries/Base_lib.php';
 
-    var $model;
-    private $_status = false;
-    private $_message = "";
-    private $_rdata = array();
+class Admin_lib extends Base_lib{
 
-    function __construct() {
-        $this->ci = &get_instance();
+    public $model;
+
+    public function __construct() {
+        parent::__construct();
         $this->getModel();
     }
 
-    function getModel() {
+    public function getModel() {
         $this->ci->load->model('admin_model');
         $this->model = $this->ci->admin_model;
     }
 
-    function getResponse() {
-        return array(
-            'status' => $this->_status,
-            'message' => $this->_message,
-            'data' => $this->_rdata
-        );
-    }
-
     /* Function to add the service name */
-
     function _addService() {
         $this->ci->load->library('form_validation');
         $this->ci->data['success_message'] = "";
@@ -70,7 +60,6 @@ class Admin_lib {
     }
 
     /* Function to edit the service name. */
-
     function _editService() {
         $this->ci->load->library('form_validation');
         $this->ci->data['success_message'] = "";
@@ -120,8 +109,6 @@ class Admin_lib {
     }
 
     function _getServiceList() {
-        $this->ci->data['success_message'] = "";
-        $this->ci->data['error_message'] = "";
 
         $response = array();
         if ($this->ci->session->userdata('user_id') != null) {
@@ -132,7 +119,7 @@ class Admin_lib {
                     'message' => '',
                     'data' => $result
                 );
-                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                
             } else {
                 $response = array(
                     'status' => false,
@@ -146,27 +133,26 @@ class Admin_lib {
                 'message' => $this->ci->lang->line('invalid_request'),
                 'data' => array()
             );
-            //$this->ci->session->set_flashdata('error_message', $this->ci->lang->line('invalid_request'));                    
+           
         }
 
         return $response;
     }
 
     function _archiveService() {
-
-        $this->ci->data['success_message'] = "";
-        $this->ci->data['error_message'] = "";
+        $this->resetResponse();
+        
         $person_id = $this->ci->session->userdata('user_id');
 
         $this->ci->load->library('form_validation');
 
-        $response = array();
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
 
         if ($this->ci->form_validation->run() == FALSE) {
-            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
-            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
-            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('Validation_error');
+            return $this->getResponse();
+            
         } else {
 
             $info = array();
@@ -177,26 +163,21 @@ class Admin_lib {
                 $info['service_archived'] = Globals::ARCHIVE;
                 $info['service_updated_by'] = $person_id;
 
-                $val = $this->model->update_tb('mm_services', array('service_id' => $service_id), $info);
-
-                $response = array(
-                    'status' => true,
-                    'message' => $this->ci->lang->line('service_archived'),
-                );
-                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                $this->model->update_tb('mm_services', array('service_id' => $service_id), $info);
+                
+                $this->_status = true;
+                $this->_message = $this->ci->lang->line('service_archived');
+                      
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_data');
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
     /* Library function to create the package for the service. */
-
     function _createServicePackage() {
         $this->ci->load->library('form_validation');
         $this->ci->data['success_message'] = "";
@@ -219,9 +200,8 @@ class Admin_lib {
 
 
         if ($this->ci->form_validation->run() == FALSE) {
-            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
-            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
-            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+
+            return $response = array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
         } else {
 
             $service_id = $this->ci->input->post('package_service_id', true);
@@ -438,6 +418,7 @@ class Admin_lib {
         $person_id = $this->ci->session->userdata('user_id');
 
         $response = array();
+        $this->resetResponse();
 
         $this->ci->form_validation->set_rules('add_frequency_service_id', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('add_service_frequency', 'Service Frequency', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
@@ -461,43 +442,34 @@ class Admin_lib {
 
                 if (!empty($result)) {
 
-                    if ($this->checkFrequencyOfferAdded($service_freq, $service_id)) {
-                        return $response = array(
-                            'status' => false,
-                            'message' => $this->ci->lang->line('service_frequency_offer_already_created'),
-                        );
+                    if ($this->checkFrequencyOfferAdded($service_freq, $service_id)) {                        
+                        $this->_status  = FALSE;
+                        $this->_message = $this->ci->lang->line('service_frequency_offer_already_created');
+                        return $this->getResponse();
                     }
 
                     $offerVal = $this->ci->input->post('add_frequency_discount', true);
                     $insert_id = $this->createFrequencyOffer($service_freq, $service_id, $offerVal, $person_id);
 
                     if ($insert_id > 0) {
-                        $response = array(
-                            'status' => true,
-                            'message' => $this->ci->lang->line('service_frequency_offer_created'),
-                        );
-                        //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                        $this->_status  = true;
+                        $this->_message = $this->ci->lang->line('service_frequency_offer_created');
                     } else {
-                        $response = array(
-                            'status' => false,
-                            'message' => $this->ci->lang->line('something_problem'),
-                        );
+                        $this->_status  = FALSE;
+                        $this->_message = $this->ci->lang->line('something_problem');
                     }
                 } else {
-                    $response = array(
-                        'status' => false,
-                        'message' => $this->ci->lang->line('invalid_data'),
-                    );
+                    $this->_status  = FALSE;
+                    $this->_message = $this->ci->lang->line('invalid_data');
                 }
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('invalid_data'),
-                );
-                //$this->ci->session->set_flashdata('error_message', $this->ci->lang->line('service_name_already_available'));                    
+
+                $this->_status  = FALSE;
+                $this->_message = $this->ci->lang->line('invalid_data');
+                
             }
 
-            return $response;
+            return $this->getResponse();
         }
     }
 
@@ -534,34 +506,28 @@ class Admin_lib {
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
         $archived = Globals::UN_ARCHIVE;
-        $response = array();
+
+        $this->resetResponse();
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
             $result = $this->model->getFrequencyOfferPriceList('*', array('service_frequency_offer_service_id' => $serviceId, 'service_frequency_offer_archived' => $archived))->result();
             if ($result) {
-                $response = array(
-                    'status' => true,
-                    'message' => '',
-                    'data' => $result
-                );
-                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                $this->_status   = true;
+                $this->_rdata    = $result;
+                             
             } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->ci->lang->line('no_records_found'),
-                    'data' => array()
-                );
+                $this->_message  = $this->ci->lang->line('no_records_found'); 
+                $this->_status   = false;
+
             }
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('invalid_request'),
-                'data' => array()
-            );
-            //$this->ci->session->set_flashdata('error_message', $this->ci->lang->line('invalid_request'));                    
+
+            $this->_message  = $this->ci->lang->line('invalid_request'); 
+            $this->_status   = false;
+                     
         }
 
-        return $response;
+        return $this->getResponse();
     }
 
     function _archiveServiceFrequencyOffer() {
@@ -572,6 +538,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('freqOfferId', 'Service Frequency Offer Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('frequencyId', 'Service Frequency Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -641,6 +609,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('freqOfferId', 'Service Frequency Offer Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('frequencyId', 'Service Frequency Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -648,7 +618,7 @@ class Admin_lib {
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
-            //$this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+            
             return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
         } else {
 
@@ -677,10 +647,11 @@ class Admin_lib {
 
                 }
 
-                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+                         
             } else {
                 $this->_message  = $this->ci->lang->line('invalid_data'); 
                 $this->_status   = false;
+                
             }
 
             return $this->getResponse();
@@ -692,7 +663,8 @@ class Admin_lib {
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
         $archived = Globals::UN_ARCHIVE;
-
+        $this->resetResponse();
+        
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
             $serviceId = $this->ci->input->post('serviceId', true);
@@ -721,7 +693,8 @@ class Admin_lib {
         $person_id = $this->ci->session->userdata('user_id');
 
         $response = array();
-
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('add_addons_price_service_id', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('add_addons_price_addon_id', 'Service Addon Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('add_addon_price', 'Service Addon Price', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
@@ -804,6 +777,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('addonPriceId', 'Service Addon Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('addonId', 'Service Addon Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -869,6 +844,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('addonPriceId', 'Service Addon Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('addonId', 'Service Addon Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -922,7 +899,8 @@ class Admin_lib {
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
         $archived = Globals::UN_ARCHIVE;
-
+        $this->resetResponse();
+        
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
             $serviceId = $this->ci->input->post('serviceId', true);
@@ -951,7 +929,8 @@ class Admin_lib {
         $person_id = $this->ci->session->userdata('user_id');
 
         $response = array();
-
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('add_service_spl_service_id', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('add_spl_request_id', 'Service Spl Request Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('add_spl_request_price', 'Service Spl Request Price', 'trim|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
@@ -1035,6 +1014,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('serviceSplReqId', 'Service Package Postcode Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Package Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('splReqId', 'Service Package Postcode', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -1096,6 +1077,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('serviceSplReqId', 'Service Special Request', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('splReqId', 'Special Request Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -1191,6 +1174,7 @@ class Admin_lib {
         $this->ci->data['error_message'] = "";
 
         $response = array();
+        $this->resetResponse();
 
         $this->ci->form_validation->set_rules('areaCode[]', 'Area Code', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('packageId', 'Package Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -1223,7 +1207,8 @@ class Admin_lib {
         $person_id = $this->ci->session->userdata('user_id');
 
         $this->ci->load->library('form_validation');
-
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('stateSelect', 'State', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('areaSelect[]', 'Area', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('postcodeSelect[]', 'Postcodes', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
@@ -1279,7 +1264,8 @@ class Admin_lib {
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
         $archived = Globals::UN_ARCHIVE;
-
+        $this->resetResponse();
+        
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
             $packageId = $this->ci->input->post('package_id', true);
@@ -1312,6 +1298,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('postcodePriceId', 'Service Package Postcode Price Id', 'trim|required|xss_clean|encode_php_tags|numeric', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('packageId', 'Service Package Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -1378,6 +1366,8 @@ class Admin_lib {
         $this->ci->load->library('form_validation');
 
         $response = array();
+        $this->resetResponse();
+        
         $this->ci->form_validation->set_rules('postcodePriceId', 'Service Package Postcode Price Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('packageId', 'Service Package Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('postcode', 'Service Package Postcode', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));

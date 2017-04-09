@@ -28,23 +28,23 @@
                                             <h1>Book your Maid now </h1>
                                             <h4>From $10000 per hour</h4>
                                             <hr>
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3">
                                                 <div class="row">
-                                                    <label>Service</label>
+                                                    <label></label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3">
+<!--                                            <div class="col-lg-3">
                                                 <div class="row"><select class="form-control">
                                                         <option value="">Service 1</option>
                                                         <option value="">Service 2</option>
                                                         <option value="">Service 3</option>
                                                     </select></div>
-                                            </div>
+                                            </div>-->
                                             <div class="col-lg-4">
                                                 <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="" id="" required></div>
                                             </div>
-                                            <div class="col-lg-2">
-                                                <div class="row"><button type="submit" placeholder="Find" class="form-control btn-success">Find </button> </div>
+                                            <div class="col-lg-3">
+                                                <div class="row"><button type="submit" placeholder="Find" class="form-control btn-success">Find Services</button> </div>
                                             </div>
                                         </form>
                                     </div>

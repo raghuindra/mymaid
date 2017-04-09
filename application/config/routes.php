@@ -94,6 +94,12 @@ $route['getPostcodes.html']                     = "admin/postGetpostcodes";
 $route['setServicePackagePostalPrice.html']     = "admin/postSetServicePackagePostcodePrice";
 $route['archiveServicePackagePostcodePrice.html'] = "admin/postArchivePostcodePrice";
 $route['updateServicePackagePostcodePrice.html']= "admin/postUpdateServicePackagePostcodePrice";
+$route['vendors_list.html']                     = "admin/postVendorsList";
+$route['new_vendors_list.html']                 = "admin/postNewVendorsList";
+$route['active_vendors_list.html']              = "admin/postActiveVendorsList";
+$route['approveNewVendor.html']                 = "admin/approveNewVendor";
+$route['active_vendors_list.html']              = "admin/postActiveVendorsList";
+$route['archiveVendor.html']                    = "admin/postArchiveVendor";
 
 
 
@@ -111,6 +117,8 @@ $route['vendor_wallet_request.html']            = "vendor/walletRequestPay";
 $route['vendor_wallet_report.html']             = "vendor/walletReport";
 $route['vendor_myaccount_company.html']         = "vendor/myAccountCompany";
 $route['vendor_myaccount_bank.html']            = "vendor/myAccountBank";
+$route['vendor_profile.html']                   = "vendor/profile";
+$route['updateBankDetails.html']                = "vendor/updateBankDetails";
 
 
 /* ........Vendor/Freelance Module Routing................... */
@@ -130,5 +138,5 @@ $route['freelance_myaccount.html']              = "freelance/myAccount";
 
 $route['home.html'] = "user";
 
-$route['404_override'] = '';
+$route['404_override'] = 'person/pageNotFound';
 $route['translate_uri_dashes'] = FALSE;

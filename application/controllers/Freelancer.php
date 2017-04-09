@@ -2,15 +2,15 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Freelancer extends CI_Controller {
+include APPPATH . 'controllers/Base.php';
+class Freelancer extends Base {
 
     public $data = array();
 
     public function __construct() {
         parent::__construct();
-        $this->load->library(array('vendor_lib', 'page_load_lib'));
-        $this->load->helper(array('form', 'language'));
-        $this->uLang = $this->session->userdata('user_lang');
+        $this->load->library(array('vendor_lib'));
+
         $this->lang->load("mm", $this->uLang);
         //$this->lang->load("vendor_msg", $this->uLang);
         //$this->lang->load("vendor_leftbar", $this->uLang);

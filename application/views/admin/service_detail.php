@@ -1167,7 +1167,7 @@ $this->load->view("block/admin_leftMenu");
                                     if (result.status === true) {
                                         notifyMessage('success', result.message);
                                         service_package_postal_price.ajax.reload(); //call datatable to reload the Ajax resource
-                                        //$('#archiveConfirmModal').modal('hide');
+                                        
                                     } else {
                                         notifyMessage('error', result.message);
                                     }

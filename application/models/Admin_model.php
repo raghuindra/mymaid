@@ -6,7 +6,9 @@ class Admin_model extends Mm_model{
         parent::__construct();
         $this->_table                               = 'mm_admin';
         $this->_person_table                        = 'mm_person';
+        $this->_person_type_table                   = 'mm_person_type';
         $this->_country_table                       = 'mm_country';
+        $this->_vendor_company_table                = "mm_vendor_company";
         $this->_lang_table                          = 'mm_language';
         $this->_service_table                       = "mm_services";
         $this->_service_package_table               = "mm_service_package";
@@ -159,6 +161,36 @@ class Admin_model extends Mm_model{
                 return $this->db->get($this->_postcode_service_price_table, $row_count, $offset);
         }
         return $this->db->get($this->_postcode_service_price_table);
+    }
+    
+    /** Function to get the New Vendors list
+     * 
+     */
+    function getNewVendors(){
+        $this->db->select('*'); 
+        $this->db->where('person_status', '0');
+        $this->db->where('person_type_name', Globals::PERSON_TYPE_VENDOR_NAME);
+        $this->db->join($this->_person_type_table, 'person_type_id = person_type','left');
+        $this->db->join($this->_vendor_company_table, 'company_person_id = person_id','left');
+        
+        return $this->db->get($this->_person_table);
+    }
+    
+    /* Function to get the Active Vendors list */
+    function getActiveVendors($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_vendor_company_table, 'company_person_id = person_id','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0){
+                return $this->db->get($this->_person_table, $row_count, $offset);
+        }
+          return $this->db->get($this->_person_table);
     }
         
         

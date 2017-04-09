@@ -2,16 +2,16 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Vendor extends CI_Controller {
+include APPPATH . 'controllers/Base.php';
+class Vendor extends Base {
 
     public $data = array();
 
     public function __construct() {
         parent::__construct();
-        $this->load->library(array('vendor_lib', 'page_load_lib'));
-        $this->load->helper(array('form', 'language'));
+        $this->load->library(array('vendor_lib'));
         $this->uLang = $this->session->userdata('user_lang');
-        $this->lang->load("mm", $this->uLang);
+        $this->lang->load("vendor", $this->uLang);
         //$this->lang->load("vendor_msg", $this->uLang);
         //$this->lang->load("vendor_leftbar", $this->uLang);
         $this->page_load_lib->validate_user('vendor');
@@ -93,13 +93,40 @@ class Vendor extends CI_Controller {
         $this->data['active'] = "myaccount||company";
         $this->load->view('template', $this->data);
     }
-    
+
     public function myAccountBank() {
         $this->data['content'] = "vendor/myaccount_bank.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "myaccount||bank";
         $this->load->view('template', $this->data);
     }
-   
+
+    public function profile() {
+
+        $this->data['profile'] = $this->vendor_lib->getProfileDetails();
+        $this->data['bank'] = $this->vendor_lib->getBankDetails();
+        $this->data['content'] = "vendor/profile.php";
+        $this->data['vendor'] = 1;
+        $this->data['active'] = "";
+        $this->load->view('template', $this->data);
+    }
+
+    /** Function to update the Bank Details
+     * @param null 
+     * @return JSON Return JSON response with Bank Details Addition/Update 
+     */
+    public function updateBankDetails() {
+
+        if (isset($_POST['bnkname'])) {
+            $response = $this->vendor_lib->_updateBankDetails();
+        } else {
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
 
 }

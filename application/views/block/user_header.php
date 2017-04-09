@@ -51,4 +51,4 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 
-<body style="overflow: hidden;">
+<body style="overflow: auto;">

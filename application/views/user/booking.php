@@ -11,8 +11,8 @@
                 <!-- left side main booking form -->
                 <div class="ct-main-left ct-sm-7 ct-md-7 ct-xs-12 mt-30 br-5 np">
                     <div class="ct-sm-12 ct-md-12 ta-c ct-location-header">
-                        <h2 class="header2">MyMaid</h2>
-                        <h6 class="header6">Bengalore, Banasawadi, 586112<span class="ct-company-phone">
+                        <h2 class="header2">MyMaidz</h2>
+                        <h6 class="header6">Bengaluru, Banasawadi, 586112<span class="ct-company-phone">
                             </span></h6>
 
                         <a class="ct-link ct-mybookings" target="_blank" href="#">My Bookings</a>

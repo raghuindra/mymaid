@@ -1,15 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+include APPPATH . 'controllers/Base.php';
+class User extends Base {
    
         public $data = array();
-        public $uLang = '';
         
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('user_lib', 'page_load_lib'));
-            $this -> load -> helper(array('form', 'language'));
+            $this->load->library(array('user_lib'));
             //$this->uLang = $this->session->userdata('user_lang');               
             //$this -> lang -> load("np", $this->uLang);
         }

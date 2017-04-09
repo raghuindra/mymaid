@@ -1,16 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+include APPPATH . 'controllers/Base.php';
+class Admin extends Base {
    
         public $data = array();
-        public $uLang = 'en';
         
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('admin_lib', 'page_load_lib'));
-            $this -> load -> helper(array('form', 'language'));
-            $this->uLang = $this->session->userdata('user_lang');               
+            $this->load->library(array('admin_lib', 'admin_vendor_lib'));              
             $this -> lang -> load("admin", $this->uLang);
             $this->page_load_lib->validate_user('admin');
         }
@@ -111,7 +109,7 @@ class Admin extends CI_Controller {
                     'message' => $this->lang->line('invalid_data'),
                     'data' => array()
                 );
-            }
+            } print_r($response);
             echo json_encode($response);
         }
         
@@ -430,5 +428,88 @@ class Admin extends CI_Controller {
             echo json_encode($response);
             
         }
+        
+        /** Function to list New/Active/Inactive vendors.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postVendorsList(){
+            
+            //$this->data['new_vendors']      = $this->admin_vendor_lib->_getNewVendors();
+            //$this->data['active_vendors']   = $this->admin_vendor_lib->_getActiveVendors();
+            
+            $this->data['content']          = "admin/vendor_list.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+            
+        }
+        
+        /** Function to list New vendors.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postNewVendorsList(){
+           
+            $response = $this->admin_vendor_lib->_getNewVendors();
+
+            echo json_encode($response);
+            
+        }
+        
+        /** Function to list Active vendors(Archived/UnArchived).
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postActiveVendorsList(){
+            
+            if(isset($_POST['archived'])){
+                $response = $this->admin_vendor_lib->_getActiveVendors();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+        
+        /** Function to approve New Vendor.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function approveNewVendor(){
+            
+            if(isset($_POST['personId'])){
+                $response = $this->admin_vendor_lib->_approveNewVendor();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
+        
+        /** Function to Archive/Un archive Vendor.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postArchiveVendor(){
+            if(isset($_POST['personId'])){
+                $response = $this->admin_vendor_lib->_archiveVendor();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
         
 }

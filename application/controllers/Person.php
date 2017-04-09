@@ -23,6 +23,12 @@ class Person extends CI_Controller{
 //        }
 //	$this->lang->load("np",$this->_bLang);
     }
+    
+    public function pageNotFound(){
+        $this->data['content']  = "page_not_found.php";
+        $this->data['vendor']     = 1;
+        $this->load->view('template', $this->data);
+    }
 
     function userLogin() {
         if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
@@ -162,6 +168,7 @@ class Person extends CI_Controller{
         $this->load->view('template',$this->data);
         
     }
+    
 
 }
 
