@@ -512,4 +512,22 @@ class Admin extends Base {
         }
         
         
+        /** Function to get Vendor company list.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postVendorCompanyList(){
+            if(isset($_POST['dataTableReq'])){
+                $response = $this->admin_vendor_lib->_vendorCompanyList();
+            
+                echo json_encode($response); 
+            }else{
+                $this->data['content']          = "admin/vendor_company_list.php";
+                $this->data['admin']            = 1;
+                $this -> load -> view('template', $this->data);
+            }
+            
+        }
+        
+        
 }

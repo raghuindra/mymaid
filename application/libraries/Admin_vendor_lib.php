@@ -49,8 +49,6 @@ class Admin_vendor_lib extends Base_lib{
      */
     function _getActiveVendors() {
 
-        $archived = 0;
-
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
 
@@ -152,6 +150,34 @@ class Admin_vendor_lib extends Base_lib{
 
             return $this->getResponse();
         }
+    }
+    
+    /** Function to get Vendor company list
+     * @param null
+     * @return Array returns Array of vendor company details
+     */
+    function _vendorCompanyList(){
+        if ($this->ci->session->userdata('user_id') != null) {
+            $archived = $this->ci->input->post('archived', true);
+
+            $result = $this->model->getVendorCompany('*', array("person_type" => Globals::PERSON_TYPE_VENDOR))->result();
+            if ($result) {
+                $this->_status = true;
+                $this->_message = '';
+                $this->_rdata = $result;
+
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+            
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+                            
+        }
+
+        return $this->getResponse();
     }
 
 }

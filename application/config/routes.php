@@ -100,6 +100,7 @@ $route['active_vendors_list.html']              = "admin/postActiveVendorsList";
 $route['approveNewVendor.html']                 = "admin/approveNewVendor";
 $route['active_vendors_list.html']              = "admin/postActiveVendorsList";
 $route['archiveVendor.html']                    = "admin/postArchiveVendor";
+$route['vendors_company_list.html']             = "admin/postVendorCompanyList";
 
 
 

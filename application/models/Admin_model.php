@@ -192,6 +192,25 @@ class Admin_model extends Mm_model{
         }
           return $this->db->get($this->_person_table);
     }
+    
+    /* Function to get Vendor Company list */
+    function getVendorCompany($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
+        
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_person_table, 'person_id = company_person_id','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0){
+                return $this->db->get($this->_vendor_company_table, $row_count, $offset);
+        }
+          return $this->db->get($this->_vendor_company_table);
+        
+    }
         
         
 }
