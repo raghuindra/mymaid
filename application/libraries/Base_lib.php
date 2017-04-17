@@ -28,4 +28,27 @@ class Base_lib {
         $this->_status  = FALSE;
         $this->_rdata   = array();
     }
+    
+    function move_file($source,$destination,$file)
+        {
+            if(file_exists($source.$file)) { 
+                if (copy($source.$file, $destination.$file)) {
+                        unlink($source.$file);
+                        return TRUE;
+                  }else{
+                      return FALSE;
+                  }
+            }
+        }
+        
+        function copy_file($source,$destination,$file)
+        {
+            if(file_exists($source.$file)) { 
+                if (copy($source.$file, $destination.$file)) {
+                        return TRUE;
+                  }else{
+                      return FALSE;
+                  }
+            }
+        }
 }

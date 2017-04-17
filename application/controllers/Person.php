@@ -169,6 +169,33 @@ class Person extends CI_Controller{
         
     }
     
+    public function termsAndConditionPage(){
+        $this->data['content']  = "user/terms_and_condition.php";
+        $this->data['user']     = 1;
+        $this->data['home']     = 1;
+        $this->load->view('template', $this->data);
+    }
+    
+    public function pricingPage(){
+        $this->data['content']  = "user/pricing.php";
+        $this->data['user']     = 1;
+        $this->data['home']     = 1;
+        $this->load->view('template', $this->data);
+    }
+    
+    public function privacyPolicyPage(){
+        $this->data['content']  = "user/privacy_policy.php";
+        $this->data['user']     = 1;
+        $this->data['home']     = 1;
+        $this->load->view('template', $this->data);
+    }
+    
+    public function refundPolicyPage(){
+        $this->data['content']  = "user/refund_policy.php";
+        $this->data['user']     = 1;
+        $this->data['home']     = 1;
+        $this->load->view('template', $this->data);
+    }
 
 }
 

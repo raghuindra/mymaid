@@ -1,6 +1,39 @@
 <?php if(isset($home) && $home == 1){ ?>
+<style>
+.footer-a a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-a a:hover 
+{
+     color:#ffffff; 
+     text-decoration:none; 
+     cursor:pointer;  
+}
+</style>
 <footer class="text-center">
-    <p>Copyright © 2017 Mymaid. All rights reserved. © 2016</p>
+    <div class="row">
+        <div class="col-lg-2 footer-a">
+            <a href="<?php echo base_url().'home.html#aboutus';?>" style="">About Us</a>
+        </div>
+        <div class="col-lg-2 footer-a">
+            <a href="<?php echo base_url().'termsCondition.html';?>" style="">Terms & Condition</a>
+        </div>
+        <div class="col-lg-2 footer-a">
+            <a href="<?php echo base_url().'pricing.html';?>" style="">Pricing</a>
+        </div>
+        <div class="col-lg-2 footer-a">
+            <a href="<?php echo base_url().'privacyPolicy.html';?>" style="">Privacy Policy</a>
+        </div>
+        <div class="col-lg-2 footer-a">
+            <a href="<?php echo base_url().'pricing.html#refundPolicy';?>" style="">Refund Policy</a>
+        </div>
+        <div class="col-lg-2 footer-a">
+            <a href="<?php echo base_url().'home.html#contact';?>" style="">Contact Us</a>
+        </div>
+    </div>
+    <p>Copyright © 2017 MyMaidz. All rights reserved.</p>
 </footer>
 <?php } ?>
 

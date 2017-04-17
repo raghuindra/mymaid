@@ -88,12 +88,20 @@ class Vendor extends Base {
     }
 
     public function myAccountCompany() {
-        $this->data['content'] = "vendor/myaccount_company.php";
-        $this->data['vendor'] = 1;
-        $this->data['active'] = "myaccount||company";
+        $this->load->model('mm_model');
+        
+        $this->data['company_info'] = $this->vendor_lib->_getCompanyDetail();        
+        $this->data['states']        = $this->mm_model->get_tb('mm_state', '*')->result();
+        $this->data['content']      = "vendor/myaccount_company.php";
+        $this->data['vendor']       = 1;
+        $this->data['active']       = "myaccount||company";
         $this->load->view('template', $this->data);
     }
 
+    /** Function to render the Company Detail View
+     * @param null 
+     * @return null render the view 
+    */
     public function myAccountBank() {
         $this->data['content'] = "vendor/myaccount_bank.php";
         $this->data['vendor'] = 1;
@@ -127,6 +135,114 @@ class Vendor extends Base {
             );
         }
         echo json_encode($response);
+    }
+    
+    /** Function to upload the company documents
+     * @param null 
+     * @return JSON Return JSON response with company doc upload status 
+     */
+    public function uploadCompanySsmDoc(){
+        //print_r($_FILES); exit;
+        if(isset($_FILES['ssmFile'])){                 
+            $response = $this->vendor_lib->_uploadCompanyDoc('ssmFile');                   
+        }else{
+            $response = array(
+                'success' => 0,
+                'message' => $this->lang->line('something_problem'),
+                'data' => array()
+            );           
+        }
+        echo json_encode($response);
+        
+    }
+    
+    /** Function to upload the company Id card Document
+     * @param null 
+     * @return JSON Return JSON response with company doc upload status 
+    */
+    public function uploadCompanyIdDoc(){
+        if(isset($_FILES['idFile'])){                 
+            $response = $this->vendor_lib->_uploadCompanyDoc('idFile');                 
+        }else{
+            $response = array(
+                'success' => 0,
+                'message' => $this->lang->line('something_problem'),
+                'data' => array()
+            );           
+        }
+        echo json_encode($response);
+    }
+    
+    /** Function to update the company details
+     * @param null 
+     * @return JSON Return JSON response with company detail update status 
+    */
+    public function updateCompanyDetail(){
+        if (isset($_POST['cpname'])) {
+            $response = $this->vendor_lib->_updateCompanyDetail();
+        } else {
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
+    
+    /** Function to Upload Employee Id Doc
+     * @param null 
+     * @return JSON Return JSON response with employee id card upload status 
+    */
+    public function uploadEmployeeIdDoc(){
+        if(isset($_FILES['empIdFile'])){                 
+            $response = $this->vendor_lib->_uploadEmployeeDoc('empIdFile');                 
+        }else{
+            $response = array(
+                'success' => 0,
+                'message' => $this->lang->line('something_problem'),
+                'data' => array()
+            );           
+        }
+        echo json_encode($response);
+    }
+    
+    /** Function to Create Employee
+     * @param null 
+     * @return JSON Return JSON response with employee creation status 
+    */
+    public function createEmployee(){
+        
+        if (isset($_POST['employee_name'])) {
+            $response = $this->vendor_lib->_createEmployee();
+        } else {
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+        
+    }
+    
+    /** Function to List Employees
+     * @param null 
+     * @return JSON Return JSON response with employee list 
+    */
+    public function listEmployees(){
+        
+        if(isset($_POST['archived'])){
+            $response = $this->vendor_lib->_listEmployees();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+        
     }
 
 }

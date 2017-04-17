@@ -48,7 +48,7 @@ class Admin_vendor_lib extends Base_lib{
      * @return Array returns Array with new vendors list and status value
      */
     function _getActiveVendors() {
-
+        $this->resetResponse();
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
 
@@ -157,6 +157,7 @@ class Admin_vendor_lib extends Base_lib{
      * @return Array returns Array of vendor company details
      */
     function _vendorCompanyList(){
+        $this->resetResponse();
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
 

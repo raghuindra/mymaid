@@ -1234,7 +1234,7 @@ $this->load->view("block/admin_leftMenu");
                         if(archived == '0'){
                             string += '<a href="#" class="btn btn-social-icon frequencyPriceArchive" title="Archive" data-service="' + row.service_frequency_offer_service_id + '" data-freqid = "' + row.service_frequency_offer_frequency_id + '" data-id = "' + row.service_frequency_offer_id + '"><i class="fa fa-archive"></i></a></div></td>';
                         }else{
-                            string += '<a href="#" class="btn btn-social-icon frequencyPriceUnArchive" title="Archive" data-service="' + row.service_frequency_offer_service_id + '" data-freqid = "' + row.service_frequency_offer_frequency_id + '" data-id = "' + row.service_frequency_offer_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon frequencyPriceUnArchive" title="UnArchive" data-service="' + row.service_frequency_offer_service_id + '" data-freqid = "' + row.service_frequency_offer_frequency_id + '" data-id = "' + row.service_frequency_offer_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
                         }
                         return string;
                     }

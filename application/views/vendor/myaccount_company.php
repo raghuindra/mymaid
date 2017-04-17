@@ -2,6 +2,9 @@
 $this->load->view("block/vendor_topNavigation");
 
 $this->load->view("block/vendor_leftMenu");
+//echo "<pre>";print_r($company_info);echo "</pre>";
+$company = $company_info['data'];
+$vendorId = $this->session->userdata('user_id');
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -21,220 +24,561 @@ $this->load->view("block/vendor_leftMenu");
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <form id="basic-bank-information">
-                <div class="col-xs-12">
-                    <div class="box box-default box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Company Information</h3>
 
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <!-- /.box-tools -->
+            <div class="col-xs-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-pills">
+                        <li role="presentation" class="active "><a href="#company_tab_content" data-toggle="tab">Company Details</a></li>
+                        <li role="presentation"><a href="#employee_tab_content" data-toggle="tab">Employees</a></li>
+                    </ul>
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+
+                        <!-- Company Detail TAB Start -->
+                        <div role="tabpanel" class="tab-pane active" id="company_tab_content">
+                            <form id="comp_information_form" method="post" action="">
+                                <div class="box box-default box-solid">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Company Information</h3>
+
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <!-- /.box-tools -->
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body" style="display: block;">
+                                        <div class="box box-primary">
+                                            <div class="box-header with-border hidden">
+                                                <h3 class="box-title">Basic Information</h3>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <!-- form start -->
+                                            <div class="form-horizontal">
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Company Name*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" required class="form-control" id="cmname" name="cmname" placeholder="Company Name" value="<?php echo ($company) ? $company[0]->company_name : ''; ?>" required <?php echo ($company && $company[0]->company_name != '') ? 'disabled' : ''; ?>> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Company Registration #:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="cmnumber" name="cmnumber" placeholder="Company Registration" value="<?php echo ($company) ? $company[0]->company_reg_number : ''; ?>" required <?php echo ($company && $company[0]->company_reg_number != '') ? 'disabled' : ''; ?>>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Contact Person Name*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" required class="form-control" id="cpname" name="cpname" placeholder="Contact Person Name" value="<?php echo ($company) ? $company[0]->company_contact_person_name : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">IC Number*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" required class="form-control" id="icnumber" name="icnumber" placeholder="IC Number" value="<?php echo ($company) ? $company[0]->company_ic_number : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" required class="col-sm-3 control-label">Office Phone:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">H/P Phone*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="address" class="col-sm-3 control-label">Address Line 1*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" required class="form-control" id="addr" name="addr" placeholder="Address Line 1" value="<?php echo ($company) ? $company[0]->company_address : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="address" class="col-sm-3 control-label">Address Line 2:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="addr2" name="addr2" placeholder="Address Line 2" value="<?php echo ($company) ? $company[0]->company_address1 : ''; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="city" class="col-sm-3 control-label">City*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" required class="form-control" name="city" id="city" placeholder="City" value="<?php echo ($company) ? $company[0]->company_city : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="postcode" class="col-sm-3 control-label">Postcode*:</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="number" required class="form-control" id="postalcode" name="postalcode" placeholder="Postcode" value="<?php echo ($company) ? $company[0]->company_pincode : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="state" class="col-sm-3 control-label">State*:</label>
+                                                        <div class="col-sm-9">
+                                                            <select id="state" name="state" required class="form-control">
+                                                                <option>Select state</option>
+                                                                <?php
+                                                                foreach ($states as $key => $value) {
+                                                                    if ($company && $company[0]->company_state == $value->state_code) {
+                                                                        echo '<option value="' . $value->state_code . '" selected>' . $value->state_name . '</option>';
+                                                                    } else {
+                                                                        echo '<option value="' . $value->state_code . '">' . $value->state_name . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email" class="col-sm-3 control-label">Email ID*:</label>
+
+                                                        <div class="col-sm-9">
+                                                            <input type="email" name="email" required class="form-control" id="email" placeholder="Email ID" value="<?php echo ($company) ? $company[0]->company_email_id : ''; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fileupload" class="col-sm-4 control-label"><h3>Upload Document:</h3></label>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fileupload" class="col-sm-3 control-label">SSM*:</label>
+
+                                                        <div class="col-sm-9">
+                                                            <?php if ($company && $company[0]->company_ssm_file_path != '') { ?>
+                                                                <a href="<?php echo base_url() . $company[0]->company_ssm_file_path; ?>" target="_blank" >View File</a>
+                                                            <?php } else { ?>
+                                                                <input type="file" id="ssmFileUpload" name="ssmFile">
+                                                            <?php } ?>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fileupload" class="col-sm-3 control-label">Identity card*:</label>
+
+                                                        <div class="col-sm-9">
+                                                            <?php if ($company && $company[0]->company_idcard_file_path != '') { ?>
+                                                                <a href="<?php echo base_url() . $company[0]->company_idcard_file_path; ?>" target="_blank" >View File</a>
+                                                            <?php } else { ?>
+                                                                <input type="file" id="idcardupload" name="idFile">
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="ssmFileUpData" required class="form-control" id="ssmFileUpData" >
+                                                <input type="hidden" name="idFileUpData" required class="form-control" id="idFileUpData" >
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+
+                                    </div>
+                                    <!-- /.box -->
+                                    <!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <!--                                <button type="button" class="btn btn-default btn-lg bg-red">Cancel</button>-->
+                                        <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="saveCompanyDetail">Save</button>
+                                    </div>
+                                    <!-- /.box-footer -->
+                                </div>
+                            </form>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body" style="display: block;">
-                            <div class="box box-primary">
-                                <div class="box-header with-border hidden">
-                                    <h3 class="box-title">Basic Information</h3>
+                        <!-- /. Company Detail TAB Start -->
+
+                        <!-- Employee Detail TAB Start -->
+                        <div role="tabpanel" class="tab-pane active" id="employee_tab_content">
+                            <div class="box box-default box-solid">
+                                <!-- /.box-header -->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title ">Create Employee</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.box-tools -->
                                 </div>
                                 <!-- /.box-header -->
-                                <!-- form start -->
-                                <div class="form-horizontal">
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Company Name	*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" required class="form-control" id="cmname" name="cmname" placeholder="Company Name">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Company Registration #:</label>
-                                            <div class="col-sm-10">
-                                                <input type="number" class="form-control" id="cmnumber" name="cmnumber" placeholder="Company Registration" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Contact Person Name*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" required class="form-control" id="cpname" name="cpname" placeholder="Contact Person Name">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">IC Number*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="number" required class="form-control" id="icnumber" name="icnumber" placeholder="IC Number">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" required class="col-sm-2 control-label">Office Phone:</label>
-                                            <div class="col-sm-10">
-                                                <input type="number" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">H/P Phone*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="address" class="col-sm-2 control-label">Address Line 1*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" required class="form-control" id="addr" name="addr" placeholder="Address Line 1">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="address" class="col-sm-2 control-label">Address Line 2:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="addr2" name="addr2" placeholder="Address Line 2">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="city" class="col-sm-2 control-label">City*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" required class="form-control" name="city" id="city" placeholder="City">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="postcode" class="col-sm-2 control-label">Postcode*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="number" required class="form-control" id="postalcode" name="postalcode" placeholder="Postcode">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="country" class="col-sm-2 control-label">Country*:</label>
-                                            <div class="col-sm-10">
-                                                <select required id="country" name="country" class="form-control">
-                                                    <option>option 1</option>
-                                                    <option>option 2</option>
-                                                    <option>option 3</option>
-                                                    <option>option 4</option>
-                                                    <option>option 5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="state" class="col-sm-2 control-label">State*:</label>
-                                            <div class="col-sm-10">
-                                                <select id="state" name="state" required class="form-control">
-                                                    <option>option 1</option>
-                                                    <option>option 2</option>
-                                                    <option>option 3</option>
-                                                    <option>option 4</option>
-                                                    <option>option 5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email" class="col-sm-2 control-label">Email ID*:</label>
 
-                                            <div class="col-sm-10">
-                                                <input type="email" name="email" required class="form-control" id="email" placeholder="Email ID">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="fileupload" class="col-sm-4 control-label"><h3>Upload Document:</h3></label>
+                                <div class="box-body" >
+                                    <div class="box box-primary">
 
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="fileupload" class="col-sm-2 control-label">SSM:</label>
+                                        <div class="form-horizontal">
+                                            <div class="box-body">
+                                                <!-- Service Package Creation Form Start -->
+                                                <form action="" name="employeeCreationForm" id="employeeCreationForm">                                                   
 
-                                            <div class="col-sm-10">
-                                                <input type="file" id="ssmFileUpload" name="ssmFile">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="fileupload" class="col-sm-2 control-label">Identity card:</label>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Name *:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" name="employee_name" class="form-control" required id="employee_name" placeholder="Employee Name">
+                                                        </div>
+                                                    </div>
 
-                                            <div class="col-sm-10">
-                                                <input type="file" id="idcardupload" name="idcard">
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Passport Number *:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" placeholder="Passport Number" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Citizenship *:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" name="employee_citizenship" class="form-control" required id="employee_citizenship" placeholder="Employee Citizenship (Ex: Malaysian)">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee House Phone :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" placeholder="Employee House Phone">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee H/P Phone *:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" placeholder="Employee H/P Phone">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Job Type *:</label>
+                                                        <div class="col-sm-6">
+                                                            <div class="btn-group" role="group" aria-label="Employee Job Type">
+                                                                <button type="button" class="btn margin btn-primary btn-sm active emp_jobtype" data-val="<?php echo Globals::EMPLOYEE_FULLTIME;?>">Full Time</button>
+                                                                <button type="button" class="btn margin btn-primary btn-sm emp_jobtype" data-val="<?php echo Globals::EMPLOYEE_PARTTIME;?>">Part Time</button>
+                                                                <input type="hidden" name="employee_jobtype" class="form-control" required id="employee_jobtype" value="<?php echo Globals::EMPLOYEE_FULLTIME;?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                   <div class="form-group">
+                                                        <label for="fileupload" class="col-sm-4 control-label"><h3>Upload Document:</h3></label>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fileupload" class="col-sm-3 control-label">Identity Card*:</label>
+
+                                                        <div class="col-sm-9">                                                          
+                                                            <input type="file" id="employeeIdUpload" name="empIdFile">
+                                                        </div>
+                                                        <input type="hidden" id="employeeIdFileUpData" name="employeeIdFileUpData">
+                                                    </div>
+
+                                                    <!-- /.box-body -->
+                                                    <div class="box-footer">
+                                                        <div class="col-sm-11">
+                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset" >Clear</button>
+                                                        </div> 
+                                                        <div class="col-sm-1">
+                                                            <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServicePackage">Add</button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.box-footer -->
+
+                                                </form>
+                                                <!-- Service Package Creation Form End -->
                                             </div>
+                                            <!-- /.box-body -->
                                         </div>
+
                                     </div>
 
                                 </div>
-                                <!-- /.box-body -->
+                                <!-- /.box body-->
+
                             </div>
-                                                     
+
+                            <div class="clearfix"></div>
+
+                            <div class="box box-default box-solid">
+                                <!-- /.box-header -->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Employee List</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body" style="display: block;">
+                                    <div class="box box-primary">
+                                        <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="employee_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active employee_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button> 
+                                                        <button type="button" class="btn margin btn-primary btn-sm employee_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                                                             
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <!-- form start -->
+                                        <div class="form-horizontal">
+
+                                            <div class="box-body">
+                                                <table id="employee_list" class="table table-bordered table-striped tables-button-edit">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID </th>
+                                                            <th>Name</th>
+                                                            <th>Passport Number</th>
+                                                            <th>Citizenship</th>
+                                                            <th>H/P Phone</th>
+                                                            <th>Job Type</th>
+                                                            <th>Id Card</th>
+                                                            <th class="">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- /.box body-->
+                            </div>
+                            <!-- /.box -->
+
                         </div>
-                        <!-- /.box -->
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button type="button" class="btn btn-default btn-lg bg-red">Cancel</button>
-                                <button type="submit" class="btn btn-info pull-right btn-lg bg-green">Save</button>
-                            </div>
-                            <!-- /.box-footer -->
+                        <!-- /. Employee Detail TAB Start -->
+
                     </div>
-                    <div class="clearfix"></div>
-                    <?php /* 
-                    <div class="box box-default box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Bank Information</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <!-- /.box-tools -->
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body" style="display: block;">
-                            <div class="box box-primary">
-                                <div class="box-header with-border hidden">
-                                    <h3 class="box-title">Bank Information</h3>
-                                </div>
-                                <!-- /.box-header -->
-                                <!-- form start -->
-                                <div class="form-horizontal">
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Bank Name*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" name="bnkname" class="form-control" required id="bnkname" placeholder="Bank Name*">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Beneficiary/Account Holder Name*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" name="holdername" class="form-control" required id="holdername" placeholder="Beneficiary/Account Holder Name">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Bank Account Number*:</label>
-                                            <div class="col-sm-10">
-                                                <input type="number" name="accnumber" class="form-control" required id="accnumber" placeholder="Bank Account Number">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">IFSC Code/Swift Code:</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="ifsc" required id="ifsc" placeholder="IFSC Code/Swift Code">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Bank Address:</label>
-                                            <div class="col-sm-10">
-                                                <textarea type="text" class="form-control" name="accnumber" id="bnkaddress" required placeholder="Bank Address"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- /.box -->
-                        <!-- /.col -->
-                    </div> */ ?>
-                    <!-- /.row -->
-                    
-                    
+                    <!-- /. Tab Content -->
                 </div>
-            </form>
+            </div>
+
         </div>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<!-- pekeUpload -->
+<script type="text/javascript" src="<?php echo plugin_url('plugins/pekeUpload/pekeUpload.js'); ?>"></script>
+<script>
+    $(function () {
+        
+        /* Company ssm File Upload  */
+        $("#ssmFileUpload").pekeUpload({
+            'bootstrap': true,
+            'url': 'upload_companyssm_doc.html',
+            'limit': 1,
+            'maxSize': 10240,
+            'onFileError': function (file, error) {
+
+            },
+            onFileSuccess: function (file, data) {
+                $("#ssmFileUpData").val(data.file);
+            }
+
+        });
+        /* Company ID Card Upload  */
+        $("#idcardupload").pekeUpload({
+            'bootstrap': true,
+            'url': 'upload_companyid_doc.html',
+            'limit': 1,
+            'maxSize': 10240,
+            'onFileError': function (file, error) {
+
+            },
+            onFileSuccess: function (file, data) {
+                $('#idFileUpData').val(data.file);
+            }
+
+        });
+
+        /* Company Details Update form handling.. */
+        $("#comp_information_form").submit(function (e) {
+            e.preventDefault();
+            var data = $("#comp_information_form").serializeArray();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'updateCompanyDetail.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        setTimeout(function () {
+                            location.reload()
+                        }, 3000);
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+        
+        /* Employee List Datatable */
+        var employee_list = $('#employee_list').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
+            "ajax": {
+                "url": '<?php echo base_url() . 'listEmployees.html'; ?>',
+                "type": "POST",
+                "dataSrc": 'data',
+                "data": function(d){                     
+                    d.archived = $("#employee_status").attr('data-val'); 
+                }
+            },
+            "columns": [
+                {"data": "employee_id"},
+                {"data": "employee_name"},
+                {"data": "employee_passport_number"},
+                {"data": "employee_citizenship"},
+                {"data": "employee_hp_phone"},
+                {"data": null},
+                {"data": null},
+                {"data": null}
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+
+                        var string = ' <td class=""> <div class="text-center">';
+                            if(row.employee_job_type === <?php echo Globals::EMPLOYEE_FULLTIME;?>){
+                                string += 'Full Time';
+                            }else{
+                                string += 'Part Time';
+                            }
+                            string += '</div></td>';
+                        
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [6], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                       
+                        var string = ' <td class=""> <div class="text-center">'
+                                + '<a href="<?php echo base_url();?>assets/uploads/vendor/<?php echo $vendorId;?>/company/employee/'+row.employee_idcard_path+'" target="_blank" class="btn btn-social-icon" title="IdCard">View</a></div></td>';
+                        
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var archived = $("#employee_status").attr('data-val');
+                        var string = ' <td class=""> <div class="text-center">'
+                                + '<a href="#" class="editEmpployeeWindow btn btn-social-icon " title="Edit" ><i class="fa fa-edit"></i></a>';
+                        if(archived == '0'){
+                            string += '<a href="#" class="btn btn-social-icon employeeArchive" title="Archive" ><i class="fa fa-archive"></i></a></div></td>';
+                        }else{
+                            string += '<a href="#" class="btn btn-social-icon employeeUnArchive" title="UnArchive" ><i class="fa fa-folder-open"></i></a></div></td>';
+                        }
+                        return string;
+                    }
+                }
+            ]
+        });
+        
+        /* Employee ID Card Upload  */
+        $("#employeeIdUpload").pekeUpload({
+            'bootstrap': true,
+            'url': 'upload_employeeid_doc.html',
+            'limit': 1,
+            'maxSize': 1000*1024,
+            'onFileError': function (file, error) {
+
+            },
+            onFileSuccess: function (file, data) {
+                $('#employeeIdFileUpData').val(data.file);
+            }
+
+        });
+        
+        
+        /* Employee Job type click event */
+        $(document).on('click', ".btn-group .emp_jobtype", function () {
+            $(".btn-group .emp_jobtype").removeClass('active');
+            $(this).addClass('active');
+            $("#employee_jobtype").val($(this).data('val'));
+        });
+        
+        /* Archived / Un Archived Employee Datatable list */
+        $(document).on("click",".btn-group .employee_status_archive, .employee_status_unarchive",function () {
+            $(".btn-group#employee_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#employee_status").attr('data-val',$(this).data('val'));           
+            employee_list.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+        
+        /* Employee creation form handling.. */
+        $("#employeeCreationForm").submit(function (e) {
+            e.preventDefault();
+            var data = $("#employeeCreationForm").serializeArray();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'createEmployee.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        employee_list.ajax.reload(); //call datatable to reload the Ajax resource
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                }
+            });
+        });
+        
+        /* Reset Form */
+        $(document).on("click", ".formReset", function(){
+            resetForm($(this).closest('form'));
+        });
+
+        function resetForm($form) {
+            $form.find('input:text, input:password, input:file, select, textarea').val('');
+            $form.find(':input[type=number]').val('');
+            $form.find(".select2").val(null).trigger("change");
+            $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+        }
+               
+        
+    });
+
+    function getUploadFileInputId(id) {
+        if (id == 'idcardupload') {
+            $("#idFileUpData").val('');
+        } else if (id == 'ssmFileUpload') {
+            $("#ssmFileUpData").val('');
+        }else if(id == 'employeeIdUpload'){
+            $("#employeeIdUpData").val('');
+        }
+
+    }
+</script>    

@@ -53,6 +53,10 @@ $route['default_controller']                    = 'user';
 $route['logout.html']                           = "person/logout";
 $route['forgotPass.html']                       = "person/forgotPassword";
 $route['reset_password.html/(:any)']            = "person/resetpassword/$1";
+$route['termsCondition.html']                   = "person/termsAndConditionPage";
+$route['pricing.html']                          = "person/pricingPage";
+$route['privacyPolicy.html']                    = "person/privacyPolicyPage";
+$route['refundPolicy.html']                     = "person/refundPolicyPage";
 
 
 /* ........User Module Routing............................ */
@@ -120,6 +124,12 @@ $route['vendor_myaccount_company.html']         = "vendor/myAccountCompany";
 $route['vendor_myaccount_bank.html']            = "vendor/myAccountBank";
 $route['vendor_profile.html']                   = "vendor/profile";
 $route['updateBankDetails.html']                = "vendor/updateBankDetails";
+$route['upload_companyssm_doc.html']            = "vendor/uploadCompanySsmDoc";
+$route['upload_companyid_doc.html']             = "vendor/uploadCompanyIdDoc";
+$route['updateCompanyDetail.html']              = "vendor/updateCompanyDetail";
+$route['upload_employeeid_doc.html']            = "vendor/uploadEmployeeIdDoc";
+$route['createEmployee.html']                   = "vendor/createEmployee";
+$route['listEmployees.html']                    = "vendor/listEmployees";
 
 
 /* ........Vendor/Freelance Module Routing................... */

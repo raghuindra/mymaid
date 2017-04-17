@@ -146,16 +146,16 @@
                             <i class="fa fa-info-circle"></i>
                             <span>Company Details</span>
                             <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green">4</span>
+                                <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="<?php echo base_url() . 'vendor_myaccount_bank.html'; ?>">
+                        <a href="<?php echo base_url() . 'vendor_profile.html'; ?>">
                             <i class="fa fa-male"></i>
-                            <span>Bank Details</span>
+                            <span>Profile</span>
                             <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green">4</span>
+                                <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>
@@ -163,7 +163,7 @@
             </li>
             <!-- settings links -->
             
-            <li class="treeview">
+<!--            <li class="treeview">
                 <a href="./vendor_profile.html">
                     <i class="fa fa-odnoklassniki"></i>
                     <span>Profile</span>
@@ -171,13 +171,13 @@
                         <span class="label label-primary pull-right"></span>
                     </span>
                 </a>                
-<!--                <ul class="treeview-menu">
+                <ul class="treeview-menu">
                     <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
                     <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
                     <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
                     <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-                </ul>-->
-            </li>
+                </ul>
+            </li>-->
             <!--
             <li>
                 <a href="pages/widgets.html">

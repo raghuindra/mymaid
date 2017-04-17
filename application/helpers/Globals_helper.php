@@ -23,6 +23,9 @@ class Globals
     
     const FREQUENCY_OFFER_IN_PERCENTAGE = "Percentage";
     const FREQUENCY_OFFER_IN_PRICE      = "Price";
+    
+    const EMPLOYEE_FULLTIME         = 1;
+    const EMPLOYEE_PARTTIME         = 2;
 
 
     public static function getPersonTypeName($person_type_id){
