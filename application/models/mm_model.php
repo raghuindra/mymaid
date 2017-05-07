@@ -1,6 +1,6 @@
 <?php
 /**
- * Np_model is basic model for all database related operations 
+ * Mm_model is basic model for all database related operations 
  *
  * PHP versions 4 and 5
  *

@@ -365,6 +365,7 @@ class Vendor_lib extends Base_lib {
                 $info['employee_house_phone'] = $this->ci->input->post('employee_housephone', true);
                 $info['employee_hp_phone'] = $this->ci->input->post('employee_hp_phone', true);
                 $info['employee_job_type'] = (Globals::EMPLOYEE_FULLTIME == $this->ci->input->post('employee_jobtype', true)) ? Globals::EMPLOYEE_FULLTIME : Globals::EMPLOYEE_PARTTIME;
+                $info['employee_created_on'] = date('Y-m-d H:i:s', strtotime('now'));
                 $info['employee_company_id'] = $company[0]->company_id;
                 $empIdFile = $this->ci->input->post('employeeIdFileUpData', true);
 
@@ -374,7 +375,7 @@ class Vendor_lib extends Base_lib {
 
                     if ($this->ci->session->tempdata('empIdFile') == $empIdFile) {
 
-                        $employee_path = "assets/uploads/vendor/" . $person_id . "/company/Employee/";
+                        $employee_path = "assets/uploads/vendor/" . $person_id . "/company/employee/";
                         $temp_path = "assets/uploads/temp/";
                         if ($this->moveFile($empIdFile, $temp_path, $employee_path)) {
                             $info['employee_idcard_path'] = $empIdFile;
@@ -433,6 +434,304 @@ class Vendor_lib extends Base_lib {
         }
 
         return $this->getResponse();
+    }
+    
+    /** Function to Get Employee Detail
+     * @param null 
+     * @return Array Return Array response with Employee Detail 
+    */   
+    function _getEmployeeDetail(){
+        $this->resetResponse();
+        $employee_id = $this->ci->input->post('employeeId', true);
+        
+        $result = $this->model->get_tb('mm_company_employees', '*', array("employee_id" => $employee_id))->result();
+        if(!empty($result)){
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $result;
+        }else{
+            $this->_status = true;
+            $this->_message = $this->ci->lang->line('no_records_found');
+
+        }
+        
+        return $this->getResponse();
+    }
+    
+    /** Function to Update Employee Detail
+     * @param null 
+     * @return Array Return Array response with Employee update status 
+    */
+    function _updateEmployee(){
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('edit_employee_name', 'Employee Name', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('edit_employee_citizenship', 'Employee citizenship', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('edit_employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('edit_employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('edit_employee_jobtype', 'Employee Job Type', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('Validation_error');
+            return $this->getResponse();
+        } else {
+
+            $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
+            
+            if (!empty($company)) {
+                $info = array();
+                $info['employee_name'] = $this->ci->input->post('edit_employee_name', true);            
+                $info['employee_citizenship'] = $this->ci->input->post('edit_employee_citizenship', true);
+                $info['employee_house_phone'] = $this->ci->input->post('edit_employee_housephone', true);
+                $info['employee_hp_phone'] = $this->ci->input->post('edit_employee_hp_phone', true);
+                $info['employee_job_type'] = (Globals::EMPLOYEE_FULLTIME == $this->ci->input->post('edit_employee_jobtype', true)) ? Globals::EMPLOYEE_FULLTIME : Globals::EMPLOYEE_PARTTIME;
+                $company_id = $company[0]->company_id;
+                $employeeId = $this->ci->input->post('employeeId', true);
+
+                $this->model->update_tb('mm_company_employees', array('employee_id'=>$employeeId, 'employee_company_id'=>$company_id), $info);
+                
+                if ($this->model->getAffectedRowCount() > 0) {
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('employee_updated');
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_changes_to_update');
+                }
+                
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('something_problem');
+            }
+            return $this->getResponse();
+        }
+    }
+    
+    /** Function to Archive/Un Archive Employee
+     * @param null
+     * @return Array returns Array with status of Archive/UnArchive
+     */
+    function _archiveEmployee(){
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse();
+        
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('companyId', 'Company Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {           
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $employee_id    = $this->ci->input->post('employeeId', true);
+            $company_id     = $this->ci->input->post('companyId', true);
+            $archive        = intval($this->ci->input->post('archive', true));
+
+
+            $result = $this->model->get_tb('mm_company_employees', 'employee_id', array('employee_id' => $employee_id, 'employee_company_id'=>$company_id))->result();
+            if (!empty($result)) {
+
+                $info = array();
+                $info['employee_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;;
+
+                $this->model->update_tb('mm_company_employees', array('employee_id' => $employee_id, 'employee_company_id'=>$company_id), $info);
+                $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('employee_archived') : $this->ci->lang->line('employee_unarchived'); 
+                $this->_status   = true;
+                
+            } else {
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
+            }
+
+            return $this->getResponse();
+        }
+    }
+    
+      /* get the state names of a postal code */
+    function _getPostalStates() {
+
+        return $this->model->getStates('DISTINCT(`pt`.state_code), `st`.state_name')->result();
+    }
+
+    /* Get get City list belongs to state */
+    function _getPostOffices() {
+        $this->ci->load->library('form_validation');
+        $this->ci->data['success_message'] = "";
+        $this->ci->data['error_message'] = "";
+
+        $response = array();
+
+        $this->ci->form_validation->set_rules('stateCode', 'State Code', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
+
+            return $response = array('status' => false, 'message' => $this->ci->data['error_message']);
+        } else {
+            $stateCode = $this->ci->input->post('stateCode', true);
+
+            $result = $this->model->get_tb('mm_postcode', 'DISTINCT(post_office)', array('state_code' => $stateCode))->result();
+
+            return $response = array(
+                'status' => true,
+                'message' => '',
+                'data' => $result
+            );
+        }
+    }
+
+     /* get the Postcodes based on AreaCodes And which not available in Postcode Price list already. */
+    function _getpostcodes() {
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('areaCode[]', 'Area Code', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+
+            return  array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+            $areaCodes = implode(',', array_map(function($str) {
+                        return sprintf("'%s'", $str);
+                    }, $this->ci->input->post('areaCode', true)));
+            $person_id = $this->ci->session->userdata('user_id');
+            $result = $this->model->get_postcodes($areaCodes,$person_id)->result();
+
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $result;
+            
+            return $this->getResponse();
+        }
+    }
+    
+    /** Function to add vendor service location
+     * @param null
+     * @return Array returns Array with status of addition
+     */
+    function _addServiceLocation(){
+
+        $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+        $this->resetResponse();
+        
+        $this->ci->form_validation->set_rules('stateSelect', 'State', 'trim|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('areaSelect[]', 'Area', 'trim|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('postcodeSelect[]', 'Postcodes', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));        
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            return  array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $info = array();
+
+                $postcodes = $this->ci->input->post('postcodeSelect[]', true);
+                $data = array();
+                foreach ($postcodes as $code) {
+                    $info = array();
+                    $info['vendor_service_location_vendor_id'] = $person_id;
+                    $info['vendor_service_location_postcode'] = $code;
+                    $info['vendor_service_location_added_on'] = date('Y-m-d H:i:s', strtotime('now'));
+                    $info['vendor_service_location_updated_on'] = date('Y-m-d H:i:s', strtotime('now'));
+                    array_push($data, $info);
+                }
+                if (!empty($data)) {
+                    $this->model->insert_batch_tb('mm_vendor_service_location', $data);
+
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('vendor_service_location_added');
+                    $this->_rdata = array();
+                }else{                  
+                    $this->_message  = $this->ci->lang->line('invalid_data'); 
+                    $this->_status   = false;            
+                }
+            
+        }
+        return $this->getResponse();       
+        
+    }
+    
+    /** Function to List Service Location
+     * @param null 
+     * @return Array Return Array response with Service location list 
+     */
+    function _listServiceLocation(){
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $archived = $this->ci->input->post('archived', true);
+            $person_id = $this->ci->session->userdata('user_id');
+            
+            $service_location = $this->model->get_tb('mm_vendor_service_location', 'vendor_service_location_id', array('vendor_service_location_vendor_id' => $person_id))->result();
+
+            if (!empty($service_location)) {
+                $result = $this->model->get_tb('mm_vendor_service_location', '*', array("vendor_service_location_vendor_id" => $person_id, "vendor_service_location_archived" => $archived))->result();
+
+                if ($result) {
+                    $this->_status = true;
+                    $this->_message = '';
+                    $this->_rdata = $result;
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_user');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+    
+    /** Function to Archive/Un Archive Service Location
+     * @param null
+     * @return Array returns Array with status of Archive/UnArchive
+     */
+    function _archiveServiceLocation(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+        
+        $this->ci->form_validation->set_rules('locationId', 'Location Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));       
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {           
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $location_id    = $this->ci->input->post('locationId', true);
+            $archive        = intval($this->ci->input->post('archive', true));
+
+
+            $result = $this->model->get_tb('mm_vendor_service_location', 'vendor_service_location_id', array('vendor_service_location_id' => $location_id, 'vendor_service_location_vendor_id'=>$person_id))->result();
+            if (!empty($result)) {
+
+                $info = array();
+                $info['vendor_service_location_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;;
+
+                $this->model->update_tb('mm_vendor_service_location', array('vendor_service_location_id' => $location_id, 'vendor_service_location_vendor_id'=>$person_id), $info);
+                $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_location_archived') : $this->ci->lang->line('service_location_unarchived'); 
+                $this->_status   = true;
+                
+            } else {
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
+            }
+
+            return $this->getResponse();
+        }
     }
 
 }

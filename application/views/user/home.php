@@ -26,7 +26,6 @@
                                     <div class="div-inline">
                                         <form id="search-service" action="<?php echo base_url() . 'booking.html'; ?>" method="post">
                                             <h1>Book your Maid now </h1>
-                                            <h4>From $10000 per hour</h4>
                                             <hr>
                                             <div class="col-lg-3">
                                                 <div class="row">
@@ -41,7 +40,7 @@
                                                                                                 </select></div>
                                                                                         </div>-->
                                             <div class="col-lg-4">
-                                                <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="" id="" required></div>
+                                                <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="pincode" id="" required></div>
                                             </div>
                                             <div class="col-lg-3">
                                                 <div class="row"><button type="submit" placeholder="Find" class="form-control btn-success">Find Services</button> </div>

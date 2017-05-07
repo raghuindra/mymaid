@@ -103,7 +103,7 @@
                   
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>
                 <span style='text-decoration: underline;'>Email Address:</span> mymaidz16@gmail.com <br/><br/>
-                <span style='text-decoration: underline;'>Telephone number:</span> 0125918491<br/><br/>Effective as of April 01, 2017 
+                <span style='text-decoration: underline;'>Telephone number:</span> 0125918491<br/><br/>Effective as of April 01, 2017to April 15,2017
                 </p>
 
             </div>

@@ -1448,7 +1448,7 @@ $(function () {
                         if(archived == '0'){
                             string += '<a href="#" class="btn btn-social-icon serviceAddonPriceArchive" title="Archive" data-service="' + row.service_addon_price_service_id + '" data-addonid = "' + row.service_addon_price_addon_id + '" data-id = "' + row.service_addon_price_id + '"><i class="fa fa-archive"></i></a></div></td>';
                         }else{
-                            string += '<a href="#" class="btn btn-social-icon serviceAddonPriceUnArchive" title="Archive" data-service="' + row.service_addon_price_service_id + '" data-addonid = "' + row.service_addon_price_addon_id + '" data-id = "' + row.service_addon_price_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon serviceAddonPriceUnArchive" title="Un Archive" data-service="' + row.service_addon_price_service_id + '" data-addonid = "' + row.service_addon_price_addon_id + '" data-id = "' + row.service_addon_price_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
                         }
                         return string;
                     }
@@ -1508,7 +1508,7 @@ $(function () {
                     '</div>'+
                     '<div class="form-group">' +
                     '<label>Price</label>' +
-                    '<input type="text" placeholder="Offer Discount" class="price form-control" value="'+rowData.service_addon_price_price+'"required />' +
+                    '<input type="text" placeholder="Offer Discount" class="price form-control" value="'+rowData.service_addon_price_price+'" required />' +
                     '</div>',
                 buttons: {
                     update: {
@@ -1662,7 +1662,7 @@ $(function () {
                         if(archived == '0'){
                             string += '<a href="#" class="btn btn-social-icon serviceSplRequestArchive" title="Archive" ><i class="fa fa-archive"></i></a></div></td>';
                         }else{
-                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestUnArchive" title="Archive" ><i class="fa fa-folder-open"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon serviceSplRequestUnArchive" title="Un Archive" ><i class="fa fa-folder-open"></i></a></div></td>';
                         }
                         return string;
                     }

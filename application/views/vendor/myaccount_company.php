@@ -370,6 +370,30 @@ $vendorId = $this->session->userdata('user_id');
 </div>
 <!-- /.content-wrapper -->
 
+<!-- Employee Edit Modal -->
+<div class="modal fade" id="employeeEditModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id='editEmployeeForm' action="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="employeeEditModalLabel">Edit Employee</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 
+                        Modal Body
+                    -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" type="submit" id="saveEmployeeEdit">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /.Employee Edit Modal END -->
+
 <!-- pekeUpload -->
 <script type="text/javascript" src="<?php echo plugin_url('plugins/pekeUpload/pekeUpload.js'); ?>"></script>
 <script>
@@ -431,7 +455,7 @@ $vendorId = $this->session->userdata('user_id');
         });
         
         /* Employee List Datatable */
-        var employee_list = $('#employee_list').DataTable({
+        var employeeListTable = $('#employee_list').DataTable({
             "responsive": true,
             "paging": true,
             "lengthChange": true,
@@ -465,7 +489,7 @@ $vendorId = $this->session->userdata('user_id');
                     "render": function (data, type, row) {
 
                         var string = ' <td class=""> <div class="text-center">';
-                            if(row.employee_job_type === <?php echo Globals::EMPLOYEE_FULLTIME;?>){
+                            if(row.employee_job_type == <?php echo Globals::EMPLOYEE_FULLTIME;?>){
                                 string += 'Full Time';
                             }else{
                                 string += 'Part Time';
@@ -488,7 +512,7 @@ $vendorId = $this->session->userdata('user_id');
                     "render": function (data, type, row) {
                         var archived = $("#employee_status").attr('data-val');
                         var string = ' <td class=""> <div class="text-center">'
-                                + '<a href="#" class="editEmpployeeWindow btn btn-social-icon " title="Edit" ><i class="fa fa-edit"></i></a>';
+                                + '<a href="#" class="editEmployeeWindow btn btn-social-icon " title="Edit" ><i class="fa fa-edit"></i></a>';
                         if(archived == '0'){
                             string += '<a href="#" class="btn btn-social-icon employeeArchive" title="Archive" ><i class="fa fa-archive"></i></a></div></td>';
                         }else{
@@ -528,7 +552,7 @@ $vendorId = $this->session->userdata('user_id');
             $(".btn-group#employee_status button").removeClass('active');
             $(this).addClass('active');
             $("#employee_status").attr('data-val',$(this).data('val'));           
-            employee_list.ajax.reload(); //call datatable to reload the Ajax resource
+            employeeListTable.ajax.reload(); //call datatable to reload the Ajax resource
             
         });
         
@@ -548,7 +572,7 @@ $vendorId = $this->session->userdata('user_id');
 
                     if (result.status === true) {
                         notifyMessage('success', result.message);
-                        employee_list.ajax.reload(); //call datatable to reload the Ajax resource
+                        employeeListTable.ajax.reload(); //call datatable to reload the Ajax resource
                     } else {
                         notifyMessage('error', result.message);
                     }
@@ -568,6 +592,126 @@ $vendorId = $this->session->userdata('user_id');
             $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
         }
                
+        
+        /* Edit Employee AJAX Call */
+        $("#saveEmployeeEdit").click(function (e) {
+            e.preventDefault();
+            var data = $("#editEmployeeForm").serializeArray();
+            var employeeId = $("#employeeEditModal").data('val').employee_id;
+            data.push({'name': 'employeeId', 'value':employeeId});
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'editEmployee.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        employeeListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                        $("#employeeEditModal").modal('hide');
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    notifyMessage('error', errorThrown);
+                }
+            });
+        });
+
+        /* Fetching the Employee Details  */
+        $(document).on('click', '.editEmployeeWindow', function (e) {
+
+            e.preventDefault();
+            var rowData = employeeListTable.row($(this).closest('tr')).data();
+            
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'editEmployee.html'; ?>",
+                data: {'employeeId': rowData.employee_id},
+                cache: false,
+                success: function (res) {
+                    $("#employeeEditModal .modal-body").html(res);
+                    $("#employeeEditModal").modal('show');
+                    $("#employeeEditModal").data('val',rowData);
+                    
+                    /* Edit Employee Job type click event */
+                    $(document).on('click', ".btn-group .edit_emp_jobtype", function () {
+                        $(".btn-group .edit_emp_jobtype").removeClass('active');
+                        $(this).addClass('active');
+                        $("#edit_employee_jobtype").val($(this).data('val'));
+                    });
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    notifyMessage('error', errorThrown);
+                }
+            });
+
+        });
+        
+        /* Archive/UnArchive Employees START  */
+        $(document).on('click', '.employeeArchive, .employeeUnArchive', function (e) {
+
+            e.preventDefault();
+            var rowData     = employeeListTable.row($(this).closest('tr')).data();
+            var employeeId    = rowData.employee_id;
+            var companyId   = rowData.employee_company_id;
+            
+            if($(this).hasClass('employeeUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveEmployee.html'; ?>",
+                                data: {'employeeId': employeeId, 'companyId':companyId,'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        employeeListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'btn-red',
+                    action:function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive Employees END */
         
     });
 

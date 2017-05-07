@@ -24,7 +24,7 @@
             <div class="row" style='margin-bottom: 80px;'>
 
                 <h3>This Privacy Policy is effective as of 15 April 2017.</h3>
-                <p style='text-align: -webkit-auto;margin-bottom: 0px'>ADVANCE DREAMS VENTURE SDN. BHD (“ADV”), may take your personal information when you communicate with us either by log in to our website or contact to our customer service and the information that we collected from you may be used and will be kept confidential. To protect your private information, we have established this Privacy Policy (the "Policy") in accordance with best practices in the industry and applicable laws and regulations. This Policy describes how we handle your personal information for our services on the mymaidz.com website and its related sites, services and tools (the "Website"). ADVANCE DREAMS VENTURE SDN. BHD is committed to complying with the Personal Data Protection Act 2010 (“PDPA”) of Malaysia.</p>
+                <p style='text-align: -webkit-auto;margin-bottom: 0px'>ADVANCE DREAMS VENTURE SDN. BHD.(1211693-M) (“ADV”), may take your personal information when you communicate with us either by log in to our website or contact to our customer service and the information that we collected from you may be used and will be kept confidential. To protect your private information, we have established this Privacy Policy (the "Policy") in accordance with best practices in the industry and applicable laws and regulations. This Policy describes how we handle your personal information for our services on the mymaidz.com website and its related sites, services and tools (the "Website"). ADVANCE DREAMS VENTURE SDN. BHD is committed to complying with the Personal Data Protection Act 2010 (“PDPA”) of Malaysia.</p>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>By accepting the Policy, Terms & Conditions and the Seller Agreement in registration, you expressly consent to our collection, storage, use and disclosure of your personal information as described in this Policy.</p>
 
                 <h3>Collection of Personal Information</h3>
@@ -76,7 +76,7 @@
                 </ul>
                 
                 <h3>Access and Update of Your Personal Information</h3>
-                <p style='text-align: -webkit-auto;margin-bottom: 0px'>If you would like to access, update or correct your personal information, you may contact us at mymaidz16@gmail.com . Any request to access or correct personal information may be subject to a fee and will be bound by data protection laws in Malaysia.<br/><br/>us via e-mail at <a href="mailto:info@kaodim.com" style='text-decoration: none;'>info@kaodim.com</a>.</p>
+                <p style='text-align: -webkit-auto;margin-bottom: 0px'>If you would like to access, update or correct your personal information, you may contact us at mymaidz16@gmail.com . Any request to access or correct personal information may be subject to a fee and will be bound by data protection laws in Malaysia.</p>
                 
 
                 <h3>Changes to this Privacy Policy</h3>

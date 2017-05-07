@@ -33,16 +33,16 @@ $this->load->view("block/admin_leftMenu");
                             <div class="box-body" style="display: block;">
                                 <div class="box box-primary">
                                     <!-- /.box-header -->
-                                    <!--                                        <div class="box-header with-border">
-                                                                                <div class="form-group">                                             
-                                                                                    <div class="col-sm-6">
-                                                                                        <div class="btn-group" role="group" id="_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
-                                                                                            <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
-                                                                                            <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>-->
+            <!--                                    <div class="box-header with-border">
+                                                    <div class="form-group">                                             
+                                                        <div class="col-sm-6">
+                                                            <div class="btn-group" role="group" id="_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                                <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                                <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
                                     <!-- /.box-header -->
                                     <div class="box-body col-sm-12">
                                         <table id="vendorCompanyList" class="table table-bordered table-striped">

@@ -26,8 +26,13 @@ class Person extends CI_Controller{
     
     public function pageNotFound(){
         $this->data['content']  = "page_not_found.php";
-        $this->data['vendor']     = 1;
+        $this->data['vendor']     = 1;       
         $this->load->view('template', $this->data);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(404)
+            ->set_output(json_encode(array('status'=>false, 'message'=>'invalid url.')));
+            
     }
 
     function userLogin() {

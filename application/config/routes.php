@@ -63,6 +63,11 @@ $route['refundPolicy.html']                     = "person/refundPolicyPage";
 $route['user_login.html']                       = "person/userLogin";
 $route['user_register.html']                    = "person/userRegister";
 $route['booking.html']                          = "user/booking";
+$route['getServices.html']                      = "user/getServices";
+$route['getServicePackages.html']               = "user/getServicePackages";
+$route['getServiceFrequencies.html']            = "user/getServiceFrequencies";
+$route['getServiceAddons.html']                 = "user/getServiceAddons";
+$route['getServiceSplRequests.html']             = "user/getServiceSplRequests";
 
 
 /* ................  Admin Module Routing  ......................... */
@@ -130,9 +135,17 @@ $route['updateCompanyDetail.html']              = "vendor/updateCompanyDetail";
 $route['upload_employeeid_doc.html']            = "vendor/uploadEmployeeIdDoc";
 $route['createEmployee.html']                   = "vendor/createEmployee";
 $route['listEmployees.html']                    = "vendor/listEmployees";
+$route['editEmployee.html']                     = "vendor/updateEmployee";
+$route['archiveEmployee.html']                  = "vendor/postArchiveEmployee";
+$route['serviceLocation.html']                  = "vendor/serviceLocation";
+$route['getVendorPostOffices.html']             = "vendor/getPostOffices";
+$route['getVendorPostcodes.html']               = "vendor/getpostcodes";
+$route['addServiceLocation.html']               = "vendor/addServiceLocation";
+$route['listServiceLocation.html']              = "vendor/listServiceLocation";
+$route['archiveServiceLocation.html']           = "vendor/archiveServiceLocation";
 
 
-/* ........Vendor/Freelance Module Routing................... */
+/* ........Freelance Module Routing................... */
 $route['freelance_home.html']                   = "freelance";
 //$route['freelance_login.html']                  = "freelance/vendorLogin";
 //$route['freelance_register.html']               = "freelance/vendorRegister";

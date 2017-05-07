@@ -244,5 +244,143 @@ class Vendor extends Base {
         echo json_encode($response);
         
     }
+    
+    /** Function to Edit Employees
+     * @param null 
+     * @return JSON Return JSON response with employee 
+    */
+    public function updateEmployee(){
+        if(isset($_POST['edit_employee_name'])){
+            $response = $this->vendor_lib->_updateEmployee();
+            echo json_encode($response);
+        }else{
+            $this->data['employee_detail'] = $this->vendor_lib->_getEmployeeDetail();
+            $this -> load -> view('vendor/popup/edit_employee', $this->data);                      
+        } 
+        
+    }
+    
+    /** Function to Archive/Un archive Vendor.
+    * @param null
+    * @return JSON returns the JSON with Archive/UnArchive status    
+    */
+    public function postArchiveEmployee(){
+        if(isset($_POST['employeeId'])){
+            $response = $this->vendor_lib->_archiveEmployee();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
+    
+    
+    public function serviceLocation(){
+        $this->data['states'] = $this->vendor_lib->_getPostalStates();
+        $this->data['content'] = "vendor/service_location.php";
+        $this->data['vendor'] = 1;
+        $this->data['active'] = "";
+        $this->load->view('template', $this->data);
+    }
+    
+    /* Get the distinct price for a Service package of a service based on Postcode  */
+    public function getServicePackagePostcodePrice(){
+
+        if(isset($_POST['packageId'])){               
+            $this->data['states'] = $this->vendor_lib->_getPostalStates();
+            //print_r($this->data['states']);
+            $this -> load -> view('admin/popup/set_package_postal_price', $this->data);
+        }else if(isset($_POST['archived'])){
+            $response =  $this->vendor_lib->_getServicePackagePostalPriceList();
+            echo json_encode($response);
+        }
+
+    }
+
+    /* Get City name based on sate code selection */
+    public function getPostOffices(){
+        if(isset($_POST['stateCode'])){
+           $response =  $this->vendor_lib->_getPostOffices();
+        }else{
+           $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+    }
+
+    /* get the Postcodes based on AreaCodes And which not available in Postcode Price list already. */
+    public function getpostcodes(){
+        if(isset($_POST['areaCode'])){
+           $response =  $this->vendor_lib->_getpostcodes();
+        }else{
+           $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+    }
+    
+    /**
+     * Function to add the vendor service location.
+     * @param null
+     * @return JSON returns the status of addition
+     */
+    public function addServiceLocation(){
+        
+        if(isset($_POST['postcodeSelect'])){
+           $response =  $this->vendor_lib->_addServiceLocation();
+        }else{
+           $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+        
+    }
+    
+    /**
+     * Function to list the vendor service location.
+     * @param null
+     * @return JSON returns the list of service location
+     */
+    public function listServiceLocation(){
+        if(isset($_POST['archived'])){
+            $response = $this->vendor_lib->_listServiceLocation();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
+    
+    /** Function to Archive/Un archive Service Location.
+    * @param null
+    * @return JSON returns the JSON with Archive/UnArchive status    
+    */
+    public function archiveServiceLocation(){
+        if(isset($_POST['locationId'])){
+            $response = $this->vendor_lib->_archiveServiceLocation();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
 
 }

@@ -91,7 +91,7 @@
             <div class="box-body" style="display: block;">
                 <div class="box box-primary">
                     <!-- /.box-header -->
-                    <div class="box-header with-border">
+                    <div class="box-header with-border hidden">
                         <div class="form-group">                                             
                             <div class="col-sm-6">
                                 <div class="btn-group" role="group" aria-label="Archive Un Archive condition" id="service_package_postal_price_status" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
