@@ -144,47 +144,47 @@ $(function() {
             $(".ct-addon-count")
                 .find("input[type='checkbox']")
                 .prop("checked", false);
-            if ($(this)
-                .data("id") == 1) {
-                $(".plumbing-service")
-                    .slideUp();
-                $(".home-service")
-                    .slideDown();
-                $(".handyman-service")
-                    .slideUp();
-                $(".office-service")
-                    .slideUp();
-            } else if ($(this)
-                .data("id") == 2) {
-                $(".home-service")
-                    .slideUp();
-                $(".plumbing-service")
-                    .slideDown();
-                $(".handyman-service")
-                    .slideUp();
-                $(".office-service")
-                    .slideUp();
-            } else if ($(this)
-                .data("id") == 3) {
-                $(".home-service")
-                    .slideUp();
-                $(".plumbing-service")
-                    .slideUp();
-                $(".handyman-service")
-                    .slideDown();
-                $(".office-service")
-                    .slideUp();
-            } else if ($(this)
-                .data("id") == 4) {
-                $(".home-service")
-                    .slideUp();
-                $(".plumbing-service")
-                    .slideUp();
-                $(".handyman-service")
-                    .slideUp();
-                $(".office-service")
-                    .slideDown();
-            }
+//            if ($(this)
+//                .data("id") == 1) {
+//                $(".plumbing-service")
+//                    .slideUp();
+//                $(".home-service")
+//                    .slideDown();
+//                $(".handyman-service")
+//                    .slideUp();
+//                $(".office-service")
+//                    .slideUp();
+//            } else if ($(this)
+//                .data("id") == 2) {
+//                $(".home-service")
+//                    .slideUp();
+//                $(".plumbing-service")
+//                    .slideDown();
+//                $(".handyman-service")
+//                    .slideUp();
+//                $(".office-service")
+//                    .slideUp();
+//            } else if ($(this)
+//                .data("id") == 3) {
+//                $(".home-service")
+//                    .slideUp();
+//                $(".plumbing-service")
+//                    .slideUp();
+//                $(".handyman-service")
+//                    .slideDown();
+//                $(".office-service")
+//                    .slideUp();
+//            } else if ($(this)
+//                .data("id") == 4) {
+//                $(".home-service")
+//                    .slideUp();
+//                $(".plumbing-service")
+//                    .slideUp();
+//                $(".handyman-service")
+//                    .slideUp();
+//                $(".office-service")
+//                    .slideDown();
+//            }
         });
     $(document)
         .on("click", ".addon-checkbox", function() {

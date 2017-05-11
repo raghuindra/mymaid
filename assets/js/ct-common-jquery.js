@@ -1,18 +1,18 @@
 var ct_postalcode_status_check = ct_postalcode_statusObj.ct_postalcode_status;
 /* scroll to next step */
-jQuery(document)
-    .ready(function() {
-        jQuery('.ct-service')
-            .on('click', function() {
-                jQuery('html, body')
-                    .stop()
-                    .animate({
-                        'scrollTop': jQuery('.ct-scroll-meth-unit')
-                            .offset()
-                            .top - 30
-                    }, 800, 'swing', function() {});
-            });
-    });
+//jQuery(document)
+//    .ready(function() {
+//        jQuery('.ct-service')
+//            .on('click', function() {
+//                jQuery('html, body')
+//                    .stop()
+//                    .animate({
+//                        'scrollTop': jQuery('.ct-scroll-meth-unit')
+//                            .offset()
+//                            .top - 30
+//                    }, 800, 'swing', function() {});
+//            });
+//    });
 /* forget password */
 jQuery(document)
     .ready(function() {
@@ -500,7 +500,7 @@ jQuery(document)
     .ready(function() {
         jQuery("input[name=service-radio]")
             .click(function() {
-                /*  jQuery(".ct-meth-unit-count").show( "blind", {direction: "vertical"}, 700 ); */
+                  jQuery(".ct-meth-unit-count").show( "blind", {direction: "vertical"}, 700 ); 
             });
     });
 
@@ -689,7 +689,7 @@ jQuery(document)
 
 
 /*** calendar code end ***/
-/* Display Country Code on click flag on phone*/
+/* Display Country Code on click flag on phone */
 jQuery(document)
     .on('click', '.country', function() {
         var country_code = jQuery(this)

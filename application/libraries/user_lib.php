@@ -103,11 +103,19 @@ class User_lib extends Base_lib{
         $this->resetResponse();
         $postcode = $this->ci->security->xss_clean($data->postcode);
         $serviceIds = $this->ci->security->xss_clean($data->serviceId);
-        $packages = $this->model->getServicePackages($serviceIds, $postcode);
+        $packages = $this->model->getServicePackages($serviceIds);
+        
         if ($packages) {
             $array = array();
             foreach($packages as $pack){
-                $array[$pack->service_package_service_id][] = $pack;
+                $postPrice = $this->model->getPackagePostcodePrice($pack->service_package_id, $postcode);
+                
+                if($postPrice){
+                    $temp = array("spl_price"=> $postPrice[0]->postcode_service_price_price ,"package"=>$pack);
+                }else{
+                    $temp = array("spl_price"=> null,"package"=>$pack);
+                }
+                $array[$pack->service_package_service_id][$pack->service_package_id] = $temp;
             }
             $response = array(
                 'status' => true,
@@ -135,7 +143,7 @@ class User_lib extends Base_lib{
         if ($frequencies) {
             $array = array();
             foreach($frequencies as $freq){
-                $array[$freq->service_frequency_offer_service_id][] = $freq;
+                $array[$freq->service_frequency_offer_service_id][$freq->service_frequency_offer_id] = $freq;
             }
             $response = array(
                 'status' => true,
@@ -164,7 +172,7 @@ class User_lib extends Base_lib{
         if ($addons) {
             $array = array();
             foreach($addons as $addon){
-                $array[$addon->service_addon_price_service_id][] = $addon;
+                $array[$addon->service_addon_price_service_id][$addon->service_addon_price_addon_id] = $addon;
             }
             $response = array(
                 'status' => true,

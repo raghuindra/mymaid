@@ -17,6 +17,9 @@ class User_model extends Mm_model {
         $this->_service_spl_request         = "mm_service_spl_request";
         $this->_spl_request                 = "mm_spl_request";
         $this->_postcode_service_price      = "mm_postcode_service_price";
+        $this->_building                = "mm_building";
+        $this->_area                    = "mm_area";
+        
         
     }
 
@@ -28,18 +31,28 @@ class User_model extends Mm_model {
                         ->result();
     }
     
-    function getServicePackages($serviceIds, $postcode){
+    function getServicePackages($serviceIds){
         return $this->db->select('*')
                         ->from($this->_service_package)
-                        ->join($this->_postcode_service_price, 'postcode_service_price_package_id = service_package_id','left')
+                        ->join($this->_building, 'building_id = service_package_building_id','left')
+                        ->join($this->_area, 'area_id = service_package_building_area_id','left')
                         ->where('service_package_archive', Globals::UN_ARCHIVE)
                         ->where_in('service_package_service_id', $serviceIds)
-                        ->or_where('postcode_service_price_postcode', $postcode)
                         ->get()
                         ->result();
         
     }
     
+    function getPackagePostcodePrice($packageId, $postcode){
+        return $this->db->select('*')
+                        ->from($this->_postcode_service_price)                       
+                        ->where('postcode_service_archived', Globals::UN_ARCHIVE)
+                        ->where('postcode_service_price_package_id', $packageId)
+                        ->where('postcode_service_price_postcode', $postcode)
+                        ->get()
+                        ->result();
+    }
+            
     function getServiceFrequencies($serviceIds){
         return $this->db->select('*')
                         ->from($this->_service_frequency_offer)

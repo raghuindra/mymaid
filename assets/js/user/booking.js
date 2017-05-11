@@ -267,7 +267,9 @@ var ServiceResponseHandler = {
         ServiceObjects.ServicePackageObject = dataObj;
         var packages = dataObj.getAllServicePackages();
 
-        console.log(packages); ServiceRender.renderServices();
+        console.log(packages); 
+        RenderView.renderServices();
+        //RenderView.renderServicePackage(id);
         if(ServiceObjects.ServiceObject !== null){
             var serviceIds = ServiceObjects.ServiceObject.getServiceIds(); //console.log("ServiceIds: "+serviceIds);
             ServiceResponseHandler.TriggerServiceFrequencycall(serviceIds, postcode);
@@ -294,7 +296,8 @@ var ServiceResponseHandler = {
     ServiceFrequencySuccessHandler: function(data){
         var dataObj = ServiceData.serviceFrequency(data);
         ServiceObjects.ServiceFrequencyObject = dataObj;
-        console.log("Frequency Call Success..!!!");
+        console.log("Frequency Call Success...");
+        console.log(ServiceObjects.ServiceFrequencyObject.getServiceAllFrequencyData());
     },
     
     ServiceFrequencyFailureHandler: function(data){
@@ -311,7 +314,8 @@ var ServiceResponseHandler = {
     ServiceAddonSuccessHandler: function(data){
         var dataObj = ServiceData.serviceAddon(data);
         ServiceObjects.ServiceaAddonObject = dataObj;
-        console.log("Addon Call Success..!!!");
+        console.log("Service Addons..");
+        console.log(ServiceObjects.ServiceaAddonObject.getServiceAllAddonData());
     },
     
     ServiceAddonFailureHandler: function(data){
@@ -457,7 +461,7 @@ var ServiceData = (function(){
     
 })();
 
-var ServiceRender = {
+var RenderView = {
     
     renderServices : function(){ 
         var servicesObj = ServiceObjects.ServiceObject;
@@ -469,23 +473,64 @@ var ServiceRender = {
                 var id = services[i].service_id;
                 if(packages[id] !== undefined){
                     
-                $("#service_temp_html").html($("#service_html").html());
-                
-                $("#service_temp_html li").data('servicetitle', services[i].service_name);
-                $("#service_temp_html li").data('id', id);
-                $("#service_temp_html li input[type=radio]").attr('id', "ct-service-"+i);
-                $("#service_temp_html li input[type=radio]").addClass('service-radio');
-                
-                $("#service_temp_html li input[type=radio]").val(id);
-                $("#service_temp_html li label").attr('for', "ct-service-"+i);
-                $("#service_temp_html li .service-name").text(services[i].service_name);
-                
-                $(".services-list").append($("#service_temp_html").html());
-                
-                $("#service_temp_html").html('');
+                    $("#service_temp_html").html($("#service_html").html());
+
+                    $("#service_temp_html li").attr('data-servicetitle', services[i].service_name);
+                    $("#service_temp_html li").attr('data-id', i+1);
+                    $("#service_temp_html li input[type=radio]").attr('id', "ct-service-"+i);
+                    $("#service_temp_html li input[type=radio]").addClass('service-radio');
+
+                    $("#service_temp_html li input[type=radio]").val(id);
+                    $("#service_temp_html li label").attr('for', "ct-service-"+i);
+                    $("#service_temp_html li .service-name").text(services[i].service_name);
+
+                    $("#booking_service_list").append($("#service_temp_html").html());
+
+                    $("#service_temp_html").html('');
+                    RenderView.renderServicePackage(id);
                 }
             }
         }
+    },
+    
+    renderServicePackage: function(serviceId){
+        var packagesObj = ServiceObjects.ServicePackageObject;
+        var packages = packagesObj.getAllServicePackages();
+        
+        
+        //$("#package_temp_html ul").addClass('service_'+serviceId+'_package');
+        var str = "<ul class='services-list ct_service_package_"+serviceId+"' style='display:block'>";
+        if(packages[serviceId] !== undefined){
+            var packs = packages[serviceId];
+            for(var packId in packs){
+                var package = packs[packId].package;
+                $("#package_temp_html").html($("#service_package_html").html());
+                $("#package_temp_html li input[type=radio]").attr('id', "ct_service_pk_"+packId);
+                $("#package_temp_html li input[type=radio]").addClass('service-radio');
+                
+                $("#package_temp_html li input[type=radio]").val(package.service_package_id);
+                $("#package_temp_html li label").attr('for', "ct_service_pk_"+packId);               
+                $("#package_temp_html li .spring-body .p-header").html(package.building_name);
+                
+                $("#package_temp_html li .spring-body .p-header").after("<p class='p-content'>"+package.service_package_min_crew_member+" cleaning Crew </p>");
+                $("#package_temp_html li .spring-body .p-header").after("<p class='p-content'>"+package.service_package_bedroom+" Bedrooms and "+package.service_package_bathroom+" Bathrooms </p>");
+                if(package.area_size !== null && package.area_size !== ''){
+                    $("#package_temp_html li .spring-body .p-header").after("<p class='p-content'>"+package.area_size+" /"+package.area_measurement+"</p>");
+                }
+                str += $("#package_temp_html").html();
+                
+                $("#package_temp_html").html('');
+            
+            }
+            str += "</ul>"; 
+            $(".packageDiv").append(str);
+            
+        }
+            
+    },
+    
+    renderServiceAddons: function(){
+        
     },
     
 };
@@ -495,22 +540,24 @@ var ServiceRender = {
 
 $(function () {
     
-var data = ServiceJSON.getServicesJson({'postcode':postcode});
-var service = ServiceFactory.getServicesCommand(data, 'getServices.html',ServiceResponseHandler.ServiceSuccessHandler, ServiceResponseHandler.ServiceFailureHandler);
-ServiceFactory.executeTask(service);
+    var data = ServiceJSON.getServicesJson({'postcode':postcode});
+    var service = ServiceFactory.getServicesCommand(data, 'getServices.html',ServiceResponseHandler.ServiceSuccessHandler, ServiceResponseHandler.ServiceFailureHandler);
+    ServiceFactory.executeTask(service);
 
 
-$(document).on("change",".service-radio ", function(){
-    console.log("Service Selected:");
-    //console.log("Service Selected: "+ $(this).child('.service-radio').val());
+    setTimeout(function(){ 
+        $(document).on("click", ".services-list .ser_details .service-radio", function(e){
+
+            console.log("Service Selected: "+ $(this).val());
+            
+            var serviceId = $(this).val();
+            
+        });
+
+    }, 2000);
+    
 });
 
-
-});
-
-function serviceClicked(){
-    //console.log("Service Selected:");
-}
 
 
 
