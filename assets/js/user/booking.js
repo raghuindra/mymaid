@@ -297,7 +297,7 @@ var ServiceResponseHandler = {
         var dataObj = ServiceData.serviceFrequency(data);
         ServiceObjects.ServiceFrequencyObject = dataObj;
         console.log("Frequency Call Success...");
-        console.log(ServiceObjects.ServiceFrequencyObject.getServiceAllFrequencyData());
+        console.log(ServiceObjects.ServiceFrequencyObject.getAllServiceFrequency());
     },
     
     ServiceFrequencyFailureHandler: function(data){
@@ -314,8 +314,8 @@ var ServiceResponseHandler = {
     ServiceAddonSuccessHandler: function(data){
         var dataObj = ServiceData.serviceAddon(data);
         ServiceObjects.ServiceaAddonObject = dataObj;
-        console.log("Service Addons..");
-        console.log(ServiceObjects.ServiceaAddonObject.getServiceAllAddonData());
+        console.log("Service Addons Call Success..");
+        console.log(ServiceObjects.ServiceaAddonObject.getAllServiceAddons());
     },
     
     ServiceAddonFailureHandler: function(data){
@@ -333,6 +333,7 @@ var ServiceResponseHandler = {
         var dataObj = ServiceData.serviceSplRequest(data);
         ServiceObjects.ServiceaSplRequestObject = dataObj;
         console.log("Spl Request Call Success..!!!");
+        console.log(ServiceObjects.ServiceaSplRequestObject.getAllServiceSplRequestData());
     },
     
     ServiceSplRequestFailureHandler: function(data){
@@ -389,12 +390,12 @@ var ServiceData = (function(){
         this.frequency = data.data;
     };
     
-    serviceFrequencyDataFun.prototype.getServiceAllFrequencyData = function(){       
+    serviceFrequencyDataFun.prototype.getAllServiceFrequency = function(){       
         
         return this.frequency;
     };
     
-    serviceFrequencyDataFun.prototype.getServiceFrequencyOfService = function(serviceId){       
+    serviceFrequencyDataFun.prototype.getFrequencyOfService = function(serviceId){       
         if ( this.frequency[serviceId] !== undefined ) {
             return this.frequency[serviceId];
         }else{
@@ -407,7 +408,7 @@ var ServiceData = (function(){
         this.addon = data.data;
     };
     
-    serviceAddonDataFun.prototype.getServiceAllAddonData = function(){       
+    serviceAddonDataFun.prototype.getAllServiceAddons = function(){       
         
         return this.addon;
     };
@@ -424,7 +425,7 @@ var ServiceData = (function(){
         this.splRequest = data.data;
     };
     
-    serviceSplRequestDataFun.prototype.getServiceAllSplRequestData = function(){       
+    serviceSplRequestDataFun.prototype.getAllServiceSplRequestData = function(){       
         
         return this.splRequest;
     };
@@ -530,6 +531,23 @@ var RenderView = {
     },
     
     renderServiceAddons: function(){
+        var servicesObj = ServiceObjects.ServiceObject;
+        var addonsObj   = ServiceObjects.ServiceAddonsObject;
+        if( (servicesObj !== null) && (addonsObj !== null)){ 
+            var services = servicesObj.getAllServices();
+            var addons = addonsObj.getAllServiceAddons();
+            
+            for(var i=0; i<services.length; i++ ){
+                var id = services[i].service_id;
+                if(addons[id] !== undefined){
+                    
+                    
+                    
+                }
+            }
+            
+            
+        }
         
     },
     
