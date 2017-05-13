@@ -266,14 +266,14 @@
                         <div class="packageDiv">
                             <!-- 1.box style services Package selection radio selection -->
                             <ul class="services-list">
-                                <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class" data-servicetitle="Plumbing Services" >
+<!--                                <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class" data-servicetitle="Plumbing Services" >
                                     <input type="radio" name="package-radio" id="ct-pk-service-1" class="make_service_disable">
                                     <label class="ct-service border-c" for="ct-pk-service-1">
                                         <div class="ct-service-img">
                                             <div class="row">
                                                 <div class="col-xs-12 text-center spring-body">
-                                                    <!-- ngIf: booking.house_size != 1000 -->
-                                                    <!-- ngIf: booking.house_size == 1000 --><img ng-if="booking.house_size == 1000" src="./assets/images/icon-small-house.png" class="icon-md mt-sm ng-scope" height="40"><!-- end ngIf: booking.house_size == 1000 -->
+                                                     ngIf: booking.house_size != 1000 
+                                                     ngIf: booking.house_size == 1000 <img ng-if="booking.house_size == 1000" src="./assets/images/icon-small-house.png" class="icon-md mt-sm ng-scope" height="40"> end ngIf: booking.house_size == 1000 
                                                     <p class="p-header">Small Apartment / Studio</p>
                                                     <p class="p-content">Up to 1,000 sqft</p>
                                                     <p class="p-content">Up to 3 bedrooms and 2 bathrooms</p>
@@ -286,7 +286,7 @@
 
                                     <div class="service-name fl ta-c">Plumbing Services</div>
                                 </li>
-
+-->
 
                             </ul>
 
@@ -295,81 +295,15 @@
                     </div>
                     <!-- end module third area based -->
 
+                    <!-- Service Addons Div -->
+                    <div id="service_addons_div">
 
 
-
-                    <div class="ct-extra-services-list  ct-common-box add_on_lists ">
-                        <div class="ct-list-header">
-                            <h3 class="header3">Extra Services</h3>
-                            <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
-                        </div>
-                        <ul class="addon-service-list fl ">
-                            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="1" id="ct-addon-1" data-mnamee="ad_unit1">
-                                <label class="ct-addon-ser border-c" for="ct-addon-1"><span></span>
-                                    <div class="addon-price">$5.00</div>
-                                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-fridge.png"></div>
-
-                                </label>
-                                <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid1" style="display: none;">
-
-                                    <div class="ct-btn-group">
-                                        <button data-ids="1" id="minus1" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="1" data-duration_value="" data-mnamee="ad_unit1" data-method_name="Fridge Cleaning" data-service_id="1" data-rate="" data-method_id="0" data-type="addon">-</button>
-
-                                        <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit1" data-rate="5">
-
-                                        <button data-ids="1" id="add1" data-db-qty="5" data-mnamee="ad_unit1" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="1" data-service_id="1" data-method_id="0" data-duration_value="" data-method_name="Fridge Cleaning" data-rate=""
-                                                data-type="addon">+</button>
-                                    </div>
-                                </div>
-                                <div class="addon-name fl ta-c">Fridge Cleaning</div>
-                            </li>
-                            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="2" id="ct-addon-2" data-mnamee="ad_unit2">
-                                <label class="ct-addon-ser border-c" for="ct-addon-2"><span></span>
-                                    <div class="addon-price">$5.00</div>
-                                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-oven.png"></div>
-
-                                </label>
-                                <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid2" style="display: none;">
-
-                                    <div class="ct-btn-group">
-                                        <button data-ids="2" id="minus2" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="2" data-duration_value="" data-mnamee="ad_unit2" data-method_name="Oven Cleaning" data-service_id="1" data-rate="" data-method_id="0" data-type="addon">-</button>
-
-                                        <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit2" data-rate="5">
-
-                                        <button data-ids="2" id="add2" data-db-qty="4" data-mnamee="ad_unit2" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="2" data-service_id="1" data-method_id="0" data-duration_value="" data-method_name="Oven Cleaning" data-rate=""
-                                                data-type="addon">+</button>
-                                    </div>
-                                </div>
-                                <div class="addon-name fl ta-c">Oven Cleaning</div>
-                            </li>
-                            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="3" id="ct-addon-3" data-mnamee="ad_unit3">
-                                <label class="ct-addon-ser border-c" for="ct-addon-3"><span></span>
-                                    <div class="addon-price">$5.00</div>
-                                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-inside-window.png"></div>
-
-                                </label>
-                                <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid3" style="display: none;">
-
-                                    <div class="ct-btn-group">
-                                        <button data-ids="3" id="minus3" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="3" data-duration_value="" data-mnamee="ad_unit3" data-method_name="Inside Window Cleaning" data-service_id="1" data-rate="" data-method_id="0" data-type="addon">-</button>
-
-                                        <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit3" data-rate="5">
-
-                                        <button data-ids="3" id="add3" data-db-qty="10" data-mnamee="ad_unit3" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="3" data-service_id="1" data-method_id="0" data-duration_value="" data-method_name="Inside Window Cleaning"
-                                                data-rate="" data-type="addon">+</button>
-                                    </div>
-                                </div>
-                                <div class="addon-name fl ta-c">Inside Window Cleaning</div>
-                            </li>
-                        </ul>
                     </div>
-
+                    <!-- /. Service Addons Div -->
 
                     <!-- how often discount -->
-                    <div class="ct-extra-services-list service-method-selection-main ct-common-box add_on_lists hide_allsss_addons" >
+                    <div class="ct-extra-services-list service-method-selection-main ct-common-box add_on_lists hide_allsss_addons" style="display:none;">
                         <div class="ct-list-header">
                             <h3 class="header3">Extra Services</h3>
                             <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
@@ -417,54 +351,12 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="ct-extra-services-list  ct-common-box add_on_lists hide_allsss_addons">
-                        <div class="ct-list-header">
-                            <h3 class="header3">Extra Services</h3>
-                            <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
-                        </div>
-                        <ul class="addon-service-list fl remove_addonsss">
-                            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="6" id="ct-addon-6" data-mnamee="ad_unit6">
-                                <label class="ct-addon-ser border-c" for="ct-addon-6"><span></span>
-                                    <div class="addon-price">$20.00</div>
-                                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
 
-                                </label>
-                                <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid6" style="display: none;">
 
-                                    <div class="ct-btn-group">
-                                        <button data-ids="6" id="minus6" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="6" data-duration_value="" data-mnamee="ad_unit6" data-method_name="Parking Cleaning" data-service_id="4" data-rate="" data-method_id="0" data-type="addon">-</button>
+                    <div id="service_frequency_price_div">
 
-                                        <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit6" data-rate="20">
-
-                                        <button data-ids="6" id="add6" data-db-qty="3" data-mnamee="ad_unit6" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="6" data-service_id="4" data-method_id="0" data-duration_value="" data-method_name="Parking Cleaning" data-rate=""
-                                                data-type="addon">+</button>
-                                    </div>
-                                </div>
-                                <div class="addon-name fl ta-c">Parking Cleaning</div>
-                            </li>
-                            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="7" id="ct-addon-7" data-mnamee="ad_unit7">
-                                <label class="ct-addon-ser border-c" for="ct-addon-7"><span></span>
-                                    <div class="addon-price">$10.00</div>
-                                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
-
-                                </label>
-                                <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid7" style="display: none;">
-
-                                    <div class="ct-btn-group">
-                                        <button data-ids="7" id="minus7" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="7" data-duration_value="" data-mnamee="ad_unit7" data-method_name="Storeroom Cleaning" data-service_id="4" data-rate="" data-method_id="0" data-type="addon">-</button>
-
-                                        <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit7" data-rate="20">
-
-                                        <button data-ids="7" id="add7" data-db-qty="5" data-mnamee="ad_unit7" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="7" data-service_id="4" data-method_id="0" data-duration_value="" data-method_name="Storeroom Cleaning"
-                                                data-rate="" data-type="addon">+</button>
-                                    </div>
-                                </div>
-                                <div class="addon-name fl ta-c">Storeroom Cleaning</div>
-                            </li>
-                        </ul>
                     </div>
+
                     <div class="ct-discount-list ct-common-box">
                         <div class="ct-list-header">
                             <h3 class="header3">How often would you like us provide service?</h3>
@@ -1010,7 +902,7 @@
 <!--            <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>-->
         </div>
         <ul class="addon-service-list fl ">
-            
+
             <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
                 <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="1" id="ct-addon-1" data-mnamee="ad_unit1">
                 <label class="ct-addon-ser border-c" for="ct-addon-1"><span></span>
@@ -1031,12 +923,28 @@
                 </div>
                 <div class="addon-name fl ta-c">Fridge Cleaning</div>
             </li>
-            
-            
+
+
         </ul>
     </div>
 
 </div>
+
+<div id="service_frequency_price_html" style="display: none;">
+    <div class="ct-discount-list ct-common-box">
+        <div class="ct-list-header">
+            <h3 class="header3">How often would you like us provide service?</h3>
+
+            <p class="ct-sub" style="display: none;">Recurring discounts apply from the second cleaning onward.</p>
+            <label class="freq_disc_empty_cart_error error plumbing-service" style="color:red">Please select units or addons</label>
+        </div>
+
+        <ul class="ct-discount-often">
+            
+        </ul>
+    </div>
+</div>
+<div id="frequency_temp_html" style="display:none;"></div>
 
 <script>
     base_url = "<?php echo base_url(); ?>";</script>

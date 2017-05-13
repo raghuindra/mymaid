@@ -502,7 +502,7 @@ class Person_lib {
             $user = $this->model->get('person_id, person_type, person_email,person_first_name,person_last_name,person_archived', array('person_email' => $user_data['user_email']))->row();
             //print_r($user);
             //exit;
-            if (isset($user->person_id) && strlen($user->person_id) > 0 && $user->person_archived != 0) {
+            if (isset($user->person_id) && strlen($user->person_id) > 0 && $user->person_archived == Globals::UN_ARCHIVE) {
                 $reset_data['pass_reset_person_id'] = $user->person_id;
                 $reset_data['pass_reset_person_type'] = $user->person_type;
                 $reset_data['pass_reset_token_key'] = md5(microtime() . rand());

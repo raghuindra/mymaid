@@ -298,6 +298,7 @@ var ServiceResponseHandler = {
         ServiceObjects.ServiceFrequencyObject = dataObj;
         console.log("Frequency Call Success...");
         console.log(ServiceObjects.ServiceFrequencyObject.getAllServiceFrequency());
+        RenderView.renderFrequencyPrices();
     },
     
     ServiceFrequencyFailureHandler: function(data){
@@ -313,9 +314,11 @@ var ServiceResponseHandler = {
     
     ServiceAddonSuccessHandler: function(data){
         var dataObj = ServiceData.serviceAddon(data);
-        ServiceObjects.ServiceaAddonObject = dataObj;
+        ServiceObjects.ServiceAddonsObject = dataObj;
         console.log("Service Addons Call Success..");
-        console.log(ServiceObjects.ServiceaAddonObject.getAllServiceAddons());
+        console.log(ServiceObjects.ServiceAddonsObject.getAllServiceAddons());
+        
+        RenderView.renderServiceAddons();
     },
     
     ServiceAddonFailureHandler: function(data){
@@ -542,14 +545,80 @@ var RenderView = {
                 if(addons[id] !== undefined){
                     
                     
+                    var html_str = "\
+                    <div class='ct-extra-services-list  ct-common-box add_on_lists ct_service_addons_"+id+"'' id='service_addons_"+id+"'>\n\
+                        <div class='ct-list-header'>\n\
+                        <h3 class='header3'>Service Addons</h3>\n\
+                    </div>\n\
+                    <ul class='addon-service-list fl '>";
                     
+                    for(var addonId in addons[id]){
+                        html_str += "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'><input type='checkbox' name='addon-checkbox' class='addon-checkbox addons_servicess_2' data-id='"+ addons[id][addonId].service_addon_price_id +"' id='ct-addon-"+ addons[id][addonId].service_addon_price_id +"' data-mnamee='ad_unit1' value='"+ addons[id][addonId].service_addon_price_id +"' >";
+                        html_str += "<label class='ct-addon-ser border-c' for='ct-addon-"+ addons[id][addonId].service_addon_price_id +"'><span></span>";
+                        html_str += "   <div class='addon-price'>RM "+ addons[id][addonId].service_addon_price_price +"</div>";
+                        html_str += "    <div class='ct-addon-img'><img src='http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-fridge.png'></div></label>";               
+                        html_str += "<div class='ct-addon-count border-c  add_minus_button add_minus_buttonid1' style='display: none;'>";
+
+                        html_str += "<div class='ct-btn-group'><button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='minus1' class='minus ct-btn-left ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-duration_value='' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' data-method_name='"+ addons[id][addonId].service_addon_name +"' data-service_id='"+ id +"' data-rate='' data-method_id='0' data-type='addon'>-</button>";
+
+                        html_str += "<input type='text' value='0' class='ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit1' data-rate='5' name='addon-service-count'>";
+
+                        html_str += "<button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='add"+ addons[id][addonId].service_addon_price_id +"' data-db-qty='5' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' class='add ct-btn-right float-right ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-service_id='"+ id +"' data-method_id='0' data-duration_value='' data-method_name='"+ addons[id][addonId].service_addon_name + "' data-rate=''";
+                        html_str += " data-type='addon'>+</button>";
+                        html_str += "</div></div><div class='addon-name fl ta-c'>"+ addons[id][addonId].service_addon_name +"</div></li>";                                       
+                                              
+                    }
+                    html_str += "</ul></div>";    
+                 
+                    $("#service_addons_div").append(html_str);
                 }
+                
             }
             
             
         }
         
     },
+    
+    renderFrequencyPrices: function(){
+        
+        var servicesObj = ServiceObjects.ServiceObject;
+        var freqObj     = ServiceObjects.ServiceFrequencyObject;
+        
+        debugger;
+        if( (servicesObj !== null) && (freqObj !== null)){ 
+            var services = servicesObj.getAllServices();
+            var frequency = freqObj.getAllServiceFrequency();
+            
+            for(var i=0; i<services.length; i++ ){
+                var id = services[i].service_id;
+                if(frequency[id] !== undefined){
+                    $("#frequency_temp_html").html($("#service_frequency_price_html").html());
+                    
+                    $("#frequency_temp_html div").addClass('ct_service_package_'+id);
+                    $("#frequency_temp_html div").css('display','block');
+                    //$("#frequency_temp_html div ul").addClass();
+                    for(var freqId in frequency[id]){
+                        var freq = "<li class='ct-sm-6 ct-md-3 ct-xs-12 mb-10'>\n\
+                            <div class='discount-text f-l'><span class='discount-price'> -Save "+ frequency[id][freqId].service_frequency_offer_value +"%- </span>\n\
+                            </div>\n\
+                            <input type='radio' name='frequently_discount_radio' checked='' data-id='"+ frequency[id][freqId].service_frequency_offer_id +"' class='cart_frequently_discount' id='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"' data-name='Monthly' value='"+ frequency[id][freqId].service_frequency_offer_id +"' >\n\
+                            <label class='ct-btn-discount border-c' for='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"'>\n\
+                            <span class='float-left'>"+ frequency[id][freqId].service_frequency_name +"</span>\n\
+                            <span class='ct-discount-check float-right'></span>\n\
+                            </label></li>";
+                        $("#frequency_temp_html div ul").append(freq);
+                    }
+                    
+                    $("#service_frequency_price_div").append($("#frequency_temp_html").html());
+                    $("#frequency_temp_html").html("");
+                }
+                
+            }
+            
+        }
+        
+    }
     
 };
 

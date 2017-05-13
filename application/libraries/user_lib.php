@@ -172,7 +172,7 @@ class User_lib extends Base_lib{
         if ($addons) {
             $array = array();
             foreach($addons as $addon){
-                $array[$addon->service_addon_price_service_id][$addon->service_addon_price_addon_id] = $addon;
+                $array[$addon->service_addon_price_service_id][$addon->service_addon_price_id] = $addon;
             }
             $response = array(
                 'status' => true,
