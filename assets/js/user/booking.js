@@ -334,9 +334,10 @@ var ServiceResponseHandler = {
     
     ServiceSplRequestSuccessHandler: function(data){
         var dataObj = ServiceData.serviceSplRequest(data);
-        ServiceObjects.ServiceaSplRequestObject = dataObj;
+        ServiceObjects.ServiceSplRequestObject = dataObj;
         console.log("Spl Request Call Success..!!!");
-        console.log(ServiceObjects.ServiceaSplRequestObject.getAllServiceSplRequestData());
+        console.log(ServiceObjects.ServiceSplRequestObject.getAllServiceSplRequest());
+        RenderView.renderSplRequest();
     },
     
     ServiceSplRequestFailureHandler: function(data){
@@ -357,9 +358,19 @@ var ServiceData = (function(){
         return this.services;
     };
     
-    serviceDataFun.prototype.getService = function(index){       
+    serviceDataFun.prototype.getServiceByIndex = function(index){       
         
         return this.services[index];
+    };
+    
+    serviceDataFun.prototype.getServiceById = function(id){       
+        
+        for(var i=0; i< this.services.length; i++){
+           if(this.services[i].service_id === id){
+               return this.services[i];
+           }
+        } 
+        
     };
     
     serviceDataFun.prototype.getServiceIds = function(){       
@@ -381,9 +392,17 @@ var ServiceData = (function(){
         return this.package;
     };
     
-    servicePackageDataFun.prototype.getServicePackage = function(serviceId){       
+    servicePackageDataFun.prototype.getServicePackages = function(serviceId){       
         if ( this.package[serviceId] !== undefined ) {
             return this.package[serviceId];
+        }else{ 
+            return [];
+        }
+    };
+    
+    servicePackageDataFun.prototype.getPackage = function(serviceId, packageId){       
+        if ( this.package[serviceId] !== undefined) {
+            return this.package[serviceId][packageId];
         }else{ 
             return [];
         }
@@ -428,7 +447,7 @@ var ServiceData = (function(){
         this.splRequest = data.data;
     };
     
-    serviceSplRequestDataFun.prototype.getAllServiceSplRequestData = function(){       
+    serviceSplRequestDataFun.prototype.getAllServiceSplRequest = function(){       
         
         return this.splRequest;
     };
@@ -510,7 +529,7 @@ var RenderView = {
                 var package = packs[packId].package;
                 $("#package_temp_html").html($("#service_package_html").html());
                 $("#package_temp_html li input[type=radio]").attr('id', "ct_service_pk_"+packId);
-                $("#package_temp_html li input[type=radio]").addClass('service-radio');
+                $("#package_temp_html li input[type=radio]").addClass('package-radio');
                 
                 $("#package_temp_html li input[type=radio]").val(package.service_package_id);
                 $("#package_temp_html li label").attr('for', "ct_service_pk_"+packId);               
@@ -585,7 +604,6 @@ var RenderView = {
         var servicesObj = ServiceObjects.ServiceObject;
         var freqObj     = ServiceObjects.ServiceFrequencyObject;
         
-        debugger;
         if( (servicesObj !== null) && (freqObj !== null)){ 
             var services = servicesObj.getAllServices();
             var frequency = freqObj.getAllServiceFrequency();
@@ -595,7 +613,7 @@ var RenderView = {
                 if(frequency[id] !== undefined){
                     $("#frequency_temp_html").html($("#service_frequency_price_html").html());
                     
-                    $("#frequency_temp_html div").addClass('ct_service_package_'+id);
+                    $("#frequency_temp_html div").addClass('ct_service_frequency_'+id);
                     $("#frequency_temp_html div").css('display','block');
                     //$("#frequency_temp_html div ul").addClass();
                     for(var freqId in frequency[id]){
@@ -610,6 +628,17 @@ var RenderView = {
                         $("#frequency_temp_html div ul").append(freq);
                     }
                     
+                    //One Time Pay......
+                    var freq = "<li class='ct-sm-6 ct-md-3 ct-xs-12 mb-10'>\n\
+                            <div class='discount-text f-l'><span class='discount-price'> -Save Zero%- </span>\n\
+                            </div>\n\
+                            <input type='radio' name='frequently_discount_radio' checked='' data-id='0' class='cart_frequently_discount' id='discount-often-"+id+"-0' data-name='Monthly' value='0' >\n\
+                            <label class='ct-btn-discount border-c' for='discount-often-"+id+"-0'>\n\
+                            <span class='float-left'>Once</span>\n\
+                            <span class='ct-discount-check float-right'></span>\n\
+                            </label></li>";
+                        $("#frequency_temp_html div ul").append(freq);
+                        
                     $("#service_frequency_price_div").append($("#frequency_temp_html").html());
                     $("#frequency_temp_html").html("");
                 }
@@ -618,6 +647,52 @@ var RenderView = {
             
         }
         
+    },
+    
+    renderSplRequest: function(){
+                
+        var servicesObj = ServiceObjects.ServiceObject;
+        var splReqObj     = ServiceObjects.ServiceSplRequestObject;
+        
+        if( (servicesObj !== null) && (splReqObj !== null)){ 
+            var services = servicesObj.getAllServices();
+            var splReq = splReqObj.getAllServiceSplRequest();
+            
+            for(var i=0; i<services.length; i++ ){
+                var id = services[i].service_id;
+                if(splReq[id] !== undefined){
+                    $("#service_spl_request_temp_html").html($("#service_spl_request_html").html());
+                    
+                    $("#service_spl_request_temp_html div").addClass('ct_service_spl_request_'+id);
+                    $("#service_spl_request_temp_html div").css('display','block');
+                    //$("#frequency_temp_html div ul").addClass();
+                    for(var splReqId in splReq[id]){
+                        var freq = "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'>\n\
+                            <input type='checkbox' name='spl-request-checkbox' class='addon-checkbox addons_servicess_2' data-id='"+ splReq[id][splReqId].service_spl_request_id +"' id='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"' data-mnamee='ad_unit4'>\n\
+                            <label class='ct-addon-ser border-c' for='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"'><span></span>";
+                        
+                        if(splReq[id][splReqId].service_spl_request_price !== null &&  splReq[id][splReqId].service_spl_request_price !== ""){
+                             freq += "<div class='addon-price' >RM "+ splReq[id][splReqId].service_spl_request_price +"</div>";
+                        }else{
+                          freq += "<div class='addon-price'></div>";  
+                        }
+                               
+                        freq += "<div class='ct-addon-img'><img src='http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png'>\n\
+                                </div>\n\
+                            </label>\n\
+                            <div class='addon-name fl ta-c'>"+ splReq[id][splReqId].spl_request_name +"</div>\n\
+                        </li>";
+            
+                        $("#service_spl_request_temp_html div ul").append(freq);
+                    }
+                        
+                    $("#service_spl_request_div").append($("#service_spl_request_temp_html").html());
+                    $("#service_spl_request_temp_html").html("");
+                }
+                
+            }
+            
+        }
     }
     
 };
@@ -639,12 +714,130 @@ $(function () {
             
             var serviceId = $(this).val();
             
+            Booking.reset();
+            Booking.setService(serviceId); 
+            
+            var services = ServiceObjects.ServiceObject.getAllServices();
+            for(var i=0; i<services.length; i++ ){
+                if( services[i].service_id == serviceId){
+                    $(".ct_service_spl_request_"+services[i].service_id).show();
+                    $(".ct_service_frequency_"+services[i].service_id).show();
+                    $(".ct_service_addons_"+services[i].service_id).show();
+                    $(".ct_service_package_"+services[i].service_id).show();
+                }else{
+                    $(".ct_service_spl_request_"+services[i].service_id).hide();
+                    $(".ct_service_frequency_"+services[i].service_id).hide();
+                    $(".ct_service_addons_"+services[i].service_id).hide();
+                    $(".ct_service_package_"+services[i].service_id).hide();
+                }
+            }
+            
+            var service = ServiceObjects.ServiceObject.getServiceById(serviceId);
+            $("#ct-price-scroll-new .service_name p.sel-service").html(service.service_name);
         });
+        
+        //Service package Selection Event Handling
+        $(document).on("click", ".packageDiv .services-list .package-radio", function(e){           
+            Booking.setPackage($(this).val());
+            console.log(Booking.getPackage());
+            var package = ServiceObjects.ServicePackageObject.getPackage(Booking.getService(), Booking.getPackage());
+            console.log(package);
+            var price = (package.spl_price != null) ? package.spl_price : package.package.service_package_onetime_price;
+            
+            $("#ct-price-scroll-new .service_name label.package_detail").html(package.package.building_name+", "+package.package.service_package_bedroom+" Bedroom with "+package.package.service_package_bathroom+" Bathroom");
+            $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(package.package.service_package_min_hours+" Hour Session");
+            
+            $("#ct-price-scroll-new .cart_sub_total").html(price);           
+            //Booking.calculateTotalPrice(price);
+            $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice(price));
+            console.log(Booking.getPrice());
+        });
+        
+        //Service Addons Selection Event Handling
+        
+        
 
     }, 2000);
     
 });
 
+var Booking = (function() {
+    var service = null;
+    var package = null;
+    var addon = null;
+    var extraService = null;
+    var frequency = null;
+    var price   = null;
+    
+    return{
+        reset : function(){
+            this.package = null;
+            this.addon = null;
+            this.extraService = null;
+            this.frequency = null;
+            this.price = null;
 
+        },
+
+        setService : function(val){
+            if(val !==''){
+                this.service = val;
+            }
+        },
+
+        getService : function(){
+            return this.service;
+        },
+
+        setPackage : function(val){
+            if(val !==''){
+                this.package = val;
+            }
+        },
+
+        getPackage : function(){
+            return this.package;
+        },
+
+        setAddon : function(val){
+            if(val !==''){
+                this.addon = val;
+            }
+        },
+
+        getAddon : function(){
+            return this.addon;
+        }, 
+
+        setExtraService : function(val){
+            if(val !==''){
+                this.extraService = val;
+            }
+        },
+
+        getExtraService : function(){
+            return this.extraService;
+        },
+
+        setFrequency : function(val){
+            if(val !==''){
+                this.frequency = val;
+            }
+        },
+
+        getFrequency : function(){
+            return this.frequency;
+        },
+        
+        calculateTotalPrice: function(price){
+            return this.price = parseFloat(price * 0.12) + parseFloat(price);
+        },
+        
+        getPrice : function(){
+            return this.price;
+        }
+    };
+    
+})();
 
 

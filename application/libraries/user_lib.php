@@ -199,7 +199,7 @@ class User_lib extends Base_lib{
         if ($splRequests) {
             $array = array();
             foreach($splRequests as $splRequest){
-                $array[$splRequest->service_spl_request_service_id][] = $splRequest;
+                $array[$splRequest->service_spl_request_service_id][$splRequest->service_spl_request_id] = $splRequest;
             }
             $response = array(
                 'status' => true,

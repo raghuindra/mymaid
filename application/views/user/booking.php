@@ -266,27 +266,27 @@
                         <div class="packageDiv">
                             <!-- 1.box style services Package selection radio selection -->
                             <ul class="services-list">
-<!--                                <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class" data-servicetitle="Plumbing Services" >
-                                    <input type="radio" name="package-radio" id="ct-pk-service-1" class="make_service_disable">
-                                    <label class="ct-service border-c" for="ct-pk-service-1">
-                                        <div class="ct-service-img">
-                                            <div class="row">
-                                                <div class="col-xs-12 text-center spring-body">
-                                                     ngIf: booking.house_size != 1000 
-                                                     ngIf: booking.house_size == 1000 <img ng-if="booking.house_size == 1000" src="./assets/images/icon-small-house.png" class="icon-md mt-sm ng-scope" height="40"> end ngIf: booking.house_size == 1000 
-                                                    <p class="p-header">Small Apartment / Studio</p>
-                                                    <p class="p-content">Up to 1,000 sqft</p>
-                                                    <p class="p-content">Up to 3 bedrooms and 2 bathrooms</p>
-                                                    <p class="p-content">2 cleaning crew</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </label>
-
-                                    <div class="service-name fl ta-c">Plumbing Services</div>
-                                </li>
--->
+                                <!--                                <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class" data-servicetitle="Plumbing Services" >
+                                                                    <input type="radio" name="package-radio" id="ct-pk-service-1" class="make_service_disable">
+                                                                    <label class="ct-service border-c" for="ct-pk-service-1">
+                                                                        <div class="ct-service-img">
+                                                                            <div class="row">
+                                                                                <div class="col-xs-12 text-center spring-body">
+                                                                                     ngIf: booking.house_size != 1000 
+                                                                                     ngIf: booking.house_size == 1000 <img ng-if="booking.house_size == 1000" src="./assets/images/icon-small-house.png" class="icon-md mt-sm ng-scope" height="40"> end ngIf: booking.house_size == 1000 
+                                                                                    <p class="p-header">Small Apartment / Studio</p>
+                                                                                    <p class="p-content">Up to 1,000 sqft</p>
+                                                                                    <p class="p-content">Up to 3 bedrooms and 2 bathrooms</p>
+                                                                                    <p class="p-content">2 cleaning crew</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                
+                                                                    </label>
+                                
+                                                                    <div class="service-name fl ta-c">Plumbing Services</div>
+                                                                </li>
+                                -->
 
                             </ul>
 
@@ -352,12 +352,18 @@
                         </ul>
                     </div>
 
+                    <!-- Service Spl Request Div -->
+                    <div id="service_spl_request_div">
+
+
+                    </div>
+                    <!-- /. Service Spl Request Div -->
 
                     <div id="service_frequency_price_div">
 
                     </div>
 
-                    <div class="ct-discount-list ct-common-box">
+                    <div class="ct-discount-list ct-common-box" style="display: none;">
                         <div class="ct-list-header">
                             <h3 class="header3">How often would you like us provide service?</h3>
 
@@ -676,39 +682,47 @@
                             <div class="ct-step-heading">
                                 <h3 class="header3">Booking Summary</h3></div>
                             <div class="ct-cart-wrapper f-l" id="">
-                                <div class="ct-summary hideservice_name" style="display: none;">
+                                <div class="ct-summary service_name">
                                     <div class="ct-image">
                                         <img src="./assets/images/icon-service.png" alt="">
                                     </div>
-                                    <p class="ct-text sel-service"></p>
+                                    <p class="ct-text sel-service" style="font-weight: bold;"></p>
+                                    <div class="cart-items-main f-l">
+                                        <label class="package_detail">Your cart items</label>
+                                        
+                                    </div>
                                 </div>
-                                <div class="ct-summary hidedatetime_value" style="display: none;">
+                                <div class="ct-form-rown ct-addons-list-main" style="display:none;">
+                                    <div class="step_heading f-l">
+                                        <h6 class="header6 ct-item-list"></h6>
+                                    </div>
+                                    <div class="cart-items-main f-l">
+                                        <label class="cart_empty_msg addons">Addons: <span class="addons_names"></span></label>
+                                        
+                                        <label class="cart_empty_msg spl_req" style="display:none;">Special Request: <span class="spl_req_names"></span></label>                                        
+                                    </div>
+                                </div>
+                                <div class="step_heading f-l">
+                                        <h6 class="header6 ct-item-list"></h6>
+                                </div>
+                                <div class="ct-summary datetime_value">
                                     <div class="ct-image">
                                         <img src="./assets/images/icon-calendar.png" alt="">
                                     </div>
-                                    <p class="ct-text sel-datetime"><span class="cart_date" data-date_val=""></span><span class="space_between_date_time" style="display: none;"> @ </span><span class="cart_time" data-time_val=""></span></p>
+                                    <p class="ct-text sel-datetime"><span class="cart_session" ></span><span class="cart_date" data-date_val=""></span><span class="space_between_date_time" style=""> @ </span><span class="cart_time" data-time_val=""></span></p>
                                 </div>
-                                <div class="ct-summary">
+                                <div class="ct-summary frequency_value">
                                     <div class="ct-image f_dis_img">
                                         <img src="./assets/images/icon-frequency.png" alt="">
                                     </div>
                                     <p class="ct-text sel-datetime f_discount_name">Once</p>
                                 </div>
-                                <div class="ct-form-rown ct-addons-list-main">
-                                    <div class="step_heading f-l">
-                                        <h6 class="header6 ct-item-list">Your clean items</h6>
-                                    </div>
-                                    <div class="cart-items-main f-l">
-                                        <label class="cart_empty_msg">Your cart items</label>
-                                        <ul class="ct-addon-items-list cart_item_listing">
-                                            <li>items</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <h6 class="header6 ct-item-list"></h6>
+                                
                                 <div class="ct-form-rown">
                                     <div class="ct-cart-label-common ofh">Sub Total</div>
                                     <div class="ct-cart-amount-common ofh">
-                                        <span class="ct-sub-total cart_sub_total">789</span>
+                                        <span class="ct-sub-total cart_sub_total"></span>
                                     </div>
                                 </div>
                                 <div class="ct-form-rown freq_discount_display" style="display: none;">
@@ -726,7 +740,7 @@
                                 <div class="ct-form-rown">
                                     <div class="ct-cart-label-common ofh">Tax</div>
                                     <div class="ct-cart-amount-common ofh">
-                                        <span class="ct-tax-amount cart_tax">798</span>
+                                        <span class="ct-tax-amount cart_tax">12</span>
                                     </div>
                                 </div>
                                 <div class="ct-clear"></div>
@@ -940,11 +954,43 @@
         </div>
 
         <ul class="ct-discount-often">
-            
+
         </ul>
     </div>
 </div>
 <div id="frequency_temp_html" style="display:none;"></div>
+
+<div id="service_spl_request_html" style="display: none;">
+    <div class="ct-extra-services-list service-method-selection-main ct-common-box add_on_lists hide_allsss_addons" >
+        <div class="ct-list-header">
+            <h3 class="header3">Special Request Services</h3>
+            <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
+        </div>
+        <ul class="addon-service-list fl remove_addonsss">
+<!--            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
+                <input type="checkbox" name="spl-request-checkbox" class="addon-checkbox addons_servicess_2" data-id="4" id="ct-spl-req-12" data-mnamee="ad_unit4">
+                <label class="ct-addon-ser border-c" for="ct-spl-req-12"><span></span>
+                    <div class="addon-price">RM 0.00</div>
+                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
+
+                </label>
+
+                <div class="addon-name fl ta-c">Damaged Flooring</div>
+            </li>
+            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
+                <input type="checkbox" name="spl-request-checkbox" class="addon-checkbox addons_servicess_2" data-id="5" id="ct-spl-req-13" data-mnamee="ad_unit5">
+                <label class="ct-addon-ser border-c" for="ct-spl-req-13"><span></span>
+                    <div class="addon-price">RM 0.00</div>
+                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
+
+                </label>
+
+                <div class="addon-name fl ta-c">Door jams</div>
+            </li>-->
+        </ul>
+    </div>
+</div>
+<div id="service_spl_request_temp_html" style="display: none;"></div>
 
 <script>
     base_url = "<?php echo base_url(); ?>";</script>
