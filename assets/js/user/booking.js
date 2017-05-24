@@ -435,9 +435,17 @@ var ServiceData = (function(){
         return this.addon;
     };
     
-    serviceAddonDataFun.prototype.getServiceAddon = function(serviceId){       
+    serviceAddonDataFun.prototype.getServiceAddons = function(serviceId){       
         if ( this.addon[serviceId] !== undefined ) {
             return this.addon[serviceId];
+        }else{
+            return [];
+        }
+    };
+    
+    serviceAddonDataFun.prototype.getServiceAddon = function(serviceId, addonId){       
+        if ( this.addon[serviceId] !== undefined ) {
+             return this.addon[serviceId][addonId];
         }else{
             return [];
         }
@@ -578,11 +586,11 @@ var RenderView = {
                         html_str += "    <div class='ct-addon-img'><img src='http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-fridge.png'></div></label>";               
                         html_str += "<div class='ct-addon-count border-c  add_minus_button add_minus_buttonid1' style='display: none;'>";
 
-                        html_str += "<div class='ct-btn-group'><button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='minus1' class='minus ct-btn-left ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-duration_value='' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' data-method_name='"+ addons[id][addonId].service_addon_name +"' data-service_id='"+ id +"' data-rate='' data-method_id='0' data-type='addon'>-</button>";
+                        html_str += "<div class='ct-btn-group'><button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='minus_"+ addons[id][addonId].service_addon_price_id +"' class='minus ct-btn-left ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-duration_value='' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' data-method_name='"+ addons[id][addonId].service_addon_name +"' data-service_id='"+ id +"' data-rate='' data-method_id='0' data-type='addon'>-</button>";
 
-                        html_str += "<input type='text' value='0' class='ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit1' data-rate='5' name='addon-service-count'>";
+                        html_str += "<input type='text' value='0' class='ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit1' data-rate='5' name='addon-service-count' id='addon_qty_"+id+"'>";
 
-                        html_str += "<button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='add"+ addons[id][addonId].service_addon_price_id +"' data-db-qty='5' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' class='add ct-btn-right float-right ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-service_id='"+ id +"' data-method_id='0' data-duration_value='' data-method_name='"+ addons[id][addonId].service_addon_name + "' data-rate=''";
+                        html_str += "<button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='add_"+ addons[id][addonId].service_addon_price_id +"' data-db-qty='5' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' class='add ct-btn-right float-right ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-service_id='"+ id +"' data-method_id='0' data-duration_value='' data-method_name='"+ addons[id][addonId].service_addon_name + "' data-rate=''";
                         html_str += " data-type='addon'>+</button>";
                         html_str += "</div></div><div class='addon-name fl ta-c'>"+ addons[id][addonId].service_addon_name +"</div></li>";                                       
                                               
@@ -742,18 +750,28 @@ $(function () {
             console.log(Booking.getPackage());
             var package = ServiceObjects.ServicePackageObject.getPackage(Booking.getService(), Booking.getPackage());
             console.log(package);
-            var price = (package.spl_price != null) ? package.spl_price : package.package.service_package_onetime_price;
+            var price = parseFloat( (package.spl_price !== null) ? package.spl_price : package.package.service_package_onetime_price );
             
             $("#ct-price-scroll-new .service_name label.package_detail").html(package.package.building_name+", "+package.package.service_package_bedroom+" Bedroom with "+package.package.service_package_bathroom+" Bathroom");
             $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(package.package.service_package_min_hours+" Hour Session");
-            
+            price = Booking.addPrice(price);
             $("#ct-price-scroll-new .cart_sub_total").html(price);           
-            //Booking.calculateTotalPrice(price);
-            $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice(price));
+            //Booking.calculateTotalPrice();
+            price = Booking.calculateTotalPrice();
+            $("#ct-price-scroll-new .cart_total").html(price);
             console.log(Booking.getPrice());
         });
         
         //Service Addons Selection Event Handling
+        $(document).on("click", "#service_addons_div .add_on_lists .addon-service-list .addon-checkbox", function(){
+            var addons = {};
+           console.log("Addon Is Checked: " +$(this).is(":checked"));
+           if($(this).is(":checked")){
+               addons[$(this).val()] = $("#addon_qty_"+$(this).val()).val();
+               console.log("Addon Count: "+addons[$(this).val()]);
+           }
+            
+        });
         
         
 
@@ -764,18 +782,20 @@ $(function () {
 var Booking = (function() {
     var service = null;
     var package = null;
-    var addon = null;
+    var addon = {};
+    var addonPrice = 0;
     var extraService = null;
     var frequency = null;
-    var price   = null;
+    var price   = 0;
     
     return{
         reset : function(){
             this.package = null;
-            this.addon = null;
+            this.addon = {};
             this.extraService = null;
             this.frequency = null;
-            this.price = null;
+            this.price = 0;
+            this.addonPrice = 0;
 
         },
 
@@ -799,15 +819,29 @@ var Booking = (function() {
             return this.package;
         },
 
-        setAddon : function(val){
-            if(val !==''){
-                this.addon = val;
+        setAddon : function(id, obj){
+            if(id !==''){
+                this.addon[id] = obj;
             }
         },
 
         getAddon : function(){
             return this.addon;
-        }, 
+        },
+        
+        addAddonPrice: function(price){
+            
+            return this.addonPrice = this.addonPrice + parseFloat(price);
+        },
+        
+        deductAddonPrice: function(price){
+            
+            return this.addonPrice = this.addonPrice - parseFloat(price);
+        },
+        
+        getAddonPrice: function(){
+            return this.addonPrice;
+        },
 
         setExtraService : function(val){
             if(val !==''){
@@ -829,8 +863,13 @@ var Booking = (function() {
             return this.frequency;
         },
         
-        calculateTotalPrice: function(price){
-            return this.price = parseFloat(price * 0.12) + parseFloat(price);
+        calculateTotalPrice: function(){
+            var price = this.price + this.addonPrice;
+            return (parseFloat(price * 0.12) + parseFloat(price));
+        },
+        
+        addPrice: function(price){
+            return this.price = parseFloat(this.price) + parseFloat(price);
         },
         
         getPrice : function(){

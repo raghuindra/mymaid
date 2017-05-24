@@ -195,33 +195,69 @@ $(function() {
         });
     $(document)
         .on("click", ".ct-btn-group .minus", function() {
-            if ($(this)
-                .parents(".ct-btn-group")
-                .find(".ct-btn-text")
-                .val() == 0) {
+            
+            var count = parseInt($(this)
+                    .parents(".ct-btn-group")
+                    .find(".ct-btn-text")
+                    .val());
+            if (count == 0) {
                 $(this)
                     .parents(".add_addon_class_selected")
                     .find(".addon-checkbox")
                     .trigger("click");
                 return false;
             }
+            count = count -1;
             $(this)
                 .parents(".ct-btn-group")
                 .find(".ct-btn-text")
-                .val(parseInt($(this)
-                    .parents(".ct-btn-group")
-                    .find(".ct-btn-text")
-                    .val()) - 1);
+                .val(count);
+            
+
+            var addonId = $(this).attr('data-ids');
+            var obj = {'addonId':addonId, 'addonCount':count};
+            Booking.setAddon(addonId, obj);
+            var Addon = ServiceObjects.ServiceAddonsObject;
+            var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
+            if(count >= 0){
+                Booking.deductAddonPrice(price);
+            
+                $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
+                //Booking.calculateTotalPrice(price);
+                $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+            }
+            
+            console.log(Booking.getAddon());
+            console.log("Addon Count: "+ count);
         });
+        
     $(document)
         .on("click", ".ct-btn-group .add", function() {
+            
+            var count = parseInt($(this)
+                    .parents(".ct-btn-group")
+                    .find(".ct-btn-text")
+                    .val());
+            count = count +1;
             $(this)
                 .parents(".ct-btn-group")
                 .find(".ct-btn-text")
-                .val(parseInt($(this)
-                    .parents(".ct-btn-group")
-                    .find(".ct-btn-text")
-                    .val()) + 1);
+                .val(count);
+        
+            var addonId = $(this).attr('data-ids');
+            var obj = {'addonId':addonId, 'addonCount':count};
+            Booking.setAddon(addonId, obj);
+            console.log(Booking.getAddon());
+            console.log("Addon Count: "+ count); 
+            var Addon = ServiceObjects.ServiceAddonsObject;
+            var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
+            if(count >= 0){
+                Booking.addAddonPrice(price);
+            
+                $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
+                //Booking.calculateTotalPrice(price);
+                $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+            }
         });
 
     $("#ct-price-scroll-new")
