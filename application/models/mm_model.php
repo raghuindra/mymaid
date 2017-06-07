@@ -226,5 +226,10 @@ class Mm_model extends CI_Model
         function getAffectedRowCount(){
             return $this->db->affected_rows();
         }
+        
+        function sendMessage($mobile, $message,$from, $date){
+            return $this->db->query("call sp_smsAlert_insert('$mobile', '$message','$from', '$date')");
+            //return sp_smsAlert_insert($mobile, $message,$from, $date);
+        }
 }
 ?>

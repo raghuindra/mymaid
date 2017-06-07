@@ -14,12 +14,12 @@ $bank_info      = $bank['data'];
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            User Profile
+            My Profile
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Examples</a></li>
-            <li class="active">User profile</li>
+            <li><a href="<?php echo base_url().'vendor_home.html' ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+<!--            <li><a href="#">Examples</a></li>-->
+            <li class="active">Profile</li>
         </ol>
     </section>
 
@@ -32,13 +32,13 @@ $bank_info      = $bank['data'];
                 <!-- Profile Image -->
                 <div class="box box-primary">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle" src="<?php echo plugin_url('dist/img/user2-160x160.jpg');?>" alt="User profile picture">
 
-                        <h3 class="profile-username text-center">Nina Mcintire</h3>
+                        <h3 class="profile-username text-center"><?php echo $profile_info[0]->person_first_name." ".$profile_info[0]->person_last_name; ?></h3>
 
-                        <p class="text-muted text-center">Software Engineer</p>
+                        <p class="text-muted text-center"><?php echo $this->session->userdata('user_type'); ?></p>
 
-                        <ul class="list-group list-group-unbordered">
+                        <ul class="list-group list-group-unbordered hidden">
                             <li class="list-group-item">
                                 <b>Followers</b> <a class="pull-right">1,322</a>
                             </li>
@@ -50,14 +50,14 @@ $bank_info      = $bank['data'];
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                        <a href="#" class="btn btn-primary btn-block hidden"><b>Follow</b></a>
                     </div>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
 
                 <!-- About Me Box -->
-                <div class="box box-primary">
+                <div class="box box-primary hidden">
                     <div class="box-header with-border">
                         <h3 class="box-title">About Me</h3>
                     </div>

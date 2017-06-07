@@ -151,7 +151,7 @@ $vendorId = $this->session->userdata('user_id');
 
                                                         <div class="col-sm-9">
                                                             <?php if ($company && $company[0]->company_ssm_file_path != '') { ?>
-                                                                <a href="<?php echo base_url() . $company[0]->company_ssm_file_path; ?>" target="_blank" >View File</a>
+                                                                <a href="<?php echo base_url() ."assets/uploads/vendor/". $vendorId."/company/". $company[0]->company_ssm_file_path; ?>" target="_blank" >View File</a>
                                                             <?php } else { ?>
                                                                 <input type="file" id="ssmFileUpload" name="ssmFile">
                                                             <?php } ?>
@@ -163,7 +163,7 @@ $vendorId = $this->session->userdata('user_id');
 
                                                         <div class="col-sm-9">
                                                             <?php if ($company && $company[0]->company_idcard_file_path != '') { ?>
-                                                                <a href="<?php echo base_url() . $company[0]->company_idcard_file_path; ?>" target="_blank" >View File</a>
+                                                                <a href="<?php echo base_url() ."assets/uploads/vendor/". $vendorId."/company/". $company[0]->company_idcard_file_path; ?>" target="_blank" >View File</a>
                                                             <?php } else { ?>
                                                                 <input type="file" id="idcardupload" name="idFile">
                                                             <?php } ?>
@@ -220,9 +220,9 @@ $vendorId = $this->session->userdata('user_id');
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Passport Number *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Passport/IC Number *:</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" placeholder="Passport Number" />
+                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" placeholder="Passport/IC Number" />
                                                         </div>
                                                     </div>
 
@@ -404,7 +404,7 @@ $vendorId = $this->session->userdata('user_id');
             'bootstrap': true,
             'url': 'upload_companyssm_doc.html',
             'limit': 1,
-            'maxSize': 10240,
+            'maxSize': 1024*1000,
             'onFileError': function (file, error) {
 
             },
@@ -418,7 +418,7 @@ $vendorId = $this->session->userdata('user_id');
             'bootstrap': true,
             'url': 'upload_companyid_doc.html',
             'limit': 1,
-            'maxSize': 10240,
+            'maxSize': 1024*1000,
             'onFileError': function (file, error) {
 
             },

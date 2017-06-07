@@ -227,11 +227,11 @@
 
                             <p>
                                 <?php echo $this->session->userdata('user_fullname');?> - <?php echo $this->session->userdata('user_type');?>
-                                <small>Member since Nov. 2012</small>
+<!--                                <small>Member since Nov. 2012</small>-->
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
+                        <li class="user-body hidden">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Followers</a>
@@ -247,7 +247,7 @@
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left">
+                            <div class="pull-left hidden">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">

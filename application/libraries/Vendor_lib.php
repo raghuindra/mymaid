@@ -385,7 +385,27 @@ class Vendor_lib extends Base_lib {
                 }
 
                 if ($insertId > 0) {
-
+                    
+                    $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $result[0]->person_email;
+                        $subject = "New Employee Addition";
+                        $message = "<html><body>";
+                        $message .= "<p>Hi,</p><br>";
+                        $message .= "<p>Vendor ".$this->session->userdata('user_fullname')." has added new Employee.</p>";                       
+                        $message .= "</body></html>";
+                        $this->ci->load->library('page_load_lib');
+                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('alaken.adv@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('s_thiba82@yahoo.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('kkharish16@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('praveen.dexter@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        
+                        //SMS
+                        /*Admin*/$this->sendSMS('+601124129717', "Vendor ".$this->session->userdata('user_fullname')." has added new Employee.");
+                        /*Admin*/$this->sendSMS('+60146771436', "Vendor ".$this->session->userdata('user_fullname')." has added new Employee.");
+                        /*Admin*/$this->sendSMS('+60125918491', "Vendor ".$this->session->userdata('user_fullname')." has added new Employee.");
+                        /*Admin*/$this->sendSMS('+60126570387', "Vendor ".$this->session->userdata('user_fullname')." has added new Employee.");
+                        
                     $this->_status = true;
                     $this->_message = $this->ci->lang->line('employee_created');
                 } else {

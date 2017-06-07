@@ -93,11 +93,34 @@ class Admin_vendor_lib extends Base_lib{
         } else {
 
             $personId = $this->ci->input->post('personId', true);
-            $result = $this->model->get_tb('mm_person', 'person_id', array('person_id' => $personId))->result();
+            $result = $this->model->get_tb('mm_person', 'person_id, person_mobile, person_email', array('person_id' => $personId))->result();
+            
             if (count($result) > 0) {
                 $this->model->update_tb('mm_person', array('person_id' => $personId), array('person_status'=>1));
                 
                 if( $this->model->getAffectedRowCount() > 0 ) {
+                    $this->sendSMS($result[0]->person_mobile, "congrats your request approved.");
+                    /*Admin*/$this->sendSMS('+60126570387', "Request approved for vendor, ".$result[0]->person_first_name." ".$result[0]->person_last_name.").");
+                    /*Admin*/$this->sendSMS('+601124129717', "Request approved for vendor, ".$result[0]->person_first_name." ".$result[0]->person_last_name.").");
+                    /*Admin*/$this->sendSMS('+60146771436', "Request approved for vendor, ".$result[0]->person_first_name." ".$result[0]->person_last_name.").");
+                    /*Admin*/$this->sendSMS('+60125918491', "Request approved for vendor, ".$result[0]->person_first_name." ".$result[0]->person_last_name.").");
+                    
+                //Email
+                    $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $result[0]->person_email;
+                        $subject = "Account Approved";
+                        $message = "<html><body>";
+                        $message .= "<p>Hi Vendor,</p><br>";
+                        $message .= "<p>Congratulations your request is approved</p>";                       
+                        $message .= "</body></html>";
+                        $this->ci->load->library('page_load_lib');
+                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('alaken.adv@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('s_thiba82@yahoo.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('kkharish16@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('praveen.dexter@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        
+                    
                     $this->_status = true;
                     $this->_message = $this->ci->lang->line('vendor_approved');                   
                 }

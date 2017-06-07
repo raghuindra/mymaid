@@ -2,9 +2,9 @@
 
 <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?php echo base_url().'vendor_home.html' ?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>A </b>MyMaid</span>
+        <span class="logo-mini"><b>V </b>MyMaid</span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><b>Vendor </b>MyMaid</span>
     </a>
@@ -227,11 +227,11 @@
 
                             <p>
                                 <?php echo $this->session->userdata('user_fullname');?> - <?php echo $this->session->userdata('user_type'); ?>
-                                <small>Member since Nov. 2012</small>
+<!--                                <small>Member since Nov. 2012</small>-->
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
+                        <li class="user-body hidden">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Followers</a>
@@ -247,7 +247,7 @@
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left">
+                            <div class="pull-left hidden">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">

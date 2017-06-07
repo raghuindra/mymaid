@@ -8,9 +8,12 @@ class Base_lib {
     public $_status = false;
     public $_message = "";
     public $_rdata = array();
+    public $model;
 
     public function __construct() {
         $this->ci = &get_instance();
+        $this->ci->load->model('mm_model');
+        $this->model = $this->ci->mm_model;
         
     }
 
@@ -50,5 +53,10 @@ class Base_lib {
                       return FALSE;
                   }
             }
+        }
+        
+        function sendSMS($mobile, $message, $from='MyMaidz'){
+            $date = date('Y-m-d H:i:s');
+            $this->model->sendMessage($mobile, $message,$from, $date);
         }
 }

@@ -3,11 +3,11 @@
         <div class="topNav">
             <div class="userNav">
                 <ul>
-                    <li><a href="./user_login.html" title=""><i class="icon-user"></i><span>User Login</span></a></li>
-                    <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
+                    <li><a href="<?php echo base_url().'user_login.html';?>" title=""><i class="icon-user"></i><span>User Login</span></a></li>
+                    <li><a href="<?php echo base_url().'vendor_login.html';?>" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
-            <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
+            <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
         </div>
         <!-- PAGE CONTENT -->
         <div class="container animated fadeInDown">
@@ -74,7 +74,7 @@
                                 <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
                                     <option value="">Select Id Card</option>
                                     <option value="Govt Id Card" >Govt Id Card</option>
-                                    <option value="passport">Passport</option>
+                                    <option value="passport">Passport/ IC Number</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">
@@ -130,7 +130,7 @@
                                 <button class="form-control btn btn-primary" value="Login" type="submit"><strong>Sign Up</strong></button>
                             </div>
                             <div class="col-lg-6">
-                                <p><a href="./vendor_login.html"><strong>Already Have Account?</strong></a></p>
+                                <p><a href="<?php echo base_url().'vendor_login.html'; ?>"><strong>Already Have Account?</strong></a></p>
                             </div>
                         </div>
                         <div class="text-center"><strong>Or</strong></div>
