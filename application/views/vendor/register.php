@@ -33,9 +33,9 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="text" placeholder="First Name" class="form-control" name="firstname" required value="<?php echo set_value('firstname'); ?>"> </div>
+                                <input type="text" placeholder="First Name" class="form-control" name="firstname" oninput="maxLengthCheck(this)" maxlength = "25" required value="<?php echo set_value('firstname'); ?>"> </div>
                             <div class="col-lg-12">
-                                <input type="text" placeholder="Last Name" class="form-control" name="lastname" required value="<?php echo set_value('lastname'); ?>"> </div>
+                                <input type="text" placeholder="Last Name" class="form-control" name="lastname" oninput="maxLengthCheck(this)" maxlength = "25" required value="<?php echo set_value('lastname'); ?>"> </div>
 
                         </div>
 
@@ -64,7 +64,9 @@
                             <div class="col-lg-6">
                                 <input type="number" placeholder="Postal Code" class="form-control" name="pincode" required value="<?php echo set_value('pincode'); ?>"> </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">+60</span>
+                                <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div></div>
                             <!-- <div class="col-lg-6">
                                 <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
                                 </select>     -->
@@ -74,11 +76,11 @@
                                 <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
                                     <option value="">Select Id Card</option>
                                     <option value="Govt Id Card" >Govt Id Card</option>
-                                    <option value="passport">Passport/ IC Number</option>
+                                    <option value="passport">IC Number</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="Id Card Number" class="form-control" name="idcardnumber" required value="<?php echo set_value('idcardnumber'); ?>"> 
+                                <input type="text" placeholder="Id Card Number" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" class="form-control" name="idcardnumber" required value="<?php echo set_value('idcardnumber'); ?>"> 
                             </div>
 
                         </div>
@@ -106,7 +108,9 @@
                             <div class="col-lg-6">
                                 <input type="number" placeholder="Company Pin Code" class="form-control" name="compPin" id="compPin" required value="<?php echo set_value('compPin'); ?>"> </div>
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Mobile" class="form-control" name="compMobile" id="compMobile" required value="<?php echo set_value('compMobile'); ?>"> </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">+60</span>
+                                <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile" class="form-control" name="compMobile" id="compMobile" required value="<?php echo set_value('compMobile'); ?>"></div></div>
                             <div class="col-lg-6">
                                 <input type="number" placeholder="Land phone" class="form-control" name="compLandPhone" id="compLandPhone" required value="<?php echo set_value('compLandPhone'); ?>"> </div>
                             <div class="col-lg-6">
@@ -160,6 +164,22 @@
         
 
     });
+    
+    function maxLengthCheck(object) {
+       if (object.value.length > object.maxLength)
+         object.value = object.value.slice(0, object.maxLength)
+    }
+    
+    function isNumeric (evt) {
+      var theEvent = evt || window.event;
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode (key);
+      var regex = /[0-9]|\./;
+      if ( !regex.test(key) ) {
+        theEvent.returnValue = false;
+        if(theEvent.preventDefault) theEvent.preventDefault();
+      }
+    }
 
     function setRequired() {
         $('#compName').attr('required', true);

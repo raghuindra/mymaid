@@ -112,7 +112,9 @@ class Person_lib extends Base_lib{
                         $message .= "</body></html>";
                         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
                         
+                        // SMS
                         $this->sendSMS($info['person_mobile'], "Welcome to MyMaidz. Registration is successfull. Login to get service.");                     
+                        
                         
                         redirect('home.html', 'refresh');
                         exit;
@@ -300,16 +302,17 @@ class Person_lib extends Base_lib{
                         $message .= "<p><a href='". base_url()."vendor_login.html'>Click here</a> to login</p>";
                         $message .= "</body></html>";
                         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('alaken.adv@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('s_thiba82@yahoo.com',$recipient,$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('kkharish16@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ('praveen.dexter@gmail.com',$recipient,$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'alaken.adv@gmail.com',$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 's_thiba82@yahoo.com',$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'kkharish16@gmail.com',$subject,$message,array('mailtype'=>'html'));
+                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'praveen.dexter@gmail.com',$subject,$message,array('mailtype'=>'html'));
                         
-                        $this->sendSMS($user_info['vendor_mobile'], "Welcome to MyMaidz. Registration is successfull. Account is pending for admin approval.");                     
-                        /*Admin*/$this->sendSMS('+601124129717', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
-                        /*Admin*/$this->sendSMS('+60146771436', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
-                        /*Admin*/$this->sendSMS('+60125918491', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
-                        /*Admin*/$this->sendSMS('+60126570387', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
+                        //SMS
+                                  $this->sendSMS($user_info['vendor_mobile'], "Welcome to MyMaidz. Registration is successfull. Account is pending for admin approval.");                     
+                        /*Admin*/ $this->sendSMS('+601124129717', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
+                        /*Admin*/ $this->sendSMS('+60146771436', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
+                        /*Admin*/ $this->sendSMS('+60125918491', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
+                        /*Admin*/ $this->sendSMS('+60126570387', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
                         
                         redirect('vendor_register.html', 'refresh');
                         exit;

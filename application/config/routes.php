@@ -67,7 +67,9 @@ $route['getServices.html']                      = "user/getServices";
 $route['getServicePackages.html']               = "user/getServicePackages";
 $route['getServiceFrequencies.html']            = "user/getServiceFrequencies";
 $route['getServiceAddons.html']                 = "user/getServiceAddons";
-$route['getServiceSplRequests.html']             = "user/getServiceSplRequests";
+$route['getServiceSplRequests.html']            = "user/getServiceSplRequests";
+$route['pay_test.html']                         = "user/payTest";
+$route['booking_info.html']                     = "user/bookingInfo";
 
 
 /* ................  Admin Module Routing  ......................... */

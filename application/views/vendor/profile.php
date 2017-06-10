@@ -201,31 +201,31 @@ $bank_info      = $bank['data'];
                             <div class="form-horizontal">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">Bank Name*:</label>
+                                            <label for="inputEmail3" class="col-sm-3 control-label">Bank Name: <span class="text-red">*</span></label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="bnkname" class="form-control" required id="bnkname" placeholder="Bank Name" value="<?php echo ($bank_info) ? $bank_info[0]->bank_name : '';?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">Beneficiary/Account Holder Name*:</label>
+                                            <label for="inputEmail3" class="col-sm-3 control-label">Beneficiary/Account Holder Name: <span class="text-red">*</span></label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="holdername" class="form-control" required id="holdername" placeholder="Beneficiary/Account Holder Name" value="<?php echo ($bank_info) ? $bank_info[0]->bank_holder_name : '';?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">Bank Account Number*:</label>
+                                            <label for="inputEmail3" class="col-sm-3 control-label">Bank Account Number: <span class="text-red">*</span></label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="accnumber" class="form-control" required id="accnumber" placeholder="Bank Account Number" value="<?php echo ($bank_info) ? $bank_info[0]->bank_account_number : '';?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">IFSC Code/Swift Code*:</label>
+                                            <label for="inputEmail3" class="col-sm-3 control-label">IFSC Code/Swift Code: <span class="text-red">*</span></label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" name="ifsc" required id="ifsc" placeholder="IFSC Code/Swift Code" value="<?php echo ($bank_info) ? $bank_info[0]->bank_ifsc_code : '';?>">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">Bank Address*:</label>
+                                            <label for="inputEmail3" class="col-sm-3 control-label">Bank Address: <span class="text-red">*</span></label>
                                             <div class="col-sm-8">
                                                 <textarea type="text" class="form-control" name="bnkaddress" id="bnkaddress" required placeholder="Bank Address"><?php echo ($bank_info) ? $bank_info[0]->bank_address : '';?></textarea>
                                             </div>

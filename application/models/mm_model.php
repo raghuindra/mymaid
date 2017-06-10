@@ -227,8 +227,9 @@ class Mm_model extends CI_Model
             return $this->db->affected_rows();
         }
         
-        function sendMessage($mobile, $message,$from, $date){
-            return $this->db->query("call sp_smsAlert_insert('$mobile', '$message','$from', '$date')");
+        function sendMessage($mobile, $message, $from, $createdDate, $updatedBy, $updatedDate){
+            return $this->db->query("INSERT INTO `sms_trigger` ( `phoneNumber` , `message` , `createdBy` , `createdDate` , `updatedBy` , `updatedDate` ) 
+VALUES ('$mobile', '$message', '$from', '$createdDate', '$updatedBy', '$updatedDate')");
             //return sp_smsAlert_insert($mobile, $message,$from, $date);
         }
 }

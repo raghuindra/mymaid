@@ -18,9 +18,9 @@
                 <div id="login" class="tab-pane active">
                     <form class="form-signin" id="login_box" method="post">
                         <p class="head_login_005">Sign Up</p>                       
-                         <div class="row">
+                        <div class="row">
                             <div class="col-lg-12">
-                             <input type="email" placeholder="Email id" class="form-control" name="email" required value="<?php echo set_value('email'); ?>">
+                                <input type="email" placeholder="Email id" class="form-control" name="email" required value="<?php echo set_value('email'); ?>">
                             </div>
                         </div>
                         <div class="row">
@@ -29,9 +29,9 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <input type="text" placeholder="First Name" class="form-control" name="firstname" required value="<?php echo set_value('firstname'); ?>"> </div>
+                                <input type="text" maxlength = "25" placeholder="First Name" class="form-control" name="firstname" required value="<?php echo set_value('firstname'); ?>"> </div>
                             <div class="col-lg-12">
-                                <input type="text" placeholder="Last Name" class="form-control" name="lastname" required value="<?php echo set_value('lastname'); ?>"> </div>
+                                <input type="text" maxlength = "25" placeholder="Last Name" class="form-control" name="lastname" required value="<?php echo set_value('lastname'); ?>"> </div>
 
                         </div>
                         <div class="row">
@@ -57,9 +57,11 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Postal Code" class="form-control" name="pincode" required value="<?php echo set_value('pincode'); ?>"> </div>
+                                <input type="number" placeholder="Postal Code" class="form-control" name="pincode" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required value="<?php echo set_value('pincode'); ?>"> </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">+60</span>
+                                    <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div></div>
                             <!-- <div class="col-lg-6">
                                 <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
                                 </select>     -->
@@ -69,11 +71,11 @@
                                 <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
                                     <option value="">Select Id Card</option>
                                     <option value="Govt Id Card" >Govt Id Card</option>
-                                    <option value="passport">Passport</option>
+                                    <option value="passport">Passport/IC Number</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="Id Card Number" class="form-control" name="idcardnumber" required value="<?php echo set_value('idcardnumber'); ?>"> </div>
+                                <input type="text" placeholder="Id Card Number" class="form-control" name="idcardnumber" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" required value="<?php echo set_value('idcardnumber'); ?>"> </div>
 
                         </div>
 
@@ -104,26 +106,28 @@
 
 
 <script>
-    $(function(){
-<?php if($this->session->flashdata('error_message') != null ) {?>
-        notyfy({
-        text: "<?php echo $this->session->flashdata('error_message');?>",
+
+
+    $(function () {
+<?php if ($this->session->flashdata('error_message') != null) { ?>
+            notyfy({
+                text: "<?php echo $this->session->flashdata('error_message'); ?>",
                 type: "error",
                 dismissQueue: true,
                 layout: 'top'
-        });
-        
-<?php }else if($this->session->flashdata('success_message') != null ) { ?>  
-    
-        notyfy({
-        text: "<?php echo $this->session->flashdata('success_message');?>",
+            });
+
+<?php } else if ($this->session->flashdata('success_message') != null) { ?>
+
+            notyfy({
+                text: "<?php echo $this->session->flashdata('success_message'); ?>",
                 type: "success",
                 dismissQueue: true,
                 layout: 'top'
-        });
+            });
 
 <?php } ?>
-    
+
     });
 
 </script>

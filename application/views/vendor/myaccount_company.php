@@ -58,43 +58,43 @@ $vendorId = $this->session->userdata('user_id');
                                             <div class="form-horizontal">
                                                 <div class="box-body">
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Company Name*:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Company Name: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" required class="form-control" id="cmname" name="cmname" placeholder="Company Name" value="<?php echo ($company) ? $company[0]->company_name : ''; ?>" required <?php echo ($company && $company[0]->company_name != '') ? 'disabled' : ''; ?>> 
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Company Registration #:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Company Registration:  <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" class="form-control" id="cmnumber" name="cmnumber" placeholder="Company Registration" value="<?php echo ($company) ? $company[0]->company_reg_number : ''; ?>" required <?php echo ($company && $company[0]->company_reg_number != '') ? 'disabled' : ''; ?>>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Contact Person Name*:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Contact Person Name: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" required class="form-control" id="cpname" name="cpname" placeholder="Contact Person Name" value="<?php echo ($company) ? $company[0]->company_contact_person_name : ''; ?>" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">IC Number*:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">IC Number: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" required class="form-control" id="icnumber" name="icnumber" placeholder="IC Number" value="<?php echo ($company) ? $company[0]->company_ic_number : ''; ?>" required>
+                                                            <input type="text" required class="form-control" id="icnumber" name="icnumber" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="IC Number" value="<?php echo ($company) ? $company[0]->company_ic_number : ''; ?>" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputEmail3" required class="col-sm-3 control-label">Office Phone:</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
+                                                            <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">H/P Phone*:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">H/P Phone: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
+                                                            <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="address" class="col-sm-3 control-label">Address Line 1*:</label>
+                                                        <label for="address" class="col-sm-3 control-label">Address Line 1: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" required class="form-control" id="addr" name="addr" placeholder="Address Line 1" value="<?php echo ($company) ? $company[0]->company_address : ''; ?>" required>
                                                         </div>
@@ -106,20 +106,20 @@ $vendorId = $this->session->userdata('user_id');
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="city" class="col-sm-3 control-label">City*:</label>
+                                                        <label for="city" class="col-sm-3 control-label">City: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
                                                             <input type="text" required class="form-control" name="city" id="city" placeholder="City" value="<?php echo ($company) ? $company[0]->company_city : ''; ?>" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="postcode" class="col-sm-3 control-label">Postcode*:</label>
+                                                        <label for="postcode" class="col-sm-3 control-label">Postcode: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
-                                                            <input type="number" required class="form-control" id="postalcode" name="postalcode" placeholder="Postcode" value="<?php echo ($company) ? $company[0]->company_pincode : ''; ?>" required>
+                                                            <input type="number" required class="form-control" id="postalcode" name="postalcode" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" placeholder="Postcode" value="<?php echo ($company) ? $company[0]->company_pincode : ''; ?>" required>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="state" class="col-sm-3 control-label">State*:</label>
+                                                        <label for="state" class="col-sm-3 control-label">State: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
                                                             <select id="state" name="state" required class="form-control">
                                                                 <option>Select state</option>
@@ -136,7 +136,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="email" class="col-sm-3 control-label">Email ID*:</label>
+                                                        <label for="email" class="col-sm-3 control-label">Email ID: <span class="text-red">*</span></label>
 
                                                         <div class="col-sm-9">
                                                             <input type="email" name="email" required class="form-control" id="email" placeholder="Email ID" value="<?php echo ($company) ? $company[0]->company_email_id : ''; ?>" required>
@@ -147,7 +147,7 @@ $vendorId = $this->session->userdata('user_id');
 
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="fileupload" class="col-sm-3 control-label">SSM*:</label>
+                                                        <label for="fileupload" class="col-sm-3 control-label">SSM: <span class="text-red">*</span></label>
 
                                                         <div class="col-sm-9">
                                                             <?php if ($company && $company[0]->company_ssm_file_path != '') { ?>
@@ -159,7 +159,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="fileupload" class="col-sm-3 control-label">Identity card*:</label>
+                                                        <label for="fileupload" class="col-sm-3 control-label">Identity card: <span class="text-red">*</span></label>
 
                                                         <div class="col-sm-9">
                                                             <?php if ($company && $company[0]->company_idcard_file_path != '') { ?>
@@ -213,21 +213,21 @@ $vendorId = $this->session->userdata('user_id');
                                                 <form action="" name="employeeCreationForm" id="employeeCreationForm">                                                   
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Name *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Name: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_name" class="form-control" required id="employee_name" placeholder="Employee Name">
+                                                            <input type="text" name="employee_name" class="form-control" required id="employee_name" oninput="maxLengthCheck(this)" maxlength = "50" placeholder="Employee Name">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Passport/IC Number *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee IC Number: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" placeholder="Passport/IC Number" />
+                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Passport/IC Number" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Citizenship *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Citizenship: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <input type="text" name="employee_citizenship" class="form-control" required id="employee_citizenship" placeholder="Employee Citizenship (Ex: Malaysian)">
                                                         </div>
@@ -236,19 +236,19 @@ $vendorId = $this->session->userdata('user_id');
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Employee House Phone :</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" placeholder="Employee House Phone">
+                                                            <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee House Phone">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee H/P Phone *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee H/P Phone: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" placeholder="Employee H/P Phone">
+                                                            <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee H/P Phone">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Job Type *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Job Type: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <div class="btn-group" role="group" aria-label="Employee Job Type">
                                                                 <button type="button" class="btn margin btn-primary btn-sm active emp_jobtype" data-val="<?php echo Globals::EMPLOYEE_FULLTIME;?>">Full Time</button>
@@ -263,7 +263,7 @@ $vendorId = $this->session->userdata('user_id');
 
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="fileupload" class="col-sm-3 control-label">Identity Card*:</label>
+                                                        <label for="fileupload" class="col-sm-3 control-label">Identity Card: <span class="text-red">*</span></label>
 
                                                         <div class="col-sm-9">                                                          
                                                             <input type="file" id="employeeIdUpload" name="empIdFile">

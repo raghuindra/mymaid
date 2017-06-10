@@ -1,6 +1,7 @@
 <a href="javascript:void(0)" class="ct-back-to-top" style="display: none;"></a>
 <div id="postcodeSearch" style="display: none;" data-val="<?php echo $this->session->userdata('service_location_search'); ?>"></div>
-<form id="book-id">
+<!--<form id="book-id">-->
+<form id="paymentForm" name="frmPayment" method="post" >
 
     <div class="ct-wrapper" id="ct">
         <!-- main wrapper -->
@@ -459,7 +460,7 @@
                                 <div class="ct-login-existing hidden">
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row hide_login_email">
                                         <label for="ct-user-name">Your Email</label>
-                                        <input type="text" class="add_show_error_class_for_login error" name="ct_user_name" id="ct-user-name" placeholder="Enter Email to Login" onkeydown="if (event.keyCode == 13) document.getElementById( & #39; login_existing_user & #39; ).click()">
+                                        <input type="text" class="add_show_error_class_for_login error" name="ct_user_name" id="ct-user-email" placeholder="Enter Email to Login" onkeydown="if (event.keyCode == 13) document.getElementById( & #39; login_existing_user & #39; ).click()">
                                     </div>
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row hide_password">
                                         <label for="ct-user-pass">Your Password                                            </label>
@@ -669,7 +670,7 @@
                     </div>
                     <!-- end payment detials -->
                 </div>
-                </form>
+<!--                </form>-->
                 <!-- left side end -->
 
 
@@ -689,7 +690,7 @@
                                     <p class="ct-text sel-service" style="font-weight: bold;"></p>
                                     <div class="cart-items-main f-l">
                                         <label class="package_detail">Your cart items</label>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="ct-form-rown ct-addons-list-main" style="display:none;">
@@ -698,12 +699,12 @@
                                     </div>
                                     <div class="cart-items-main f-l">
                                         <label class="cart_empty_msg addons">Addons: <span class="addons_names"></span></label>
-                                        
+
                                         <label class="cart_empty_msg spl_req" style="display:none;">Special Request: <span class="spl_req_names"></span></label>                                        
                                     </div>
                                 </div>
                                 <div class="step_heading f-l">
-                                        <h6 class="header6 ct-item-list"></h6>
+                                    <h6 class="header6 ct-item-list"></h6>
                                 </div>
                                 <div class="ct-summary datetime_value">
                                     <div class="ct-image">
@@ -718,7 +719,7 @@
                                     <p class="ct-text sel-datetime f_discount_name">Once</p>
                                 </div>
                                 <h6 class="header6 ct-item-list"></h6>
-                                
+
                                 <div class="ct-form-rown">
                                     <div class="ct-cart-label-common ofh">Sub Total</div>
                                     <div class="ct-cart-amount-common ofh">
@@ -850,7 +851,7 @@
                         <div class="ct-loading-main-complete_booking" style="display: none;">
                             <div class="loader-complete_booking">Loading...</div>
                         </div>
-                        <button type="submit" data-currency_symbol="$" id="" class="ct-button ct-btn-big ct_remove_id">Complete Booking</button>
+                        <button type="submit" data-currency_symbol="$" id="submitBooking" class="ct-button ct-btn-big ct_remove_id">Complete Booking</button>
                     </div>
                 </div>
 
@@ -864,7 +865,31 @@
 
 
     </div>
+    <input type="hidden" name="TransactionType" value="SALE">
+<input type="hidden" name="PymtMethod" value="ANY">
+<input type="hidden" name="ServiceID" value="ADV">
+<input type="hidden" name="PaymentID" value="<?php echo $payId = md5(uniqid("booking12345674238472984MyMaidz", true));?>">
+<input type="hidden" name="OrderNumber" value="IJKLMN">
+<input type="hidden" name="PaymentDesc" value="Booking No: IJKLMN, Sector:
+KUL-BKI, First Flight Date: 26 Sep 2012">
+<input type="hidden" name="MerchantName" value="Advance Dreams Venture Sdn Bhd">
+<input type="hidden" name="MerchantReturnURL"
+value="https://test.mymaidz.com/pay_response.html">
+<input type="hidden" name="MerchantCallbackURL"
+value="https://test.mymaidz.com/pay_callback.html">
+<input type="hidden" name="Amount" value="1.00">
+<input type="hidden" name="CurrencyCode" value="MYR">
+<input type="hidden" name="CustIP" value="<?php echo $_SERVER['REMOTE_ADDR'];?>">
+<input type="hidden" name="CustName" value="Jason">
+<input type="hidden" name="CustEmail" value="Jasonabc@gmail.com">
+<input type="hidden" name="CustPhone" value="60121235678">
+<input type="hidden" name="HashValue" value='<?php echo hash("sha512", "adv12345ADV".$payId."https://test.mymaidz.com/pay_response.html1.00MYR192.168.2.35780"); ?>'>
+<input type="hidden" name="MerchantTermsURL"
+value="https://test.mymaidz.com/pay_response.html">
+<input type="hidden" name="LanguageCode" value="en">
+<input type="hidden" name="PageTimeout" value="780">
 </form>
+
 
 <div id="service_html" style="display:none;">
     <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class ser_details" data-id="">
@@ -967,33 +992,35 @@
             <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
         </div>
         <ul class="addon-service-list fl remove_addonsss">
-<!--            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                <input type="checkbox" name="spl-request-checkbox" class="addon-checkbox addons_servicess_2" data-id="4" id="ct-spl-req-12" data-mnamee="ad_unit4">
-                <label class="ct-addon-ser border-c" for="ct-spl-req-12"><span></span>
-                    <div class="addon-price">RM 0.00</div>
-                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
-
-                </label>
-
-                <div class="addon-name fl ta-c">Damaged Flooring</div>
-            </li>
-            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                <input type="checkbox" name="spl-request-checkbox" class="addon-checkbox addons_servicess_2" data-id="5" id="ct-spl-req-13" data-mnamee="ad_unit5">
-                <label class="ct-addon-ser border-c" for="ct-spl-req-13"><span></span>
-                    <div class="addon-price">RM 0.00</div>
-                    <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
-
-                </label>
-
-                <div class="addon-name fl ta-c">Door jams</div>
-            </li>-->
+            <!--            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
+                            <input type="checkbox" name="spl-request-checkbox" class="addon-checkbox addons_servicess_2" data-id="4" id="ct-spl-req-12" data-mnamee="ad_unit4">
+                            <label class="ct-addon-ser border-c" for="ct-spl-req-12"><span></span>
+                                <div class="addon-price">RM 0.00</div>
+                                <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
+            
+                            </label>
+            
+                            <div class="addon-name fl ta-c">Damaged Flooring</div>
+                        </li>
+                        <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
+                            <input type="checkbox" name="spl-request-checkbox" class="addon-checkbox addons_servicess_2" data-id="5" id="ct-spl-req-13" data-mnamee="ad_unit5">
+                            <label class="ct-addon-ser border-c" for="ct-spl-req-13"><span></span>
+                                <div class="addon-price">RM 0.00</div>
+                                <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
+            
+                            </label>
+            
+                            <div class="addon-name fl ta-c">Door jams</div>
+                        </li>-->
         </ul>
     </div>
 </div>
 <div id="service_spl_request_temp_html" style="display: none;"></div>
 
 <script>
-    base_url = "<?php echo base_url(); ?>";</script>
+    base_url = "<?php echo base_url(); ?>";
+   
+</script>
 
 <script type="text/javascript" src="<?php echo js_url('user/booking'); ?>"></script>
 

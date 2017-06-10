@@ -1,6 +1,14 @@
 $(function() {
     $("#select-date")
-        .datepicker();
+        .datepicker({ 
+        dateFormat: "yy-mm-dd", 
+        onSelect: function(){
+        var selected = $(this).val();
+        //alert(selected);
+        }
+    });
+
+
     $.validator.methods.email = function(value, element) {
         return this.optional(element) || /[a-z]+@[a-z]+\.[a-z]+/.test(value);
     }

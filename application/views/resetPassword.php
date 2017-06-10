@@ -18,10 +18,14 @@
             </div>
             
             <div class="row">
-                
                 <!-- /.col -->
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Request</button>
+                <div class="col-xs-6">
+                    <button type="button" onclick="window.history.back();" class="btn btn-info btn-block btn-flat">Cancel</button>
+                </div>
+                <!-- /.col -->
+                <!-- /.col -->
+                <div class="col-xs-6">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
                 </div>
                 <!-- /.col -->
             </div>

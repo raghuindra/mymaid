@@ -8,7 +8,7 @@ class User extends Base {
         
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('user_lib'));
+            $this->load->library(array('user_lib','page_load_lib'));
             //$this->uLang = $this->session->userdata('user_lang');               
             //$this -> lang -> load("np", $this->uLang);
         }
@@ -113,6 +113,25 @@ class User extends Base {
             }
             echo json_encode($response);  
             
+        }
+        
+        
+        public function payTest(){
+            
+            $this->data['content']  = "user/pay_test.php";
+            $this->data['user']     = 0;
+            $this->data['home']     = 0;
+            $this -> load -> view('template', $this->data);
+            
+        }
+        
+        /*
+         * Function to store/process the user booking request
+         */
+        public function bookingInfo(){
+            
+            $data = $this->readJsonRequest()->getData();
+            print_r($data); exit;
         }
         
         

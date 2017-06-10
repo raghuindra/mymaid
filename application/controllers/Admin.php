@@ -109,7 +109,7 @@ class Admin extends Base {
                     'message' => $this->lang->line('invalid_data'),
                     'data' => array()
                 );
-            } print_r($response);
+            } 
             echo json_encode($response);
         }
         

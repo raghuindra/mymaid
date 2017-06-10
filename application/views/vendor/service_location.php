@@ -58,7 +58,7 @@ $this->load->view("block/vendor_leftMenu");
                                             <div class="form-horizontal">
                                                 <div class="box-body">
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">State *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">State: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <select class="form-control stateSelect select2" style="width: 100%;" name="stateSelect" id="stateSelect" required>
                                                                 <option value="">Select state</option>
@@ -76,7 +76,7 @@ $this->load->view("block/vendor_leftMenu");
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">City *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">City: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <select class="form-control areaSelect select2" style="width: 100%;" name="areaSelect" id="areaSelect" multiple="multiple" required>
                                                                 <option value="">Select city</option>                      
@@ -85,7 +85,7 @@ $this->load->view("block/vendor_leftMenu");
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">City Pin codes *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">City Pin codes: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <select class="form-control postcodeSelect select2" style="width: 100%;" name="postcodeSelect[]" id="postcodeSelect" multiple="multiple" required>
                                                                 <option value="">Select pin codes (Multi Select)</option>                      

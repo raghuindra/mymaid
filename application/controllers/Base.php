@@ -16,6 +16,7 @@ class Base extends CI_Controller {
         
         public function readJsonRequest(){ 
             $this->request =  json_decode(file_get_contents('php://input')); 
+           // print_r($this->request); exit;
             return $this;
             
         }

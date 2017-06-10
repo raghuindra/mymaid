@@ -43,7 +43,7 @@ $this->load->view("block/admin_leftMenu");
                                 <div class="box-body">
                                    
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="col-sm-2 control-label">Service Name *:</label>
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Service Name: <span class="text-red">*</span></label>
                                         <div class="col-sm-10">
                                             <input type="text" required class="form-control" id="serviceName" name="serviceName" placeholder="Service Name">
                                         </div>
@@ -51,7 +51,7 @@ $this->load->view("block/admin_leftMenu");
                                     <!-- /.box-body -->
                                     <div class="box-footer">
                                         <div class="col-sm-11">
-                                            <button type="button" class="btn btn-default pull-right btn-lg bg-red">Clear</button>
+                                            <button type="button" class="btn btn-default pull-right btn-lg bg-maroon">Clear</button>
                                         </div> 
                                         <div class="col-sm-1">
                                             <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="addService">Add</button>

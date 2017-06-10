@@ -55,8 +55,10 @@ class Base_lib {
             }
         }
         
-        function sendSMS($mobile, $message, $from='MyMaidz'){
-            $date = date('Y-m-d H:i:s');
-            $this->model->sendMessage($mobile, $message,$from, $date);
+        function sendSMS($mobile, $message, $createdDate= false, $updatedDate = false, $from='MyMaidz', $updatedBy="MyMaidz"){
+            if($createdDate === false){ $createdDate = date('Y-m-d H:i:s');}
+            if($updatedDate == false){ $updatedDate = $createdDate;}
+
+            $this->model->sendMessage($mobile, $message, $from, $createdDate, $updatedBy, $updatedDate);
         }
 }

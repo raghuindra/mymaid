@@ -60,7 +60,7 @@ $this->load->view("block/admin_leftMenu");
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Building Type *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Building Type: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <select class="form-control select2" style="width: 100%;" name="package_building_type" id="package_building_type" required>
                                                                 <option selected="selected" value="">Select building type</option>
@@ -76,14 +76,14 @@ $this->load->view("block/admin_leftMenu");
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Bedrooms *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Bedrooms: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <input type="number" name="package_bathrooms" class="form-control" min="1" max="50" required id="package_bathrooms" placeholder="Number of bedrooms" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Bathrooms *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Bathrooms: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <input type="number" name="package_bedrooms" class="form-control" min="1" max="50" required id="package_bedrooms" placeholder="Number of bathrooms">
                                                         </div>
@@ -106,7 +106,7 @@ $this->load->view("block/admin_leftMenu");
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Crew/s *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Number of Crew/s: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <input type="number" name="package_crews" class="form-control" min="1" max="100" required id="package_crews" placeholder="Number of crew/s">
                                                         </div>
@@ -120,14 +120,14 @@ $this->load->view("block/admin_leftMenu");
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Package Price *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Package Price: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <input type="number" name="package_price" class="form-control" min="1" max="10000" required id="package_price" placeholder="Enter price">
                                                         </div>                                       
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Calculate Price by *:</label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Calculate Price by: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <div class="btn-group" role="group" aria-label="Calculate Price by">
                                                                 <button type="button" class="btn margin btn-primary btn-sm active price_cal_type" data-val="hour">Per Hour</button>
@@ -148,7 +148,7 @@ $this->load->view("block/admin_leftMenu");
                                                     <!-- /.box-body -->
                                                     <div class="box-footer">
                                                         <div class="col-sm-11">
-                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset" >Clear</button>
+                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-maroon formReset" >Clear</button>
                                                         </div> 
                                                         <div class="col-sm-1">
                                                             <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServicePackage">Add</button>
@@ -248,7 +248,7 @@ $this->load->view("block/admin_leftMenu");
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-3 control-label">Frequency *:</label>
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Frequency: <span class="text-red">*</span></label>
                                                     <div class="col-sm-6">
                                                         <select class="form-control select2" style="width: 100%;" name="add_service_frequency" id="add_service_frequency" required>
                                                             <option selected="selected" value="">Select frequency</option>
@@ -264,7 +264,7 @@ $this->load->view("block/admin_leftMenu");
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-3 control-label">Discount(%) *:</label>
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Discount(%): <span class="text-red">*</span></label>
                                                     <div class="col-sm-6">
                                                         <input type="number" name="add_frequency_discount" class="form-control" min="1" max="10000" required id="frequency_discount" placeholder="Enter discount percentage">
                                                     </div>                                       
@@ -273,7 +273,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <!-- /.box-footer -->
                                                 <div class="box-footer">
                                                     <div class="col-sm-11">
-                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-maroon formReset">Clear</button>
                                                     </div> 
                                                     <div class="col-sm-1">
                                                         <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceFrequencyOffer">Add</button>
@@ -347,10 +347,10 @@ $this->load->view("block/admin_leftMenu");
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-3 control-label">Frequency *:</label>
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Service Addon: <span class="text-red">*</span></label>
                                                     <div class="col-sm-6">
                                                         <select class="form-control select2" style="width: 100%;" name="add_addons_price_addon_id" id="add_addons_price_addon_id" required>
-                                                            <option selected="selected" value="">Select frequency</option>
+                                                            <option selected="selected" value="">Select addons</option>
                                                             <?php
                                                             if (isset($service_addons) && !empty($service_addons)) {
                                                                 foreach ($service_addons as $addon) {
@@ -363,7 +363,7 @@ $this->load->view("block/admin_leftMenu");
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-3 control-label">Price *:</label>
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Price: <span class="text-red">*</span></label>
                                                     <div class="col-sm-6">
                                                         <input type="number" name="add_addon_price" class="form-control" min="1" max="10000" required id="addon_price" placeholder="Enter addon price">
                                                     </div>                                       
@@ -372,7 +372,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <!-- /.box-footer -->
                                                 <div class="box-footer">
                                                     <div class="col-sm-11">
-                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-maroon formReset">Clear</button>
                                                     </div> 
                                                     <div class="col-sm-1">
                                                         <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceAddonPrice">Add</button>
@@ -448,7 +448,7 @@ $this->load->view("block/admin_leftMenu");
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="inputEmail3" class="col-sm-3 control-label">Special Request *:</label>
+                                                    <label for="inputEmail3" class="col-sm-3 control-label">Special Request: <span class="text-red">*</span></label>
                                                     <div class="col-sm-6">
                                                         <select class="form-control select2" style="width: 100%;" name="add_spl_request_id" id="add_spl_request_id" required>
                                                             <option selected="selected" value="">Select special request</option>
@@ -473,7 +473,7 @@ $this->load->view("block/admin_leftMenu");
                                                 <!-- /.box-footer -->
                                                 <div class="box-footer">
                                                     <div class="col-sm-11">
-                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
+                                                        <button type="button" class="btn btn-default pull-right btn-lg bg-maroon formReset">Clear</button>
                                                     </div> 
                                                     <div class="col-sm-1">
                                                         <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="CreateServiceSplRequest">Add</button>
@@ -820,7 +820,7 @@ $this->load->view("block/admin_leftMenu");
                         }
                     },
                     cancel:{
-                        btnClass: 'btn-red',
+                        btnClass: 'btn-default bg-maroon',
                         action: function () {
 
                         }
@@ -1117,7 +1117,7 @@ $this->load->view("block/admin_leftMenu");
                         }
                     },
                     cancel: {
-                    btnClass: 'btn-red',
+                    btnClass: 'btn-default bg-maroon',
                     action:function () {
                             //close window
                         }
@@ -1180,7 +1180,7 @@ $this->load->view("block/admin_leftMenu");
                         }
                     },
                     cancel: {
-                    btnClass: 'btn-red',
+                    btnClass: 'btn-default bg-maroon',
                     action:function () {
 
                         }
@@ -1328,7 +1328,7 @@ $this->load->view("block/admin_leftMenu");
                         }
                     },
                     cancel: {
-                    btnClass: 'btn-red',
+                    btnClass: 'btn-default bg-maroon',
                     action:function () {
                             //close window
                         }

@@ -102,6 +102,18 @@ var ServiceFactory = (function () {
         ajaxCall(this.url, this.data, this.successCallBack, this.failureCallBack);
     };
     
+    var ServiceBooking = function(data, url, successCallBack, failureCallBack){
+        this.data = data;
+        this.successCallBack = successCallBack;
+        this.failureCallBack = failureCallBack;
+        this.url        = url;
+    };
+    
+    ServiceBooking.prototype.execute = function(){
+
+        ajaxCall(this.url, this.data, this.successCallBack, this.failureCallBack);
+    };
+    
     return {
         
         getServicesCommand: function(data, url, successCallBack, failureCallBack){
@@ -128,6 +140,10 @@ var ServiceFactory = (function () {
             return new ServiceSplPrice(data, url, successCallBack, failureCallBack);
         },
         
+        getServiceBookingCommand: function(data, url, successCallBack, failureCallBack){
+            return new ServiceBooking(data, url, successCallBack, failureCallBack);
+        },
+        
         executeTask : function(command){
             command.execute();
         }
@@ -140,7 +156,7 @@ var ServiceJSON = (function(){
     return {
         
         getServicesJson: function(data){
-            data = JSON.stringify({
+            var json = JSON.stringify({
 					   
                 "data": {
                   "postcode": data.postcode
@@ -150,12 +166,12 @@ var ServiceJSON = (function(){
                 }
 
             });
-            return data;
+            return json;
             
         },
         
         getServicePackageJson: function(data){
-            data = JSON.stringify({
+            var json = JSON.stringify({
 					   
                 "data": {
                   "postcode": data.postcode,
@@ -166,12 +182,12 @@ var ServiceJSON = (function(){
                 }
 
             });
-            return data;
+            return json;
             
         },
         
         getServiceFrequencyJson: function(data){
-            data = JSON.stringify({
+            var json = JSON.stringify({
 					   
                 "data": {
                   "postcode": data.postcode,
@@ -182,12 +198,12 @@ var ServiceJSON = (function(){
                 }
 
             });
-            return data;
+            return json;
             
         },
         
         getServiceAddonsJson: function(data){
-            data = JSON.stringify({
+            var json = JSON.stringify({
 					   
                 "data": {
                   "postcode": data.postcode,
@@ -198,12 +214,12 @@ var ServiceJSON = (function(){
                 }
 
             });
-            return data;
+            return json;
             
         },
         
         getServiceSplRequestJson: function(data){
-            data = JSON.stringify({
+            var json = JSON.stringify({
 					   
                 "data": {
                   "postcode": data.postcode,
@@ -214,12 +230,12 @@ var ServiceJSON = (function(){
                 }
 
             });
-            return data;
+            return json;
             
         },
         
         getServiceSplPriceJson: function(data){
-            data = JSON.stringify({
+            var json = JSON.stringify({
 					   
                 "data": {
                   "postcode": data.postcode,
@@ -230,9 +246,20 @@ var ServiceJSON = (function(){
                 }
 
             });
-            return data;
+            return json;
             
-        }
+        },
+        
+        getServiceBookingJson: function(data){
+            var json = JSON.stringify({
+                "data":data,
+                "header":{
+                    "active":true
+                }
+            });
+            return json;
+            
+        },
         
         
         
@@ -754,6 +781,8 @@ $(function () {
             
             $("#ct-price-scroll-new .service_name label.package_detail").html(package.package.building_name+", "+package.package.service_package_bedroom+" Bedroom with "+package.package.service_package_bathroom+" Bathroom");
             $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(package.package.service_package_min_hours+" Hour Session");
+            //reset the price before adding the new price
+            Booking.resetPrice();
             price = Booking.addPrice(price);
             $("#ct-price-scroll-new .cart_sub_total").html(price);           
             //Booking.calculateTotalPrice();
@@ -776,6 +805,14 @@ $(function () {
         
 
     }, 2000);
+    
+    $("#paymentForm").submit( function(e){
+        e.preventDefault();
+        var data = Booking.getBookingDetail();
+        var json = ServiceJSON.getServiceBookingJson(data);
+        var booking = ServiceFactory.getServiceBookingCommand(json, 'booking_info.html',ServiceResponseHandler.ServiceSuccessHandler, ServiceResponseHandler.ServiceFailureHandler);
+            ServiceFactory.executeTask(booking);
+    });
     
 });
 
@@ -872,8 +909,43 @@ var Booking = (function() {
             return this.price = parseFloat(this.price) + parseFloat(price);
         },
         
+        resetPrice: function(){
+            this.price = 0; 
+        },
+        
         getPrice : function(){
             return this.price;
+        },
+        
+        getBookingDetail: function(){
+            var data = new Object();
+                data.service = this.service;
+                data.package = this.package;
+                data.addon  = this.addon;
+                data.extraService = this.extraService;
+                data.frequency = this.frequency;
+                data.price = this.price;
+                data.totalPrice = this.calculateTotalPrice();
+                
+                var info = new Object();
+                    info.serviceDate = $("#select-date").val();
+                    info.email = $("#ct-email").val();
+                    info.pass = $("#ct-preffered-pass").val();
+                    info.firstName = $("#ct-first-name").val();
+                    info.lastName = $("#ct-last-name").val();
+                    info.phone = $("#ct_user_phone").val();
+                    info.address = $("#ct-street-address").val();
+                    info.pincode = $("#ct-zip-code").val();
+                    info.city =  $("#ct-city").val();
+                    info.state = $("#ct-state").val();
+                    info.note = $("#ct-notes").val();
+                    info.vacuumCln = $(".vc_status").val();
+                    info.parking = $(".p_status").val();
+                    info.contactStatus = $("#contact_status").val();
+                
+                data.userInfo = info;
+                return data;
+                
         }
     };
     
