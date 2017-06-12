@@ -62,11 +62,11 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Postal Code" class="form-control" name="pincode" required value="<?php echo set_value('pincode'); ?>"> </div>
+                                <input type="number" placeholder="Postal Code" class="form-control" name="pincode" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required value="<?php echo set_value('pincode'); ?>"> </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div></div>
+                                <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div></div>
                             <!-- <div class="col-lg-6">
                                 <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
                                 </select>     -->
@@ -76,11 +76,11 @@
                                 <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
                                     <option value="">Select Id Card</option>
                                     <option value="Govt Id Card" >Govt Id Card</option>
-                                    <option value="passport">IC Number</option>
+                                    <option value="passport">Passport/IC Number</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="Id Card Number" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" class="form-control" name="idcardnumber" required value="<?php echo set_value('idcardnumber'); ?>"> 
+                                <input type="text" placeholder="Id Card Number" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "12" class="form-control" name="idcardnumber" required value="<?php echo set_value('idcardnumber'); ?>"> 
                             </div>
 
                         </div>
@@ -106,7 +106,7 @@
                             <div class="col-lg-6">
                                 <input type="text" placeholder="Company Address" class="form-control" name="compAddress" id="compAddress" required value="<?php echo set_value('compAddress'); ?>"> </div>
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Company Pin Code" class="form-control" name="compPin" id="compPin" required value="<?php echo set_value('compPin'); ?>"> </div>
+                                <input type="number" placeholder="Company Pin Code" class="form-control" name="compPin" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" id="compPin" required value="<?php echo set_value('compPin'); ?>"> </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
@@ -165,21 +165,6 @@
 
     });
     
-    function maxLengthCheck(object) {
-       if (object.value.length > object.maxLength)
-         object.value = object.value.slice(0, object.maxLength)
-    }
-    
-    function isNumeric (evt) {
-      var theEvent = evt || window.event;
-      var key = theEvent.keyCode || theEvent.which;
-      key = String.fromCharCode (key);
-      var regex = /[0-9]|\./;
-      if ( !regex.test(key) ) {
-        theEvent.returnValue = false;
-        if(theEvent.preventDefault) theEvent.preventDefault();
-      }
-    }
 
     function setRequired() {
         $('#compName').attr('required', true);

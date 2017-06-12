@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="<?php echo base_url().'vendor_home.html' ?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>V </b>MyMaid</span>
+        <span class="logo-mini"><b>V </b>MyMaidZ</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Vendor </b>MyMaid</span>
+        <span class="logo-lg"><b>Vendor </b>MyMaidZ</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -32,7 +32,7 @@
                                     <!-- start message -->
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="<?php echo plugin_url('dist/img/user2-160x160.jpg');?>" class="img-circle" alt="User Image">
+                                            <img src="<?php echo plugin_url('dist/img/avatar5.png');?>" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Support Team
@@ -217,13 +217,13 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?php echo plugin_url('dist/img/user2-160x160.jpg');?>" class="user-image" alt="User Image">
+                        <img src="<?php echo plugin_url('dist/img/avatar5.png');?>" class="user-image" alt="User Image">
                         <span class="hidden-xs"><?php echo $this->session->userdata('user_firstname'); ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?php echo plugin_url('dist/img/user2-160x160.jpg');?>" class="img-circle" alt="User Image">
+                            <img src="<?php echo plugin_url('dist/img/avatar5.png');?>" class="img-circle" alt="User Image">
 
                             <p>
                                 <?php echo $this->session->userdata('user_fullname');?> - <?php echo $this->session->userdata('user_type'); ?>

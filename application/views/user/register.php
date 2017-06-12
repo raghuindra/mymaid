@@ -75,7 +75,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="Id Card Number" class="form-control" name="idcardnumber" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" required value="<?php echo set_value('idcardnumber'); ?>"> </div>
+                                <input type="text" placeholder="Id Card Number" class="form-control" name="idcardnumber" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "12" required value="<?php echo set_value('idcardnumber'); ?>"> </div>
 
                         </div>
 

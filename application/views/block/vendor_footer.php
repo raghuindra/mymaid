@@ -43,7 +43,7 @@
 <!-- Notyfy Notifications Plugin -->
 <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
 <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
-
+<script src="<?php echo js_url('app_utils');?>"></script>
 </body>
 <!-- END BODY -->
 </html>

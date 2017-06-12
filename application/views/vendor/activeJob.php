@@ -37,7 +37,7 @@ $this->load->view("block/vendor_leftMenu");
                                     <th>Date </th>
                                     <th>Service time</th>
                                     <th>service</th>
-                                    <th>Status</th>
+<!--                                    <th>Status</th>-->
                                     <th class="action">Action</th>
                                 </tr>
                             </thead>
@@ -49,7 +49,7 @@ $this->load->view("block/vendor_leftMenu");
                                     <td>2/20/2017</td>
                                     <td>10:25 AM</td>
                                     <td>Basic Home Cleaning</td>
-                                    <td class="status bg-green"> <i>Pending</i></td>
+<!--                                    <td class="status bg-green"> <i>Pending</i></td>-->
                                     <td><button class="label label-success">view detail</button><button class="label label-warning">Cancel Order</button><button class="label label-primary">Reschedule Request</button><button class="label label-danger">Denied</button></td>
                                 </tr>
                                 <tr>
@@ -59,7 +59,7 @@ $this->load->view("block/vendor_leftMenu");
                                     <td>2/20/2017</td>
                                     <td>10:25 AM</td>
                                     <td>Basic Home Cleaning</td>
-                                    <td class="status bg-red"> <i>Cancelled</i></td>
+<!--                                    <td class="status bg-red"> <i>Cancelled</i></td>-->
                                     <td><button class="label label-success">view detail</button><button class="label label-warning">Cancel Order</button><button class="label label-primary">Reschedule Request</button><button class="label label-danger">Denied</button></td>
 
                                 </tr>

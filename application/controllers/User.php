@@ -131,7 +131,20 @@ class User extends Base {
         public function bookingInfo(){
             
             $data = $this->readJsonRequest()->getData();
-            print_r($data); exit;
+            if(isset($data->service) && isset($data->package) && isset($data->servicePostcode)){
+                $response = $this->user_lib->_saveServiceBooking($data);
+            }else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response); 
+            //print_r($data);
+            
+            
+            
         }
         
         

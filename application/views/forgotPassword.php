@@ -16,7 +16,7 @@
             <div class="row">
                 <!-- /.col -->
                 <div class="col-xs-6">
-                    <button type="button" onclick="window.history.back();" class="btn btn-info btn-block btn-flat">Back</button>
+                    <button type="button" onclick="location.href='<?php echo base_url().'vendor_login.html';?>'" class="btn btn-info btn-block btn-flat">Back</button>
                 </div>
                 <!-- /.col -->
                 <!-- /.col -->

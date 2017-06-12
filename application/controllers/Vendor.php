@@ -91,7 +91,8 @@ class Vendor extends Base {
         $this->load->model('mm_model');
         
         $this->data['company_info'] = $this->vendor_lib->_getCompanyDetail();        
-        $this->data['states']        = $this->mm_model->get_tb('mm_state', '*')->result();
+        $this->data['states']       = $this->mm_model->get_tb('mm_state', '*')->result();
+        $this->data['sessions']     = $this->mm_model->get_tb('mm_session', '*', array('session_status'=>1))->result();
         $this->data['content']      = "vendor/myaccount_company.php";
         $this->data['vendor']       = 1;
         $this->data['active']       = "myaccount||company";
@@ -255,6 +256,7 @@ class Vendor extends Base {
             echo json_encode($response);
         }else{
             $this->data['employee_detail'] = $this->vendor_lib->_getEmployeeDetail();
+            $this->data['sessions']     = $this->mm_model->get_tb('mm_session', '*', array('session_status'=>1))->result();
             $this -> load -> view('vendor/popup/edit_employee', $this->data);                      
         } 
         

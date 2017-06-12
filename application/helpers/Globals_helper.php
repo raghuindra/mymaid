@@ -26,6 +26,16 @@ class Globals
     
     const EMPLOYEE_FULLTIME         = 1;
     const EMPLOYEE_PARTTIME         = 2;
+    
+    //Payment Status
+    const PAYMENT_SUCCESS   = 1;
+    const PAYMENT_FAILURE   = 0;
+    const PAYMENT_PENDING   = 2;
+    
+    //Booking Status
+    const BOOKING_PROCESSING = 2;
+    const BOOKING_CONFIRMED = 1;
+    const BOOKING_CANCELLED = 3;
 
 
     public static function getPersonTypeName($person_type_id){

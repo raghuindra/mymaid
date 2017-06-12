@@ -369,8 +369,19 @@ var ServiceResponseHandler = {
     
     ServiceSplRequestFailureHandler: function(data){
         console.log("Spl Request Call failure..!!!");
-    }
+    },
     
+    ServiceBookingSuccessHandler: function(data){
+        if(data.status){
+            notifyMessage('success', data.message);
+        }else{
+            notifyMessage('error', data.message);
+        }
+    },
+    
+    ServiceBookingFailureHandler: function(data){
+        notifyMessage('error', "Some issue with system/internet. Please try again after some time.");
+    }
     
 };
 
@@ -810,7 +821,7 @@ $(function () {
         e.preventDefault();
         var data = Booking.getBookingDetail();
         var json = ServiceJSON.getServiceBookingJson(data);
-        var booking = ServiceFactory.getServiceBookingCommand(json, 'booking_info.html',ServiceResponseHandler.ServiceSuccessHandler, ServiceResponseHandler.ServiceFailureHandler);
+        var booking = ServiceFactory.getServiceBookingCommand(json, 'booking_info.html',ServiceResponseHandler.ServiceBookingSuccessHandler, ServiceResponseHandler.ServiceBookingFailureHandler);
             ServiceFactory.executeTask(booking);
     });
     
@@ -926,6 +937,8 @@ var Booking = (function() {
                 data.frequency = this.frequency;
                 data.price = this.price;
                 data.totalPrice = this.calculateTotalPrice();
+                data.servicePostcode = $("#postcodeSearch").attr('data-val');
+                data.userRegStatus = $(".user-selection").val();
                 
                 var info = new Object();
                     info.serviceDate = $("#select-date").val();

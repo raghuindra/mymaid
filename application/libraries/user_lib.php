@@ -65,13 +65,13 @@ class User_lib extends Base_lib{
             $this->_status = true;
             $this->_message = '';
             $this->_rdata = $result;
+
         } else {
             $this->_status = false;
             $this->_message = $this->ci->lang->line('no_records_found');
             $this->_rdata = array();
         }
-
-        return $this->getResponse();
+       return $this->getResponse();
     }
     
     
@@ -81,21 +81,16 @@ class User_lib extends Base_lib{
         $services = $this->model->get_tb('mm_services', 'service_id,service_name', array('service_archived' => 0))->result();
         
         if ($services) {
-            
-            $response = array(
-                'status' => true,
-                'message' => '',
-                'data' => $services
-            );
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $services;
 
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('no_records_found'),
-                'data' => array()
-            );
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('no_records_found');
+            $this->_rdata = array();
         }
-       return $response; 
+       return $this->getResponse();
     }
     
     
@@ -117,20 +112,17 @@ class User_lib extends Base_lib{
                 }
                 $array[$pack->service_package_service_id][$pack->service_package_id] = $temp;
             }
-            $response = array(
-                'status' => true,
-                'message' => '',
-                'data' => $array
-            );
+            
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $array;           
 
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('no_records_found'),
-                'data' => array()
-            );
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('no_records_found');
+            $this->_rdata = array();
         }
-       return $response;
+        return $this->getResponse();
     }
     
     
@@ -145,20 +137,16 @@ class User_lib extends Base_lib{
             foreach($frequencies as $freq){
                 $array[$freq->service_frequency_offer_service_id][$freq->service_frequency_offer_id] = $freq;
             }
-            $response = array(
-                'status' => true,
-                'message' => '',
-                'data' => $array
-            );
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $array;           
 
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('no_records_found'),
-                'data' => array()
-            );
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('no_records_found');
+            $this->_rdata = array();
         }
-        return $response; 
+        return $this->getResponse();
         
     }
     
@@ -174,20 +162,16 @@ class User_lib extends Base_lib{
             foreach($addons as $addon){
                 $array[$addon->service_addon_price_service_id][$addon->service_addon_price_id] = $addon;
             }
-            $response = array(
-                'status' => true,
-                'message' => '',
-                'data' => $array
-            );
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $array;           
 
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('no_records_found'),
-                'data' => array()
-            );
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('no_records_found');
+            $this->_rdata = array();
         }
-        return $response; 
+        return $this->getResponse(); 
     }
     
     function _getServiceSplRequests($data){
@@ -201,20 +185,89 @@ class User_lib extends Base_lib{
             foreach($splRequests as $splRequest){
                 $array[$splRequest->service_spl_request_service_id][$splRequest->service_spl_request_id] = $splRequest;
             }
-            $response = array(
-                'status' => true,
-                'message' => '',
-                'data' => $array
-            );
-
+            $this->_status = true;
+            $this->_message = '';
+            $this->_rdata = $array;
+            
         } else {
-            $response = array(
-                'status' => false,
-                'message' => $this->ci->lang->line('no_records_found'),
-                'data' => array()
-            );
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('no_records_found');
+            $this->_rdata = array();
+            
         }
-        return $response; 
+        return $this->getResponse(); 
+    }
+    
+    
+    /* Save Booking Information */
+    function _saveServiceBooking($data){
+        
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse();
+        $this->_status = TRUE;
+        
+        if(!isset($data->service) || $data->service =='' || $data->service == null){
+            $this->_status = FALSE;
+        }
+        
+        if(!isset($data->package) || $data->package =='' || $data->package == null){
+            $this->_status = FALSE;
+        }
+        
+        if(!isset($data->servicePostcode) || $data->servicePostcode =='' || $data->servicePostcode == null){
+            $this->_status = FALSE;
+        }
+        
+        if($this->_status){
+            $service_pincode = $data->servicePostcode;
+            
+            $result = $this->model->getVendorAndServiceDetails($service_pincode);
+            if ($result) {
+                $vendorIds = array();
+                foreach($result as $val){
+                    $vendorIds[] = array("id"=>$val->vendor_service_location_vendor_id,"mobile"=>$val->person_mobile);
+                }
+                
+                if(!empty($vendorIds)){
+                    foreach($vendorIds as $vendor){
+                        //SMS
+                        $this->sendSMS($vendor['mobile'], "New Service request from user for the date: ".$data->userInfo->serviceDate);                     
+                    }
+                    
+                    $info = array();
+                    if($data->userRegStatus == 'Existing User'){
+
+                    }else if($data->userRegStatus == 'New-User'){
+
+                    }
+
+                    $info['booking_service_id']     = $data->service;
+                    $info['booking_package_id']     = $data->package;
+                    $info['booking_pincode']        = $data->servicePostcode;
+                    $info['booking_booked_on']      = date('Y-m-d H:i:s', strtotime('now'));
+                    $info['booking_amount']         = $data->totalPrice;
+                    $info['booking_payment_status'] = Globals::PAYMENT_SUCCESS;
+                    $info['booking_status']         = Globals::BOOKING_PROCESSING;
+                    $info['booking_service_date']   = $data->userInfo->serviceDate;
+                    $info['booking_note']           = $data->userInfo->note;
+                    $info['booking_contact_status'] = $data->userInfo->contactStatus;
+                    $booking_id = $this->model->insert_tb('mm_booking', $info);
+                    if($booking_id > 0){
+                        $this->_status = true;
+                        $this->_message = 'Booking Successfull';
+                        $this->_rdata = $booking_id;
+                    }
+                }
+            }
+        }else{
+            $this->_status = false;
+            $this->_message = 'Data missing';
+            $this->_rdata = null;
+        }
+        
+        return $this->getResponse();
+        
     }
 
 }

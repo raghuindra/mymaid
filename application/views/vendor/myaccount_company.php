@@ -76,21 +76,27 @@ $vendorId = $this->session->userdata('user_id');
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">IC Number: <span class="text-red">*</span></label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Passport/IC Number: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" required class="form-control" id="icnumber" name="icnumber" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="IC Number" value="<?php echo ($company) ? $company[0]->company_ic_number : ''; ?>" required>
+                                                            <input type="text" required class="form-control" id="icnumber" name="icnumber" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "12" placeholder="Passport/IC Number" value="<?php echo ($company) ? $company[0]->company_ic_number : ''; ?>" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputEmail3" required class="col-sm-3 control-label">Office Phone:</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">+60</span>
+                                                                <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">H/P Phone: <span class="text-red">*</span></label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">+60</span>
+                                                                <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -220,9 +226,9 @@ $vendorId = $this->session->userdata('user_id');
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee IC Number: <span class="text-red">*</span></label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Employee Passport/IC Number: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Passport/IC Number" />
+                                                            <input type="text" name="employee_passport" class="form-control" required id="employee_passport" onkeypress="return isAlphaNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "12" placeholder="Passport/IC Number" />
                                                         </div>
                                                     </div>
 
@@ -236,18 +242,24 @@ $vendorId = $this->session->userdata('user_id');
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Employee House Phone :</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee House Phone">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">+60</span>
+                                                                <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee House Phone">
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Employee H/P Phone: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee H/P Phone">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">+60</span>
+                                                                <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee H/P Phone">
+                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
+<!--                                                    <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Employee Job Type: <span class="text-red">*</span></label>
                                                         <div class="col-sm-6">
                                                             <div class="btn-group" role="group" aria-label="Employee Job Type">
@@ -255,6 +267,21 @@ $vendorId = $this->session->userdata('user_id');
                                                                 <button type="button" class="btn margin btn-primary btn-sm emp_jobtype" data-val="<?php echo Globals::EMPLOYEE_PARTTIME;?>">Part Time</button>
                                                                 <input type="hidden" name="employee_jobtype" class="form-control" required id="employee_jobtype" value="<?php echo Globals::EMPLOYEE_FULLTIME;?>">
                                                             </div>
+                                                        </div>
+                                                    </div>-->
+                                                    
+                                                    <div class="form-group">
+                                                        <label for="state" class="col-sm-3 control-label">Employee Job Session: <span class="text-red">*</span></label>
+                                                        <div class="col-sm-6">
+                                                            <select id="session" name="employee_session" required class="form-control">
+                                                                <option>Select session</option>
+                                                                <?php
+                                                                foreach ($sessions as $key => $value) {
+                                                                    
+                                                                    echo '<option value="' . $value->session_id . '">' . $value->session_name . '</option>';                                                    
+                                                                }
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                     </div>
 
@@ -335,7 +362,7 @@ $vendorId = $this->session->userdata('user_id');
                                                             <th>Passport Number</th>
                                                             <th>Citizenship</th>
                                                             <th>H/P Phone</th>
-                                                            <th>Job Type</th>
+                                                            <th>Job Session</th>
                                                             <th>Id Card</th>
                                                             <th class="">Action</th>
                                                         </tr>
@@ -479,26 +506,12 @@ $vendorId = $this->session->userdata('user_id');
                 {"data": "employee_passport_number"},
                 {"data": "employee_citizenship"},
                 {"data": "employee_hp_phone"},
-                {"data": null},
+                {"data": "session_name"},
                 {"data": null},
                 {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4], searchable: true, orderable: true},
-                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
-                    "render": function (data, type, row) {
-
-                        var string = ' <td class=""> <div class="text-center">';
-                            if(row.employee_job_type == <?php echo Globals::EMPLOYEE_FULLTIME;?>){
-                                string += 'Full Time';
-                            }else{
-                                string += 'Part Time';
-                            }
-                            string += '</div></td>';
-                        
-                        return string;
-                    }
-                },
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4,5], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [6], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                        

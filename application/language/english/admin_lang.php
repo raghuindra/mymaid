@@ -5,6 +5,7 @@ $lang['service_name_already_available']         = "Service name already exists."
 $lang['service_name_inserted']                  = "Service name created successfully.";
 $lang['service_name_updated']                   = "Service Name updated.";
 $lang['service_archived']                       = "Service archived.";
+$lang['service_unarchived']                     = "Service un-archived.";
 $lang['service_id_missing']                     = "Service Id missing";
 $lang['service_package_created']                = "Service Package created successfully.";
 

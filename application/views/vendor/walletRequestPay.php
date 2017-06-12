@@ -10,9 +10,17 @@ $this->load->view("block/vendor_leftMenu");
     <section class="content-header ">
         <div class="balance">
             <h3>MY WALLET</h3>
-            <div>Current Balance :<span>$123,567.00<span></div>
+            <div class="row ">
+                <div class="col-xs-12 ">
+                    <div class="col-lg-3">
+                        <div>Current Balance :<span>$123,567.00<span></div>
+                    </div>
+                    <div class="col-lg-3">
                         <button id="request-payment" type=" button " class="btn btn-block btn-danger ">Request Withdrawal</button>
-                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
                         <div class="clearfix "></div>
                         <ol class="breadcrumb ">
                             <li><a href="# "><i class="fa fa-dashboard "></i> Home</a></li>

@@ -3,7 +3,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; 2016-2017 <a href="http://mymaid.com">My Maid</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2016-2017 <a href="http://mymaid.com">My MaidZ</a>.</strong> All rights reserved.
     </footer>
     </div>
 <?php } ?>
@@ -97,7 +97,7 @@
                 dismissQueue: true,
                 layout: 'topRight',
                 timeout: 6000,
-                template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+                template: '<div class="noty_message"><span class="noty_text" style="font-weight:bold;"></span><div class="noty_close"></div></div>',
                 progressBar: true,
                 animation: {
                 open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
@@ -114,7 +114,7 @@
 <!-- Notyfy Notifications Plugin -->
 <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
 <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
-
+<script src="<?php echo js_url('app_utils');?>"></script>
 </body>
 
 </html>

@@ -82,10 +82,18 @@ $this->load->view("block/admin_leftMenu");
                     <!-- /.box-header -->
                     <div class="box-body" style="display: block;">
                         <div class="box box-primary">
-                            <div class="box-header with-border hidden">
-                                <h3 class="box-title">Bank Information</h3>
-                            </div>
                             <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="service_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active service_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button> 
+                                                        <button type="button" class="btn margin btn-primary btn-sm service_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                                                             
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-header -->
                             <!-- form start -->
                             <div class="form-horizontal">
                                 <!-- /.box-header -->
@@ -204,7 +212,10 @@ $this->load->view("block/admin_leftMenu");
             "ajax": {
                 "url": '<?php echo base_url().'listService.html';?>',
                 "type": "POST",
-                "dataSrc": 'data'
+                "dataSrc": 'data',
+                "data": function(d){                     
+                    d.archived = $("#service_status").attr('data-val'); 
+                },
             },
             "columns": [
                 { "data": "service_id" },
@@ -223,14 +234,89 @@ $this->load->view("block/admin_leftMenu");
                   },
                   { "responsivePriority":'1', "targets": [4], searchable: false, orderable: false,data:null,
                       "render": function(data,type,row){ 
+                        var archived = $("#service_status").attr('data-val');
                         var string =' <td class=""> <div class="text-center">'
-                                    +'<a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-name="'+row.service_name+'" data-id = "'+row.service_id+'"><i class="fa fa-edit"></i></a>'
-                                    +'<a href="#" class="btn btn-social-icon serviceArchive" title="Archive" data-id = "'+row.service_id+'"><i class="fa fa-archive"></i></a></div></td>';
-                            return string;
+                                    +'<a href="#serviceEditModal" class="btn btn-social-icon " title="Edit" data-toggle="modal" data-name="'+row.service_name+'" data-id = "'+row.service_id+'"><i class="fa fa-edit"></i></a>';
+                            
+                        if(archived == '0'){
+                            string  += '<a href="#" class="btn btn-social-icon serviceArchive" title="Archive" data-id = "' + row.service_id + '"><i class="fa fa-archive"></i></a></div></td>';
+                        }else{
+                            string  += '<a href="#" class="btn btn-social-icon serviceUnArchive" title="Un Archive" data-id = "' + row.service_id + '"><i class="fa fa-folder-open"></i></a></div></td>';
+                        }
+                        
+                        return string;
                       }
                   }
             ]
         });
+        
+        /* Archive / Un Archive Datatable list event */
+        $(".btn-group .service_status_archive, .service_status_unarchive").click(function () {
+            $(".btn-group#service_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#service_status").attr('data-val',$(this).data('val'));           
+            serviceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+        
+          /* Archive/UnArchive the Service START  */
+        $(document).on('click', '.serviceArchive, .serviceUnArchive', function (e) {
+
+            e.preventDefault();
+
+            var serviceId = $(this).data('id');
+            if($(this).hasClass('serviceUnArchive')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm:{ 
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveService.html'; ?>",
+                                data: { 'serviceId': serviceId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        serviceListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel:{
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive the Service END */
         
         
         /* Add Service name AJAX Call */
@@ -292,7 +378,7 @@ $this->load->view("block/admin_leftMenu");
         });
         
         /* Archive service Modal */
-        $(document).on('click','.serviceArchive',function(e){
+        $(document).on('click','.serviceArchive_old',function(e){
             e.preventDefault();
 
             var serviceId = $(this).data('id');

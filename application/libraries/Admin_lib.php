@@ -111,8 +111,12 @@ class Admin_lib extends Base_lib{
     function _getServiceList() {
 
         $response = array();
+        $archived = 0;
+        
         if ($this->ci->session->userdata('user_id') != null) {
-            $result = $this->model->get_tb('mm_services', 'service_id,service_name,service_created_on,service_updated_on,service_archived', array('service_archived' => 0))->result();
+            $archived = $this->ci->input->post('archived', true);
+            
+            $result = $this->model->get_tb('mm_services', 'service_id,service_name,service_created_on,service_updated_on,service_archived', array('service_archived' => $archived))->result();
             if ($result) {
                 $response = array(
                     'status' => true,
@@ -147,6 +151,7 @@ class Admin_lib extends Base_lib{
         $this->ci->load->library('form_validation');
 
         $this->ci->form_validation->set_rules('serviceId', 'Service Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->_status = false;
@@ -157,16 +162,17 @@ class Admin_lib extends Base_lib{
 
             $info = array();
             $service_id = $this->ci->input->post('serviceId', true);
-
+            $archive = intval($this->ci->input->post('archive', true));
+            
             $result = $this->model->get_tb('mm_services', 'service_id', array('service_id' => $service_id))->result();
             if (!empty($result)) {
-                $info['service_archived'] = Globals::ARCHIVE;
+                $info['service_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;
                 $info['service_updated_by'] = $person_id;
 
                 $this->model->update_tb('mm_services', array('service_id' => $service_id), $info);
-                
+                $msg = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('service_archived') : $this->ci->lang->line('service_unarchived');
                 $this->_status = true;
-                $this->_message = $this->ci->lang->line('service_archived');
+                $this->_message = $msg;
                       
             } else {
                 $this->_status = false;

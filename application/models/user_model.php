@@ -86,6 +86,17 @@ class User_model extends Mm_model {
                         ->get()
                         ->result();
     }
+    
+    
+    function getVendorAndServiceDetails($pincode){
+        return $this->db->select('*')
+                        ->from($this->_vendor_service_location_table)
+                        ->join($this->_person_table, 'vendor_service_location_vendor_id = person_id','left')
+                        ->where('vendor_service_location_postcode', $pincode)
+                        ->where('vendor_service_location_archived', Globals::UN_ARCHIVE)
+                        ->get()
+                        ->result();
+    }
 
 
 }

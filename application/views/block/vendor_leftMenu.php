@@ -7,7 +7,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?php echo plugin_url('dist/img/user2-160x160.jpg'); ?>" class="img-circle" alt="User Image">
+                <img src="<?php echo plugin_url('dist/img/avatar5.png'); ?>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p><?php echo $this->session->userdata('user_fullname');?></p>
@@ -60,13 +60,13 @@
                     <li>
                         <a href="<?php echo base_url() . 'vendor_activejobs.html'; ?>">
                             <i class="fa fa-send"></i>
-                            <span>Active Jobs</span>
+                            <span>Accepted Jobs</span>
                             <span class="pull-right-container">
                                 <span class="label pull-right bg-blue">4</span>
                             </span>
                         </a>
                     </li>
-                    <li>
+<!--                    <li>
                         <a href="<?php echo base_url() . 'vendor_canceledjobs.html'; ?>">
                             <i class="fa fa-close"></i>
                             <span>Canceled Job</span>
@@ -74,7 +74,7 @@
                                 <span class="label pull-right bg-red">4</span>
                             </span>
                         </a>
-                    </li>
+                    </li>-->
                     <li>
                         <a href="<?php echo base_url() . 'vendor_completedjobs.html'; ?>">
                             <i class="fa fa-check"></i>
@@ -84,7 +84,7 @@
                             </span>
                         </a>
                     </li>
-                    <li>
+<!--                    <li>
                         <a href="<?php echo base_url() . 'vendor_reschedulejobs.html'; ?>">
                             <i class="fa fa-calendar-minus-o"></i>
                             <span>Reschedule Request</span>
@@ -92,7 +92,7 @@
                                 <span class="label label-primary pull-right bg-blue">4</span>
                             </span>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </li>           
             <li class="treeview">
@@ -103,7 +103,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active">
+<!--                    <li class="active">
                         <a href="<?php echo base_url() . 'vendor_wallet_pending.html'; ?>">
                             <i class="fa fa-hourglass-2"></i>
                             <span>Pending Pay</span>
@@ -111,7 +111,7 @@
                                 <span class="label label-primary pull-right bg-green">4</span>
                             </span>
                         </a>
-                    </li>
+                    </li>-->
                     <li class="active">
                         <a href="<?php echo base_url() . 'vendor_wallet_request.html'; ?>">
                             <i class="fa fa-exchange"></i>

@@ -347,8 +347,9 @@ class Vendor_lib extends Base_lib {
         $this->ci->form_validation->set_rules('employee_citizenship', 'Employee citizenship', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('employee_jobtype', 'Employee Job Type', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        //$this->ci->form_validation->set_rules('employee_jobtype', 'Employee Job Type', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employeeIdFileUpData', 'Employee Id Card file', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('employee_session', 'Employee Job Session', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('Validation_error');
@@ -364,9 +365,10 @@ class Vendor_lib extends Base_lib {
                 $info['employee_citizenship'] = $this->ci->input->post('employee_citizenship', true);
                 $info['employee_house_phone'] = $this->ci->input->post('employee_housephone', true);
                 $info['employee_hp_phone'] = $this->ci->input->post('employee_hp_phone', true);
-                $info['employee_job_type'] = (Globals::EMPLOYEE_FULLTIME == $this->ci->input->post('employee_jobtype', true)) ? Globals::EMPLOYEE_FULLTIME : Globals::EMPLOYEE_PARTTIME;
+                //$info['employee_job_type'] = (Globals::EMPLOYEE_FULLTIME == $this->ci->input->post('employee_jobtype', true)) ? Globals::EMPLOYEE_FULLTIME : Globals::EMPLOYEE_PARTTIME;
                 $info['employee_created_on'] = date('Y-m-d H:i:s', strtotime('now'));
                 $info['employee_company_id'] = $company[0]->company_id;
+                $info['employee_job_session_id'] = $this->ci->input->post('employee_session', true);
                 $empIdFile = $this->ci->input->post('employeeIdFileUpData', true);
 
                 $insertId = 0;
@@ -433,8 +435,8 @@ class Vendor_lib extends Base_lib {
             $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
 
             if (!empty($company)) {
-                $result = $this->model->get_tb('mm_company_employees', '*', array("employee_company_id" => $company[0]->company_id, "employee_archived" => $archived))->result();
-
+                //$result = $this->model->get_tb('mm_company_employees', '*', array("employee_company_id" => $company[0]->company_id, "employee_archived" => $archived))->result();
+                $result = $this->model->getCompanyEmployees($company[0]->company_id, $archived);
                 if ($result) {
                     $this->_status = true;
                     $this->_message = '';
