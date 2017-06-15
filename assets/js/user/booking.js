@@ -752,8 +752,16 @@ $(function () {
     var service = ServiceFactory.getServicesCommand(data, 'getServices.html',ServiceResponseHandler.ServiceSuccessHandler, ServiceResponseHandler.ServiceFailureHandler);
     ServiceFactory.executeTask(service);
 
-
+    //display the tax price
+    $(".cart_tax").html(gst+"%");
+    
     setTimeout(function(){ 
+        
+        //$('.service-radio').each(function(){
+             
+            //$(this).attr('checked', true);
+        //});
+        
         $(document).on("click", ".services-list .ser_details .service-radio", function(e){
 
             console.log("Service Selected: "+ $(this).val());
@@ -780,8 +788,10 @@ $(function () {
             
             var service = ServiceObjects.ServiceObject.getServiceById(serviceId);
             $("#ct-price-scroll-new .service_name p.sel-service").html(service.service_name);
+            $(".tax_display, .total_price_display, .sub_total_display").hide();
+            $(".packageDiv .services-list .package-radio").prop('checked', false);
         });
-        
+        $('.service-radio').trigger('click');
         //Service package Selection Event Handling
         $(document).on("click", ".packageDiv .services-list .package-radio", function(e){           
             Booking.setPackage($(this).val());
@@ -799,6 +809,7 @@ $(function () {
             //Booking.calculateTotalPrice();
             price = Booking.calculateTotalPrice();
             $("#ct-price-scroll-new .cart_total").html(price);
+            $(".tax_display, .total_price_display, .sub_total_display").show();
             console.log(Booking.getPrice());
         });
         
@@ -835,6 +846,7 @@ var Booking = (function() {
     var extraService = null;
     var frequency = null;
     var price   = 0;
+    var gstax   = gst * 0.01;
     
     return{
         reset : function(){
@@ -913,7 +925,7 @@ var Booking = (function() {
         
         calculateTotalPrice: function(){
             var price = this.price + this.addonPrice;
-            return (parseFloat(price * 0.12) + parseFloat(price));
+            return parseFloat( (price * gstax) + parseFloat(price));
         },
         
         addPrice: function(price){
@@ -952,9 +964,9 @@ var Booking = (function() {
                     info.city =  $("#ct-city").val();
                     info.state = $("#ct-state").val();
                     info.note = $("#ct-notes").val();
-                    info.vacuumCln = $(".vc_status").val();
-                    info.parking = $(".p_status").val();
-                    info.contactStatus = $("#contact_status").val();
+                    //info.vacuumCln = $(".vc_status").val();
+                    //info.parking = $(".p_status").val();
+                    //info.contactStatus = $("#contact_status").val();
                 
                 data.userInfo = info;
                 return data;

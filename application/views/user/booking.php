@@ -525,7 +525,7 @@
                                         <textarea required id="ct-notes" rows="10"></textarea>
                                     </div>
 
-                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-15">
+<!--                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-15">
                                         <label>Do you have a vacuum cleaner?</label>
                                         <ul class="ct-radio-list">
                                             <li>
@@ -537,8 +537,8 @@
                                                 <label for="vaccum-no"><span></span>No</label>
                                             </li>
                                         </ul>
-                                    </div>
-                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-10">
+                                    </div>-->
+<!--                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-10">
                                         <label>Do you have parking?</label>
                                         <ul class="ct-radio-list">
                                             <li>
@@ -551,8 +551,8 @@
                                             </li>
 
                                         </ul>
-                                    </div>
-                                    <div class="ct-options-new ct-md-12 ct-xs-12 mb-10 ct-form-row">
+                                    </div>-->
+<!--                                    <div class="ct-options-new ct-md-12 ct-xs-12 mb-10 ct-form-row">
                                         <label>How will we get in?</label>
 
                                         <div class="ct-option-select">
@@ -566,7 +566,7 @@
                                         <div class="ct-option-others ct-md-12 pt-10 np ct-xs-12 hidden">
                                             <input type="text" name="other_contact_status" class="add_show_error_class error" id="other_contact_status" placeholder="Enter your Other option">
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
 
                         </div>
@@ -574,16 +574,16 @@
                     </div>
                     <!-- end personal details -->
                     <!-- payment details -->
-
+<!--
                     <div class="ct-payment-main ct-common-box hide_allsss">
                         <!-- Promocodes -->
-                        <div class="ct-discount-coupons ct-md-12">
+<!--                        <div class="ct-discount-coupons ct-md-12">
                             <div class="ct-form-rown">
                                 <div class="ct-coupon-input ct-md-6 ct-sm-12 ct-xs-12 mt-10 mb-15 np">
                                     <input id="coupon_val" type="text" name="coupon_apply" class="ct-coupon-input-text hide_coupon_textbox" placeholder="Have a promocode?" maxlength="22" onchange="myFunction()">
                                     <a href="javascript:void(0);" class="ct-apply-coupon ct-link hide_coupon_textbox" name="apply-coupon" id="apply_coupon">Apply</a>
                                     <label class="ct-error ofh coupon_invalid_error"></label>
-                                    <!-- display coupon -->
+                                     display coupon 
                                     <div class="ct-display-coupon-code" style="display: none;">
                                         <div class="ct-form-rown">
                                             <div class="ct-column ct-md-7 ct-xs-12 ofh">
@@ -597,12 +597,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ct-list-header">
+                        </div>-->
+<!--                        <div class="ct-list-header">
                             <h3 class="header3">Preferred Payment Method</h3>
-                        </div>
+                        </div>-->
 
-                        <div class="ct-main-payments fl">
+<!--                        <div class="ct-main-payments fl">
                             <div class="payments-container f-l" id="ct-payments">
                                 <label class="ct-error-msg">Please select one payment method</label>
                                 <label class="ct-error-msg ct-paypal-error" id="paypal_error"></label>
@@ -667,7 +667,7 @@
 
                         </div>
 
-                    </div>
+                    </div>-->
                     <!-- end payment detials -->
                 </div>
 <!--                </form>-->
@@ -720,7 +720,7 @@
                                 </div>
                                 <h6 class="header6 ct-item-list"></h6>
 
-                                <div class="ct-form-rown">
+                                <div class="ct-form-rown sub_total_display" style="display: none;">
                                     <div class="ct-cart-label-common ofh">Sub Total</div>
                                     <div class="ct-cart-amount-common ofh">
                                         <span class="ct-sub-total cart_sub_total"></span>
@@ -729,27 +729,27 @@
                                 <div class="ct-form-rown freq_discount_display" style="display: none;">
                                     <div class="ct-cart-label-common ofh">Frequently Discount</div>
                                     <div class="ct-cart-amount-common ofh">
-                                        <span class="ct-frequently-discount frequent_discount">789</span>
+                                        <span class="ct-frequently-discount frequent_discount">XXXX</span>
                                     </div>
                                 </div>
                                 <div class="ct-form-rown coupon_display" style="display: none;">
                                     <div class="ct-cart-label-common ofh">Coupon Discount</div>
                                     <div class="ct-cart-amount-common ofh">
-                                        <span class="ct-coupon-discount cart_discount">798</span>
+                                        <span class="ct-coupon-discount cart_discount">XXXX</span>
                                     </div>
                                 </div>
-                                <div class="ct-form-rown">
-                                    <div class="ct-cart-label-common ofh">Tax</div>
+                                <div class="ct-form-rown tax_display" style="display: none;">
+                                    <div class="ct-cart-label-common ofh">GST</div>
                                     <div class="ct-cart-amount-common ofh">
-                                        <span class="ct-tax-amount cart_tax">12</span>
+                                        <span class="ct-tax-amount cart_tax"></span>
                                     </div>
                                 </div>
                                 <div class="ct-clear"></div>
                                 <div id="ct-line"></div>
-                                <div class="ct-form-rown">
+                                <div class="ct-form-rown total_price_display" style="display: none;">
                                     <div class="ct-cart-label-total-amount ofh">Total</div>
                                     <div class="ct-cart-total-amount ofh">
-                                        <span class="ct-total-amount cart_total">7987987</span>
+                                        <span class="ct-total-amount cart_total">XXXX</span>
                                     </div>
                                 </div>
 
@@ -1019,6 +1019,7 @@ value="https://test.mymaidz.com/pay_response.html">
 
 <script>
     base_url = "<?php echo base_url(); ?>";
+    gst      = <?php echo $config['gst']; ?>;
    
 </script>
 

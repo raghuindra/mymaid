@@ -9,7 +9,7 @@ class Vendor extends Base {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library(array('vendor_lib'));
+        $this->load->library(array('vendor_lib', 'page_load_lib'));
         $this->uLang = $this->session->userdata('user_lang');
         $this->lang->load("vendor", $this->uLang);
         //$this->lang->load("vendor_msg", $this->uLang);
@@ -375,6 +375,55 @@ class Vendor extends Base {
     public function archiveServiceLocation(){
         if(isset($_POST['locationId'])){
             $response = $this->vendor_lib->_archiveServiceLocation();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
+    
+    /** Function to List the Service Bookings.
+    * @param null
+    * @return JSON returns the JSON with new Service Bookings    
+    */
+    public function listNewBookings(){
+        
+        $response = $this->vendor_lib->_newServiceBooking(); 
+        echo json_encode($response);
+    }
+    
+    /** Function to get the Employees for New Job.
+    * @param null
+    * @return JSON returns the JSON with new Service Bookings    
+    */
+    public function getEmployeesForJob(){
+        if(isset($_POST['booking_id'])){
+            $response = $this->vendor_lib->_getEmployeesForJob();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        
+        $this->data['content'] = "vendor/popup/assignEmployeeJob.php";
+        $this->data['response'] = $response;
+        $this -> load -> view('vendor/popup/assignEmployeeJob', $this->data);
+        
+    }
+    
+    /** Function to assign job Employee/s for New Job.
+    * @param null
+    * @return JSON returns the JSON with job assign status    
+    */
+    public function assignEmployeeToJob(){
+        
+        if(isset($_POST['employeeId'])){
+            $response = $this->vendor_lib->_assignEmployeesToJob();
         }else{
             $response = array(
                 'status' => false,

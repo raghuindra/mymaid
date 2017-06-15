@@ -13,3 +13,5 @@ $lang['employee_unarchived']            = "Employee Un Archived";
 $lang['vendor_service_location_added']  = "Vendor service location added";
 $lang['service_location_archived']      = "Service location archived";
 $lang['service_location_unarchived']    = "Service Location Un Archived";
+$lang['job_already_assigned']           = "Job has been already assigned.";
+$lang['job_assigned_successfully']      = "Job assigned successfully";

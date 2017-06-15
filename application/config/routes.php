@@ -145,6 +145,9 @@ $route['getVendorPostcodes.html']               = "vendor/getpostcodes";
 $route['addServiceLocation.html']               = "vendor/addServiceLocation";
 $route['listServiceLocation.html']              = "vendor/listServiceLocation";
 $route['archiveServiceLocation.html']           = "vendor/archiveServiceLocation";
+$route['listNewBookingForVendor.html']          = "vendor/listNewBookings";
+$route['getEmployeesForJob.html']               = "vendor/getEmployeesForJob";
+$route['assignEmployeeToJob.html']              = "vendor/assignEmployeeToJob";
 
 
 /* ........Freelance Module Routing................... */

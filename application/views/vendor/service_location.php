@@ -197,30 +197,6 @@ $this->load->view("block/vendor_leftMenu");
 </div>
 <!-- /.content-wrapper -->
 
-<!-- Employee Edit Modal -->
-<div class="modal fade" id="employeeEditModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel">
-    <div class="modal-dialog" role="document">
-        <form id='editEmployeeForm' action="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="employeeEditModalLabel">Edit</h4>
-                </div>
-                <div class="modal-body">
-                    <!-- 
-                        Modal Body
-                    -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" type="submit" id="saveEmployeeEdit">Save changes</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- /.Employee Edit Modal END -->
-
 <!-- pekeUpload -->
 <script type="text/javascript" src="<?php echo plugin_url('plugins/pekeUpload/pekeUpload.js'); ?>"></script>
 <script>
@@ -309,7 +285,7 @@ $this->load->view("block/vendor_leftMenu");
         });
 
 
-        /* Employee List Datatable */
+        /* Service Location List Datatable */
         var serviceLocationListTable = $('#service_location_list').DataTable({
             "responsive": true,
             "paging": true,
@@ -352,7 +328,7 @@ $this->load->view("block/vendor_leftMenu");
         });
 
 
-        /* Archived / Un Archived Employee Datatable list */
+        /* Archived / Un Archived Service Location Datatable list */
         $(document).on("click", ".btn-group .service_location_status_archive, .service_location_status_unarchive", function () {
             $(".btn-group#service_location_status button").removeClass('active');
             $(this).addClass('active');

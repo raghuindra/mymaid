@@ -495,7 +495,7 @@ class Vendor_lib extends Base_lib {
         $this->ci->form_validation->set_rules('edit_employee_citizenship', 'Employee citizenship', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('edit_employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('edit_employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('edit_employee_jobtype', 'Employee Job Type', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('employee_session', 'Employee Session', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         
         if ($this->ci->form_validation->run() == FALSE) {
             $this->_status = false;
@@ -511,7 +511,7 @@ class Vendor_lib extends Base_lib {
                 $info['employee_citizenship'] = $this->ci->input->post('edit_employee_citizenship', true);
                 $info['employee_house_phone'] = $this->ci->input->post('edit_employee_housephone', true);
                 $info['employee_hp_phone'] = $this->ci->input->post('edit_employee_hp_phone', true);
-                $info['employee_job_type'] = (Globals::EMPLOYEE_FULLTIME == $this->ci->input->post('edit_employee_jobtype', true)) ? Globals::EMPLOYEE_FULLTIME : Globals::EMPLOYEE_PARTTIME;
+                $info['employee_job_session_id'] = $this->ci->input->post('employee_session', true);
                 $company_id = $company[0]->company_id;
                 $employeeId = $this->ci->input->post('employeeId', true);
 
@@ -753,6 +753,164 @@ class Vendor_lib extends Base_lib {
 
             return $this->getResponse();
         }
+    }
+    
+    /** Function to List the New Service Bookings.
+    * @param null
+    * @return JSON returns the JSON with New Service Bookings    
+    */
+    function _newServiceBooking(){
+        
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+            
+            $newServices = $this->model->getServiceBookings($now);
+            //print_r($newServices); exit;
+
+            if (!empty($newServices)) {
+                $result = array();
+                $i=0;
+                foreach($newServices as $service){
+                    $result[$i]['booking_id'] = $service->booking_id;
+                    $result[$i]['booking_pincode'] = $service->booking_pincode;
+                    $result[$i]['service_name']     = $service->service_name;
+                    $result[$i]['customer_name']    = $service->person_first_name. " ".$service->person_last_name;
+                    $result[$i]['booking_service_date'] = $service->booking_service_date;
+                    $result[$i]['booking_booked_on']  = $service->booking_booked_on;
+                    $i++;
+                }
+                
+                if ( !empty($result) ) {
+                    $this->_status = true;
+                    $this->_message = '';
+                    $this->_rdata = $result;
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+        
+    }
+    
+    /** Function to get Employees for New Job(Bookings).
+    * @param null
+    * @return JSON returns the JSON with Employees for New Job    
+    */
+    function _getEmployeesForJob(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+        
+        $this->ci->form_validation->set_rules('booking_id', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));       
+        
+        if ($this->ci->form_validation->run() == FALSE) {           
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id    = $this->ci->input->post('booking_id', true);           
+            
+            $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
+
+            if (!empty($company)) {
+                
+                $booking_detail = $this->model->get_tb('mm_booking','booking_service_date', array('booking_id'=>$booking_id))->result();
+                
+             
+                if(!empty($booking_detail)) {
+                    
+                   $result = $this->model->getAvailableEmployees($company[0]->company_id, $booking_detail[0]->booking_service_date);
+                   
+                   $this->_message  = ""; 
+                   $this->_status   = true;
+                   $this->_rdata    = $result;
+                } else {
+                    $this->_message  = $this->ci->lang->line('no_records_found'); 
+                    $this->_status   = false;
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_user');
+            }
+
+            return $this->getResponse();
+        }
+    }
+    
+    function _assignEmployeesToJob(){
+        
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+        
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));       
+        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));       
+        
+        if ($this->ci->form_validation->run() == FALSE) {           
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id    = $this->ci->input->post('bookingId', true);
+            $employee_id    = $this->ci->input->post('employeeId', true);
+            
+            $company = $this->model->get_tb('mm_vendor_company', '*', array('company_person_id' => $person_id))->result();
+
+            if (!empty($company)) {
+                
+                $booking_detail = $this->model->check_booking_job_is_assigned($booking_id);
+            
+                if(!empty($booking_detail)) {
+                   $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_vendor_company_id'=>$company[0]->company_id)); 
+                   $job = array();
+                   $job['employee_job_booking_id'] = $booking_id;
+                   $job['employee_job_employee_id'] = $employee_id;
+                   $job['employee_job_assigned_on'] = date('Y-m-d H:i:s', strtotime('now'));
+                   
+                   $insert_id = $this->model->insert_tb('mm_employee_job', $job);
+                   $booking_detail = $this->model->getServiceBookingDetail($booking_id);
+                   $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $booking_detail[0]['person_email'];
+                        $subject = "Login Information";
+                        $message = "<html><body>";
+                        $message .= "<p>Dear User,</p><br>";
+                        $message .= "<p>Your Service has been accepted by Company: ".$company[0]->company_name."</p>";
+                        $message .= "<p>Contact On: +60".$company[0]->company_mobile." / +60".$company[0]->company_landphone."</p>";
+                        $message .= "</body></html>";
+                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+                        
+                        // SMS
+                        $this->sendSMS("+60".$booking_detail[0]['person_mobile'], "Your Service request has been accepted by company: ".$company[0]->company_name);                     
+                        /*Admin*/ $this->sendSMS('+601124129717', "New Service request has been accepted by vendor: ".$company[0]->company_name." of User: ".$booking_detail[0]->person_email);
+                        /*Admin*/ $this->sendSMS('+60146771436', "New Service request has been accepted by vendor: ".$company[0]->company_name." of User: ".$booking_detail[0]->person_email);
+                        /*Admin*/ $this->sendSMS('+60125918491', "New Service request has been accepted by vendor: ".$company[0]->company_name." of User: ".$booking_detail[0]->person_email);
+                        /*Admin*/ $this->sendSMS('+60126570387', "New Service request has been accepted by vendor: ".$company[0]->company_name." of User: ".$booking_detail[0]->person_email);
+                        
+                   
+                   $this->_message  = $this->ci->lang->line('job_assigned_successfully');; 
+                   $this->_status   = true;
+                   $this->_rdata    = $insert_id;
+                } else {
+                    $this->_message  = $this->ci->lang->line('job_already_assigned'); 
+                    $this->_status   = false;
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_user');
+            }
+
+            return $this->getResponse();
+        }
+        
     }
 
 }

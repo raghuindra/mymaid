@@ -12,6 +12,12 @@ class Vendor_model extends Mm_model{
         $this->_postcode_table                      = "mm_postcode";
         $this->_company_employees                   = "mm_company_employees";
         $this->_session                             = "mm_session";
+        $this->_booking                             = "mm_booking";
+        $this->_booking_addons                      = "mm_booking_addons";
+        $this->_booking_spl_request                 = "mm_booking_spl_request";
+        $this->_services                            = "mm_services";
+        $this->_service_package                     = "mm_service_package";
+        
     }
     
     function check_email($email)
@@ -56,6 +62,46 @@ class Vendor_model extends Mm_model{
                         ->where('employee_archived', $archived)
                         ->get()
                         ->result();
+    }
+    
+    function getServiceBookings($now){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person_table, 'person_id = booking_user_id','left')
+                        ->where('booking_service_date >', $now)
+                        ->where('booking_vendor_company_id IS NULL', null)
+                        ->get()
+                        ->result();
+    }
+    
+    function getServiceBookingDetail($bookingId){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person_table, 'person_id = booking_user_id','left')
+                        ->where('booking_id ', $bookingId)
+                        ->get()
+                        ->result();
+    }
+    
+    
+    function getAvailableEmployees($companyId, $service_date){
+        return $this->db->query("SELECT * FROM `mm_company_employees` "
+                . " WHERE `employee_company_id`= '$companyId' AND employee_id NOT IN "
+                . " ( SELECT employee_job_employee_id from mm_employee_job "
+                . " LEFT JOIN mm_booking on employee_job_booking_id = booking_id "
+                . " WHERE booking_service_date = '$service_date')")->result();
+    }
+    
+    function check_booking_job_is_assigned($bookingId){
+        return $this->db->query("SELECT * FROM `mm_booking` "
+                . " WHERE `booking_id`= '$bookingId' AND `booking_vendor_company_id` IS NULL")->result();
+        
     }
         
         
