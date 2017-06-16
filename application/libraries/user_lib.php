@@ -251,6 +251,7 @@ class User_lib extends Base_lib{
                     $info['booking_status']         = Globals::BOOKING_PROCESSING;
                     $info['booking_service_date']   = $data->userInfo->serviceDate;
                     $info['booking_note']           = $data->userInfo->note;
+                    $info['booking_user_id']        = $this->ci->session->userdata('user_id');
                     //$info['booking_contact_status'] = $data->userInfo->contactStatus;
                     $booking_id = $this->model->insert_tb('mm_booking', $info);
                     if($booking_id > 0){
