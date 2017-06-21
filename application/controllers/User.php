@@ -8,9 +8,9 @@ class User extends Base {
         
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('user_lib','page_load_lib'));
+            $this->load->library(array('user_lib'));
             //$this->uLang = $this->session->userdata('user_lang');               
-            //$this -> lang -> load("np", $this->uLang);
+            $this -> lang -> load("mm", $this->uLang);
         }
         
 	public function index(){
@@ -29,8 +29,10 @@ class User extends Base {
                     $this->data['postcode'] = $serviceAvailable['data'][0]->vendor_service_location_postcode;
                     $this->data['content']  = "user/booking.php";
                     $this->data['user']     = 1;
+                    $this->data['state']    = $this->mm_model->get_tb('mm_state', '*')->result();
                     $this -> load -> view('template', $this->data);
                 }else{
+                    $this->session->set_flashdata('error_message', $this->lang->line('mm_no_service_coverage'));
                     redirect('home.html', 'refresh');
                 }
             }else{
@@ -145,6 +147,14 @@ class User extends Base {
             
             
             
+        }
+        
+        /*
+         * Function to get the User details if logged in
+         */
+        public function getUserDetails(){
+            $response = $this->user_lib->_getUserDeatils();
+            echo json_encode($response); 
         }
         
         

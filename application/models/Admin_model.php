@@ -167,9 +167,10 @@ class Admin_model extends Mm_model{
      * 
      */
     function getNewVendors(){
+        $where_condition = "( person_type_name = '".Globals::PERSON_TYPE_VENDOR_NAME."' OR person_type_name = '".Globals::PERSON_TYPE_FREELANCER_NAME."' )";
         $this->db->select('*'); 
         $this->db->where('person_status', '0');
-        $this->db->where('person_type_name', Globals::PERSON_TYPE_VENDOR_NAME);
+        $this->db->where($where_condition);
         $this->db->join($this->_person_type_table, 'person_type_id = person_type','left');
         $this->db->join($this->_vendor_company_table, 'company_person_id = person_id','left');
         
@@ -177,20 +178,15 @@ class Admin_model extends Mm_model{
     }
     
     /* Function to get the Active Vendors list */
-    function getActiveVendors($fields = '*',$condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true ){
-        $this->db->select($fields); 
-        if(count($condition) > 0) {
-            foreach($condition as $key => $cond) {
-                    $this->db->where($key, $cond, $filter);
-            }	
-        }
+    function getActiveVendors($archived){
+        $where_condition = "( person_type = '".Globals::PERSON_TYPE_VENDOR."' OR person_type = '".Globals::PERSON_TYPE_FREELANCER."' )";
+        $this->db->select('*'); 
+        $this->db->where('person_status', '1');
+        $this->db->where('person_archived', $archived);
+        $this->db->where($where_condition);
         $this->db->join($this->_vendor_company_table, 'company_person_id = person_id','left');
         
-        $order != ''?$this->db->order_by($order):null;
-        if ($offset >= 0 AND $row_count > 0){
-                return $this->db->get($this->_person_table, $row_count, $offset);
-        }
-          return $this->db->get($this->_person_table);
+        return $this->db->get($this->_person_table);
     }
     
     /* Function to get Vendor Company list */

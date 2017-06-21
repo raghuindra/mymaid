@@ -6,6 +6,7 @@ class User_model extends Mm_model {
         parent::__construct();
         $this->_table                   = 'mm_user';
         $this->_person_table            = 'mm_person';
+        $this->_person_type_table       = 'mm_person_type';
         $this->_country_table           = 'mm_country';
         $this->_lang_table              = 'mm_language';
         $this->_vendor_service_location_table = 'mm_vendor_service_location';
@@ -96,6 +97,23 @@ class User_model extends Mm_model {
                         ->where('vendor_service_location_archived', Globals::UN_ARCHIVE)
                         ->get()
                         ->result();
+    }
+    
+    function getUserDetails($fields = 'person_id', $condition = array(), $order = '', $offset = 0, $row_count = 0, $filter = true){
+        $this->db->select($fields); 
+        if(count($condition) > 0) {
+            foreach($condition as $key => $cond) {
+                    $this->db->where($key, $cond, $filter);
+            }	
+        }
+        $this->db->join($this->_table, 'user_person_id = person_id','left');
+        $this->db->join($this->_person_type_table, 'person_type_id = person_type','left');
+        
+        $order != ''?$this->db->order_by($order):null;
+        if ($offset >= 0 AND $row_count > 0)
+                return $this->db->get($this->_person_table, $row_count, $offset);
+          return $this->db->get($this->_person_table);
+         //$this->db->last_query();
     }
 
 

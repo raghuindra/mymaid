@@ -7,17 +7,17 @@
                     <li><a href="<?php echo base_url().'vendor_login.html';?>" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
-            <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
+            <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;color:white;"><img class="profile-user-img img-responsive" src="<?php echo img_url('YellowMM_240.png');?>" style="width:85%;" alt="MyMaidz"></a></div>
         </div>
         <!-- PAGE CONTENT -->
         <div class="container animated fadeInDown">
             <div class="tab-content ">
                 <div id="login" class="tab-pane active">
-                    <form class="form-signin" id="login_box" method="post" action="vendor_register.html">
+                    <form class="form-signin" id="login_box" method="post" action="<?php echo base_url().'vendor_register.html'; ?>">
                         <p class="head_login_005">Sign Up New Vendor/Freelancer</p>
                         <div class="row">
                             <div class="col-lg-12" id="error_message" style="color:red">
-                               
+                               <?php echo validation_errors(); ?>
                             </div>
 
                         </div>
@@ -62,11 +62,11 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Postal Code" class="form-control" name="pincode" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required value="<?php echo set_value('pincode'); ?>"> </div>
+                                <input type="text" placeholder="Postal Code" class="form-control" name="pincode" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required value="<?php echo set_value('pincode'); ?>"> </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div></div>
+                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control" name="mobile" id="" required value="<?php echo set_value('mobile'); ?>"> </div></div>
                             <!-- <div class="col-lg-6">
                                 <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
                                 </select>     -->
@@ -75,8 +75,8 @@
                             <div class="col-lg-6">
                                 <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
                                     <option value="">Select Id Card</option>
-                                    <option value="Govt Id Card" >Govt Id Card</option>
-                                    <option value="passport">Passport/IC Number</option>
+                                    <option value="Identity Number" >Identity Number</option>
+                                    <option value="Passport">Passport</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">
@@ -106,15 +106,21 @@
                             <div class="col-lg-6">
                                 <input type="text" placeholder="Company Address" class="form-control" name="compAddress" id="compAddress" required value="<?php echo set_value('compAddress'); ?>"> </div>
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Company Pin Code" class="form-control" name="compPin" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" id="compPin" required value="<?php echo set_value('compPin'); ?>"> </div>
+                                <input type="text" placeholder="Company Pin Code" class="form-control" name="compPin" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" id="compPin" required value="<?php echo set_value('compPin'); ?>"> </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile" class="form-control" name="compMobile" id="compMobile" required value="<?php echo set_value('compMobile'); ?>"></div></div>
+                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile" class="form-control" name="compMobile" id="compMobile" required value="<?php echo set_value('compMobile'); ?>"></div></div>
                             <div class="col-lg-6">
-                                <input type="number" placeholder="Land phone" class="form-control" name="compLandPhone" id="compLandPhone" required value="<?php echo set_value('compLandPhone'); ?>"> </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">+60</span>
+                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Land phone" class="form-control" name="compLandPhone" id="compLandPhone" required value="<?php echo set_value('compLandPhone'); ?>"> </div>
+                            </div>
                             <div class="col-lg-6">
-                                <input type="text" placeholder="FAX" class="form-control" name="compFax" id="compFax" required value="<?php echo set_value('compFax'); ?>"> </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">+60</span>
+                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="FAX" class="form-control" name="compFax" id="compFax" required value="<?php echo set_value('compFax'); ?>"> </div>
+                            </div>
                             <div class="col-lg-12">
                                 <label>Number of Employees Range</label>
                                 <div class="row">

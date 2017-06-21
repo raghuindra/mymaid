@@ -13,7 +13,7 @@
                     <li><a href="<?php echo base_url() . 'vendor_login.html'; ?>" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
-            <div class="logo-section"><a href="<?php echo base_url() . 'home.html'; ?>" title="" style="text-decoration: none;"><img src="<?php echo img_url('logo_100x45.png');?>" /></a></div>
+            <div class="logo-section"><a href="<?php echo base_url() . 'home.html'; ?>" title="" style="text-decoration: none;"><img class="profile-user-img img-responsive" src="<?php echo img_url('YellowMM_240.png');?>" style="width:85%;" alt="MyMaidz"></a></div>
         </div>
         <!-- PAGE CONTENT -->
         <div class="container-fluid animated fadeInDown">
@@ -40,7 +40,7 @@
                                                                                                 </select></div>
                                                                                         </div>-->
                                             <div class="col-lg-4">
-                                                <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="pincode" id="" required></div>
+                                                <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="pincode" id="" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required></div>
                                             </div>
                                             <div class="col-lg-3">
                                                 <div class="row"><button type="submit" placeholder="Find" class="form-control btn-success">Find Services</button> </div>

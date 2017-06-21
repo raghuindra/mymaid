@@ -10,7 +10,7 @@
                     <li><a href="./vendor_login.html" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
-            <div class="logo-section"><a href="./home.html" title="" style="text-decoration: none;color:white;">MyMaid</a></div>
+            <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;color:white;"><img class="profile-user-img img-responsive" src="<?php echo img_url('YellowMM_240.png');?>" style="width:85%;" alt="MyMaidz"></a></div>
         </div>
         <!-- PAGE CONTENT -->
         <div class="container animated fadeInDown">
@@ -70,8 +70,8 @@
                             <div class="col-lg-6">
                                 <select placeholder="Select Id Card" class="form-control" name="idcard" required value="<?php echo set_value('idcard'); ?>"> 
                                     <option value="">Select Id Card</option>
-                                    <option value="Govt Id Card" >Govt Id Card</option>
-                                    <option value="passport">Passport/IC Number</option>
+                                    <option value="Identity Number" >Identity Number</option>
+                                    <option value="Passport">Passport</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">

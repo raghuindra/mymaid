@@ -6,7 +6,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>V </b>MyMaidZ</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Vendor </b>MyMaidZ</span>
+        <span class="logo-lg"><b><?php echo ucwords($this->session->userdata('user_type'));?> </b>MyMaidZ</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -226,7 +226,7 @@
                             <img src="<?php echo plugin_url('dist/img/avatar5.png');?>" class="img-circle" alt="User Image">
 
                             <p>
-                                <?php echo $this->session->userdata('user_fullname');?> - <?php echo $this->session->userdata('user_type'); ?>
+                                <?php echo $this->session->userdata('user_fullname');?> - <?php echo ucwords($this->session->userdata('user_type')); ?>
 <!--                                <small>Member since Nov. 2012</small>-->
                             </p>
                         </li>

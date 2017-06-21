@@ -12,6 +12,7 @@ $lang['mm_email_not_exists'] = "The email you entered doesn't appear to belong t
 $lang['mm_passsword_mismatch'] = "Password and Confrim password doesn't matched..!!";
 $lang['mm_password_changed_success']  = "Password successfully changed!!";
 $lang['mm_invalid_token'] = "Invalid Token..!!";
+$lang['mm_no_service_coverage'] = "No coverage in your area at moment, Pls fill up Contact Us form, we will work vendor near your area to be listed.";
 
 $lang['invalid_data']                           = "Invalid data.";
 $lang['invalid_request']                        = "Invalid Request.";

@@ -1,7 +1,28 @@
 $(function() {
+   
+     function showExistingUserDetails(){
+        $(".ct-login-existing").show();
+        $(".ct-new-user-details").hide();
+        $('#ct-user-email').attr('required', true);
+        $('#ct-user-pass').attr('required', true);
+        $('#ct-email').attr('required', false);
+        $('#ct-preffered-pass').attr('required', false);
+    }
+    
+    function showNewUserDetails(){
+        $(".ct-login-existing").hide();
+        $(".ct-new-user-details").show();
+        $('#ct-user-email').attr('required', false);
+        $('#ct-user-pass').attr('required', false);
+        $('#ct-email').attr('required', true);
+        $('#ct-preffered-pass').attr('required', true);
+    }
+    
+    
     $("#select-date")
         .datepicker({ 
         dateFormat: "yy-mm-dd", 
+        minDate:0,
         onSelect: function(){
         var selected = $(this).val();
         //alert(selected);
@@ -267,8 +288,101 @@ $(function() {
                 $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
             }
         });
+    
+    //Right Price Floater DIV
+    $("#ct-price-scroll-new").stick_in_parent();
 
-    $("#ct-price-scroll-new")
-        .stick_in_parent();
+    // Event to handle on user Selection radio button event
+    $('.user-selection').on('click', function(){
+        
+        var userType = $(this).val();
+        if(userType == "Existing-User"){
+            showExistingUserDetails();
+        }else if(userType == "New-User"){
+            showNewUserDetails();
+        }
+        
+    });
+    
+    //Event to handle on User selection on page load
+ 
+    var userType = $('.user-selection').val();
+    if(userType == "Existing-User"){
+        showExistingUserDetails();
+    }else if(userType == "New-User"){
+        showNewUserDetails();
+    }
+    
+    if(user_logged_in == "No"){
+        $(".ct-new-user-details").show();
+        $(".ct-login-existing").hide();
+    }else if(user_logged_in == "Yes"){
+        $(".ct-new-user-details").hide();
+        $(".ct-login-exist").hide();
+    }
+    
+   
+    
+    getUserDetails();
+    //Get User Details If logged In
+    function getUserDetails(){
+        $.ajax({
+            type: "POST",
+            url: base_url+'getUserDetails.html',
+            data: '',
+            cache: false,
+            success: function (res) {
 
+                var result = JSON.parse(res);
+
+                if (result.status === true) {
+                    console.log(result);
+                    $(".ct-new-user-details").hide();
+                    $(".ct-login-exist").hide();
+
+                    var info = result.data[0];
+                        $("#ct-first-name").val(info.person_first_name);
+                        $("#ct-last-name").val(info.person_last_name);
+                        $("#ct-user-phone").val(info.person_mobile);
+                        $("#ct-street-address").val(info.person_address);
+                        $("#ct-zip-code").val(info.person_postal_code);
+                        $("#ct-city").val(info.person_city);
+                        $("#ct-state").val(info.person_state);
+
+                }
+            }
+        });
+    }
+    
+    $("#login_existing_user").on('click', function(e){
+        e.preventDefault();
+        var email = $("#ct-user-email").val();
+        var pass  = $("#ct-user-pass").val();
+        
+        $.ajax({
+            type: "POST",
+            url: base_url+'bookingUserLogin.html',
+            data: {'email':email, 'pass':pass},
+            cache: false,
+            success: function (res) {
+
+                var result = JSON.parse(res);
+
+                if (result.status === true) {
+                    notifyMessage('success', result.message);
+                    $(".ct-new-user-details").hide();
+                    $(".ct-login-exist").hide();
+
+                    getUserDetails();    
+                }else{
+                    notifyMessage('error', result.message);
+                }
+            }
+        });
+        
+        
+    });
+    
+    
 });
+

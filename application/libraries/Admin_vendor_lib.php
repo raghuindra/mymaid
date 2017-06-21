@@ -52,7 +52,7 @@ class Admin_vendor_lib extends Base_lib{
         if ($this->ci->session->userdata('user_id') != null) {
             $archived = $this->ci->input->post('archived', true);
 
-            $result = $this->model->getActiveVendors('*', array("person_type" => Globals::PERSON_TYPE_VENDOR, "person_archived" => $archived))->result();
+            $result = $this->model->getActiveVendors($archived)->result();
 
             if ($result) {
                 $this->_status = true;

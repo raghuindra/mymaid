@@ -128,6 +128,64 @@ class Person_lib extends Base_lib{
             }
         }
     }
+    
+    /*
+     * 
+     */
+    function booking_user_registration($info){
+        
+            if ($this->check_person_email($info['person_email'])) {
+
+                //Insert person data into Person Table
+                $person_id = $this->create_person($info);
+                if ($person_id) {
+                    $this->ci->load->model('mm_model');
+                    $role_id = $this->ci->mm_model->get_tb('mm_permission_type', 'permission_type_name, permission_type_id', array('permission_type_name' => Globals::ROLE_USER))->row();
+                    $this->ci->mm_model->insert_tb('mm_permission', array('permission_permission_type_id' => $role_id->permission_type_id, 'person_id' => $person_id));
+
+                    $user_info = array();
+                    $user_info['user_first_name'] = $info['person_first_name'];
+                    $user_info['user_last_name'] = $info['person_last_name'];
+                    $user_info['user_email'] = $info['person_email'];
+                    $user_info['user_address'] = $info['person_address'];
+                    $user_info['user_city'] = $info['person_city'];
+                    $user_info['user_state'] = $info['person_state'];
+                    $user_info['user_country'] = $info['person_country_code'];
+                    $user_info['user_mobile'] = $info['person_mobile'];
+                    $user_info['user_postal_code'] = $info['person_postal_code'];
+                    $user_info['user_lang_code'] = $info['person_lang_code'];
+                    $user_info['user_person_id'] = $person_id;
+
+                    $user_id = $this->_create_user('mm_user', $user_info);
+                    if ($user_id != '') {
+                        
+                        $sender = $this->ci->data['config']['sender_email'];
+                        $recipient = $info['person_email'];
+                        $subject = "Login Information";
+                        $message = "<html><body>";
+                        $message .= "<p>Dear User,</p><br>";
+                        $message .= "<p>Your Login Credentials:</p>";
+                        $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
+                        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
+                        $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
+                        $message .= "</body></html>";
+                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+                        
+                        // SMS
+                        $this->sendSMS($info['person_mobile'], "Welcome to MyMaidz. Registration is successfull. Login to get service.");                     
+                        
+                              
+                        return array('status'=>true, 'message'=>$this->ci->lang->line('mm_user_created_successfully'),'data'=>array('person_id'=>$person_id));
+                    }
+                } else {
+                    
+                }
+            } else {
+                $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('mm_email_available'));
+                return array('status'=>false, 'message'=>'Email already registered!','data'=>array());
+            }
+        
+    }
 
     /*
      * 
@@ -173,6 +231,55 @@ class Person_lib extends Base_lib{
             }
         }
     }
+    
+    
+    function _booking_login_user(){
+        $this->ci->load->library('form_validation');
+
+        $this->ci->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|encode_php_tags|valid_email');
+        $this->ci->form_validation->set_rules('pass', 'Password', 'trim|required|xss_clean|encode_php_tags');
+
+        if ($this->ci->form_validation->run() == FALSE) {
+
+             return array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('mm_frontend_login_error_login_incorrect'),
+                    'data' => array()
+                );
+            
+        } else {
+            $response = array();
+            $user_data['email'] = $this->ci->input->post('email', true);
+            $user_data['password'] = hash('sha512', $this->ci->input->post('pass', true));
+
+            $user = $this->model->getUserDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
+
+            if (isset($user->person_id) && strlen($user->person_id) > 0) {
+
+                $this->_set_last_ip_and_last_login($user->person_id);
+                $this->_set_session($user->person_type_name, $user);
+
+                $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
+                $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
+                
+                $response = array(
+                    'status' => true,
+                    'message' => $this->ci->lang->line('mm_user_login_welcome'),
+                    'data' => array()
+                );
+
+            } else {
+
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('mm_frontend_login_error_login_incorrect'),
+                    'data' => array()
+                );
+            }
+            
+            return $response;
+        }
+    }
 
     /*
      * 
@@ -187,15 +294,15 @@ class Person_lib extends Base_lib{
 
         $this->ci->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|encode_php_tags|valid_email');
         $this->ci->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('repassword', 'Password Confirmation', 'trim|required|xss_clean|encode_php_tags|matches[password]');
+        $this->ci->form_validation->set_rules('repassword', 'Password Confirmation', 'trim|required|xss_clean|encode_php_tags|matches[password]', array('required' => 'Both password must match.'));
         $this->ci->form_validation->set_rules('firstname', 'First Name', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('lastname', 'Last Name', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('address', 'address', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('address1', 'address 1', 'trim|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('city', 'City', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('pincode', 'Postal Code', 'trim|xss_clean|encode_php_tags|min_length[4]|numeric');
+        $this->ci->form_validation->set_rules('pincode', 'Postal Code', 'trim|required|xss_clean|encode_php_tags|max_length[6]|numeric');
         $this->ci->form_validation->set_rules('state', 'State', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('mobile', 'Mobile', 'trim|required|xss_clean|encode_php_tags|min_length[10]|numeric');
+        $this->ci->form_validation->set_rules('mobile', 'Mobile', 'trim|required|xss_clean|encode_php_tags|max_length[10]|numeric');
         $this->ci->form_validation->set_rules('idcard', 'Id Card', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('idcardnumber', 'Id Card Number', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('type', 'Vendor/Freelancer selection', 'trim|required|xss_clean|encode_php_tags|numeric');
@@ -308,7 +415,7 @@ class Person_lib extends Base_lib{
                         /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'praveen.dexter@gmail.com',$subject,$message,array('mailtype'=>'html'));
                         
                         //SMS
-                                  $this->sendSMS($user_info['vendor_mobile'], "Welcome to MyMaidz. Registration is successfull. Account is pending for admin approval.");                     
+                                  $this->sendSMS('+60'.$user_info['vendor_mobile'], "Welcome to MyMaidz. Registration is successfull. Account is pending for admin approval.");                     
                         /*Admin*/ $this->sendSMS('+601124129717', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
                         /*Admin*/ $this->sendSMS('+60146771436', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
                         /*Admin*/ $this->sendSMS('+60125918491', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
@@ -445,6 +552,7 @@ class Person_lib extends Base_lib{
             'user_type' => $type,
             'user_fullname' => ucfirst($data->person_first_name) . " " . ucfirst($data->person_last_name),
             'user_firstname' => ucfirst($data->person_first_name),
+            'user_lastname' => ucfirst($data->person_last_name),
             'user_country_code' => $data->person_country_code,
             'user_profile_image' => $data->person_profile_image,
             'user_lang_code' => $data->person_lang_code,
@@ -476,7 +584,7 @@ class Person_lib extends Base_lib{
                     $redirect_url = "vendor_home.html";
                     break;
                 case Globals::PERSON_TYPE_FREELANCER_NAME:
-                    $redirect_url = "freelance_home.html";
+                    $redirect_url = "vendor_home.html";
                     break;
             }
             redirect($redirect_url, 'refresh');

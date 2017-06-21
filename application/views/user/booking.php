@@ -447,40 +447,44 @@
                                 <div class="ct-custom-radio">
                                     <ul class="ct-radio-list hide_radio_btn_after_login">
                                         <li class="ct-exiting-user ct-md-6 ct-sm-6 ct-xs-12">
-                                            <input id="existing-user" type="radio" class="input-radio existing-user user-selection" name="user-selection" value="Existing User">
+                                            <input id="existing-user" type="radio" class="input-radio existing-user user-selection" name="user-selection" value="Existing-User">
                                             <label for="existing-user" class=""><span></span>Existing User</label>
                                         </li>
                                         <li class="ct-new-user ct-md-6 ct-sm-6 ct-xs-12">
-                                            <input id="new-user" type="radio" checked="checked" class="input-radio new-user user-selection" name="user-selection" value="New-User">
+                                            <input id="new-user" type="radio" <?php if ($this->session->userdata('user_id') == null) {
+    echo "checked='checked'";
+} ?> class="input-radio new-user user-selection" name="user-selection" value="New-User">
                                             <label for="new-user" class=""><span></span>New User                                            </label>
                                         </li>
                                     </ul>
                                 </div>
 
-                                <div class="ct-login-existing hidden">
-                                    <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row hide_login_email">
-                                        <label for="ct-user-name">Your Email</label>
-                                        <input type="text" class="add_show_error_class_for_login error" name="ct_user_name" id="ct-user-email" placeholder="Enter Email to Login" onkeydown="if (event.keyCode == 13) document.getElementById( & #39; login_existing_user & #39; ).click()">
-                                    </div>
-                                    <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row hide_password">
-                                        <label for="ct-user-pass">Your Password                                            </label>
-                                        <input type="password" class="add_show_error_class_for_login error" name="ct_user_pass" id="ct-user-pass" placeholder="Enter your Password" onkeydown="if (event.keyCode == 13) document.getElementById( & #39; login_existing_user & #39; ).click()">
-                                    </div>
-                                    <label class="login_unsuccessfull"></label>
+                                <div class="ct-login-existing">
+                                    <form id="existing_user_form" name="existing_user_form" method="post" action="">
+                                        <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row hide_login_email">
+                                            <label for="ct-user-name">Your Email</label>
+                                            <input type="email" class="add_show_error_class_for_login error" required name="ct_user_email" id="ct-user-email" placeholder="Enter Email to Login" >
+                                        </div>
+                                        <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row hide_password">
+                                            <label for="ct-user-pass">Your Password                                            </label>
+                                            <input type="password" class="add_show_error_class_for_login error" required name="ct_user_pass" id="ct-user-pass" placeholder="Enter your Password" >
+                                        </div>
+                                        <label class="login_unsuccessfull"></label>
 
-                                    <div class="ct-md-12 ct-xs-12 mb-15 hide_login_btn">
-                                        <a href="javascript:void(0)" class="ct-button" id="login_existing_user" title="Log In">Log In</a>
-                                        <a href="javascript:void(0)" id="ct_forget_password" class="ct-link" title="Forget Password?">Forget Password</a>
-                                    </div>
+                                        <div class="ct-md-12 ct-xs-12 mb-15 hide_login_btn">
+                                            <a href="#" class="ct-button" id="login_existing_user" title="Log In">Log In</a>
+                                            <a href="<?php echo base_url() . 'forgotPass.html'; ?>" id="ct_forget_password" class="ct-link" title="Forget Password?">Forget Password</a>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <input type="hidden" id="color_box" data-id="#e74700" value="#e74700">
 
-                            <form id="user_details_form" class="" method="post" novalidate="novalidate">
+                            <div id="user_details_div" class="" novalidate="novalidate">
                                 <div class="ct-new-user-details">
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
                                         <label for="ct-email">Preferred Email</label>
-                                        <input type="text" name="ct_email" required id="ct-email" class="add_show_error_class error" placeholder="Your valid email address">
+                                        <input type="email" name="ct_email" required id="ct-email" class="add_show_error_class error" placeholder="Your valid email address">
                                     </div>
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
                                         <label for="ct-preffered-pass">Preferred Password</label>
@@ -490,7 +494,7 @@
                                 <div class="ct-peronal-details">
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
                                         <label for="ct-first-name">First Name</label>
-                                        <input type="text" required name="ct_first_name" class="add_show_error_class error" id="ct-first-name" placeholder="Your First Name">
+                                        <input type="text" required name="ct_first_name" class="add_show_error_class error" id="ct-first-name" placeholder="Your First Name" >
                                     </div>
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
                                         <label for="ct-last-pass">Last Name</label>
@@ -498,8 +502,11 @@
                                     </div>
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
                                         <label for="ct-user-phone">Phone</label>
-                                        <div class="intl-tel-input">
-                                            <input type="tel" required id="ct-user-phone" class="add_show_error_class error" name="ct_user_phone" autocomplete="off" placeholder="917899883343"></div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">+60</span>
+                                            <input type="tel" required id="ct-user-phone" class="add_show_error_class error" name="ct_user_phone" autocomplete="off" placeholder="" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10"></div>
+
                                     </div>
 
                                     <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
@@ -508,7 +515,7 @@
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-zip-code">Zip Code</label>
-                                        <input type="text" required name="ct_zip_code" id="ct-zip-code" class="add_show_error_class error" placeholder="e.g. 90001">
+                                        <input type="text" required name="ct_zip_code" id="ct-zip-code" class="add_show_error_class error" placeholder="e.g. 90001"  onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6">
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-city">City</label>
@@ -516,161 +523,169 @@
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-state">State</label>
-                                        <input type="text" required name="ct_state" id="ct-state" class="add_show_error_class error" placeholder="eg. CA ">
+                                        <select placeholder="Select state" name="ct_state" id="ct-state" class="add_show_error_class error" required >
+                                            <option value=""> Select State </option>
+                                            <?php
+                                            foreach ($state as $key => $value) {
+                                                echo '<option value="' . $value->state_code . '" >' . $value->state_name . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+
                                     </div>
 
 
                                     <div class="ct-md-12 ct-xs-12 ct-form-row">
                                         <label for="ct-notes">Special requests ( Notes )</label>
-                                        <textarea required id="ct-notes" rows="10"></textarea>
+                                        <textarea id="ct-notes" rows="10"></textarea>
                                     </div>
 
-<!--                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-15">
-                                        <label>Do you have a vacuum cleaner?</label>
-                                        <ul class="ct-radio-list">
-                                            <li>
-                                                <input id="vaccum-yes" type="radio" checked="checked" class="input-radio vc_status" name="vacuum-cleaner" value="Vacuum-Yes">
-                                                <label for="vaccum-yes"><span></span>Yes</label>
-                                            </li>
-                                            <li>
-                                                <input id="vaccum-no" type="radio" class="input-radio vc_status" name="vacuum-cleaner" value="Vacuum-No">
-                                                <label for="vaccum-no"><span></span>No</label>
-                                            </li>
-                                        </ul>
-                                    </div>-->
-<!--                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-10">
-                                        <label>Do you have parking?</label>
-                                        <ul class="ct-radio-list">
-                                            <li>
-                                                <input id="parking-yes" type="radio" checked="checked" class="input-radio p_status" name="parking" value="Parking-Yes">
-                                                <label for="parking-yes"><span></span>Yes</label>
-                                            </li>
-                                            <li>
-                                                <input id="parking-no" type="radio" class="input-radio p_status" name="parking" value="Parking-No">
-                                                <label for="parking-no"><span></span>No</label>
-                                            </li>
-
-                                        </ul>
-                                    </div>-->
-<!--                                    <div class="ct-options-new ct-md-12 ct-xs-12 mb-10 ct-form-row">
-                                        <label>How will we get in?</label>
-
-                                        <div class="ct-option-select">
-                                            <select class="ct-option-select" id="contact_status">
-                                                <option value="I&#39;ll be at home">I'll be at home</option>
-                                                <option value="Please call me">Please call me</option>
-                                                <option value="The key is with the doorman">The key is with the doorman</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                        </div>
-                                        <div class="ct-option-others ct-md-12 pt-10 np ct-xs-12 hidden">
-                                            <input type="text" name="other_contact_status" class="add_show_error_class error" id="other_contact_status" placeholder="Enter your Other option">
-                                        </div>
-                                    </div>-->
+                                    <!--                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-15">
+                                                                            <label>Do you have a vacuum cleaner?</label>
+                                                                            <ul class="ct-radio-list">
+                                                                                <li>
+                                                                                    <input id="vaccum-yes" type="radio" checked="checked" class="input-radio vc_status" name="vacuum-cleaner" value="Vacuum-Yes">
+                                                                                    <label for="vaccum-yes"><span></span>Yes</label>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <input id="vaccum-no" type="radio" class="input-radio vc_status" name="vacuum-cleaner" value="Vacuum-No">
+                                                                                    <label for="vaccum-no"><span></span>No</label>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>-->
+                                    <!--                                    <div class="ct-custom-radio ct-options-new ct-md-6 ct-sm-6 ct-xs-12 mb-10">
+                                                                            <label>Do you have parking?</label>
+                                                                            <ul class="ct-radio-list">
+                                                                                <li>
+                                                                                    <input id="parking-yes" type="radio" checked="checked" class="input-radio p_status" name="parking" value="Parking-Yes">
+                                                                                    <label for="parking-yes"><span></span>Yes</label>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <input id="parking-no" type="radio" class="input-radio p_status" name="parking" value="Parking-No">
+                                                                                    <label for="parking-no"><span></span>No</label>
+                                                                                </li>
+                                    
+                                                                            </ul>
+                                                                        </div>-->
+                                    <!--                                    <div class="ct-options-new ct-md-12 ct-xs-12 mb-10 ct-form-row">
+                                                                            <label>How will we get in?</label>
+                                    
+                                                                            <div class="ct-option-select">
+                                                                                <select class="ct-option-select" id="contact_status">
+                                                                                    <option value="I&#39;ll be at home">I'll be at home</option>
+                                                                                    <option value="Please call me">Please call me</option>
+                                                                                    <option value="The key is with the doorman">The key is with the doorman</option>
+                                                                                    <option value="Other">Other</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="ct-option-others ct-md-12 pt-10 np ct-xs-12 hidden">
+                                                                                <input type="text" name="other_contact_status" class="add_show_error_class error" id="other_contact_status" placeholder="Enter your Other option">
+                                                                            </div>
+                                                                        </div>-->
                                 </div>
-
+                            </div>
                         </div>
                         <!-- main details end -->
                     </div>
                     <!-- end personal details -->
                     <!-- payment details -->
-<!--
-                    <div class="ct-payment-main ct-common-box hide_allsss">
-                        <!-- Promocodes -->
-<!--                        <div class="ct-discount-coupons ct-md-12">
-                            <div class="ct-form-rown">
-                                <div class="ct-coupon-input ct-md-6 ct-sm-12 ct-xs-12 mt-10 mb-15 np">
-                                    <input id="coupon_val" type="text" name="coupon_apply" class="ct-coupon-input-text hide_coupon_textbox" placeholder="Have a promocode?" maxlength="22" onchange="myFunction()">
-                                    <a href="javascript:void(0);" class="ct-apply-coupon ct-link hide_coupon_textbox" name="apply-coupon" id="apply_coupon">Apply</a>
-                                    <label class="ct-error ofh coupon_invalid_error"></label>
-                                     display coupon 
-                                    <div class="ct-display-coupon-code" style="display: none;">
-                                        <div class="ct-form-rown">
-                                            <div class="ct-column ct-md-7 ct-xs-12 ofh">
-                                                <label>Applied Promocode</label>
-                                            </div>
-                                            <div class="ct-coupon-value-main ct-md-5 ct-xs-12">
-                                                <span class="ct-coupon-value border-2" id="display_code"></span>
-                                                <img id="ct-remove-applied-coupon" src="./assets/images/ct-close.png" class="reverse_coupon" title="Remove applied coupon">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-<!--                        <div class="ct-list-header">
-                            <h3 class="header3">Preferred Payment Method</h3>
-                        </div>-->
-
-<!--                        <div class="ct-main-payments fl">
-                            <div class="payments-container f-l" id="ct-payments">
-                                <label class="ct-error-msg">Please select one payment method</label>
-                                <label class="ct-error-msg ct-paypal-error" id="paypal_error"></label>
-
-                                <div class="ct-custom-radio ct-payment-methods f-l">
-                                    <ul class="ct-radio-list ct-all-pay-methods">
-                                        <li class="ct-md-3 ct-sm-6 ct-xs-12" id="pay-at-venue">
-                                            <input required type="radio" name="payment-methods" value="pay at venue" class="input-radio payment_gateway" id="pay-cash" checked="checked">
-                                            <label for="pay-cash" class="locally-radio"><span></span>Pay locally</label>
-                                        </li>
-
-
-                                    </ul>
-                                </div>
-                            </div>
-
-
-                            <div id="ct-pay-methods" class="payment-method-container f-l">
-
-                                <div class="card-type-center f-l">
-                                    <div class="common-payment-style hidden">
-                                        <div class="payment-inner">
-                                            <div id="card-payment-fields" style="">
-                                                <div class="ct-md-12 ct-xs-12 ct-header-bg">
-                                                    <h4 class="header4">Card details</h4>
-                                                    <img src="./assets/images/card-images.png" class="ct-stripe-image float-right" alt="Stripe">
-                                                </div>
-                                                <div class="ct-md-12">
-                                                    <label id="ct-card-payment-error" class="ct-error-msg ct-payment-error">Invalid card numberExpiry date or CSV</label> </div>
-                                                <div class="ct-md-9 ct-sm-9 ct-xs-12 ct-card-details">
-                                                    <div class="ct-form-row ct-md-12 ct-xs-12">
-                                                        <label>Card number</label>
-                                                        <i class="icon-credit-card icons"></i>
-                                                        <input class="cc-number ct-card-number" maxlength="20" size="20" data-stripe="number" type="tel">
-                                                        <span class="card" aria-hidden="true"></span>
-
-                                                    </div>
-
-                                                    <div class="ct-form-row ct-md-8 ct-sm-8 ct-xs-12 ct-exp-mnyr">
-                                                        <label>Expiry (MM/YYYY)</label>
-                                                        <i class="icon-calendar icons"></i>
-                                                        <input data-stripe="exp-month" class="cc-exp-month ct-exp-month" maxlength="2" type="tel">/
-
-                                                        <input data-stripe="exp-year" class="cc-exp-year ct-exp-year" maxlength="4" type="tel">
-                                                    </div>
-                                                    <div class="ct-form-row ct-md-4 ct-sm-4 ct-xs-12 ct-stripe-cvc">
-                                                        <label>CVC</label>
-                                                        <i class="icon-lock icons"></i>
-                                                        <input type="password" maxlength="4" size="4" data-stripe="cvc" class="cc-cvc ct-cvc-code">
-
+                    <!--
+                                        <div class="ct-payment-main ct-common-box hide_allsss">
+                    <!-- Promocodes -->
+                    <!--                        <div class="ct-discount-coupons ct-md-12">
+                                                <div class="ct-form-rown">
+                                                    <div class="ct-coupon-input ct-md-6 ct-sm-12 ct-xs-12 mt-10 mb-15 np">
+                                                        <input id="coupon_val" type="text" name="coupon_apply" class="ct-coupon-input-text hide_coupon_textbox" placeholder="Have a promocode?" maxlength="22" onchange="myFunction()">
+                                                        <a href="javascript:void(0);" class="ct-apply-coupon ct-link hide_coupon_textbox" name="apply-coupon" id="apply_coupon">Apply</a>
+                                                        <label class="ct-error ofh coupon_invalid_error"></label>
+                                                         display coupon 
+                                                        <div class="ct-display-coupon-code" style="display: none;">
+                                                            <div class="ct-form-rown">
+                                                                <div class="ct-column ct-md-7 ct-xs-12 ofh">
+                                                                    <label>Applied Promocode</label>
+                                                                </div>
+                                                                <div class="ct-coupon-value-main ct-md-5 ct-xs-12">
+                                                                    <span class="ct-coupon-value border-2" id="display_code"></span>
+                                                                    <img id="ct-remove-applied-coupon" src="./assets/images/ct-close.png" class="reverse_coupon" title="Remove applied coupon">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="ct-md-3 ct-sm-3 ct-xs-12 ct-lock-image">
-                                                    <div class="ct-lock-img"></div>
+                                            </div>-->
+                    <!--                        <div class="ct-list-header">
+                                                <h3 class="header3">Preferred Payment Method</h3>
+                                            </div>-->
+
+                    <!--                        <div class="ct-main-payments fl">
+                                                <div class="payments-container f-l" id="ct-payments">
+                                                    <label class="ct-error-msg">Please select one payment method</label>
+                                                    <label class="ct-error-msg ct-paypal-error" id="paypal_error"></label>
+                    
+                                                    <div class="ct-custom-radio ct-payment-methods f-l">
+                                                        <ul class="ct-radio-list ct-all-pay-methods">
+                                                            <li class="ct-md-3 ct-sm-6 ct-xs-12" id="pay-at-venue">
+                                                                <input required type="radio" name="payment-methods" value="pay at venue" class="input-radio payment_gateway" id="pay-cash" checked="checked">
+                                                                <label for="pay-cash" class="locally-radio"><span></span>Pay locally</label>
+                                                            </li>
+                    
+                    
+                                                        </ul>
+                                                    </div>
                                                 </div>
-
+                    
+                    
+                                                <div id="ct-pay-methods" class="payment-method-container f-l">
+                    
+                                                    <div class="card-type-center f-l">
+                                                        <div class="common-payment-style hidden">
+                                                            <div class="payment-inner">
+                                                                <div id="card-payment-fields" style="">
+                                                                    <div class="ct-md-12 ct-xs-12 ct-header-bg">
+                                                                        <h4 class="header4">Card details</h4>
+                                                                        <img src="./assets/images/card-images.png" class="ct-stripe-image float-right" alt="Stripe">
+                                                                    </div>
+                                                                    <div class="ct-md-12">
+                                                                        <label id="ct-card-payment-error" class="ct-error-msg ct-payment-error">Invalid card numberExpiry date or CSV</label> </div>
+                                                                    <div class="ct-md-9 ct-sm-9 ct-xs-12 ct-card-details">
+                                                                        <div class="ct-form-row ct-md-12 ct-xs-12">
+                                                                            <label>Card number</label>
+                                                                            <i class="icon-credit-card icons"></i>
+                                                                            <input class="cc-number ct-card-number" maxlength="20" size="20" data-stripe="number" type="tel">
+                                                                            <span class="card" aria-hidden="true"></span>
+                    
+                                                                        </div>
+                    
+                                                                        <div class="ct-form-row ct-md-8 ct-sm-8 ct-xs-12 ct-exp-mnyr">
+                                                                            <label>Expiry (MM/YYYY)</label>
+                                                                            <i class="icon-calendar icons"></i>
+                                                                            <input data-stripe="exp-month" class="cc-exp-month ct-exp-month" maxlength="2" type="tel">/
+                    
+                                                                            <input data-stripe="exp-year" class="cc-exp-year ct-exp-year" maxlength="4" type="tel">
+                                                                        </div>
+                                                                        <div class="ct-form-row ct-md-4 ct-sm-4 ct-xs-12 ct-stripe-cvc">
+                                                                            <label>CVC</label>
+                                                                            <i class="icon-lock icons"></i>
+                                                                            <input type="password" maxlength="4" size="4" data-stripe="cvc" class="cc-cvc ct-cvc-code">
+                    
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ct-md-3 ct-sm-3 ct-xs-12 ct-lock-image">
+                                                                        <div class="ct-lock-img"></div>
+                                                                    </div>
+                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                    
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>-->
+                    
+                                        </div>-->
                     <!-- end payment detials -->
                 </div>
-<!--                </form>-->
+                <!--                </form>-->
                 <!-- left side end -->
 
 
@@ -866,28 +881,28 @@
 
     </div>
     <input type="hidden" name="TransactionType" value="SALE">
-<input type="hidden" name="PymtMethod" value="ANY">
-<input type="hidden" name="ServiceID" value="ADV">
-<input type="hidden" name="PaymentID" value="<?php echo $payId = md5(uniqid("booking12345674238472984MyMaidz", true));?>">
-<input type="hidden" name="OrderNumber" value="IJKLMN">
-<input type="hidden" name="PaymentDesc" value="Booking No: IJKLMN, Sector:
-KUL-BKI, First Flight Date: 26 Sep 2012">
-<input type="hidden" name="MerchantName" value="Advance Dreams Venture Sdn Bhd">
-<input type="hidden" name="MerchantReturnURL"
-value="https://test.mymaidz.com/pay_response.html">
-<input type="hidden" name="MerchantCallbackURL"
-value="https://test.mymaidz.com/pay_callback.html">
-<input type="hidden" name="Amount" value="1.00">
-<input type="hidden" name="CurrencyCode" value="MYR">
-<input type="hidden" name="CustIP" value="<?php echo $_SERVER['REMOTE_ADDR'];?>">
-<input type="hidden" name="CustName" value="Jason">
-<input type="hidden" name="CustEmail" value="Jasonabc@gmail.com">
-<input type="hidden" name="CustPhone" value="60121235678">
-<input type="hidden" name="HashValue" value='<?php echo hash("sha512", "adv12345ADV".$payId."https://test.mymaidz.com/pay_response.html1.00MYR192.168.2.35780"); ?>'>
-<input type="hidden" name="MerchantTermsURL"
-value="https://test.mymaidz.com/pay_response.html">
-<input type="hidden" name="LanguageCode" value="en">
-<input type="hidden" name="PageTimeout" value="780">
+    <input type="hidden" name="PymtMethod" value="ANY">
+    <input type="hidden" name="ServiceID" value="ADV">
+    <input type="hidden" name="PaymentID" value="<?php echo $payId = md5(uniqid("booking12345674238472984MyMaidz", true)); ?>">
+    <input type="hidden" name="OrderNumber" value="IJKLMN">
+    <input type="hidden" name="PaymentDesc" value="Booking No: IJKLMN, Sector:
+           KUL-BKI, First Flight Date: 26 Sep 2012">
+    <input type="hidden" name="MerchantName" value="Advance Dreams Venture Sdn Bhd">
+    <input type="hidden" name="MerchantReturnURL"
+           value="https://test.mymaidz.com/pay_response.html">
+    <input type="hidden" name="MerchantCallbackURL"
+           value="https://test.mymaidz.com/pay_callback.html">
+    <input type="hidden" name="Amount" value="1.00">
+    <input type="hidden" name="CurrencyCode" value="MYR">
+    <input type="hidden" name="CustIP" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
+    <input type="hidden" name="CustName" value="Jason">
+    <input type="hidden" name="CustEmail" value="Jasonabc@gmail.com">
+    <input type="hidden" name="CustPhone" value="60121235678">
+    <input type="hidden" name="HashValue" value='<?php echo hash("sha512", "adv12345ADV" . $payId . "https://test.mymaidz.com/pay_response.html1.00MYR192.168.2.35780"); ?>'>
+    <input type="hidden" name="MerchantTermsURL"
+           value="https://test.mymaidz.com/pay_response.html">
+    <input type="hidden" name="LanguageCode" value="en">
+    <input type="hidden" name="PageTimeout" value="780">
 </form>
 
 
@@ -1019,8 +1034,10 @@ value="https://test.mymaidz.com/pay_response.html">
 
 <script>
     base_url = "<?php echo base_url(); ?>";
-    gst      = <?php echo $config['gst']; ?>;
-   
+    gst = <?php echo $config['gst']; ?>;
+    home_url = "<?php echo base_url() . "home.html" ?>";
+    user_logged_in = "<?php if ($this->session->userdata('user_id') == null) {  echo "No"; } else { echo "Yes";} ?>";
+
 </script>
 
 <script type="text/javascript" src="<?php echo js_url('user/booking'); ?>"></script>

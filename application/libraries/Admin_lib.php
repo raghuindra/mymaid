@@ -1436,5 +1436,56 @@ class Admin_lib extends Base_lib{
         return $insert_id = $this->model->insert_tb('mm_postcode_service_price', $info);
         
     }
+    
+    /*
+     * Fnunction to update the Configuration Values
+     */
+    function _updateConfig(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('senderEmail', 'Sender Email', 'trim|required|xss_clean|encode_php_tags|valid_email', array('required' => 'You must provide a valid %s.'));
+        $this->ci->form_validation->set_rules('gst', 'GST', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('gstStatus', 'GST Status', 'trim|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+                $this->_status = FALSE;
+                $this->_message = $this->ci->lang->line('invalid_data');
+                return $this->getResponse();
+        } else {
+
+            $senderEmail = $this->ci->input->post('senderEmail', true);
+            $gst         = $this->ci->input->post('gst', true);
+            $config      = array();
+            
+            if(isset($_POST['gstStatus']) && ($_POST['gstStatus'] == 'on') ){
+                $config[] = array('config_name'=>'gst', 'config_value'=>$gst, 'config_status'=>1);
+            }else{
+                $config[] = array('config_name'=>'gst', 'config_value'=>$gst, 'config_status'=>0);
+            }
+            
+            $config[] = array('config_name'=>'sender_email', 'config_value'=>$senderEmail);
+            
+            $this->model->update_batch_tb('mm_config', $config, 'config_name');
+            
+            if ($this->model->getAffectedRowCount() > 0) {
+                $response = array(
+                    'status' => true,
+                    'message' => $this->ci->lang->line('config_settings_updated'),
+                );
+                //$this->ci->session->set_flashdata('success_message', $this->ci->lang->line('service_name_inserted'));                    
+            } else {
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('no_changes_to_update'),
+                );
+            }
+            
+
+            return $response;
+        }
+    }
 
 }

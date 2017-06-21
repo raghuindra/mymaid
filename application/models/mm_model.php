@@ -232,5 +232,9 @@ class Mm_model extends CI_Model
 VALUES ('$mobile', '$message', '$from', '$createdDate', '$updatedBy', '$updatedDate')");
             //return sp_smsAlert_insert($mobile, $message,$from, $date);
         }
+        
+        function update_batch_tb($tbl, $batchData, $conditionKey){
+            return $this->db->update_batch($tbl, $batchData, $conditionKey);
+        }
 }
 ?>

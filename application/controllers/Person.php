@@ -49,7 +49,23 @@ class Person extends CI_Controller{
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
+    
+    function bookingUserLogin(){
+        if (isset($_POST['email'])) {           
+            $response = $this->person_lib->_booking_login_user();
 
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            );
+        }
+    
+        echo json_encode($response);
+        
+    }
+    
     function userRegister() {
         if($this->session->userdata('user_id') != NULL) { $this->person_lib->redirect_home();}
         if (isset($_POST['email'])) {

@@ -70,6 +70,8 @@ $route['getServiceAddons.html']                 = "user/getServiceAddons";
 $route['getServiceSplRequests.html']            = "user/getServiceSplRequests";
 $route['pay_test.html']                         = "user/payTest";
 $route['booking_info.html']                     = "user/bookingInfo";
+$route['getUserDetails.html']                   = "user/getUserDetails";
+$route['bookingUserLogin.html']                 = "person/bookingUserLogin";
 
 
 /* ................  Admin Module Routing  ......................... */
@@ -112,6 +114,8 @@ $route['approveNewVendor.html']                 = "admin/approveNewVendor";
 $route['active_vendors_list.html']              = "admin/postActiveVendorsList";
 $route['archiveVendor.html']                    = "admin/postArchiveVendor";
 $route['vendors_company_list.html']             = "admin/postVendorCompanyList";
+$route['admin_settings.html']                   = "admin/adminSettings";
+$route['updateConfig.html']                     = "admin/updateConfigSettings";
 
 
 
@@ -148,6 +152,7 @@ $route['archiveServiceLocation.html']           = "vendor/archiveServiceLocation
 $route['listNewBookingForVendor.html']          = "vendor/listNewBookings";
 $route['getEmployeesForJob.html']               = "vendor/getEmployeesForJob";
 $route['assignEmployeeToJob.html']              = "vendor/assignEmployeeToJob";
+$route['listActiveServiceBookings.html']        = "vendor/listActiveServiceBookings";
 
 
 /* ........Freelance Module Routing................... */

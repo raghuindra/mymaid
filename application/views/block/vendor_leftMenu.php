@@ -141,6 +141,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+                    <?php if($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME){?>
                     <li class="active">
                         <a href="<?php echo base_url() . 'vendor_myaccount_company.html'; ?>">
                             <i class="fa fa-info-circle"></i>
@@ -150,6 +151,7 @@
                             </span>
                         </a>
                     </li>
+                    <?php } ?>
                     <li class="active">
                         <a href="<?php echo base_url() . 'vendor_profile.html'; ?>">
                             <i class="fa fa-male"></i>

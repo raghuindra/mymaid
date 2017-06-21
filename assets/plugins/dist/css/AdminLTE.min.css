@@ -2630,7 +2630,7 @@ a:hover, a:active, a:focus {
 }
 
 .nav-tabs-custom>.nav-tabs>li {
-    border-top: 3px solid transparent;
+    border-top: 3px solid #d2d6de;
     margin-bottom: -2px;
     margin-right: 5px
 }

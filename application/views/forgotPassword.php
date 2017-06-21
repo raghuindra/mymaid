@@ -1,7 +1,7 @@
     
 <div class="login-box">
     <div class="login-logo">
-        <a href="<?php echo base_url().'home.html'; ?>"><b>MyMaid</b>z</a>
+        <a href="<?php echo base_url().'home.html'; ?>"><img class="profile-user-img img-responsive" src="<?php echo img_url('YellowMM_240.png');?>" style="width:85%;" alt="MyMaidz"></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">

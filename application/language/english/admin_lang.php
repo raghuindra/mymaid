@@ -36,8 +36,10 @@ $lang['service_spl_request_updated']            = "Service Special request updat
 $lang['service_Spl_request_already_exists']     = "Service Special request already exists.";
 $lang['service_spl_request_archived']           = "Service Special request archived.";
 $lang['service_spl_request_unarchived']         = "Service Special request unarchived.";
-$lang['vendor_approved']                        = "Vendor Approved";
-$lang['vendor_archived']                        = "Vendor archived";
-$lang['vendor_unarchived']                      = "Vendor Un Archived";
+$lang['vendor_approved']                        = "Vendor Approved.";
+$lang['vendor_archived']                        = "Vendor archived.";
+$lang['vendor_unarchived']                      = "Vendor Un Archived.";
+$lang['no_changes_to_update']                   = "No changes to update.";
+$lang['config_settings_updated']                = "Config settings updated.";
 ?>
 

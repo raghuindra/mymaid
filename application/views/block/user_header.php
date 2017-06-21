@@ -30,6 +30,8 @@
         <link rel="stylesheet" href="<?php echo css_url('booking');?>" type="text/css" media="all">
          <!-- **Google - Fonts** -->
         <link href="<?php echo css_url('css');?>" rel="stylesheet">
+        <!-- Jquery-Confirm -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.css">
          <style>
             .error {
                 color: red;
@@ -38,6 +40,8 @@
         </style>
         <?php } ?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+         <!-- Jquery-Confirm -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
 <!--            <script src="<?php //echo js_url('utils');?>" type="text/javascript"></script>
 <script src="<?php //echo js_url('intlTelInput');?>" type="text/javascript"></script>-->
 	<!-- END PAGE LEVEL STYLES -->

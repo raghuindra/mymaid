@@ -14,7 +14,7 @@ class Vendor extends Base {
         $this->lang->load("vendor", $this->uLang);
         //$this->lang->load("vendor_msg", $this->uLang);
         //$this->lang->load("vendor_leftbar", $this->uLang);
-        $this->page_load_lib->validate_user('vendor');
+        $this->page_load_lib->validate_user(Globals::PERSON_TYPE_VENDOR_NAME);
     }
 
     public function index() {
@@ -431,6 +431,15 @@ class Vendor extends Base {
                 'data' => array()
             );
         }
+        echo json_encode($response);
+    }
+    
+    /** Function to List the Service Bookings.
+    * @param null
+    * @return JSON returns the JSON with new Service Bookings    
+    */
+    public function listActiveServiceBookings(){
+        $response = $this->vendor_lib->_listActiveServiceBookings(); 
         echo json_encode($response);
     }
 

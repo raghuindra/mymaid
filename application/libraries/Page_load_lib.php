@@ -37,10 +37,12 @@ class Page_load_lib {
      * gets all configuration from Database
      */
 	function get_config() {
-		$config_array = $this->ci->config_model->get('config_name, config_value')->result();
+		$config_array = $this->ci->config_model->get('config_name, config_value, config_status')->result();
+                
 		if(count($config_array) > 0) {
 			foreach($config_array as $key => $config) {
 				$this->ci->data['config'][$config->config_name] = $config->config_value;
+                                $this->ci->data['config']['status'][$config->config_name] = $config->config_status;
 			}	
 		}
 		
@@ -107,7 +109,10 @@ class Page_load_lib {
 		elseif($user==$this->ci->session->userdata('user_type') && $this->ci->session->userdata('user_id')!='')
                 {
                     return TRUE;
-                }elseif($user!=$this->ci->session->userdata('user_type')){
+                }else if($user == Globals::PERSON_TYPE_VENDOR_NAME && $this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+                    return TRUE;
+                }
+                elseif($user!=$this->ci->session->userdata('user_type')){
                         $type = $this->ci->session->userdata('user_type');
                         switch ($type) {
                              case Globals::PERSON_TYPE_ADMIN_NAME:
@@ -117,7 +122,7 @@ class Page_load_lib {
                                              $redirect_url="vendor_home.html";
                                      break;
                              case Globals::PERSON_TYPE_FREELANCER_NAME:
-                                             $redirect_url="freelance_home.html";
+                                             $redirect_url="vendor_home.html";
                                      break;
                              case Globals::PERSON_TYPE_USER_NAME:
                                              $redirect_url="home.html";

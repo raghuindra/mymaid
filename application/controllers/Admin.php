@@ -10,7 +10,7 @@ class Admin extends Base {
             parent::__construct();
             $this->load->library(array('admin_lib', 'admin_vendor_lib'));              
             $this -> lang -> load("admin", $this->uLang);
-            $this->page_load_lib->validate_user('admin');
+            $this->page_load_lib->validate_user(Globals::PERSON_TYPE_ADMIN_NAME);
         }
         
 	public function index(){
@@ -527,6 +527,34 @@ class Admin extends Base {
                 $this -> load -> view('template', $this->data);
             }
             
+        }
+        
+        /** Function to set/get Admin settings.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function adminSettings(){
+            $this->data['content']          = "admin/settings.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+        }
+        
+        /** Function to set/get Admin settings.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function updateConfigSettings(){
+            //print_r($_POST); exit;
+            if(isset($_POST['senderEmail'])){
+                $response = $this->admin_lib->_updateConfig();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
         }
         
         

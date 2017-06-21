@@ -373,14 +373,34 @@ var ServiceResponseHandler = {
     
     ServiceBookingSuccessHandler: function(data){
         if(data.status){
-            notifyMessage('success', data.message);
+            $.confirm({
+                title: 'Booking Succeassfull!',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                 content: 'Your Service request has been placed successfully. Vendor will contact you soon.',
+                 autoClose: 'OK|5000',
+                 animationBounce: 2.0,
+                 buttons: {
+                     OK: {
+                         btnClass: 'btn-green',
+                         text: 'ok',
+                         action: function () {
+                             window.location.href = home_url;
+                             
+                         }
+                     }
+                 }
+            });
+            
         }else{
             notifyMessage('error', data.message);
         }
     },
     
     ServiceBookingFailureHandler: function(data){
-        notifyMessage('error', "Some issue with system/internet. Please try again after some time.");
+        notifyMessage('error', data.message);
     }
     
 };
@@ -666,9 +686,9 @@ var RenderView = {
                         var freq = "<li class='ct-sm-6 ct-md-3 ct-xs-12 mb-10'>\n\
                             <div class='discount-text f-l'><span class='discount-price'> -Save "+ frequency[id][freqId].service_frequency_offer_value +"%- </span>\n\
                             </div>\n\
-                            <input type='radio' name='frequently_discount_radio' checked='' data-id='"+ frequency[id][freqId].service_frequency_offer_id +"' class='cart_frequently_discount' id='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"' data-name='Monthly' value='"+ frequency[id][freqId].service_frequency_offer_id +"' >\n\
+                            <input type='radio' name='frequently_discount_radio' checked='' data-id='"+ frequency[id][freqId].service_frequency_offer_id +"' class='cart_frequently_discount' id='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"' data-name='Monthly' value='"+ frequency[id][freqId].service_frequency_offer_value +"' >\n\
                             <label class='ct-btn-discount border-c' for='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"'>\n\
-                            <span class='float-left'>"+ frequency[id][freqId].service_frequency_name +"</span>\n\
+                            <span class='float-left freq_disc_name'>"+ frequency[id][freqId].service_frequency_name +"</span>\n\
                             <span class='ct-discount-check float-right'></span>\n\
                             </label></li>";
                         $("#frequency_temp_html div ul").append(freq);
@@ -680,7 +700,7 @@ var RenderView = {
                             </div>\n\
                             <input type='radio' name='frequently_discount_radio' checked='' data-id='0' class='cart_frequently_discount' id='discount-often-"+id+"-0' data-name='Monthly' value='0' >\n\
                             <label class='ct-btn-discount border-c' for='discount-often-"+id+"-0'>\n\
-                            <span class='float-left'>Once</span>\n\
+                            <span class='float-left freq_disc_name'>Once</span>\n\
                             <span class='ct-discount-check float-right'></span>\n\
                             </label></li>";
                         $("#frequency_temp_html div ul").append(freq);
@@ -714,7 +734,7 @@ var RenderView = {
                     //$("#frequency_temp_html div ul").addClass();
                     for(var splReqId in splReq[id]){
                         var freq = "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'>\n\
-                            <input type='checkbox' name='spl-request-checkbox' class='addon-checkbox addons_servicess_2' data-id='"+ splReq[id][splReqId].service_spl_request_id +"' id='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"' data-mnamee='ad_unit4'>\n\
+                            <input type='checkbox' name='spl-request-checkbox' class='addon-checkbox addons_servicess_2' data-serviceId='"+id+"' data-id='"+ splReq[id][splReqId].service_spl_request_id +"' id='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"' data-mnamee='ad_unit4'>\n\
                             <label class='ct-addon-ser border-c' for='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"'><span></span>";
                         
                         if(splReq[id][splReqId].service_spl_request_price !== null &&  splReq[id][splReqId].service_spl_request_price !== ""){
@@ -792,6 +812,7 @@ $(function () {
             $(".packageDiv .services-list .package-radio").prop('checked', false);
         });
         $('.service-radio').trigger('click');
+        
         //Service package Selection Event Handling
         $(document).on("click", ".packageDiv .services-list .package-radio", function(e){           
             Booking.setPackage($(this).val());
@@ -824,6 +845,20 @@ $(function () {
             
         });
         
+        //Special Service Request Selection Event Handling
+        $(document).on("click", "#service_spl_request_div .ct-extra-services-list .addon-service-list .addon-checkbox", function(){
+            var splRequest = new Array();
+            console.log("Spl request Is Checked: " +$(this).is(":checked"));
+            
+            if($(this).is(":checked")){               
+               splRequest.push($(this).attr('data-serviceId')); //[$(this).data('id')] = 1;              
+            }else{
+                splRequest.push($(this).attr('data-serviceId')); //[$(this).data('id')] = 0;
+            }
+            //if()
+            console.log("Addon Count: "+splRequest);
+        });
+        
         
 
     }, 2000);
@@ -835,6 +870,7 @@ $(function () {
         var booking = ServiceFactory.getServiceBookingCommand(json, 'booking_info.html',ServiceResponseHandler.ServiceBookingSuccessHandler, ServiceResponseHandler.ServiceBookingFailureHandler);
             ServiceFactory.executeTask(booking);
     });
+                           
     
 });
 
@@ -843,8 +879,9 @@ var Booking = (function() {
     var package = null;
     var addon = {};
     var addonPrice = 0;
-    var extraService = null;
+    var extraService = {};
     var frequency = null;
+    var frequencyPrice = 0;
     var price   = 0;
     var gstax   = gst * 0.01;
     
@@ -852,8 +889,9 @@ var Booking = (function() {
         reset : function(){
             this.package = null;
             this.addon = {};
-            this.extraService = null;
+            this.extraService = {};
             this.frequency = null;
+            this.frequencyPrice = 0;
             this.price = 0;
             this.addonPrice = 0;
 
@@ -923,6 +961,10 @@ var Booking = (function() {
             return this.frequency;
         },
         
+        setFrequencyPrice: function(price){
+            
+        },
+        
         calculateTotalPrice: function(){
             var price = this.price + this.addonPrice;
             return parseFloat( (price * gstax) + parseFloat(price));
@@ -947,6 +989,7 @@ var Booking = (function() {
                 data.addon  = this.addon;
                 data.extraService = this.extraService;
                 data.frequency = this.frequency;
+                data.frequencyValue = $(".cart_frequently_discount").val();
                 data.price = this.price;
                 data.totalPrice = this.calculateTotalPrice();
                 data.servicePostcode = $("#postcodeSearch").attr('data-val');
@@ -958,7 +1001,7 @@ var Booking = (function() {
                     info.pass = $("#ct-preffered-pass").val();
                     info.firstName = $("#ct-first-name").val();
                     info.lastName = $("#ct-last-name").val();
-                    info.phone = $("#ct_user_phone").val();
+                    info.phone = $("#ct-user-phone").val();
                     info.address = $("#ct-street-address").val();
                     info.pincode = $("#ct-zip-code").val();
                     info.city =  $("#ct-city").val();

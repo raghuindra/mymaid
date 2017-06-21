@@ -75,17 +75,17 @@
                 </ul>
             </li>
                 
-                    <!--  
+                     
                     <li>
-                        <a href="<?php //echo base_url() . 'admin_canceledjobs.html'; ?>">
-                            <i class="fa fa-close"></i>
-                            <span>Canceled Job</span>
+                        <a href="<?php echo base_url() . 'admin_settings.html'; ?>">
+                            <i class="fa fa-gears"></i>
+                            <span>Settings</span>
                             <span class="pull-right-container">
-                                <span class="label pull-right bg-red">4</span>
+<!--                                <span class="label pull-right bg-red">4</span>-->
                             </span>
                         </a>
                     </li>
-                    <li>
+                <!--     <li>
                         <a href="<?php //echo base_url() . 'admin_completedjobs.html'; ?>">
                             <i class="fa fa-check"></i>
                             <span>Completed Job</span>

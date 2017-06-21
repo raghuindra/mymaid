@@ -152,7 +152,7 @@ $this->load->view("block/admin_leftMenu");
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>               
+                <button type="button" class="btn btn-default bg-maroon" data-dismiss="modal">Cancel</button>               
             </div>
         </div>
     </div>
@@ -349,8 +349,16 @@ $this->load->view("block/admin_leftMenu");
             $("#venAddress1").html(rowData.person_address1);
             $("#venCity").html(rowData.person_city);
             $("#venState").html(rowData.person_state);
-            $("#venMobile").html(rowData.person_mobile);
-            $("#venTelephone").html(rowData.person_telephone);
+            if(rowData.person_mobile == null){
+                $("#venMobile").html("--");
+            }else{
+                $("#venMobile").html("+60"+rowData.person_mobile);
+            }
+            if(rowData.person_telephone == null){
+                $("#venTelephone").html("--");
+            }else{
+                $("#venTelephone").html("+60"+rowData.person_telephone);
+            }
             $("#venIdentity").html(rowData.person_identity_card + " - " + rowData.person_identity_card_number);
             callback(true);
 
@@ -366,9 +374,21 @@ $this->load->view("block/admin_leftMenu");
             $("#compAddress1").html(rowData.company_address1);
             $("#compCity").html(rowData.company_city);
             $("#compState").html(rowData.company_state);
-            $("#compMobile").html(rowData.company_mobile);
-            $("#compTelephone").html(rowData.company_landphone);
-            $("#compHPphone").html(rowData.company_hp_phone);
+            if(rowData.company_mobile == null){
+                $("#compMobile").html("--");
+            }else{
+                $("#compMobile").html("+60"+rowData.company_mobile);
+            }
+            if(rowData.company_landphone == null){
+                $("#compTelephone").html("--");
+            }else{
+                $("#compTelephone").html("+60"+rowData.company_landphone);
+            }
+            if(rowData.company_hp_phone == null){
+                $("#compHPphone").html("--");
+            }else{
+                $("#compHPphone").html("+60"+rowData.company_hp_phone);
+            }
             $("#compEmployees").html(rowData.company_emp_min+ " - "+rowData.company_emp_max);
             callback(true);
             
@@ -387,7 +407,7 @@ $this->load->view("block/admin_leftMenu");
                     'columnClass': 'col-md-6 col-md-offset-3',
                     buttons: {                        
                         cancel:{
-                            btnClass: 'btn-red',
+                            btnClass: 'bg-maroon',
                             action: function () {
 
                             }
@@ -442,10 +462,32 @@ $this->load->view("block/admin_leftMenu");
                         return string;
                     }
                 },
-                {"responsivePriority": '2', "targets": [2, 3, 4, 6], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [2], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class="">+60' + row.person_mobile + ' </td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [6], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = "";
+                        if(row.company_landphone != null && row.company_landphone != ''){
+                            string = ' <td class="">+60' + row.company_landphone + ' </td>';
+                        }else{
+                            string = ' <td class="centered"> -- </td>';
+                        }
+                        return string;
+                    }
+                },
                 {"responsivePriority": '2', "targets": [5], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
-                        var string = ' <td class=""><a href="#" class="companyDetails">' + row.company_name + ' </a></td>';
+                        var string = "";
+                        if(row.person_type == <?php echo Globals::PERSON_TYPE_FREELANCER;?>){
+                            string = ' <td class="">Freelancer</td>';
+                        }else{
+                            string = ' <td class=""><a href="#" class="companyDetails">' + row.company_name + ' </a></td>';
+                        }
                         return string;
                     }
                 },
@@ -528,7 +570,7 @@ $this->load->view("block/admin_leftMenu");
                         }
                     },
                     cancel:{
-                        btnClass: 'btn-red',
+                        btnClass: 'bg-maroon',
                         action: function () {
 
                         }
@@ -594,10 +636,32 @@ $this->load->view("block/admin_leftMenu");
                         return string;
                     }
                 },
-                {"responsivePriority": '2', "targets": [2, 3, 5, 6], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [2], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class="">+60' + row.person_mobile + ' </td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [5], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = "";
+                        if(row.company_landphone != null && row.company_landphone != ''){
+                            string = ' <td class="">+60' + row.company_landphone + ' </td>';
+                        }else{
+                            string = ' <td class="centered"> -- </td>';
+                        }
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [ 3, 6], searchable: true, orderable: true},
                 {"responsivePriority": '2', "targets": [4], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
-                        var string = ' <td class=""><a href="#" class="actCompanyDetails">' + row.company_name + ' </a></td>';
+                        var string = "";
+                        if(row.person_type == <?php echo Globals::PERSON_TYPE_FREELANCER;?>){
+                            string = ' <td class="">Freelancer</td>';
+                        }else{
+                            string = ' <td class=""><a href="#" class="actCompanyDetails">' + row.company_name + ' </a></td>';
+                        }                       
                         return string;
                     }
                 },
@@ -702,7 +766,7 @@ $this->load->view("block/admin_leftMenu");
                         }
                     },
                     cancel: {
-                    btnClass: 'btn-red',
+                    btnClass: 'bg-maroon',
                     action:function () {
 
                         }

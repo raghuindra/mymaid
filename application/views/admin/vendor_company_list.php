@@ -1,6 +1,7 @@
 <?php
 $this->load->view("block/admin_topNavigation");
 $this->load->view("block/admin_leftMenu");
+
 ?>
 
 

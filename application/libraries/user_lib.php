@@ -201,7 +201,7 @@ class User_lib extends Base_lib{
     
     /* Save Booking Information */
     function _saveServiceBooking($data){
-        
+        //print_r($data); exit;
         $this->ci->load->library('form_validation');
 
         $this->resetResponse();
@@ -229,19 +229,73 @@ class User_lib extends Base_lib{
                     $vendorIds[] = array("id"=>$val->vendor_service_location_vendor_id,"mobile"=>$val->person_mobile);
                 }
                 
-                if(!empty($vendorIds)){
-                    foreach($vendorIds as $vendor){
-                        //SMS
-                        $this->sendSMS($vendor['mobile'], "New Service request from user for the date: ".$data->userInfo->serviceDate);                     
+                if(!empty($vendorIds)){                   
+                                        
+                    if($this->ci->session->userdata('user_id') == null){
+                        if(!isset($data->userInfo->email) || $data->userInfo->email =='' || $data->userInfo->email == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->pass) || $data->userInfo->pass =='' || $data->userInfo->pass == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->address) || $data->userInfo->address =='' || $data->userInfo->address == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->city) || $data->userInfo->city =='' || $data->userInfo->city == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->state) || $data->userInfo->state =='' || $data->userInfo->state == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->phone) || $data->userInfo->phone =='' || $data->userInfo->phone == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->pincode) || $data->userInfo->pincode =='' || $data->userInfo->pincode == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->firstName) || $data->userInfo->firstName =='' || $data->userInfo->firstName == null){
+                            $this->_status = FALSE;
+                        }
+                        if(!isset($data->userInfo->lastName) || $data->userInfo->lastName =='' || $data->userInfo->lastName == null){
+                            $this->_status = FALSE;
+                        }
+                        
+                        if($this->_status){
+                            $user_info = array();
+                            $user_info['person_first_name']     = $data->userInfo->firstName;
+                            $user_info['person_last_name']      = $data->userInfo->lastName;
+                            $user_info['person_email']          = $data->userInfo->email;
+                            $user_info['person_password']       = hash('sha512', $data->userInfo->pass);
+                            $user_info['person_address']        = $data->userInfo->address;
+                            $user_info['person_city']           = $data->userInfo->city;
+                            $user_info['person_state']          = $data->userInfo->state;
+                            $user_info['person_mobile']         = $data->userInfo->phone;
+                            $user_info['person_postal_code']    = $data->userInfo->pincode;
+                            $user_info['person_country_code']   = "my";
+                            $user_info['person_lang_code']      = "en";
+                            $user_info['person_type']           = Globals::PERSON_TYPE_USER; /* Person_type = 1 ==> 'user' type */
+                            $this -> ci -> load-> library('person_lib');
+                            $result = $this->ci->person_lib->booking_user_registration($user_info);
+                            if($result['status']){
+                                $user = $this->model->getUserDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_info['person_email'], 'person_password' => $user_info['person_password'], 'person_status' => 1))->row();
+
+                                $this->ci->person_lib->_set_last_ip_and_last_login($user->person_id);
+                                $this->ci->person_lib->_set_session($user->person_type_name, $user);
+                            }else{
+                                $this->_status = false;
+                                $this->_message = $result['message'];
+                                $this->_rdata = null;
+                                return $this->getResponse();
+                            }
+                        }else{
+                            $this->_status = false;
+                            $this->_message = 'Data missing';
+                            $this->_rdata = null;
+                            return $this->getResponse();
+                        }
                     }
                     
                     $info = array();
-                    if($data->userRegStatus == 'Existing User'){
-
-                    }else if($data->userRegStatus == 'New-User'){
-
-                    }
-
                     $info['booking_service_id']     = $data->service;
                     $info['booking_package_id']     = $data->package;
                     $info['booking_pincode']        = $data->servicePostcode;
@@ -258,6 +312,14 @@ class User_lib extends Base_lib{
                         $this->_status = true;
                         $this->_message = 'Booking Successfull';
                         $this->_rdata = $booking_id;
+                        
+                        foreach($vendorIds as $vendor){
+                            //SMS
+                            $this->sendSMS("+60".$vendor['mobile'], "New Service request from user for the date: ".$data->userInfo->serviceDate);                     
+                        }
+                        
+                        //SMS to User
+                        $this->sendSMS("+60".$data->userInfo->phone, "Your Service request has been placed successfully. The Service date is: ".$data->userInfo->serviceDate); 
                     }
                 }
             }
@@ -269,6 +331,32 @@ class User_lib extends Base_lib{
         
         return $this->getResponse();
         
+    }
+    
+    /*
+     * Function to get the user details
+     */
+    function _getUserDeatils(){
+        $this->resetResponse();
+        if($this->ci->session->userdata('user_id') != null){
+            $person_id = $this->ci->session->userdata('user_id');
+            $result = $this->model->get_tb('mm_person', 'person_first_name, person_last_name, person_email, person_address, person_address1, person_city, person_state, person_mobile, person_postal_code', array('person_id'=>$person_id))->result();
+            if($result){
+                $this->_status = true;
+                $this->_message = '';
+                $this->_rdata = $result;
+            }else{
+                $this->_status = false;
+                $this->_message = '';
+                $this->_rdata = array();
+            }
+        }else{
+            $this->_status = false;
+            $this->_message = '';
+            $this->_rdata = array();
+        }
+        
+        return $this->getResponse();
     }
 
 }

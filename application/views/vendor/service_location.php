@@ -95,7 +95,7 @@ $this->load->view("block/vendor_leftMenu");
 
                                                     <div class="box-footer">
                                                         <div class="col-sm-10">
-                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-red formReset">Clear</button>
+                                                            <button type="button" class="btn btn-default pull-right btn-lg bg-maroon formReset">Clear</button>
                                                         </div> 
                                                         <div class="col-sm-2">
                                                             <button type="submit" class="btn btn-info pull-right btn-lg bg-green" id="addServiceLocation">Add</button>
