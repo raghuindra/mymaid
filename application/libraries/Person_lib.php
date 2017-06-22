@@ -23,6 +23,21 @@ class Person_lib extends Base_lib{
         $this->model = $this->ci->person_model;
     }
 
+    function getMyAccountUrl(){
+
+        $this->ci->data['myAccountUrl'] = "home.html";
+        if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_USER_NAME ){ 
+            $this->ci->data['myAccountUrl'] = "user_home.html";
+        }else if( $this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME){
+            $this->ci->data['myAccountUrl'] = "admin_home.html";
+        }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME){
+            $this->ci->data['myAccountUrl'] = "vendor_home.html";
+        }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+            $this->ci->data['myAccountUrl'] = "vendor_home.html";
+        }
+
+    }
+    
     /*
      * 
      *
@@ -578,7 +593,7 @@ class Person_lib extends Base_lib{
                     $redirect_url = "admin_home.html";
                     break;
                 case Globals::PERSON_TYPE_USER_NAME:
-                    $redirect_url = "home.html";
+                    $redirect_url = "user_home.html";
                     break;
                 case Globals::PERSON_TYPE_VENDOR_NAME:
                     $redirect_url = "vendor_home.html";

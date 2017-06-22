@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller']                    = 'user';
+$route['default_controller']                    = 'booking';
 $route['logout.html']                           = "person/logout";
 $route['forgotPass.html']                       = "person/forgotPassword";
 $route['reset_password.html/(:any)']            = "person/resetpassword/$1";
@@ -62,16 +62,28 @@ $route['refundPolicy.html']                     = "person/refundPolicyPage";
 /* ........User Module Routing............................ */
 $route['user_login.html']                       = "person/userLogin";
 $route['user_register.html']                    = "person/userRegister";
-$route['booking.html']                          = "user/booking";
-$route['getServices.html']                      = "user/getServices";
-$route['getServicePackages.html']               = "user/getServicePackages";
-$route['getServiceFrequencies.html']            = "user/getServiceFrequencies";
-$route['getServiceAddons.html']                 = "user/getServiceAddons";
-$route['getServiceSplRequests.html']            = "user/getServiceSplRequests";
-$route['pay_test.html']                         = "user/payTest";
-$route['booking_info.html']                     = "user/bookingInfo";
-$route['getUserDetails.html']                   = "user/getUserDetails";
 $route['bookingUserLogin.html']                 = "person/bookingUserLogin";
+$route['user_home.html']                        = "user";
+$route['user_active_orders.html']               = "user/activeOrders";
+$route['listUserActiveOrder.html']              = "user/activeOrdersList";
+$route['user_canceled_orders.html']             = "user/canceledOrders";
+$route['listCanceledOrders.html']               = "user/canceledOrdersList";
+$route['cancelUserOrder.html']                  = "user/cancelOrder";
+$route['user_completed_orders.html']            = "user/completedOrders";
+$route['listCompletedOrders.html']              = "user/completedOrdersList";
+$route['confirmOrderCompletionByUser.html']     = "user/confirmOrderCompletion";
+
+/* ........Booking Module Routing............................ */
+$route['booking.html']                          = "booking/booking";
+$route['getServices.html']                      = "booking/getServices";
+$route['getServicePackages.html']               = "booking/getServicePackages";
+$route['getServiceFrequencies.html']            = "booking/getServiceFrequencies";
+$route['getServiceAddons.html']                 = "booking/getServiceAddons";
+$route['getServiceSplRequests.html']            = "booking/getServiceSplRequests";
+$route['pay_test.html']                         = "booking/payTest";
+$route['booking_info.html']                     = "booking/bookingInfo";
+$route['getUserDetails.html']                   = "booking/getUserDetails";
+
 
 
 /* ................  Admin Module Routing  ......................... */
@@ -170,7 +182,7 @@ $route['freelance_wallet_report.html']          = "freelance/walletReport";
 $route['freelance_myaccount.html']              = "freelance/myAccount";
 
 
-$route['home.html'] = "user";
+$route['home.html'] = "booking";
 
 $route['404_override'] = 'person/pageNotFound';
 $route['translate_uri_dashes'] = FALSE;

@@ -33,9 +33,10 @@ class Globals
     const PAYMENT_PENDING   = 2;
     
     //Booking Status
-    const BOOKING_PROCESSING = 2;
-    const BOOKING_CONFIRMED = 1;
-    const BOOKING_CANCELLED = 3;
+    const BOOKING_PROCESSING    = 2;
+    const BOOKING_CONFIRMED     = 1;
+    const BOOKING_CANCELLED     = 3;
+    const BOOKING_COMPLETED     = 4;
 
 
     public static function getPersonTypeName($person_type_id){

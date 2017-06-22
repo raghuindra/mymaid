@@ -4,158 +4,110 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 include APPPATH . 'controllers/Base.php';
 class User extends Base {
    
-        public $data = array();
-        
-        public function __construct() {
-            parent::__construct();
-            $this->load->library(array('user_lib'));
-            //$this->uLang = $this->session->userdata('user_lang');               
-            $this -> lang -> load("mm", $this->uLang);
-        }
-        
-	public function index(){
+    public $data = array();
 
-            $this->data['content']  = "user/home.php";
-            $this->data['user']     = 1;
-            $this->data['home']     = 1;
-            $this -> load -> view('template', $this->data);
-	}
-        
-        public function booking(){
-            if(isset($_POST['pincode']) || $this->session->userdata('service_location_search') !== null){           
-                $serviceAvailable = $this->user_lib->_checkServiceAvailable();
-                
-                if(($serviceAvailable['status'])){
-                    $this->data['postcode'] = $serviceAvailable['data'][0]->vendor_service_location_postcode;
-                    $this->data['content']  = "user/booking.php";
-                    $this->data['user']     = 1;
-                    $this->data['state']    = $this->mm_model->get_tb('mm_state', '*')->result();
-                    $this -> load -> view('template', $this->data);
-                }else{
-                    $this->session->set_flashdata('error_message', $this->lang->line('mm_no_service_coverage'));
-                    redirect('home.html', 'refresh');
-                }
-            }else{
-                redirect('home.html', 'refresh');
-            }
+    public function __construct() {
+        parent::__construct();
+        $this->load->library(array('user_lib'));
+        //$this->uLang = $this->session->userdata('user_lang');               
+        $this -> lang -> load("mm", $this->uLang);
+        $this->page_load_lib->validate_user(Globals::PERSON_TYPE_USER_NAME);
+    }
+
+    public function index(){
+
+        //$this->data['content']  = "user/user_home.php";
+        $this->data['content']  = "user/active_orders.php";
+        $this->data['user']     = 1;
+        $this -> load -> view('template', $this->data);
+    }
+
+    public function activeOrders(){
+        $this->data['content']  = "user/active_orders.php";
+        $this->data['user']     = 1;
+        $this -> load -> view('template', $this->data);
+    }
+
+    /** Function to List the Active Orders.
+    * @param null
+    * @return JSON returns the JSON with Active Orders.    
+    */
+    public function activeOrdersList(){
+        $response = $this->user_lib->_listActiveOrders(); 
+        echo json_encode($response);
+
+    }
+    
+    
+    public function canceledOrders(){
+        $this->data['content']  = "user/canceled_orders.php";
+        $this->data['user']     = 1;
+        $this -> load -> view('template', $this->data);
+    }
+
+    /** Function to List the Active Orders.
+    * @param null
+    * @return JSON returns the JSON with Active Orders.    
+    */
+    public function canceledOrdersList(){
+        $response = $this->user_lib->_listCanceledOrders(); 
+        echo json_encode($response);
+
+    }
+     
+    /** Function to Cancel the Individual Order.
+    * @param null
+    * @return JSON returns the JSON Order cancellation status.    
+    */
+    public function cancelOrder(){
+        if(isset($_POST['bookingId'])){
+            $response = $this->user_lib->_cancelUserOrder();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
         }
-        
-        public function getServices(){
-            $data = $this->readJsonRequest()->getData(); 
-          
-            if(isset($data->postcode)){   
-                $response = $this->user_lib->_getServices($data);
-            } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->lang->line('invalid_data'),
-                    'data' => array()
-                );
-            }
-            echo json_encode($response);
-            
-        }             
-        
-        public function getServicePackages(){
-            $data = $this->readJsonRequest()->getData();
-            if(isset($data->postcode) && !empty($data->serviceId)){   
-                $response = $this->user_lib->_getServicePackages($data);
-            } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->lang->line('invalid_data'),
-                    'data' => array()
-                );
-            }
-            echo json_encode($response);
+        echo json_encode($response);
+    }
+    
+    /** Function to Show the View of Completed Orders.
+    * @param null
+    * @return JSON returns the View.    
+    */
+    public function completedOrders(){
+        $this->data['content']  = "user/completed_orders.php";
+        $this->data['user']     = 1;
+        $this -> load -> view('template', $this->data);
+    }
+    
+    /** Function to List the Completed Orders.
+    * @param null
+    * @return JSON returns the JSON with Completed Orders.    
+    */
+    public function completedOrdersList(){
+        $response = $this->user_lib->_listCompletedOrders(); 
+        echo json_encode($response);
+    }
+    
+    /** Function to Confirm the order Completion.
+    * @param null
+    * @return JSON returns the JSON with order Completion status.    
+    */
+    public function confirmOrderCompletion(){
+        if(isset($_POST['bookingId'])){
+            $response = $this->user_lib->_confirmOrderCompletion();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
         }
+        echo json_encode($response);
+    }
         
-        
-        public function getServiceFrequencies(){
-            $data = $this->readJsonRequest()->getData();
-            if(isset($data->postcode) && !empty($data->serviceId)){   
-                $response = $this->user_lib->_getServiceFrequencies($data);
-            } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->lang->line('invalid_data'),
-                    'data' => array()
-                );
-            }
-            echo json_encode($response); 
-                        
-        }
-                
-        
-        public function getServiceAddons(){
-            $data = $this->readJsonRequest()->getData();
-            if(isset($data->postcode) && !empty($data->serviceId)){   
-                $response = $this->user_lib->_getServiceAddons($data);
-            } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->lang->line('invalid_data'),
-                    'data' => array()
-                );
-            }
-            echo json_encode($response); 
-        }
-        
-        
-        public function getServiceSplRequests(){
-            $data = $this->readJsonRequest()->getData();
-            if(isset($data->postcode) && !empty($data->serviceId)){   
-                $response = $this->user_lib->_getServiceSplRequests($data);
-            } else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->lang->line('invalid_data'),
-                    'data' => array()
-                );
-            }
-            echo json_encode($response);  
-            
-        }
-        
-        
-        public function payTest(){
-            
-            $this->data['content']  = "user/pay_test.php";
-            $this->data['user']     = 0;
-            $this->data['home']     = 0;
-            $this -> load -> view('template', $this->data);
-            
-        }
-        
-        /*
-         * Function to store/process the user booking request
-         */
-        public function bookingInfo(){
-            
-            $data = $this->readJsonRequest()->getData();
-            if(isset($data->service) && isset($data->package) && isset($data->servicePostcode)){
-                $response = $this->user_lib->_saveServiceBooking($data);
-            }else {
-                $response = array(
-                    'status' => false,
-                    'message' => $this->lang->line('invalid_data'),
-                    'data' => array()
-                );
-            }
-            echo json_encode($response); 
-            //print_r($data);
-            
-            
-            
-        }
-        
-        /*
-         * Function to get the User details if logged in
-         */
-        public function getUserDetails(){
-            $response = $this->user_lib->_getUserDeatils();
-            echo json_encode($response); 
-        }
         
         
 }

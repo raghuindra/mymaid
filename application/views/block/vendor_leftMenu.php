@@ -41,7 +41,7 @@
                                 </ul>-->
             </li>
             <li class="treeview">
-                <a href="index.html">
+                <a href="#">
                     <i class="fa fa-arrow-circle-right"></i> <span>My Jobs</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -53,7 +53,7 @@
                             <i class="fa fa-shopping-cart"></i>
                             <span>New Jobs</span>
                             <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green">4</span>
+                                <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>
@@ -62,7 +62,7 @@
                             <i class="fa fa-send"></i>
                             <span>Accepted Jobs</span>
                             <span class="pull-right-container">
-                                <span class="label pull-right bg-blue">4</span>
+                                <span class="label pull-right bg-blue"></span>
                             </span>
                         </a>
                     </li>
@@ -80,12 +80,12 @@
                             <i class="fa fa-check"></i>
                             <span>Completed Job</span>
                             <span class="pull-right-container">
-                                <span class="label pull-right bg-green">4</span>
+                                <span class="label pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>
 <!--                    <li>
-                        <a href="<?php echo base_url() . 'vendor_reschedulejobs.html'; ?>">
+                        <a href="<?php //echo base_url() . 'vendor_reschedulejobs.html'; ?>">
                             <i class="fa fa-calendar-minus-o"></i>
                             <span>Reschedule Request</span>
                             <span class="pull-right-container">
@@ -104,7 +104,7 @@
                 </a>
                 <ul class="treeview-menu">
 <!--                    <li class="active">
-                        <a href="<?php echo base_url() . 'vendor_wallet_pending.html'; ?>">
+                        <a href="<?php //echo base_url() . 'vendor_wallet_pending.html'; ?>">
                             <i class="fa fa-hourglass-2"></i>
                             <span>Pending Pay</span>
                             <span class="pull-right-container">
@@ -117,7 +117,7 @@
                             <i class="fa fa-exchange"></i>
                             <span>Request Payment</span>
                             <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green">4</span>
+                                <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>
@@ -126,7 +126,7 @@
                             <i class="fa fa-external-link"></i>
                             <span>Payment report </span>
                             <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green">4</span>
+                                <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>

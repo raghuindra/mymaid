@@ -13,6 +13,11 @@ $lang['mm_passsword_mismatch'] = "Password and Confrim password doesn't matched.
 $lang['mm_password_changed_success']  = "Password successfully changed!!";
 $lang['mm_invalid_token'] = "Invalid Token..!!";
 $lang['mm_no_service_coverage'] = "No coverage in your area at moment, Pls fill up Contact Us form, we will work vendor near your area to be listed.";
+$lang['cancelation_time_expired'] = "You cannot cancel your order after 24 hours of booking.";
+$lang['order_canceled_successfully'] = "Your order has been sent for cancellation successfully.";
+$lang['order_completion_confirmed'] = 'Successfully Confirmed the Order.';
+$lang['unable_to_process_order_completion_update'] = 'Cannot confirm Order completion before Order service date.';
+
 
 $lang['invalid_data']                           = "Invalid data.";
 $lang['invalid_request']                        = "Invalid Request.";

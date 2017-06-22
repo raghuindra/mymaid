@@ -1,9 +1,9 @@
 <?php
-if(isset($user))
+if(isset($booking))
 {
-    $this->load->view("block/user_header");
+    $this->load->view("block/booking_header");
     $this->load->view("".$content);
-    $this->load->view("block/user_footer");
+    $this->load->view("block/booking_footer");
     
 }else if(isset($oldvendor)){
     

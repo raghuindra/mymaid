@@ -16,6 +16,7 @@ class Person extends CI_Controller{
         $this->load->library(array('person_lib', 'page_load_lib'));
         $this->load->helper(array('form', 'language'));
         $this->uLang = $this->session->userdata('user_lang'); 
+        $this->person_lib->getMyAccountUrl();
         //$lang = $this -> session -> userdata('browser_lang');
 //        if($lang!=''){
 //            $this->_bLang = $lang;
@@ -45,7 +46,7 @@ class Person extends CI_Controller{
         }
         
         $this->data['content']  = "user/login.php";
-        $this->data['user']     = 1;
+        $this->data['booking']  = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
@@ -81,7 +82,7 @@ class Person extends CI_Controller{
 
 
         $this->data['content']    = "user/register.php";
-        $this->data['user']       = 1;
+        $this->data['booking']       = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
@@ -191,29 +192,29 @@ class Person extends CI_Controller{
     }
     
     public function termsAndConditionPage(){
-        $this->data['content']  = "user/terms_and_condition.php";
-        $this->data['user']     = 1;
+        $this->data['content']  = "booking/terms_and_condition.php";
+        $this->data['booking']     = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
     
     public function pricingPage(){
-        $this->data['content']  = "user/pricing.php";
-        $this->data['user']     = 1;
+        $this->data['content']  = "booking/pricing.php";
+        $this->data['booking']     = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
     
     public function privacyPolicyPage(){
-        $this->data['content']  = "user/privacy_policy.php";
-        $this->data['user']     = 1;
+        $this->data['content']  = "booking/privacy_policy.php";
+        $this->data['booking']     = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }
     
     public function refundPolicyPage(){
-        $this->data['content']  = "user/refund_policy.php";
-        $this->data['user']     = 1;
+        $this->data['content']  = "booking/refund_policy.php";
+        $this->data['booking']     = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
     }

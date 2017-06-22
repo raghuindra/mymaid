@@ -125,7 +125,7 @@ class Page_load_lib {
                                              $redirect_url="vendor_home.html";
                                      break;
                              case Globals::PERSON_TYPE_USER_NAME:
-                                             $redirect_url="home.html";
+                                             $redirect_url="user_home.html";
                                      break;
                              default: $redirect_url="home.html";
                      }

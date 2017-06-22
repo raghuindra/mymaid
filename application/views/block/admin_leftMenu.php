@@ -53,7 +53,7 @@
                             <i class="fa fa-shopping-cart"></i>
                             <span>Service Add / List</span>
                             <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green">4</span>
+                                <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
                     </li>
@@ -64,7 +64,7 @@
                     <i class="fa fa-group"></i>
                     <span>Vendors</span>
                     <span class="pull-right-container">
-                        <span class="label pull-right bg-blue">4</span>
+                        <span class="label pull-right bg-blue"></span>
                     </span>
                 </a>
                 <ul class="treeview-menu">

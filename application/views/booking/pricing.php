@@ -10,12 +10,13 @@
                     <li><a href="<?php echo base_url().'user_login.html';?>" title="" role="button" ><i class="icon-user"></i><span>Login</span></a></li>
                     <?php }else{  ?>
                         <li style="text-decoration: none;color:white;"> Hello, <?php echo $this->session->userdata('user_fullname');?></li>
+                        <li><a href="<?php echo base_url() . $myAccountUrl; ?>" title="" role="button"><i class="icon-user"></i><span>My Account</span></a></li>
                         <li><a href="<?php echo base_url().'logout.html';?>" title="" role="button"><i class="icon-user"></i><span>Log Out</span></a></li>
                     <?php } ?>
                     <li><a href="<?php echo base_url().'vendor_login.html';?>" title=""><i class="icon-comments"></i><span>Vendor Login</span></a></li>
                 </ul>
             </div>
-            <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;"><img src="<?php echo img_url('logo_100x45.png');?>" /></a></div>
+            <div class="logo-section"><a href="<?php echo base_url().'home.html';?>" title="" style="text-decoration: none;"><img src="<?php echo img_url('YellowMM_240.png');?>" /></a></div>
         </div>
         <!-- PAGE CONTENT -->
 

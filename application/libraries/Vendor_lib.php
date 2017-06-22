@@ -872,7 +872,7 @@ class Vendor_lib extends Base_lib {
                 $service_not_assigned = $this->model->check_booking_job_is_assigned($booking_id);
 
                 if (!empty($service_not_assigned)) {
-                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_vendor_company_id' => $company[0]->company_id));
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_vendor_company_id' => $company[0]->company_id, 'booking_status' => Globals::BOOKING_CONFIRMED));
                     $job = array();
                     $job['employee_job_booking_id'] = $booking_id;
                     $job['employee_job_employee_id'] = $employee_id;
