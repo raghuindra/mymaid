@@ -8,7 +8,7 @@ class Admin extends Base {
         
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('admin_lib', 'admin_vendor_lib'));              
+            $this->load->library(array('admin_lib', 'admin_vendor_lib','email_lib'));              
             $this -> lang -> load("admin", $this->uLang);
             $this->page_load_lib->validate_user(Globals::PERSON_TYPE_ADMIN_NAME);
         }
@@ -557,5 +557,80 @@ class Admin extends Base {
             echo json_encode($response);
         }
         
+        /** Function to get the New Order rending page.
+         * @param null
+         * @return JSON returns the Data to view
+         */
+        public function newOrders(){
+            
+            $this->data['content']          = "admin/new_orders.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+        }
+        
+        /** Function to list new Orders.
+         * @param null
+         * @return JSON returns the Data to view
+         */
+        public function listNewOrders(){
+            $response = $this->admin_lib->_newServiceOrders(); 
+            echo json_encode($response);
+        }
+        
+        /** Function to get the New Order rending page.
+         * @param null
+         * @return JSON returns the Data to view
+         */
+        public function activeOrders(){
+            
+            $this->data['content']          = "admin/active_orders.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+        }
+        
+        /** Function to list new Orders.
+         * @param null
+         * @return JSON returns the Data to view
+         */
+        public function listActiveOrders(){
+            $response = $this->admin_lib->_activeServiceOrders(); 
+            echo json_encode($response);
+        }
+        
+        /** Function to cancel the order.
+         * @param null
+         * @return JSON returns order cancellation status
+        */
+        public function cancelOrder(){
+            if(isset($_POST['bookingId'])){
+            $response = $this->admin_lib->_cancelOrder();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        /** Function to confirm the order completion and credit the service amount to vendor wallet.
+         * @param null
+         * @return JSON returns order completion update status
+        */
+        public function confirmOrderCompletion(){
+            
+           if(isset($_POST['bookingId'])){
+            $response = $this->admin_lib->_confirmOrderCompletion();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }
         
 }

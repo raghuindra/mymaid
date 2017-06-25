@@ -1487,5 +1487,228 @@ class Admin_lib extends Base_lib{
             return $response;
         }
     }
+    
+    /** Function to List the New Service Orders.
+     * @param null
+     * @return JSON returns the JSON with New Service Orders    
+     */
+    function _newServiceOrders(){
+        $this->resetResponse();
 
+        if ($this->ci->session->userdata('user_id') != null) {
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+
+            $newServices = $this->model->getNewServiceOrders($now);
+            //print_r($newServices); exit;
+
+            if (!empty($newServices)) {
+                $result = array();
+                $i = 0;
+                foreach ($newServices as $service) {
+                    $result[$i]['booking_id'] = $service->booking_id;
+                    $result[$i]['booking_pincode'] = $service->booking_pincode;
+                    $result[$i]['service_name'] = $service->service_name;
+                    $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                    $result[$i]['person_mobile'] = $service->person_mobile;
+                    $result[$i]['booking_service_date'] = $service->booking_service_date;
+                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    $result[$i]['booking_status'] = $service->booking_status;
+                    $result[$i]['booking_amount'] = $service->booking_amount;
+                    $i++;
+                }
+
+                if (!empty($result)) {
+                    $this->_status = true;
+                    $this->_message = '';
+                    $this->_rdata = $result;
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+    
+    /** Function to List the Active Service Orders.
+     * @param null
+     * @return JSON returns the JSON with Active Service Orders    
+     */
+    function _activeServiceOrders(){
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+
+                $activeServices = $this->model->getActiveServiceOrders();
+                //print_r($newServices); exit;
+
+                if (!empty($activeServices)) {
+                    $result = array();
+                    $i = 0;
+                    foreach ($activeServices as $service) {
+                        $result[$i]['booking_id'] = $service->booking_id;
+                        $result[$i]['booking_pincode'] = $service->booking_pincode;
+                        $result[$i]['service_name'] = $service->service_name;
+                        $result[$i]['person_mobile'] = $service->person_mobile;
+                        $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                        $result[$i]['booking_service_date'] = $service->booking_service_date;
+                        $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                        $result[$i]['booking_status'] = $service->booking_status;
+                        $result[$i]['booking_amount'] = $service->booking_amount;
+                        $result[$i]['company_name'] = $service->company_name;
+                        $result[$i]['company_landphone'] = $service->company_landphone;
+                        $result[$i]['booking_cancelable'] = true;
+                        $result[$i]['booking_completion_user_confirmed'] = $service->booking_completion_user_comfirmed;
+                        $result[$i]['booking_completion_company_confirmed'] = $service->booking_completion_company_confirmed;
+                        
+                        $now = date('Y-m-d H:i:s');                       
+                        $service_date = date('Y-m-d H:i:s', strtotime($service->booking_service_date));
+                    
+                        if(strtotime($now) >= strtotime($service_date) && $service->booking_vendor_company_id != null && ( $service->booking_status == Globals::BOOKING_CONFIRMED || $service->booking_status == Globals::BOOKING_COMPLETED) ){
+                            $result[$i]['confirm_completed'] = true;
+                        }else{
+                            $result[$i]['confirm_completed'] = false;
+                        }
+                        $i++;
+                    }
+
+                    if (!empty($result)) {
+                        $this->_status = true;
+                        $this->_message = '';
+                        $this->_rdata = $result;
+                    } else {
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('no_records_found');
+                    }
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+
+    /** Function to cancel the order.
+     * @param null
+     * @return JSON returns order cancellation status
+    */
+    function _cancelOrder(){
+        
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id = $this->ci->input->post('bookingId', true);
+
+
+            $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date, booking_booked_on', array('booking_id' => $booking_id))->result();
+
+            if (!empty($booking_detail)) {
+                $now = date('Y-m-d H:i:s');
+
+                $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_CANCELLED, 'booking_cancelled_by' => $person_id, 'booking_cancelled_on' => $now, 'booking_cancelled_approved_by_admin'=>1, 'booking_cancelled_approved_by_admin_on'=>$now));
+                if ($this->model->getAffectedRowCount() > 0) {
+
+                    $info = $this->model->getServiceBookingDetail($booking_id, $booking_detail[0]->booking_vendor_company_id);
+                    $this->ci->email_lib->order_cancelation_confirmation_mail($info[0]->person_email, $info[0]);
+                    $this->ci->email_lib->order_cancelation_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0]);
+
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('order_cancelation_confirmed');
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_changes_to_update');
+                }
+                
+            } else {
+                $this->_message = $this->ci->lang->line('no_records_found');
+                $this->_status = false;
+            }
+
+
+            return $this->getResponse();
+        }
+        
+    }
+    
+    /** Function to Confirm the order and credit the vendor wallet with service amount.
+     * @param null
+     * @return JSON returns order confirmation status
+    */
+    function _confirmOrderCompletion(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id = $this->ci->input->post('bookingId', true);
+
+
+            $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date, booking_booked_on, booking_vendor_company_id, booking_status', array('booking_id' => $booking_id))->result();
+
+            if (!empty($booking_detail)) {
+                $now = date('Y-m-d H:i:s');
+                $service_date = date('Y-m-d H:i:s', strtotime($booking_detail[0]->booking_service_date));
+
+                if(strtotime($now) >= strtotime($service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED) ){
+                    
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_COMPLETED, 'booking_completion_admin_confirmed' => 1));
+                    if ($this->model->getAffectedRowCount() > 0) {
+                        //get the booking details
+                        $info = $this->model->getServiceBookingDetail($booking_id, $booking_detail[0]->booking_vendor_company_id);
+
+                        //get the Vendor and Admin Share for the service price
+                        $profit_share = $this->calculateCutoffAmount($info[0]->booking_amount);
+                        $this->updateVendorWallet($profit_share['vendor_share'], $booking_id, Globals::WALLET_CREDIT, $info[0]->company_person_id, "Service completion payment");
+                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, "Service completion payment");
+                        //Send Emails to Vendor 
+                        //$this->ci->email_lib->order_completion_confirmation_mail($info[0]->person_email, $info[0]);
+                        $this->ci->email_lib->order_completion_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0], $profit_share['vendor_share']);
+                        
+                        $this->_status = true;
+                        $this->_message = $this->ci->lang->line('order_completion_confirmed');
+                    } else {
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('no_changes_to_update');
+                    }
+                    
+                }else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('unable_to_process_order_completion_update');
+                }
+
+            } else {
+                $this->_message = $this->ci->lang->line('no_records_found');
+                $this->_status = false;
+            }
+
+
+            return $this->getResponse();
+        }
+    }
+    
+     
 }

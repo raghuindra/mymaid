@@ -5,12 +5,12 @@ class Admin_model extends Mm_model{
     function __construct() {
         parent::__construct();
         $this->_table                               = 'mm_admin';
-        $this->_person_table                        = 'mm_person';
+        $this->_person                        = 'mm_person';
         $this->_person_type_table                   = 'mm_person_type';
         $this->_country_table                       = 'mm_country';
-        $this->_vendor_company_table                = "mm_vendor_company";
+        $this->_vendor_company                = "mm_vendor_company";
         $this->_lang_table                          = 'mm_language';
-        $this->_service_table                       = "mm_services";
+        $this->_services                       = "mm_services";
         $this->_service_package_table               = "mm_service_package";
         $this->_service_building_table              = "mm_building";
         $this->_service_area_table                  = "mm_area";
@@ -22,7 +22,10 @@ class Admin_model extends Mm_model{
         $this->_service_spl_request_table           = "mm_service_spl_request";
         $this->_state_table                         = "mm_state";
         $this->_postcode_table                      = "mm_postcode";
-        $this->_postcode_service_price_table        = "mm_postcode_service_price";      
+        $this->_postcode_service_price_table        = "mm_postcode_service_price"; 
+        $this->_booking                             = "mm_booking";
+        $this->_booking_addons                      = "mm_booking_addons";
+        $this->_booking_spl_request                 = "mm_booking_spl_request";
         
     }
     
@@ -43,7 +46,7 @@ class Admin_model extends Mm_model{
                     $this->db->where($key, $cond, $filter);
             }	
         }
-        $this->db->join($this->_service_table, 'service_id = service_package_service_id','left');
+        $this->db->join($this->_services, 'service_id = service_package_service_id','left');
         $this->db->join($this->_service_building_table, 'building_id = service_package_building_id','left');
         $this->db->join($this->_service_area_table, 'area_id = service_package_building_area_id','left');
         
@@ -172,9 +175,9 @@ class Admin_model extends Mm_model{
         $this->db->where('person_status', '0');
         $this->db->where($where_condition);
         $this->db->join($this->_person_type_table, 'person_type_id = person_type','left');
-        $this->db->join($this->_vendor_company_table, 'company_person_id = person_id','left');
+        $this->db->join($this->_vendor_company, 'company_person_id = person_id','left');
         
-        return $this->db->get($this->_person_table);
+        return $this->db->get($this->_person);
     }
     
     /* Function to get the Active Vendors list */
@@ -184,9 +187,9 @@ class Admin_model extends Mm_model{
         $this->db->where('person_status', '1');
         $this->db->where('person_archived', $archived);
         $this->db->where($where_condition);
-        $this->db->join($this->_vendor_company_table, 'company_person_id = person_id','left');
+        $this->db->join($this->_vendor_company, 'company_person_id = person_id','left');
         
-        return $this->db->get($this->_person_table);
+        return $this->db->get($this->_person);
     }
     
     /* Function to get Vendor Company list */
@@ -198,14 +201,62 @@ class Admin_model extends Mm_model{
                     $this->db->where($key, $cond, $filter);
             }	
         }
-        $this->db->join($this->_person_table, 'person_id = company_person_id','left');
+        $this->db->join($this->_person, 'person_id = company_person_id','left');
         
         $order != ''?$this->db->order_by($order):null;
         if ($offset >= 0 AND $row_count > 0){
-                return $this->db->get($this->_vendor_company_table, $row_count, $offset);
+                return $this->db->get($this->_vendor_company, $row_count, $offset);
         }
-          return $this->db->get($this->_vendor_company_table);
+          return $this->db->get($this->_vendor_company);
         
+    }
+    
+    
+    function getNewServiceOrders($now){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person, 'person_id = booking_user_id','left')
+                        ->where('booking_service_date >', $now)
+                        ->where('booking_vendor_company_id IS NULL', null)             
+                        ->where('booking_cancelled_by IS NULL', null)
+                        ->where('booking_status', Globals::BOOKING_PROCESSING)
+                        ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
+                        ->get()
+                        ->result();
+    }
+    
+    
+    function getActiveServiceOrders(){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person, 'person_id = booking_user_id','left')
+                        ->join($this->_vendor_company, 'company_id = booking_vendor_company_id','left')
+                        ->where('booking_completion_admin_confirmed', 0)
+                        ->where('booking_cancelled_approved_by_admin', 0)
+                        ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
+                        ->where( ' (booking_status = '.Globals::BOOKING_CONFIRMED. ' OR booking_status = '.Globals::BOOKING_COMPLETED.') ')
+                        ->get()
+                        ->result();
+    }
+    
+    function getServiceBookingDetail($bookingId, $company_id=null){
+        $this->db->select('*');
+        $this->db->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left');
+        $this->db->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left');
+        $this->db->join($this->_services, 'service_id = booking_service_id','left');
+        $this->db->join($this->_person, 'person_id = booking_user_id','left');
+        if($company_id != null){
+            $this->db->join($this->_vendor_company, "booking_vendor_company_id = company_id", 'left');
+            $this->db->where('company_id', $company_id);
+        }
+        $this->db->where('booking_id', $bookingId);
+     return   $this->db->get($this->_booking)->result();
     }
         
         

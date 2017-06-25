@@ -128,6 +128,12 @@ $route['archiveVendor.html']                    = "admin/postArchiveVendor";
 $route['vendors_company_list.html']             = "admin/postVendorCompanyList";
 $route['admin_settings.html']                   = "admin/adminSettings";
 $route['updateConfig.html']                     = "admin/updateConfigSettings";
+$route['a_new_orders.html']                     = "admin/newOrders";
+$route['a_listNewOrders.html']                  = "admin/listNewOrders";
+$route['a_active_ordrers.html']                 = "admin/activeOrders";
+$route['a_ActiveOrderList.html']                = "admin/listActiveOrders";
+$route['a_cancelOrder.html']                    = "admin/cancelOrder";
+$route['a_confirmOrderCompletion.html']         = "admin/confirmOrderCompletion";
 
 
 

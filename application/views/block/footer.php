@@ -71,6 +71,8 @@
                 radioClass: 'iradio_flat-blue',
                 increaseArea: '20%' // optional
             });
+            
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
     

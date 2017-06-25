@@ -3,7 +3,7 @@
     <input type="hidden" name="TransactionType" value="SALE">
 <input type="hidden" name="PymtMethod" value="ANY">
 <input type="hidden" name="ServiceID" value="ADV">
-<input type="hidden" name="PaymentID" value="<?php echo $payId = md5(uniqid("booking12345674238472984MyMaidz", true));?>">
+<input type="hidden" name="PaymentID" value="<?php echo $payId = substr(md5(uniqid("booking12345674238472984MyMaidz", true)), 0, 20);?>">
 <input type="hidden" name="OrderNumber" value="abcgfchg">
 <input type="hidden" name="PaymentDesc" value="Booking No: IJKLMN, Sector:
 KUL-BKI, First Flight Date: 26 Sep 2012">

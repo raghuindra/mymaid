@@ -236,5 +236,15 @@ VALUES ('$mobile', '$message', '$from', '$createdDate', '$updatedBy', '$updatedD
         function update_batch_tb($tbl, $batchData, $conditionKey){
             return $this->db->update_batch($tbl, $batchData, $conditionKey);
         }
+        
+        function update_person_wallet_credit($person_id, $amount){
+            return $this->db->query("UPDATE `mm_person` SET `person_wallet_amount` = `person_wallet_amount` + $amount WHERE `person_id`= $person_id");
+            
+        }
+        
+        function update_person_wallet_debit($person_id, $amount){
+            return $this->db->query("UPDATE `mm_person` SET `person_wallet_amount` = `person_wallet_amount` - $amount WHERE `person_id`= $person_id");
+            
+        }
 }
 ?>

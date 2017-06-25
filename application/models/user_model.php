@@ -36,6 +36,18 @@ class User_model extends Mm_model {
                         ->result();
     }
     
+    function getServiceBookingDetail($bookingId){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person_table, 'person_id = booking_user_id','left')
+                        ->where('booking_id ', $bookingId)
+                        ->get()
+                        ->result();
+    }
+    
     
     function getUserActiveBookings($person_id){
         return $this->db->select('*')

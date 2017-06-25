@@ -30,7 +30,7 @@
             <li class="header">MAIN NAVIGATION</li>
             <li class="">
                 <a href="<?php echo base_url() . 'admin_home.html'; ?>"
-                   <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                   <i class="fa fa-home"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
 <!--                        <i class="fa fa-angle-left pull-right"></i>-->
                     </span>
@@ -42,7 +42,7 @@
             </li>
             <li class="treeview">
                 <a href="index.html">
-                    <i class="fa fa-arrow-circle-right"></i> <span>Services</span>
+                    <i class="fa fa-flag-checkered"></i> <span>Services</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -50,7 +50,7 @@
                 <ul class="treeview-menu">
                     <li class="active">
                         <a href="<?php echo base_url() . 'services.html'; ?>">
-                            <i class="fa fa-shopping-cart"></i>
+                            <i class="fa fa-flag-o"></i>
                             <span>Service Add / List</span>
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right bg-green"></span>
@@ -64,12 +64,35 @@
                     <i class="fa fa-group"></i>
                     <span>Vendors</span>
                     <span class="pull-right-container">
-                        <span class="label pull-right bg-blue"></span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </span>
+<!--                    <span class="pull-right-container">
+                        <span class="label pull-right bg-blue"></span>
+                    </span>-->
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="<?php echo base_url().'vendors_list.html'; ?>"><i class="fa fa-list"></i>Vendors List</a></li>
                     <li><a href="<?php echo base_url().'vendors_company_list.html'; ?>"><i class="fa fa-bank"></i>Vendors Company</a></li>
+<!--                    <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
+                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>Orders</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+<!--                    <span class="pull-right-container">
+                        <span class="label pull-right bg-blue"></span>
+                    </span>-->
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url().'a_new_orders.html'; ?>"><i class="fa fa-sign-in"></i>New Orders</a></li>
+                    <li><a href="<?php echo base_url().'a_active_ordrers.html'; ?>"><i class="fa fa-tachometer"></i>Active Orders</a></li>
+                    <li><a href="<?php echo base_url().'a_completed_orders.html'; ?>"><i class="fa fa-sign-out"></i>Completed Orders</a></li>
+                    <li><a href="<?php echo base_url().'a_canceled_orders.html'; ?>"><i class="fa fa-user-times"></i>Canceled Orders</a></li>
 <!--                    <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
                     <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
                 </ul>

@@ -74,7 +74,8 @@ class Vendor_model extends Mm_model{
                         ->where('booking_service_date >', $now)
                         ->where('booking_vendor_company_id IS NULL', null)             
                         ->where('booking_cancelled_by IS NULL', null)
-                        ->where(' ( booking_status != '.Globals::BOOKING_CANCELLED.' OR booking_status !='.Globals::BOOKING_COMPLETED.' ) ')
+                        ->where('booking_status', Globals::BOOKING_PROCESSING)
+                        ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
                         ->get()
                         ->result();
     }
@@ -87,6 +88,9 @@ class Vendor_model extends Mm_model{
                         ->join($this->_services, 'service_id = booking_service_id','left')
                         ->join($this->_person_table, 'person_id = booking_user_id','left')
                         ->where('booking_vendor_company_id', $companyId)
+                        ->where('booking_completion_company_confirmed', 0)
+                        ->where('booking_completion_admin_confirmed', 0)
+                        ->where('booking_cancelled_approved_by_admin', 0)
                         ->get()
                         ->result();
     }

@@ -183,6 +183,10 @@ class User_lib extends Base_lib {
 
                     $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_CANCELLED, 'booking_cancelled_by' => $person_id, 'booking_cancelled_on' => $now));
                     if ($this->model->getAffectedRowCount() > 0) {
+                        
+                        $info = $this->model->getServiceBookingDetail($booking_id);
+                        $this->ci->email_lib->order_cancelation_request_mail($info[0]->person_email, $info[0]);
+                        
                         $this->_status = true;
                         $this->_message = $this->ci->lang->line('order_canceled_successfully');
                     } else {

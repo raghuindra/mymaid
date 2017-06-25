@@ -8,7 +8,7 @@ class User extends Base {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library(array('user_lib'));
+        $this->load->library(array('user_lib','page_load_lib','email_lib'));
         //$this->uLang = $this->session->userdata('user_lang');               
         $this -> lang -> load("mm", $this->uLang);
         $this->page_load_lib->validate_user(Globals::PERSON_TYPE_USER_NAME);

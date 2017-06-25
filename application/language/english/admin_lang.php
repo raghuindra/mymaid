@@ -41,5 +41,7 @@ $lang['vendor_archived']                        = "Vendor archived.";
 $lang['vendor_unarchived']                      = "Vendor Un Archived.";
 $lang['no_changes_to_update']                   = "No changes to update.";
 $lang['config_settings_updated']                = "Config settings updated.";
+$lang['order_cancelation_confirmed']            = "Order Cancelled Successfully";
+
 ?>
 

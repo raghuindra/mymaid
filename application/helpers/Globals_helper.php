@@ -37,6 +37,10 @@ class Globals
     const BOOKING_CONFIRMED     = 1;
     const BOOKING_CANCELLED     = 3;
     const BOOKING_COMPLETED     = 4;
+    
+    //Wallet Types
+    const WALLET_CREDIT     = 'c';
+    const WALLET_DEBIT      = 'd';
 
 
     public static function getPersonTypeName($person_type_id){
