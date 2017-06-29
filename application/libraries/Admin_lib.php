@@ -1975,7 +1975,6 @@ class Admin_lib extends Base_lib{
 
 
                     $this->_message = $this->ci->lang->line('service_assigned_successfully');
-                    ;
                     $this->_status = true;
                     $this->_rdata = $insert_id;
                 } else {
@@ -1990,5 +1989,45 @@ class Admin_lib extends Base_lib{
             return $this->getResponse();
         }
     }
-     
+    
+    /** Function to list vendor Withdrawal request.
+    * @param null
+    * @return JSON returns the JSON vendor Withdrawal request    
+    */
+    function _vendorsWithdrawalRequestList(){
+        $this->resetResponse();
+        if($this->ci->session->userdata('user_id') != null){
+
+                $requests = $this->model->getVendorWithdrawalRequest();
+                
+                if($requests) {
+                    $result = array();
+                    $i = 0;
+                    foreach ($requests as $request) {
+                        $result[$i]['vendor_wallet_withdrawal_vendor_id']   = $request->vendor_wallet_withdrawal_vendor_id;
+                        $result[$i]['vendor_wallet_withdrawal_request_on']  = $request->vendor_wallet_withdrawal_request_on;
+                        $result[$i]['vendor_wallet_withdrawal_amount']      = $request->vendor_wallet_withdrawal_amount;
+                        $result[$i]['vendor_full_name']                     = $request->person_first_name . " ". $request->person_last_name;
+                        $result[$i]['vendor_company']                       = $request->company_name;
+                        $result[$i]['vendor_wallet_amount']                 = $request->person_wallet_amount;
+                        $result[$i]['vendor_wallet_withdrawal_id']          = $request->vendor_wallet_withdrawal_id;
+                        $result[$i]['vendor_wallet_withdrawal_approval_status'] = $request->vendor_wallet_withdrawal_approval_status;
+                        $result[$i]['vendor_wallet_withdrawal_approved_on'] = $request->vendor_wallet_withdrawal_approved_on;
+                        
+                        $i++;
+                    }
+                    $this->_status = true;
+                    $this->_rdata = $result;
+                }else{
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            
+        }else{
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+        
+        return $this->getResponse();
+    }
 }

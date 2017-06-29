@@ -26,6 +26,7 @@ class Admin_model extends Mm_model{
         $this->_booking                             = "mm_booking";
         $this->_booking_addons                      = "mm_booking_addons";
         $this->_booking_spl_request                 = "mm_booking_spl_request";
+        $this->_vendor_wallet_withdrawal            = "mm_vendor_wallet_withdrawal";
         
     }
     
@@ -314,6 +315,15 @@ class Admin_model extends Mm_model{
         return $this->db->query("SELECT * FROM `mm_booking` "
                 . " WHERE `booking_id`= '$bookingId' AND `booking_vendor_company_id` IS NULL")->result();
         
+    }
+    
+    function getVendorWithdrawalRequest(){
+        return $this->db->select('*')
+                        ->from($this->_vendor_wallet_withdrawal)
+                        ->join($this->_person, 'person_id = vendor_wallet_withdrawal_vendor_id','left')
+                        ->join($this->_vendor_company, 'company_person_id = vendor_wallet_withdrawal_vendor_id','left')
+                        ->get()
+                        ->result();
     }
         
 }

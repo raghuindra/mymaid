@@ -725,4 +725,23 @@ class Admin extends Base {
         }
         echo json_encode($response);
     }
+    
+    /** Function to list vendor Withdrawal request.
+    * @param null
+    * @return JSON returns the JSON vendor Withdrawal request    
+    */
+    public function vendorsWithdrawalRequestList(){
+        $response = $this->admin_lib->_vendorsWithdrawalRequestList(); 
+        echo json_encode($response);
+    }
+    
+    /** Function to get the vendor withdrawal request view.
+    * @param null
+    * @return JSON returns the Data to view
+    */
+    public function vendorsWithdrawalRequest(){
+        $this->data['content']          = "admin/withdrawal_request.php";
+        $this->data['admin']            = 1;
+        $this -> load -> view('template', $this->data);
+    }
 }

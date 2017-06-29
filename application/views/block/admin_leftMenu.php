@@ -71,10 +71,10 @@
                     </span>-->
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="<?php echo base_url().'vendors_list.html'; ?>"><i class="fa fa-list"></i>Vendors List</a></li>
-                    <li><a href="<?php echo base_url().'vendors_company_list.html'; ?>"><i class="fa fa-bank"></i>Vendors Company</a></li>
-<!--                    <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
+                    <li><a href="<?php echo base_url().'vendors_list.html'; ?>"><i class="fa fa-list"></i> Vendors List</a></li>
+                    <li><a href="<?php echo base_url().'vendors_company_list.html'; ?>"><i class="fa fa-bank"></i> Vendors Company</a></li>
+                    <li><a href="<?php echo base_url().'vendors_withdrawal_request.html'; ?>"><i class="fa fa-money"></i> Withdrawal Request</a></li>
+<!--                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
                 </ul>
             </li>
             <li class="treeview">

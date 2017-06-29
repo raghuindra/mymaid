@@ -197,7 +197,7 @@ $(function(){
             activeServiceJobList.ajax.reload(); //call datatable to reload the Ajax resource        
         });
         
-                $(document).on('click', ".orderCompleted", function(){
+        $(document).on('click', ".orderCompleted", function(){
             
             var id = $(this).data('id');
             
