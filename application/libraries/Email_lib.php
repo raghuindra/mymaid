@@ -91,8 +91,18 @@ class Email_lib extends Base_lib{
         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
     }
 
-    public function booking_confirmed_mail(){
-        
+
+    public function service_confirmation_mail_to_user($info){
+        $sender = $this->ci->data['config']['sender_email'];
+        $recipient = $info->person_email;
+        $subject = "Booking Information";
+        $message = "<html><body>";
+        $message .= "<p>Dear User,</p><br>";
+        $message .= "<p>Your Service has been accepted by Company: " . $info->company_name . "</p>";
+        $message .= "<p>Contact On: +60" . $info->company_mobile . " / +60" . $info->company_landphone . "</p>";
+        $message .= "</body></html>";
+        $this->ci->page_load_lib->send_np_email($sender, $recipient, $subject, $message, array('mailtype' => 'html'));
+
     }
     
     public function booking_cenceled_mail(){

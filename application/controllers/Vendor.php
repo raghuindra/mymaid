@@ -54,6 +54,32 @@ class Vendor extends Base {
         $this->data['active'] = "myjob||completed";
         $this->load->view('template', $this->data);
     }
+    
+    /** Function to List the Completed Service Bookings.
+    * @param null
+    * @return JSON returns the JSON with status of Completed Service Bookings    
+    */
+    public function listCompletedOrders(){
+        $response = $this->vendor_lib->_listCompletedServiceBookings(); 
+        echo json_encode($response);
+    }
+
+    /** Function to Confirm the order Completion.
+    * @param null
+    * @return JSON returns the JSON with order Completion status.    
+    */
+    public function confirmOrderCompletion(){
+        if(isset($_POST['bookingId'])){
+            $response = $this->vendor_lib->_confirmOrderCompletion();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
 
     public function rescheduleJobList() {
 
@@ -87,6 +113,10 @@ class Vendor extends Base {
         $this->load->view('template', $this->data);
     }
 
+    /** Function to render the Company Detail View
+     * @param null 
+     * @return null render the view 
+    */
     public function myAccountCompany() {
         $this->load->model('mm_model');
         
@@ -96,6 +126,20 @@ class Vendor extends Base {
         $this->data['content']      = "vendor/myaccount_company.php";
         $this->data['vendor']       = 1;
         $this->data['active']       = "myaccount||company";
+        $this->load->view('template', $this->data);
+    }
+    
+    /** Function to render the Employee Add/List View
+     * @param null 
+     * @return null render the view 
+    */
+    public function myAccountEmployees(){
+        $this->load->model('mm_model');       
+        $this->data['states']       = $this->mm_model->get_tb('mm_state', '*')->result();
+        $this->data['sessions']     = $this->mm_model->get_tb('mm_session', '*', array('session_status'=>1))->result();
+        $this->data['content']      = "vendor/myaccount_employees.php";
+        $this->data['vendor']       = 1;
+        $this->data['active']       = "myaccount||employees";
         $this->load->view('template', $this->data);
     }
 
@@ -443,4 +487,13 @@ class Vendor extends Base {
         echo json_encode($response);
     }
 
+    /** Function to List the Cancelled Orders.
+    * @param null
+    * @return JSON returns the JSON with Cancelled Orders list.    
+    */
+    public function listCanceledOrders(){
+        $response = $this->vendor_lib->_listCanceledOrders(); 
+        echo json_encode($response);
+
+    }
 }

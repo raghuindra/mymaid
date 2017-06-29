@@ -373,26 +373,29 @@ var ServiceResponseHandler = {
     
     ServiceBookingSuccessHandler: function(data){
         if(data.status){
-            $.confirm({
-                title: 'Booking Succeassfull!',
-                'useBootstrap': true,
-                'type': 'blue',
-                'typeAnimated': true,
-                'animation': 'scaleX',
-                 content: 'Your Service request has been placed successfully. Vendor will contact you soon.',
-                 autoClose: 'OK|5000',
-                 animationBounce: 2.0,
-                 buttons: {
-                     OK: {
-                         btnClass: 'btn-green',
-                         text: 'ok',
-                         action: function () {
-                             window.location.href = home_url;
-                             
-                         }
-                     }
-                 }
-            });
+            var pay_data = data.data;
+            $("#TransactionType").val(pay_data.payment_transaction_type);
+            $("#PymtMethod").val(pay_data.payment_method);
+            $("#ServiceID").val(pay_data.payment_service_id);
+            $("#PaymentID").val(pay_data.payment_id);
+            $("#OrderNumber").val(pay_data.payment_order_id);
+            $("#PaymentDesc").val(pay_data.payment_desc);
+            $("#MerchantName").val(pay_data.payment_merchant_name);
+            $("#MerchantReturnURL").val(pay_data.payment_return_url);
+            $("#MerchantCallbackURL").val(pay_data.payment_callback_url);
+            $("#Amount").val(pay_data.payment_amount);
+            $("#CurrencyCode").val(pay_data.payment_currency_code);
+            $("#CustIP").val(pay_data.payment_customer_ip);
+            $("#CustName").val(pay_data.payment_customer_name);
+            $("#CustEmail").val(pay_data.payment_customer_email);
+            $("#CustPhone").val(pay_data.payment_customer_phone);
+            $("#HashValue").val(pay_data.payment_hash_value);
+            $("#MerchantTermsURL").val(pay_data.payment_terms_url);
+            $("#LanguageCode").val(pay_data.payment_language_code);
+            $("#PageTimeout").val(pay_data.payment_page_timeout);
+            $("#paymentGatewayForm").attr('action',pay_data.payment_url);
+            $("#paymentGatewayForm").submit();
+                     
             
         }else{
             notifyMessage('error', data.message);

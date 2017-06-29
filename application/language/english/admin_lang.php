@@ -43,5 +43,8 @@ $lang['no_changes_to_update']                   = "No changes to update.";
 $lang['config_settings_updated']                = "Config settings updated.";
 $lang['order_cancelation_confirmed']            = "Order Cancelled Successfully";
 
+$lang['service_already_assigned']               = "Service has been already assigned.";
+$lang['service_assigned_successfully']          = "Service assigned successfully";
+
 ?>
 

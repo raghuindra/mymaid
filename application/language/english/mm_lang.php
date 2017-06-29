@@ -18,6 +18,7 @@ $lang['order_canceled_successfully'] = "Your order has been sent for cancellatio
 $lang['order_completion_confirmed'] = 'Successfully Confirmed the Order Completion.';
 $lang['unable_to_process_order_completion_update'] = 'Cannot confirm Order completion before Order service date.';
 
+$lang['wallet_withdrawal_request_Sent']         = "Wallet withdrawal request sent successfully";
 
 $lang['invalid_data']                           = "Invalid data.";
 $lang['invalid_request']                        = "Invalid Request.";

@@ -10,21 +10,21 @@ if ($employee_detail['status']) {
             <div class="form-horizontal">
                 <div class="box-body">                
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-4 control-label">Employee Name *:</label>
+                        <label for="inputEmail3" class="col-sm-4 control-label">Employee Name: <span class="text-red">*</span></label>
                         <div class="col-sm-6">
                             <input type="text" name="edit_employee_name" class="form-control" required id="edit_employee_name" placeholder="Employee Name" value="<?php echo ($employee) ? $employee[0]->employee_name : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-4 control-label">Employee Passport Number *:</label>
+                        <label for="inputEmail3" class="col-sm-4 control-label">Employee Passport Number: <span class="text-red">*</span></label>
                         <div class="col-sm-6">
                             <input type="text" name="edit_employee_passport" class="form-control" required id="edit_employee_passport" placeholder="Passport Number"  value="<?php echo ($employee) ? $employee[0]->employee_passport_number : ''; ?>" disabled="disabled"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-4 control-label">Employee Citizenship *:</label>
+                        <label for="inputEmail3" class="col-sm-4 control-label">Employee Citizenship: <span class="text-red">*</span></label>
                         <div class="col-sm-6">
                             <input type="text" name="edit_employee_citizenship" class="form-control" required id="edit_employee_citizenship" placeholder="Employee Citizenship (Ex: Malaysian)" value="<?php echo ($employee) ? $employee[0]->employee_citizenship : ''; ?>">
                         </div>
@@ -41,7 +41,7 @@ if ($employee_detail['status']) {
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-4 control-label">Employee H/P Phone *:</label>
+                        <label for="inputEmail3" class="col-sm-4 control-label">Employee H/P Phone: <span class="text-red">*</span></label>
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <span class="input-group-addon">+60</span>
@@ -54,7 +54,7 @@ if ($employee_detail['status']) {
                         <label for="inputEmail3" class="col-sm-4 control-label">Employee Job Type *:</label>
                         <div class="col-sm-6">
                             <div class="btn-group" role="group" aria-label="Employee Job Type">
-                                <button type="button" class="btn margin btn-primary btn-sm edit_emp_jobtype <?php i//f ($employee[0]->employee_job_type == Globals::EMPLOYEE_FULLTIME) {
+                                <button type="button" class="btn margin btn-primary btn-sm edit_emp_jobtype <?php //if ($employee[0]->employee_job_type == Globals::EMPLOYEE_FULLTIME) {
         //echo 'active';
     //} ?>" data-val="<?php //echo Globals::EMPLOYEE_FULLTIME; ?>"   >Full Time</button>
                                 <button type="button" class="btn margin btn-primary btn-sm edit_emp_jobtype <?php //if ($employee[0]->employee_job_type == Globals::EMPLOYEE_PARTTIME) {

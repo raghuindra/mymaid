@@ -240,7 +240,7 @@ class Admin_model extends Mm_model{
                         ->where('booking_completion_admin_confirmed', 0)
                         ->where('booking_cancelled_approved_by_admin', 0)
                         ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
-                        ->where( ' (booking_status = '.Globals::BOOKING_CONFIRMED. ' OR booking_status = '.Globals::BOOKING_COMPLETED.') ')
+                        ->where('booking_status != '.Globals::BOOKING_PROCESSING)
                         ->get()
                         ->result();
     }
@@ -258,6 +258,62 @@ class Admin_model extends Mm_model{
         $this->db->where('booking_id', $bookingId);
      return   $this->db->get($this->_booking)->result();
     }
+    
+    
+    function getCompletedServiceOrders(){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person, 'person_id = booking_user_id','left')
+                        ->join($this->_vendor_company, 'company_id = booking_vendor_company_id','left')
+                        ->where('booking_completion_admin_confirmed', 1)
+                        ->where('booking_status', Globals::BOOKING_COMPLETED)
+                        ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
+                        ->get()
+                        ->result();
+    }
         
+    
+    function getCanceledBookings(){
+        return $this->db->select('*')
+                        ->from($this->_booking)
+                        ->join($this->_booking_addons, 'booking_addons_booking_id = booking_id','left')
+                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
+                        ->join($this->_services, 'service_id = booking_service_id','left')
+                        ->join($this->_person, 'person_id = booking_user_id','left')
+                        ->join($this->_vendor_company, 'company_id = booking_vendor_company_id','left')
+                        ->where("booking_status ", Globals::BOOKING_CANCELLED)
+                        ->where("booking_cancelled_approved_by_admin ", 1)
+                        ->where("booking_cancelled_by IS NOT NULL", null)               
+                        ->get()
+                        ->result();
+    }
+    
+    
+    function getAvailableCompaniesForService($service_date){
+        
+        return $this->db->query("SELECT * FROM `mm_vendor_company` LEFT JOIN `mm_company_employees` ON "
+                . "  (`employee_company_id`= `company_id`) WHERE `employee_archived` = '".Globals::UN_ARCHIVE."' AND employee_id NOT IN "
+                . " ( SELECT employee_job_employee_id from mm_employee_job "
+                . " LEFT JOIN mm_booking on employee_job_booking_id = booking_id "
+                . " WHERE booking_service_date = '$service_date') GROUP BY `company_id`")->result();
+        
+    }
+    
+    function getAvailableEmployees($companyId, $service_date){
+        return $this->db->query("SELECT * FROM `mm_company_employees` "
+                . " WHERE `employee_company_id`= '$companyId' AND `employee_archived` = '".Globals::UN_ARCHIVE."' AND employee_id NOT IN "
+                . " ( SELECT employee_job_employee_id from mm_employee_job "
+                . " LEFT JOIN mm_booking on employee_job_booking_id = booking_id "
+                . " WHERE booking_service_date = '$service_date')")->result();
+    }
+    
+    function check_booking_job_is_assigned($bookingId){
+        return $this->db->query("SELECT * FROM `mm_booking` "
+                . " WHERE `booking_id`= '$bookingId' AND `booking_vendor_company_id` IS NULL")->result();
+        
+    }
         
 }

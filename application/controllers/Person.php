@@ -135,8 +135,7 @@ class Person extends CI_Controller{
         $this->load->view('template', $this->data);
     }
     
-    function logout()
-    {
+    function logout(){
 	$this->person_lib->logout();
     }
     
@@ -156,8 +155,7 @@ class Person extends CI_Controller{
      * Reset Password
       * @param	string	$token	unique token key
      */
-    function resetpassword($token)
-    {
+    function resetpassword($token){
         $db = get_instance()->db->conn_id;
         $token  = mysqli_real_escape_string($db,trim($token));
         
@@ -217,6 +215,57 @@ class Person extends CI_Controller{
         $this->data['booking']     = 1;
         $this->data['home']     = 1;
         $this->load->view('template', $this->data);
+    }
+    
+    
+    public function getPersonWalletBalance(){
+        
+        if($this->session->userdata('user_id') != null){
+            
+            $response = $this->person_lib->_getPersonWalletBalance();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            );
+        }
+        
+        echo json_encode($response);
+    }
+    
+    
+    public function walletWithdrawalRequest(){
+        
+        if($this->session->userdata('user_id') != NULL) {
+            $response = $this->person_lib->walletWithdrawalRequest();
+            
+        }else{
+           $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        
+        echo json_encode($response);
+        
+    }
+    
+    
+    public function listWalletWithdrawalRequest(){
+        if($this->session->userdata('user_id') != NULL) {
+            $response = $this->person_lib->listWalletWithdrawalRequest();
+            
+        }else{
+           $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        
+        echo json_encode($response);
     }
 
 }

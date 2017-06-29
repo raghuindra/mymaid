@@ -27,67 +27,20 @@ $this->load->view("block/admin_leftMenu");
                         <h3 class="box-title">Data Table With Full Features</h3>
                     </div>
                     <!-- /.box-header -->
-<!--                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>order id </th>
-                                    <th>customer Name</th>
-                                    <th>service type</th>
-                                    <th>amount </th>
-                                    <th>date of request</th>
-                                    <th>service time</th>
-                                    <th class="action">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot class="hidden">
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>-->
-
-
                     <div class="form-horizontal">
 
                         <div class="box-body">
                             <table id="new_service_order_list" class="table table-bordered table-striped tables-button-edit">
                                 <thead>
                                     <tr>
-                                        <th>Order id </th>
+                                        <th>Booking id </th>
                                         <th>Customer Name</th>
                                         <th>Customer Contact</th>
                                         <th>Service Name</th>
                                         <th>Amount </th>
                                         <th>Date of request</th>
                                         <th>Service date</th>
-                                        <th class="action">Action</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -159,7 +112,7 @@ $(function(){
                     "render": function (data, type, row) {
                         
                         var string = ' <td class=""> <div class="text-center">';                                                      
-                            string += '<a href="#" class="btn btn-social-icon serviceAccept" data-toggle="tooltip" title="Assign to Vendor/Company" data-id="'+row.booking_id+'"><i class="fa fa-bank"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon serviceAssign" data-toggle="tooltip" title="Assign to Vendor/Company" data-id="'+row.booking_id+'"><i class="fa fa-bank"></i></a></div></td>';
                         return string;
                     }
                 }
@@ -173,7 +126,7 @@ $(function(){
         });
     
     
-        $(document).on('click', ".serviceAccept", function(){
+        $(document).on('click', ".serviceAssign", function(){
             
             var id = $(this).data('id');
             
@@ -183,7 +136,7 @@ $(function(){
                     var self = this;
                     //self.setContent('Checking callback flow');
                     return $.ajax({
-                        url: '<?php echo base_url() . 'getEmployeesForJob.html'; ?>',
+                        url: '<?php echo base_url() . 'getCompaniesForService.html'; ?>',
                         dataType: 'html',
                         method: 'post',
                         data:{'booking_id':id}
@@ -199,7 +152,40 @@ $(function(){
                     //self.setContentAppend(data);
                 },
                 onContentReady: function(){
-                    
+                    $(document).on('change','#assign_company', function(){
+                        var company_id = $(this).val();
+                        $('#assign_employee').attr('disabled', true);
+                        if(company_id !== '' && company_id !== null){
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'a_getEmployeesForService.html'; ?>",
+                                data: {'companyId':company_id,'bookingId':id},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+                                        $('#assign_employee').empty();
+                                        $('#assign_employee').append($('<option></option>').val('').html('Select employee'));
+                                    if (result.status === true) {
+                                        $.each(result.data, function(key, value){
+                                            $('#assign_employee').append($('<option></option>').val(value.employee_id).html(value.employee_name));
+                                        });
+                                        $('#assign_employee').val('');
+                                        $('#assign_employee').attr('disabled', false);
+                                    } else {
+                                        $.alert(result.message); return false;
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    $.alert(jqXHR.responseJSON.message); return false;
+                                }
+                            });
+                        }else{
+                            $('#assign_employee').empty();
+                            $('#assign_employee').append($('<option></option>').val('').html('Select employee'));
+                            $('#assign_employee').attr('disabled', true);
+                        }
+                    });
                 },
                 'useBootstrap': true,
                 'type': 'blue',
@@ -210,11 +196,13 @@ $(function(){
                         btnClass: 'btn-green',
                         action:function () {
                             var employeeId = this.$content.find('#assign_employee').val();
-                            if( employeeId == '' || employeeId == null){ $.alert('Select Employee!'); return false;}
+                            var companyId = this.$content.find('#assign_company').val();
+                            if( employeeId == '' || employeeId == null){ $.alert('Please select any Employee!'); return false;}
+                            if( companyId == '' || companyId == null){ $.alert('Please select Company!'); return false;}
                             $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url() . 'assignEmployeeToJob.html'; ?>",
-                                data: {'employeeId':employeeId,'bookingId':id},
+                                url: "<?php echo base_url() . 'a_assignEmployeeToService.html'; ?>",
+                                data: {'employeeId':employeeId,'bookingId':id, 'companyId':companyId},
                                 cache: false,
                                 success: function (res) {
                                     var result = JSON.parse(res);

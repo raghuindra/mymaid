@@ -247,8 +247,8 @@
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left hidden">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            <div class="pull-left">
+                                <a href="<?php echo base_url().'vendor_wallet_request.html';?>" class="btn btn-info btn-social btn-linkedin"><i class="fa fa-money"></i><span class="wallet_balance"></span></a>
                             </div>
                             <div class="pull-right">
                                 <a href="<?php echo base_url().'logout.html'; ?>" class="btn btn-default btn-flat">Sign out</a>

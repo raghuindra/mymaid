@@ -451,9 +451,11 @@
                                             <label for="existing-user" class=""><span></span>Existing User</label>
                                         </li>
                                         <li class="ct-new-user ct-md-6 ct-sm-6 ct-xs-12">
-                                            <input id="new-user" type="radio" <?php if ($this->session->userdata('user_id') == null) {
-    echo "checked='checked'";
-} ?> class="input-radio new-user user-selection" name="user-selection" value="New-User">
+                                            <input id="new-user" type="radio" <?php
+                                            if ($this->session->userdata('user_id') == null) {
+                                                echo "checked='checked'";
+                                            }
+                                            ?> class="input-radio new-user user-selection" name="user-selection" value="New-User">
                                             <label for="new-user" class=""><span></span>New User                                            </label>
                                         </li>
                                     </ul>
@@ -1032,11 +1034,42 @@
 </div>
 <div id="service_spl_request_temp_html" style="display: none;"></div>
 
+<div id="payment_form_div" style="display:none">
+
+    <form id="paymentGatewayForm" name="frmPayment" method="post" action='<?php //echo $eghl_url; ?>'>
+        <input type="hidden" id="TransactionType" name="TransactionType" value='<?php //echo $TransactionType; ?>'>
+        <input type="hidden" id="PymtMethod" name="PymtMethod" value='<?php //echo $PymtMethod; ?>'>
+        <input type="hidden" id="ServiceID" name="ServiceID" value='<?php //echo $ServiceID; ?>'>
+        <input type="hidden" id="PaymentID" name="PaymentID" value='<?php //echo $PaymentID; ?>'>
+        <input type="hidden" id="OrderNumber" name="OrderNumber" value='<?php //echo $OrderNumber; ?>'>
+        <input type="hidden" id="PaymentDesc" name="PaymentDesc" value='<?php //echo $PaymentDesc; ?>'>
+        <input type="hidden" id="MerchantName" name="MerchantName" value='<?php //echo $MerchantName; ?>'>
+        <input type="hidden" id="MerchantReturnURL" name="MerchantReturnURL" value='<?php //echo $MerchantReturnURL; ?>'>
+        <input type="hidden" id="MerchantCallbackURL" name="MerchantCallbackURL" value='<?php //echo $MerchantCallbackURL; ?>'>
+        <input type="hidden" id="Amount" name="Amount" value='<?php //echo $Amount; ?>'>
+        <input type="hidden" id="CurrencyCode" name="CurrencyCode" value='<?php //echo $CurrencyCode; ?>'>
+        <input type="hidden" id="CustIP" name="CustIP" value='<?php //echo $CustIP; ?>'>
+        <input type="hidden" id="CustName" name="CustName" value='<?php //echo $CustName; ?>'>
+        <input type="hidden" id="CustEmail" name="CustEmail" value='<?php //echo $CustEmail; ?>'>
+        <input type="hidden" id="CustPhone" name="CustPhone" value='<?php //echo $CustPhone; ?>'>
+        <input type="hidden" id="HashValue" name="HashValue" value='<?php //echo $HashValue; ?>'>
+        <input type="hidden" id="MerchantTermsURL" name="MerchantTermsURL" value='<?php //echo $MerchantTermsURL; ?>'>
+        <input type="hidden" id="LanguageCode" name="LanguageCode" value='<?php //echo $LanguageCode; ?>'>
+        <input type="hidden" id="PageTimeout" name="PageTimeout" value='<?php //echo $PageTimeout; ?>'>
+        <input type="submit" id="PaymentGateway" name="PaymentGateway" value="Pay">
+    </form>
+
+</div>
+
 <script>
     base_url = "<?php echo base_url(); ?>";
     gst = <?php echo $config['gst']; ?>;
     home_url = "<?php echo base_url() . "home.html" ?>";
-    user_logged_in = "<?php if ($this->session->userdata('user_id') == null) {  echo "No"; } else { echo "Yes";} ?>";
+    user_logged_in = "<?php if ($this->session->userdata('user_id') == null) {
+                                                echo "No";
+                                            } else {
+                                                echo "Yes";
+                                            } ?>";
 
 </script>
 

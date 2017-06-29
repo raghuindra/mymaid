@@ -28,18 +28,18 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-<!--            <li class="treeview">
-                <a href="<?php //echo base_url() . 'user_home.html'; ?>"
-                   <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                    <span class="pull-right-container">
+            <li class="treeview">
+                <a href="<?php echo base_url() . 'home.html'; ?>"
+                   <i class="fa fa-home"></i> <span> Home</span>
+<!--                    <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+                    </span>-->
                 </a>
-                                <ul class="treeview-menu">
+<!--                                <ul class="treeview-menu">
                                     <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
                                     <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                                </ul>
-            </li>-->
+                                </ul>-->
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-arrow-circle-right"></i> <span>My Orders</span>

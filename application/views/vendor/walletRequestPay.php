@@ -13,92 +13,173 @@ $this->load->view("block/vendor_leftMenu");
             <div class="row ">
                 <div class="col-xs-12 ">
                     <div class="col-lg-3">
-                        <div>Current Balance :<span>$123,567.00<span></div>
+                        <div>Current Balance :<span class="wallet_balance"><span></div>
                     </div>
                     <div class="col-lg-3">
-                        <button id="request-payment" type=" button " class="btn btn-block btn-danger ">Request Withdrawal</button>
+                        <button id="request_payment" type=" button " class="btn btn-block btn-danger ">Request Withdrawal</button>
                     </div>
                 </div>
             </div>
         </div>
-                        <div class="clearfix "></div>
-                        <ol class="breadcrumb ">
-                            <li><a href="# "><i class="fa fa-dashboard "></i> Home</a></li>
-                            <li class="active ">Request Payment</li>
-                        </ol>
-                        </section>
-                        <div id="balence-show-table">
-                            <!-- Content Header (Page header) -->
-                            <section class="content-header ">
-                                <h3>
-                                    Request Payment
-                                    <small class="hidden ">advanced tables</small>
-                                </h3>
-                            </section>
+        <div class="clearfix "></div>
+        <ol class="breadcrumb ">
+            <li><a href="# "><i class="fa fa-dashboard "></i> Home</a></li>
+            <li class="active ">Request Payment</li>
+        </ol>
+    </section>
+    <div id="balence-show-table">
+        <!-- Content Header (Page header) -->
+        <section class="content-header ">
+            <h3>
+                Request Payment
+                <small class="hidden ">advanced tables</small>
+            </h3>
+        </section>
 
-                            <!-- Main content -->
-                            <section class="content ">
-                                <div class="row ">
-                                    <div class="col-xs-12 ">
-                                        <div class="box ">
-                                            <div class="box-header hidden ">
-                                                <h3 class="box-title ">Data Table With Full Features</h3>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body ">
-                                                <table id="example1 " class="table table-bordered table-striped tables-button-edit ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID </th>
-                                                            <th>Date</th>
-                                                            <th>Credit</th>
-                                                            <th>Debit</th>
-                                                            <th>Description</th>
-                                                            <th>Balance</th>
-                                                            <th class="action ">Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>1234</td>
-                                                            <td>2/20/2017</td>
-                                                            <td>1,000</td>
-                                                            <td>2,00</td>
-                                                            <td>Description text goes here</td>
-                                                            <td> 10,000</td>
-                                                            <td class="status bg-green "> <i>Success</i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>1234</td>
-                                                            <td>2/20/2017</td>
-                                                            <td>1,000</td>
-                                                            <td>2,00</td>
-                                                            <td>Description text goes here</td>
-                                                            <td> 10,000</td>
-                                                            <td class="status bg-green "> <i>Success</i></td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                    <tfoot class="hidden ">
-                                                        <tr>
-                                                            <th>Rendering engine</th>
-                                                            <th>Browser</th>
-                                                            <th>Platform(s)</th>
-                                                            <th>Engine version</th>
-                                                            <th>CSS grade</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                        <!-- /.box -->
-                                    </div>
-                                    <!-- /.col -->
-                                </div>
-                                <!-- /.row -->
-                            </section>
-                            <!-- /.content -->
+        <!-- Main content -->
+        <section class="content ">
+            <div class="row ">
+                <div class="col-xs-12 ">
+                    <div class="box ">
+                        <div class="box-header hidden ">
+                            <h3 class="box-title ">Data Table With Full Features</h3>
                         </div>
+                        <!-- /.box-header -->
+                        <div class="box-body ">
+                            <table id="withdrawal_request_list" class="table table-bordered table-striped tables-button-edit ">
+                                <thead>
+                                    <tr>
+                                        <th>Requested On</th>
+                                        <th>Amount</th>
+                                        <th>Approved on</th>
+                                        <th>Status</th>
+<!--                                        <th>Action</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- /.content-wrapper -->
+
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+</div>
+<!-- /.content-wrapper -->
+
+<script>
+
+$(function(){
+    
+    /* Wallet Withdrawal Requesr List Datatable */
+    var walletWithdrawalList = $('#withdrawal_request_list').DataTable({
+        "responsive": true,
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "scrollX": true,
+        "processing": true,
+        "ajax": {
+            "url": "<?php echo base_url() . 'listWalletWithdrawalRequest.html'; ?>",
+            "type": "POST",
+            "dataSrc": 'data',
+            "data": function (d) {
+                //d.archived = $("#service_location_status").attr('data-val');
+            }
+        },
+        "columns": [
+            {"data": "vendor_wallet_withdrawal_request_on"},
+            {"data": "vendor_wallet_withdrawal_amount"},
+            {"data": "vendor_wallet_withdrawal_approved_on"},
+            {"data": null},
+//            {"data": null}
+        ],
+        "columnDefs": [
+            {"responsivePriority": '1', "targets": [0, 1], searchable: true, orderable: true},
+            {"responsivePriority": '2', "targets": [2], searchable: true, orderable: true, data: null,
+                "render": function (data, type, row) {
+                    
+                    var string = '<td>';
+                        if(row.vendor_wallet_withdrawal_approved_on != null){
+                            string += row.vendor_wallet_withdrawal_approved_on;
+                        }else {
+                            string += " -- ";
+                        }
+                        string += " </td>";
+                    return string;
+                }
+            },
+            {"responsivePriority": '2', "targets": [3], searchable: true, orderable: true, data: null,
+                "render": function (data, type, row) {
+
+                    var string = ' <td>';
+
+                    if(row.vendor_wallet_withdrawal_approval_status === '<?php echo Globals::WALLET_WITHDRAWAL_REQUEST_PROCESSING?>'){
+                        string += '<div class="text-center bg-yellow color-palette"> <i>Processing</i></a></div>';
+                    
+                    }else if(row.vendor_wallet_withdrawal_approval_status === '<?php echo Globals::WALLET_WITHDRAWAL_REQUEST_APPROVED?>'){
+                        string += '<div class="text-center bg-green color-palette"> <i>Approved</i></a></div>';                  
+                        
+                    }else if(row.vendor_wallet_withdrawal_approval_status === '<?php echo Globals::WALLET_WITHDRAWAL_REQUEST_REJECTED?>'){
+                        string += '<div class="text-center bg-red color-palette"> <i>Rejected</i></a></div>';                  
+                    }
+             
+                    string += '</td>';
+                    return string;
+                }
+            },
+//            {"responsivePriority": '2', "targets": [4], searchable: false, orderable: false, data: null,
+//                "render": function (data, type, row) {
+//
+//                    var string = ' <td>';
+//
+//                    if(row.confirm_completed && row.booking_status !== '<?php //echo Globals::BOOKING_CANCELLED;?>' && row.booking_cancelled_by === null){
+//
+//                        string += '<div class="text-center"><a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa  fa-check-square"></i></a></div></td>';  
+//                    }else{ string += ' -- '; }                      
+//
+//                    string += '</td>';
+//                    return string;
+//                }
+//            }
+        ]
+    });
+        
+    $(document).on('click', '#request_payment', function(){
+        
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url().'request_wallet_withdrawal.html';?>",
+            data: {},
+            cache: false,
+            success: function (res) {
+                var result = JSON.parse(res);
+
+                if (result.status === true) {
+                    notifyMessage('success', result.message);
+                    walletWithdrawalList.ajax.reload(); //call datatable to reload the Ajax resource
+                    
+                } else {                       
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                notifyMessage('error', errorThrown);
+            }
+        });
+        
+    });
+    
+});
+
+</script>

@@ -41,3 +41,31 @@
         $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
     }
 
+    function getPersonWalletBalance(){ 
+        $.ajax({
+            type: "POST",
+            url: window.location.origin +'/person_wallet_balance.html',
+            data: {},
+            cache: false,
+            success: function (res) {
+                var result = JSON.parse(res);
+
+                if (result.status === true) {
+                    //notifyMessage('success', result.message);
+
+                    $(".wallet_balance").html(result.data[0].person_wallet_amount);
+                } else {                       
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                //notifyMessage('error', errorThrown);
+            }
+        });
+    }
+    
+    /* AJAX call to get the user Walet balance on interval. */
+    getPersonWalletBalance();
+    setInterval(function () {
+        getPersonWalletBalance();
+    }, 30000);

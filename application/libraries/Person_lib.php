@@ -809,5 +809,117 @@ class Person_lib extends Base_lib{
         }
         return $array;
     }
+    
+    
+    function _getPersonWalletBalance(){
+        
+        $person_id = $this->ci->session->userdata('user_id');
+        if($person_id != null){
+            $result = $this->model->get('person_wallet_amount', array('person_id'=>$person_id))->result();
+            if($result){
+                $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $result
+                );
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                );
+            }
+        }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                );
+            }
+            return $response;
+    }
+    
+    
+    function walletWithdrawalRequest(){
+        $response = array();
+        if($this->ci->session->userdata('user_id') != null){
+            $person_id = $this->ci->session->userdata('user_id');
+            $user_type = $this->ci->session->userdata('user_type');
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+            
+            $person_info = $this->model->get('person_id, person_wallet_amount', array('person_id'=>$person_id))->result();
+            
+            if( $user_type == Globals::PERSON_TYPE_VENDOR_NAME || $user_type == Globals::PERSON_TYPE_FREELANCER_NAME){
+                $data = array(
+                    'vendor_wallet_withdrawal_vendor_id' => $person_id,
+                    'vendor_wallet_withdrawal_amount' =>$person_info[0]->person_wallet_amount,
+                    'vendor_wallet_withdrawal_request_on' => $now,                  
+                );
+                $this->model->insert_tb('mm_vendor_wallet_withdrawal', $data);
+                
+                if($this->model->getAffectedRowCount() > 0) {
+                    $response = array(
+                        'status' => true,
+                        'message' => $this->ci->lang->line('wallet_withdrawal_request_Sent'),
+                        'data' => array()
+                    );
+                }else{
+                    $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('no_changes_to_update'),
+                        'data' => array()
+                    );
+
+                }
+            }
+            
+        }else{
+            $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
+            );
+        }
+        
+        return $response;
+    }
+    
+    
+    function listWalletWithdrawalRequest(){
+        $response = array();
+        if($this->ci->session->userdata('user_id') != null){
+            $person_id = $this->ci->session->userdata('user_id');
+            $user_type = $this->ci->session->userdata('user_type');
+
+            if( $user_type == Globals::PERSON_TYPE_VENDOR_NAME || $user_type == Globals::PERSON_TYPE_FREELANCER_NAME){
+                
+                $result = $this->model->get_tb('mm_vendor_wallet_withdrawal', '*', array('vendor_wallet_withdrawal_vendor_id'=>$person_id))->result();
+                
+                if($result) {
+                    $response = array(
+                        'status' => true,
+                        'message' => '',
+                        'data' => $result
+                    );
+                }else{
+                    $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('invalid_data'),
+                        'data' => array()
+                    );
+
+                }
+            }
+            
+        }else{
+            $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
+            );
+        }
+        
+        return $response;
+    }
 
 }

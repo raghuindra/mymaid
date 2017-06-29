@@ -633,4 +633,96 @@ class Admin extends Base {
             
         }
         
+        /** Function to get the Completed Order rending page.
+         * @param null
+         * @return JSON returns the Data to view
+         */
+        public function completedOrders(){
+            $this->data['content']          = "admin/completed_orders.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+        }
+        
+        /** Function to get the Completed Order list.
+         * @param null
+         * @return JSON returns JSON with Completed Orders List
+         */
+        public function listCompletedOrers(){
+            $response = $this->admin_lib->_completedServiceOrdersList(); 
+            echo json_encode($response);
+        }
+        
+        /** Function to get the canceled Order rending page.
+         * @param null
+         * @return JSON returns the Data to view
+         */
+        public function canceledOrders(){
+            $this->data['content']          = "admin/canceled_orders.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+        }
+        
+        /** Function to get the canceled Order list.
+         * @param null
+         * @return JSON returns JSON with canceled Orders List
+         */
+        public function listCanceledOrders(){
+            $response = $this->admin_lib->_canceledServiceOrdersList(); 
+            echo json_encode($response);
+        }
+        
+    /** Function to get the Employees for New Job.
+    * @param null
+    * @return JSON returns the JSON with new Service Bookings    
+    */
+    public function getEmployeesForService(){
+        if(isset($_POST['bookingId'])){
+            $response = $this->admin_lib->_getEmployeesForService();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
+    
+    /** Function to get the Employees for New Job.
+    * @param null
+    * @return JSON returns the JSON with new Service Bookings    
+    */
+    public function getCompaniesForService(){
+        if(isset($_POST['booking_id'])){
+            $response = $this->admin_lib->_getCompaniesForService();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        
+        $this->data['content'] = "admin/popup/assign_company_to_job.php";
+        $this->data['response'] = $response;
+        $this -> load -> view('admin/popup/assign_company_to_job', $this->data);
+        
+    }
+    
+    /** Function to assign Service to Employee/s.
+    * @param null
+    * @return JSON returns the JSON with service assign status    
+    */
+    public function assignEmployeeToService(){
+        if(isset($_POST['employeeId']) && isset($_POST['companyId'])){
+            $response = $this->admin_lib->_assignEmployeesToService();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
 }

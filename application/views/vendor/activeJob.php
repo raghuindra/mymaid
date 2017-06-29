@@ -80,13 +80,15 @@ $this->load->view("block/vendor_leftMenu");
                             <table id="active_service_job_list" class="table table-bordered table-striped tables-button-edit">
                                 <thead>
                                     <tr>
-                                        <th>Order id </th>
+                                        <th>Booking id </th>
                                         <th>Customer Name</th>
+                                        <th>Customer Phone</th>
                                         <th>Service Name</th>
 <!--                                        <th>Amount </th>-->
                                         <th>Date of request</th>
                                         <th>Service date</th>
-<!--                                        <th class="action">Action</th>-->
+                                        <th>Service Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,7 +118,7 @@ $this->load->view("block/vendor_leftMenu");
 
 $(function(){
     
-    /* Service Location List Datatable */
+    /* Active Service List Datatable */
         var activeServiceJobList = $('#active_service_job_list').DataTable({
             "responsive": true,
             "paging": true,
@@ -138,21 +140,54 @@ $(function(){
             "columns": [
                 {"data": "booking_id"},
                 {"data": "customer_name"},
+                {"data": "person_mobile"},
                 {"data": "service_name"},
                 {"data": "booking_booked_on"},
                 {"data": "booking_service_date"},
-//                {"data": null}
+                {"data": null},
+                {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '1', "targets": [0, 1, 2, 3,4], searchable: true, orderable: true},
-//                {"responsivePriority": '2', "targets": [5], searchable: false, orderable: false, data: null,
-//                    "render": function (data, type, row) {
-//                        
-//                        var string = ' <td class=""> <div class="text-center">';                                                      
-//                            string += '<a href="#" class="btn btn-social-icon" title="Accept" data-id="'+row.booking_id+'"><i class="fa fa-check"></i></a></div></td>';
-//                        return string;
-//                    }
-//                }
+                {"responsivePriority": '1', "targets": [0, 1, 3, 4, 5], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [2], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string = '<td class="">+60 '+ row.person_mobile +'</td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [6], searchable: true, orderable: false, data: null,
+                    "render": function (data, type, row) {
+
+                        var string = ' <td>';
+
+                        if(row.booking_completion_user_comfirmed === '1'){
+                            string += '<div class="text-center bg-green color-palette"> <a class="badge btn-social-icon bg-green" data-toggle="tooltip" title="User Confirmed Completion"><i class="fa fa-user"></i></a></div>';
+                        }
+
+                        if(row.booking_status === '<?php echo Globals::BOOKING_CANCELLED;?>'){
+                            var usrStr = '<a class="badge btn-social-icon bg-red" data-toggle="tooltip" title="User requested cancellation"><i class="fa fa-user"></i></a>';
+                            string += '<div class="text-center bg-red color-palette" data-toggle="tooltip" title="Admin Confirmation Pending"> '+ usrStr +'</div><div><i>Cancellation Request</i></div></td>';
+                        }
+
+                        string += '</td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [7], searchable: true, orderable: false, data: null,
+                    "render": function (data, type, row) {
+
+                        var string = ' <td>';
+
+                        if(row.confirm_completed && row.booking_status !== '<?php echo Globals::BOOKING_CANCELLED;?>' && row.booking_cancelled_by === null){
+                            
+                            string += '<div class="text-center"><a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa  fa-check-square"></i></a></div></td>';  
+                        }else{ string += ' -- '; }                      
+
+                        string += '</td>';
+                        return string;
+                    }
+                }
             ]
         });
         
@@ -160,6 +195,56 @@ $(function(){
         /* Handle the Service Jobs Datatable Refresh. */
         $(".servicesRefresh").on('click', function(){            
             activeServiceJobList.ajax.reload(); //call datatable to reload the Ajax resource        
+        });
+        
+                $(document).on('click', ".orderCompleted", function(){
+            
+            var id = $(this).data('id');
+            
+            $.confirm({
+                title: 'Confirm Order Completion!',
+                content: 'Are you sure you want to confirm the order completion?',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm:{ 
+                        btnClass: 'btn-green',
+                        action:function () {
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'confirmOrderCompletionByVendor.html'; ?>",
+                                data: {'bookingId':id},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        activeServiceJobList.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel:{
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+            
         });
         
 });

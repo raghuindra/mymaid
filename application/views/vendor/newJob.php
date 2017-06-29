@@ -80,7 +80,7 @@ $this->load->view("block/vendor_leftMenu");
                             <table id="new_service_job_list" class="table table-bordered table-striped tables-button-edit">
                                 <thead>
                                     <tr>
-                                        <th>Order id </th>
+                                        <th>Booking id</th>
                                         <th>Customer Name</th>
                                         <th>Service Name</th>
 <!--                                        <th>Amount </th>-->
@@ -148,7 +148,7 @@ $(function(){
                     "render": function (data, type, row) {
                         
                         var string = ' <td class=""> <div class="text-center">';                                                      
-                            string += '<a href="#" class="btn btn-social-icon serviceAccept" title="Accept" data-id="'+row.booking_id+'"><i class="fa fa-check"></i></a></div></td>';
+                            string += '<a href="#" class="btn btn-social-icon serviceAccept" data-toggle="tooltip" title="Accept the Job" data-id="'+row.booking_id+'"><i class="fa fa-check"></i></a></div></td>';
                         return string;
                     }
                 }

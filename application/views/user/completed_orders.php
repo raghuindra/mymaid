@@ -27,53 +27,6 @@ $this->load->view("block/user_leftMenu");
                         <h3 class="box-title">Data Table With Full Features</h3>
                     </div>
                     <!-- /.box-header -->
-<!--                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>order id </th>
-                                    <th>customer Name</th>
-                                    <th>service type</th>
-                                    <th>amount </th>
-                                    <th>date of request</th>
-                                    <th>service time</th>
-                                    <th class="action">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot class="hidden">
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>-->
-
-
                     <div class="form-horizontal">
 
                         <div class="box-body">
@@ -145,7 +98,7 @@ $(function(){
             ],
             "columnDefs": [
                 {"responsivePriority": '2', "targets": [0, 3, 4, 5, 6], searchable: true, orderable: true},
-                {"responsivePriority": '1', "targets": [1], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [1], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';
@@ -158,7 +111,7 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [2], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [2], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';

@@ -316,27 +316,37 @@ class Booking_lib extends Base_lib{
                     $info['booking_pincode']        = $data->servicePostcode;
                     $info['booking_booked_on']      = date('Y-m-d H:i:s', strtotime('now'));
                     $info['booking_amount']         = $data->totalPrice;
-                    $info['booking_payment_status'] = Globals::PAYMENT_SUCCESS;
+                    $info['booking_payment_status'] = Globals::PAYMENT_PENDING;
                     $info['booking_status']         = Globals::BOOKING_PROCESSING;
                     $info['booking_service_date']   = $data->userInfo->serviceDate;
                     $info['booking_note']           = $data->userInfo->note;
                     $info['booking_user_id']        = $this->ci->session->userdata('user_id');
+                    $info['booking_order_id']       = substr(md5(uniqid("bookingOrderId12345678904238472984MyMaidz", true)), 0, 20);
                     //$info['booking_contact_status'] = $data->userInfo->contactStatus;
                     $booking_id = $this->model->insert_tb('mm_booking', $info);
                     if($booking_id > 0){
-                        $this->_status = true;
-                        $this->_message = 'Booking Successfull';
-                        $this->_rdata = $booking_id;
-                        
-                        foreach($vendorIds as $vendor){
-                            //SMS
-                            $this->sendSMS("+60".$vendor['mobile'], "New Service request from user for the date: ".$data->userInfo->serviceDate);                     
+                                              
+                        $res = $this->prePaymentSetup($booking_id);
+                        if($res['status']){
+                            $this->_status = true;
+                            $this->_message = 'Booking Recorded. Redirecting for Payment Gateway.';
+                            $this->_rdata = $res['payData'];
+                        }else{
+                            $this->_status = true;
+                            $this->_message = 'Booking Recorded. But soemthing Went Wrong. Please try again.';
+                            $this->_rdata = $res['payData'];
                         }
-                        
-                        //SMS to User
-                        $this->sendSMS("+60".$data->userInfo->phone, "Your Service request has been placed successfully. The Service date is: ".$data->userInfo->serviceDate); 
+
                     }
+                }else{
+                    $this->_status = false;
+                    $this->_message = 'No Vendor/s available';
+                    $this->_rdata = null;
                 }
+            }else{
+                $this->_status = false;
+                $this->_message = 'Service Not Available for this Pincode.';
+                $this->_rdata = null;
             }
         }else{
             $this->_status = false;
@@ -374,4 +384,160 @@ class Booking_lib extends Base_lib{
         return $this->getResponse();
     }
 
+    
+    /*
+     * Function to request for payment for the booking
+     */
+    function prePaymentSetup($booking_id){
+        
+        $booking_info = $this->model->getServiceBookingDetail($booking_id);       
+        //get required Payment form data
+        $payData = $this->getPaymentRequestData($booking_info[0]);
+        $response = array();
+        
+        $data = array();
+        $data['payment_attempt_for']            = "service booking";
+        $data['payment_attempt_for_id']         = $booking_id;
+        $data['payment_attempt_order_id']       = $payData['payment_order_id'];
+        $data['payment_attempt_invoice_id']     = $payData['payment_id'];
+        $data['payment_attempt_person_id']      = $this->ci->session->userdata('user_id');
+        $data['payment_attempt_amount']         = $booking_info[0]->booking_amount;
+        $data['payment_attempt_hash_value']     = $payData['payment_hash_value'];
+        $data['payment_attempt_description']    = $payData['payment_desc'];
+        $insertId = $this->model->insert_tb('mm_payment_attempt', $data);
+        unset($data);
+        if($insertId > 0){
+            $response = array('status'=>true, 'payData'=>$payData);
+        }else{
+            $response = array('status'=>false, 'payData'=>array());
+        }
+        return $response;
+    }
+    
+    
+    function getPaymentRequestData($info){
+        //Invoice Id must be unique for each Payment Gateway Request( USed for Invoice Id)
+        $invoice_id = substr(md5(uniqid("ServiceInvoiceId1234567890abcdefghijklmnopqrstuvwxyzMyMaidz", true)), 0, 20);
+        
+        $pay_data = array();
+        $pay_data['payment_url']                = $this->ci->data['config']['payment_test_url'];
+        $pay_data['payment_pass']               = $this->ci->data['config']['payment_test_pass'];
+        $pay_data['payment_transaction_type']   = 'SALE';
+        $pay_data['payment_method']             = 'ANY';
+        $pay_data['payment_service_id']         = $this->ci->data['config']['payment_test_service_id'];
+        $pay_data['payment_order_id']           = $info->booking_order_id;
+        $pay_data['payment_id']                 = $invoice_id;
+        $pay_data['payment_desc']               = 'Payment Testing';
+        $pay_data['payment_merchant_name']      = $this->ci->data['config']['payment_test_merchant_name'];
+        $pay_data['payment_return_url']         = $this->ci->data['config']['payment_test_return_url'];
+        $pay_data['payment_callback_url']       = ($this->ci->data['config']['payment_test_callback_url'] != null) ? $this->ci->data['config']['payment_test_callback_url'] : '';
+        $pay_data['payment_amount']             = '1.00'; //$info->booking_amount;
+        $pay_data['payment_currency_code']      = 'MYR';
+        $pay_data['payment_customer_ip']        = '192.168.43.55';
+        $pay_data['payment_customer_name']      = $info->person_first_name.' '. $info->person_last_name;
+        $pay_data['payment_customer_email']     = $info->person_email;
+        $pay_data['payment_customer_phone']     = $info->person_mobile;
+        $pay_data['payment_token']              = '';
+        $pay_data['payment_terms_url']          = $this->ci->data['config']['payment_test_terms_url'];
+        $pay_data['payment_language_code']      = 'en';
+        $pay_data['payment_page_timeout']       = '780';
+       
+        // $Password.$ServiceID.$PaymentID.$MerchantReturnURL.$Amount.$CurrencyCode.$CustIP.$PageTimeout;
+        $HashString = $pay_data['payment_pass'].$pay_data['payment_service_id'].$pay_data['payment_id'].$pay_data['payment_return_url'].$pay_data['payment_amount'].$pay_data['payment_currency_code'].$pay_data['payment_customer_ip'].$pay_data['payment_page_timeout'];
+
+        $pay_data['payment_hash_value'] = hash("SHA256", $HashString);
+
+        return $pay_data;
+    }
+    
+    
+    function _checkPayResponse(){
+        $this->resetResponse();
+        $flag = 1;
+        if(isset($_POST['PaymentID']) && $_POST['PaymentID'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if(isset($_POST['OrderNumber']) && $_POST['OrderNumber'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if(isset($_POST['TxnStatus']) && $_POST['TxnStatus'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if(isset($_POST['HashValue']) && $_POST['HashValue'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if($flag === 1){
+            $payment_status = $this->ci->input->post('TxnStatus', true);
+            $payment_id = $this->ci->input->post('PaymentID', true);
+            $order_number = $this->ci->input->post('OrderNumber', true);
+            $resp_msg = $this->ci->input->post('TxnMessage', true);
+            $hash_value = $this->ci->input->post('HashValue', true);
+            
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+            
+            if($payment_status == '0'){
+                
+                $info = $this->model->get_tb('mm_payment_attempt', '*', array('payment_attempt_order_id'=>$order_number, 'payment_attempt_invoice_id'=>$payment_id))->result();
+                if(!empty($info)){
+                    $pay_attempt_id = $info[0]->payment_attempt_id;
+                    $booking_id = $info[0]->payment_attempt_for_id;
+                    
+                    $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS));
+                    
+                    $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value));
+                    
+                    $booking_detail = $this->model->getServiceBookingDetail($booking_id);
+                    
+                    $result = $this->model->getVendorAndServiceDetails($booking_detail[0]->booking_pincode);
+                    if($result) {
+                        
+                        foreach($result as $val){                           
+                            //SMS
+                            $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$booking_detail[0]->booking_service_date);                     
+                        }   
+                    }
+                    //SMS to User
+                    $this->sendSMS("+60".$booking_detail[0]->person_mobile, "Your Service request has been placed successfully. The Service date is: ".$booking_detail[0]->booking_service_date); 
+                        
+                    $this->_status = true;
+                    $this->_message = 'Transaction Successfull!';
+                    $this->_rdata = null;
+                
+                }else{
+                    $this->_status = false;
+                    $this->_message = 'Order Information Missing!';
+                    $this->_rdata = null;
+                }
+                
+            }else if($payment_status == '1'){
+                
+                $this->_status = false;
+                $this->_message = 'Transaction Failed!';
+                $this->_rdata = null;
+            }else if($payment_status == '2'){
+                $this->_status = false;
+                $this->_message = 'Transaction Under process!';
+                $this->_rdata = null;
+            }
+            
+        }
+        
+        return $this->getResponse();
+    }
 }

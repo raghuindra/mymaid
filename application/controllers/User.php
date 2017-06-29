@@ -45,9 +45,9 @@ class User extends Base {
         $this -> load -> view('template', $this->data);
     }
 
-    /** Function to List the Active Orders.
+    /** Function to List the Cancelled Orders.
     * @param null
-    * @return JSON returns the JSON with Active Orders.    
+    * @return JSON returns the JSON with Cancelled Orders list.    
     */
     public function canceledOrdersList(){
         $response = $this->user_lib->_listCanceledOrders(); 

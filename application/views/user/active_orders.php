@@ -180,9 +180,9 @@ $(function(){
                         
                         var string ='';
                         if(row.booking_status === "<?php echo Globals::BOOKING_CONFIRMED;?>" && row.company_name !== null){
-                            string += ' <td class="bg-aqua"> <i>Confirmed</i> </td>';  
+                            string += ' <td> <div class="text-center bg-green color-palette" data-toggle="tooltip" title="Service Order Confirmed"> <i>Confirmed</i> </div></td>';  
                         }else {
-                            string += '<td class="bg-orange"> Processing</td>';
+                            string += '<td> <div class="text-center bg-yellow color-palette" data-toggle="tooltip" title="Service Order Confirmation Pending"> <i>Processing</i></div></td>';
                         }
                         return string;
                     }
@@ -192,11 +192,11 @@ $(function(){
                         
                         var string = ' <td class=""> <div class="text-center">';
                         if(row.booking_cancelable){
-                            string += '<a href="#" class="btn btn-social-icon bookingCancel" title="Cancel Order" data-id="'+row.booking_id+'"><i class="fa fa-close"></i></a>';  
+                            string += '<a href="#" class="btn btn-social-icon bookingCancel" data-toggle="tooltip" title="Cancel Order" data-id="'+row.booking_id+'"><i class="fa fa-close"></i></a>';  
                         }
                         
                         if(row.confirm_completed){
-                            string += '<a href="#" class="btn btn-social-icon orderCompleted" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa  fa-check-square"></i></a></div></td>';  
+                            string += '<a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa  fa-check-square"></i></a></div></td>';  
                         }
                         
                         string += '</div></td>';

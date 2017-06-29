@@ -14,7 +14,7 @@ if ($response['status']) {
                         <label for="state" class="col-sm-4 control-label">Employee: <span class="text-red">*</span></label>
                         <div class="col-sm-6">
                             <select id="assign_employee" name="assign_employee" required class="form-control">
-                                <option value="">Select session</option>
+                                <option value="">Select employee</option>
                                 <?php
                                 foreach ($response['data'] as $value) {
                                     

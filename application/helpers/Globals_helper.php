@@ -41,6 +41,11 @@ class Globals
     //Wallet Types
     const WALLET_CREDIT     = 'c';
     const WALLET_DEBIT      = 'd';
+    
+    //Withdrawal request Status
+    const WALLET_WITHDRAWAL_REQUEST_PROCESSING = 0;
+    const WALLET_WITHDRAWAL_REQUEST_REJECTED   = 1;
+    const WALLET_WITHDRAWAL_REQUEST_APPROVED   = 2;
 
 
     public static function getPersonTypeName($person_type_id){

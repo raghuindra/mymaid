@@ -57,6 +57,9 @@ $route['termsCondition.html']                   = "person/termsAndConditionPage"
 $route['pricing.html']                          = "person/pricingPage";
 $route['privacyPolicy.html']                    = "person/privacyPolicyPage";
 $route['refundPolicy.html']                     = "person/refundPolicyPage";
+$route['person_wallet_balance.html']            = "person/getPersonWalletBalance";
+$route['request_wallet_withdrawal.html']        = "person/walletWithdrawalRequest";
+$route['listWalletWithdrawalRequest.html']      = "person/listWalletWithdrawalRequest";
 
 
 /* ........User Module Routing............................ */
@@ -83,6 +86,7 @@ $route['getServiceSplRequests.html']            = "booking/getServiceSplRequests
 $route['pay_test.html']                         = "booking/payTest";
 $route['booking_info.html']                     = "booking/bookingInfo";
 $route['getUserDetails.html']                   = "booking/getUserDetails";
+$route['pay_response.html']                     = "booking/payResponseHandler";
 
 
 
@@ -134,6 +138,13 @@ $route['a_active_ordrers.html']                 = "admin/activeOrders";
 $route['a_ActiveOrderList.html']                = "admin/listActiveOrders";
 $route['a_cancelOrder.html']                    = "admin/cancelOrder";
 $route['a_confirmOrderCompletion.html']         = "admin/confirmOrderCompletion";
+$route['a_completed_orders.html']               = "admin/completedOrders";
+$route['a_listCompletedOrders.html']            = "admin/listCompletedOrers";
+$route['a_canceled_orders.html']                = "admin/canceledOrders";
+$route['a_listCanceledOrders.html']             = "admin/listCanceledOrders";
+$route['getCompaniesForService.html']           = "admin/getCompaniesForService";
+$route['a_getEmployeesForService.html']         = "admin/getEmployeesForService";
+$route['a_assignEmployeeToService.html']        = "admin/assignEmployeeToService";
 
 
 
@@ -150,6 +161,7 @@ $route['vendor_wallet_pending.html']            = "vendor/walletPendingPay";
 $route['vendor_wallet_request.html']            = "vendor/walletRequestPay";
 $route['vendor_wallet_report.html']             = "vendor/walletReport";
 $route['vendor_myaccount_company.html']         = "vendor/myAccountCompany";
+$route['vendor_myaccount_employees.html']       = "vendor/myAccountEmployees";
 $route['vendor_myaccount_bank.html']            = "vendor/myAccountBank";
 $route['vendor_profile.html']                   = "vendor/profile";
 $route['updateBankDetails.html']                = "vendor/updateBankDetails";
@@ -171,6 +183,9 @@ $route['listNewBookingForVendor.html']          = "vendor/listNewBookings";
 $route['getEmployeesForJob.html']               = "vendor/getEmployeesForJob";
 $route['assignEmployeeToJob.html']              = "vendor/assignEmployeeToJob";
 $route['listActiveServiceBookings.html']        = "vendor/listActiveServiceBookings";
+$route['confirmOrderCompletionByVendor.html']   = "vendor/confirmOrderCompletion";
+$route['vendor_listCompletedOrders.html']       = "vendor/listCompletedOrders";
+$route['listCanceledOrdersOfVendor.html']       = "vendor/listCanceledOrders";
 
 
 /* ........Freelance Module Routing................... */

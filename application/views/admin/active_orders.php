@@ -27,52 +27,6 @@ $this->load->view("block/admin_leftMenu");
                         <h3 class="box-title">Data Table With Full Features</h3>
                     </div>
                     <!-- /.box-header -->
-<!--                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>order id </th>
-                                    <th>customer Name</th>
-                                    <th>service type</th>
-                                    <th>amount </th>
-                                    <th>date of request</th>
-                                    <th>service time</th>
-                                    <th class="action">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot class="hidden">
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>-->
-
 
                     <div class="form-horizontal">
 
@@ -80,13 +34,13 @@ $this->load->view("block/admin_leftMenu");
                             <table id="active_orders_list" class="table table-bordered table-striped tables-button-edit">
                                 <thead>
                                     <tr>
-                                        <th>Order id </th>
+                                        <th>Booking id </th>
                                         <th>Customer Name</th>
                                         <th>Customer Contact</th>
                                         <th>Company Name</th>
                                         <th>Company Contact</th>
                                         <th>Service Name</th>
-                                        <th>Amount </th>
+                                        <th>Amount</th>
                                         <th>Service date</th>
                                         <th>Booking Status</th>
                                         <th>Action</th>
@@ -151,7 +105,7 @@ $(function(){
             ],
             "columnDefs": [
                 {"responsivePriority": '2', "targets": [0, 1, 2, 5, 6, 7], searchable: true, orderable: true},
-                {"responsivePriority": '1', "targets": [2], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [2], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
 
                         var string = '<td class=""> +60 '+ row.person_mobile +'</td>';
@@ -159,7 +113,7 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [3], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [3], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';
@@ -172,7 +126,7 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [4], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [4], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';
@@ -201,6 +155,10 @@ $(function(){
                                 string +='<a class="badge btn-social-icon bg-green" data-toggle="tooltip" title="vendor Confirmed Completed"><i class="fa fa-bank"></i></a>';
                             }
                             string +='<div><i>Completed</i></div></div>';
+                        }else if(row.booking_status === "<?php echo Globals::BOOKING_CANCELLED;?>" && row.booking_cancelled_by !== null ){
+                            string += '<div class="text-center bg-red color-palette">';
+                            string +='<a class="badge btn-social-icon bg-red" data-toggle="tooltip" title="User Requested Cancellation"><i class="fa fa-user"></i></a>';
+                            string +='<div><i>Canceled</i></div></div>';
                         }
                         string += '</td>';
                         return string;
@@ -215,7 +173,7 @@ $(function(){
                         }
                         
                         if(row.confirm_completed){
-                            string += '<a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa  fa-check-square"></i></a></div></td>';  
+                            string += '<a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa fa-check-square"></i></a></div></td>';  
                         }
                         
                         string += '</div></td>';

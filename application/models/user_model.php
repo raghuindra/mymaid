@@ -57,6 +57,7 @@ class User_model extends Mm_model {
                         ->join($this->_services, 'service_id = booking_service_id','left')
                         ->join($this->_vendor_company, 'company_id = booking_vendor_company_id','left')
                         ->where('booking_user_id', $person_id)
+                        ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
                         ->where(" ( booking_status = ".Globals::BOOKING_CONFIRMED." OR booking_status = ".Globals::BOOKING_PROCESSING." ) ")
                         ->get()
                         ->result();
@@ -71,7 +72,6 @@ class User_model extends Mm_model {
                         ->join($this->_vendor_company, 'company_id = booking_vendor_company_id','left')
                         ->where('booking_user_id', $person_id)
                         ->where("booking_status ", Globals::BOOKING_CANCELLED)
-                        ->where("booking_cancelled_by ", $person_id)
                         ->get()
                         ->result();
     }

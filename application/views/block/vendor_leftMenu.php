@@ -66,15 +66,15 @@
                             </span>
                         </a>
                     </li>
-<!--                    <li>
+                    <li>
                         <a href="<?php echo base_url() . 'vendor_canceledjobs.html'; ?>">
                             <i class="fa fa-close"></i>
-                            <span>Canceled Job</span>
+                            <span>Canceled Jobs</span>
                             <span class="pull-right-container">
-                                <span class="label pull-right bg-red">4</span>
+                                <span class="label pull-right bg-red"></span>
                             </span>
                         </a>
-                    </li>-->
+                    </li>
                     <li>
                         <a href="<?php echo base_url() . 'vendor_completedjobs.html'; ?>">
                             <i class="fa fa-check"></i>
@@ -144,8 +144,17 @@
                     <?php if($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME){?>
                     <li class="active">
                         <a href="<?php echo base_url() . 'vendor_myaccount_company.html'; ?>">
-                            <i class="fa fa-info-circle"></i>
+                            <i class="fa fa-bank"></i>
                             <span>Company Details</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green"></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'vendor_myaccount_employees.html'; ?>">
+                            <i class="fa fa-users"></i>
+                            <span>Employees</span>
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right bg-green"></span>
                             </span>

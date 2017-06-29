@@ -7,7 +7,7 @@
     </footer>
     </div>
 <?php } ?>
-    <div style="display: none" id='loader'><img  src="<?php echo img_url('default.gif'); ?>"</div>
+<div style="display: none" id='loader'><img  src="<?php echo img_url('default.gif'); ?>"</div>
 
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -21,10 +21,10 @@
     });
 
 </script>
-    <!-- Bootstrap 3.3.6 -->
-    <script src="<?php echo plugin_url('bootstrap/js/bootstrap.min.js'); ?>"></script>
-    <!-- iCheck -->
-    <script src="<?php echo plugin_url('plugins/iCheck/icheck.min.js'); ?>"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="<?php echo plugin_url('bootstrap/js/bootstrap.min.js'); ?>"></script>
+<!-- iCheck -->
+<script src="<?php echo plugin_url('plugins/iCheck/icheck.min.js'); ?>"></script>
 
 <?php if (!isset($login)) { ?>
     <!-- PACE -->
@@ -57,51 +57,59 @@
     <!-- AdminLTE for demo purposes -->
     <script src="<?php echo plugin_url('dist/js/demo.js'); ?>"></script>
     <!-- Select2 -->
-    <script src="<?php echo plugin_url('plugins/select2/select2.full.min.js');?>"></script>
+    <script src="<?php echo plugin_url('plugins/select2/select2.full.min.js'); ?>"></script>
     <!-- blockUI -->
-    <script src="<?php echo plugin_url('plugins/blockUI/jquery.blockUI.js');?>"></script>
+    <script src="<?php echo plugin_url('plugins/blockUI/jquery.blockUI.js'); ?>"></script>
 
 <?php } ?>
 
-   
-    <script>
-        $(function () {
-            $('input[type="checkbox"], input[type="radio"]').iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue',
-                increaseArea: '20%' // optional
-            });
-            
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-    
+
 <script>
-    $(function(){
-<?php if($this->session->flashdata('error_message') != null ) {?>
-        var msg = "<?php echo $this->session->flashdata('error_message');?>";
+    
+$(function () {
         
-        notifyMessage('error', msg);
-        
-<?php }else if($this->session->flashdata('success_message') != null ) { ?>  
-        var msg = "<?php echo $this->session->flashdata('success_message');?>";
-        notifyMessage('success', msg);
+    $('input[type="checkbox"], input[type="radio"]').iCheck({
+        checkboxClass: 'icheckbox_flat-blue',
+        radioClass: 'iradio_flat-blue',
+        increaseArea: '20%' // optional
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+    
+
+});
+</script>
+
+<script>
+    $(function () {
+<?php if ($this->session->flashdata('error_message') != null) { ?>
+            var msg = "<?php echo $this->session->flashdata('error_message'); ?>";
+
+            notifyMessage('error', msg);
+
+<?php } else if ($this->session->flashdata('success_message') != null) { ?>
+            var msg = "<?php echo $this->session->flashdata('success_message'); ?>";
+            notifyMessage('success', msg);
 
 <?php } ?>
-    
+        
+
+
     });
     
-    function notifyMessage(type, msg){
+    
+
+    function notifyMessage(type, msg) {
         noty({
-                text: msg,
-                type: type,
-                theme: 'defaultTheme',
-                dismissQueue: true,
-                layout: 'topRight',
-                timeout: 6000,
-                template: '<div class="noty_message"><span class="noty_text" style="font-weight:bold;"></span><div class="noty_close"></div></div>',
-                progressBar: true,
-                animation: {
+            text: msg,
+            type: type,
+            theme: 'defaultTheme',
+            dismissQueue: true,
+            layout: 'topRight',
+            timeout: 6000,
+            template: '<div class="noty_message"><span class="noty_text" style="font-weight:bold;"></span><div class="noty_close"></div></div>',
+            progressBar: true,
+            animation: {
                 open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
                 close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
                 easing: 'swing',
@@ -116,7 +124,6 @@
 <!-- Notyfy Notifications Plugin -->
 <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
 <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
-<script src="<?php echo js_url('app_utils');?>"></script>
 </body>
 
 </html>

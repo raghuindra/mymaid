@@ -882,7 +882,7 @@ class Vendor_lib extends Base_lib {
                     $booking_detail = $this->model->getServiceBookingDetail($booking_id);
                     $sender = $this->ci->data['config']['sender_email'];
                     $recipient = $booking_detail[0]->person_email;
-                    $subject = "Login Information";
+                    $subject = "Booking Information";
                     $message = "<html><body>";
                     $message .= "<p>Dear User,</p><br>";
                     $message .= "<p>Your Service has been accepted by Company: " . $company[0]->company_name . "</p>";
@@ -940,8 +940,21 @@ class Vendor_lib extends Base_lib {
                         $result[$i]['booking_pincode'] = $service->booking_pincode;
                         $result[$i]['service_name'] = $service->service_name;
                         $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                        $result[$i]['person_mobile'] = $service->person_mobile;
                         $result[$i]['booking_service_date'] = $service->booking_service_date;
                         $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                        $result[$i]['booking_status'] = $service->booking_status;
+                        $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
+                        $result[$i]['booking_completion_user_comfirmed'] = $service->booking_completion_user_comfirmed;
+
+                        $now = date('Y-m-d H:i:s');
+                        $service_date = date('Y-m-d H:i:s', strtotime($service->booking_service_date));
+                        if (strtotime($now) >= strtotime($service_date) && $service->booking_vendor_company_id != null && ( $service->booking_status == Globals::BOOKING_CONFIRMED || $service->booking_status == Globals::BOOKING_COMPLETED)) {
+                            $result[$i]['confirm_completed'] = true;
+                        } else {
+                            $result[$i]['confirm_completed'] = false;
+                        }
+
                         $i++;
                     }
 
@@ -967,6 +980,187 @@ class Vendor_lib extends Base_lib {
         }
 
         return $this->getResponse();
+    }
+
+    /** Function to List the Completed Service Bookings.
+     * @param null
+     * @return JSON returns the JSON with status of Completed Service Bookings    
+     */
+    function _listCompletedServiceBookings() {
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $person_id = $this->ci->session->userdata('user_id');
+            $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
+
+            if (!empty($company)) {
+
+                $completedServices = $this->model->getVendorCompletedServiceBookings($company[0]->company_id);
+                //print_r($newServices); exit;
+
+                if (!empty($completedServices)) {
+                    $result = array();
+                    $i = 0;
+                    foreach ($completedServices as $service) {
+                        $result[$i]['booking_id'] = $service->booking_id;
+                        $result[$i]['booking_pincode'] = $service->booking_pincode;
+                        $result[$i]['service_name'] = $service->service_name;
+                        $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                        $result[$i]['person_mobile'] = $service->person_mobile;
+                        $result[$i]['booking_service_date'] = $service->booking_service_date;
+                        $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                        $result[$i]['booking_completion_company_confirmed'] = $service->booking_completion_company_confirmed;
+                        $result[$i]['booking_completion_admin_confirmed'] = $service->booking_completion_admin_confirmed;
+                        $result[$i]['booking_completion_user_comfirmed'] = $service->booking_completion_user_comfirmed;
+
+                        $i++;
+                    }
+
+                    if (!empty($result)) {
+                        $this->_status = true;
+                        $this->_message = '';
+                        $this->_rdata = $result;
+                    } else {
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('no_records_found');
+                    }
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_user');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+
+    /** Function to Confirm the order Completion.
+     * @param null
+     * @return JSON returns the JSON with order Completion status.    
+     */
+    function _confirmOrderCompletion() {
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id = $this->ci->input->post('bookingId', true);
+
+
+            $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date, booking_booked_on, booking_vendor_company_id, booking_status', array('booking_id' => $booking_id))->result();
+
+            if (!empty($booking_detail)) {
+                $now = date('Y-m-d H:i:s');
+                $service_date = date('Y-m-d H:i:s', strtotime($booking_detail[0]->booking_service_date));
+
+                if (strtotime($now) >= strtotime($service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED)) {
+
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_COMPLETED, 'booking_completion_company_confirmed' => 1));
+                    if ($this->model->getAffectedRowCount() > 0) {
+                        $this->_status = true;
+                        $this->_message = $this->ci->lang->line('order_completion_confirmed');
+                    } else {
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('no_changes_to_update');
+                    }
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('unable_to_process_order_completion_update');
+                }
+            } else {
+                $this->_message = $this->ci->lang->line('no_records_found');
+                $this->_status = false;
+            }
+
+
+            return $this->getResponse();
+        }
+    }
+
+    /** Function to List the Cancelled Orders.
+     * @param null
+     * @return JSON returns the JSON with Cancelled Orders list.    
+     */
+    function _listCanceledOrders() {
+
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $person_id = $this->ci->session->userdata('user_id');
+
+            $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
+
+            if (!empty($company)) {
+                $canceledServices = $this->model->getVendorCanceledServiceBookings($company[0]->company_id);
+                //print_r($newServices); exit;
+
+                if (!empty($canceledServices)) {
+                    $result = array();
+                    $i = 0;
+                    foreach($canceledServices as $service) {
+                        $result[$i]['booking_id'] = $service->booking_id;
+                        $result[$i]['booking_pincode'] = $service->booking_pincode;
+                        $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                        $result[$i]['person_mobile'] = $service->person_mobile;
+                        $result[$i]['service_name'] = $service->service_name;
+                        $result[$i]['booking_service_date'] = $service->booking_service_date;
+                        $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                        $result[$i]['booking_status'] = $service->booking_status;
+                        $result[$i]['booking_amount'] = $service->booking_amount;
+                        $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;
+                        $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
+                        if ($service->booking_cancelled_by == $this->ci->session->userdata('user_id')) {
+                            $result[$i]['booking_cancelation_request_sent_from'] = 'Self';
+                        } else {
+                            $result[$i]['booking_cancelation_request_sent_from'] = 'Admin/User';
+                        }
+                        $result[$i]['booking_cancelled_approved_by_admin'] = $service->booking_cancelled_approved_by_admin;
+                        $result[$i]['booking_cancelled_approved_by_admin_on'] = $service->booking_cancelled_approved_by_admin_on;
+
+                        $i++;
+                    }
+
+                    if (!empty($result)) {
+                        $this->_status = true;
+                        $this->_message = '';
+                        $this->_rdata = $result;
+                    } else {
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('no_records_found');
+                    }
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_user');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+
+    /*
+     * Fucntion to get the Vendor amount credited for the service completion
+     */
+
+    function getVendorAmountCreditForService($booking_id, $person_id) {
+        $this->model->getVendorServiceAmountCredited($booking_id, $person_id);
     }
 
 }

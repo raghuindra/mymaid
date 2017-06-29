@@ -2,9 +2,9 @@
 
 <header class="main-header">
     <!-- Logo -->
-    <a href="<?php echo base_url().'user_home.html' ?>" class="logo">
+    <a href="<?php echo base_url().'home.html' ?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>V </b>MyMaidZ</span>
+        <span class="logo-mini"><b>U </b>MyMaidZ</span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><b><?php echo ucwords($this->session->userdata('user_type'));?> </b>MyMaidZ</span>
     </a>
@@ -247,8 +247,8 @@
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left hidden">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-info btn-social btn-dropbox"><i class="fa fa-money"></i><span class="wallet_balance"></span></a>
                             </div>
                             <div class="pull-right">
                                 <a href="<?php echo base_url().'logout.html'; ?>" class="btn btn-default btn-flat">Sign out</a>

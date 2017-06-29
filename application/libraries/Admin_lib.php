@@ -1565,6 +1565,7 @@ class Admin_lib extends Base_lib{
                         $result[$i]['company_name'] = $service->company_name;
                         $result[$i]['company_landphone'] = $service->company_landphone;
                         $result[$i]['booking_cancelable'] = true;
+                        $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
                         $result[$i]['booking_completion_user_confirmed'] = $service->booking_completion_user_comfirmed;
                         $result[$i]['booking_completion_company_confirmed'] = $service->booking_completion_company_confirmed;
                         
@@ -1617,19 +1618,32 @@ class Admin_lib extends Base_lib{
         } else {
 
             $booking_id = $this->ci->input->post('bookingId', true);
+            $cancellation_request_from_client = true;
 
+            $booking_detail = $this->model->get_tb('mm_booking', 'booking_user_id, booking_amount, booking_service_date, booking_booked_on, booking_vendor_company_id, booking_payment_status, booking_cancelled_by', array('booking_id' => $booking_id))->result();
 
-            $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date, booking_booked_on', array('booking_id' => $booking_id))->result();
-
-            if (!empty($booking_detail)) {
+            if(!empty($booking_detail)) {
                 $now = date('Y-m-d H:i:s');
-
-                $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_CANCELLED, 'booking_cancelled_by' => $person_id, 'booking_cancelled_on' => $now, 'booking_cancelled_approved_by_admin'=>1, 'booking_cancelled_approved_by_admin_on'=>$now));
-                if ($this->model->getAffectedRowCount() > 0) {
-
-                    $info = $this->model->getServiceBookingDetail($booking_id, $booking_detail[0]->booking_vendor_company_id);
+                if($booking_detail[0]->booking_cancelled_by != null){
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_CANCELLED, 'booking_cancelled_approved_by_admin'=>1, 'booking_cancelled_approved_by_admin_on'=>$now));
+                    $cancellation_request_from_client = true;
+                }else{
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_CANCELLED, 'booking_cancelled_by' => $person_id, 'booking_cancelled_on' => $now, 'booking_cancelled_approved_by_admin'=>1, 'booking_cancelled_approved_by_admin_on'=>$now));
+                    $cancellation_request_from_client = false;
+                }
+                
+                if($this->model->getAffectedRowCount() > 0) {
+                    if($booking_detail[0]->booking_payment_status == Globals::PAYMENT_SUCCESS){
+                        $this->updateUserWallet($booking_detail[0]->booking_amount, $booking_id, Globals::WALLET_CREDIT, $booking_detail[0]->booking_user_id, "Service order cancellation payment.");
+                    }
+                    if($booking_detail[0]->booking_vendor_company_id != null){
+                        $info = $this->model->getServiceBookingDetail($booking_id, $booking_detail[0]->booking_vendor_company_id);
+                        $this->ci->email_lib->order_cancelation_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0]);
+                    }else{
+                        $info = $this->model->getServiceBookingDetail($booking_id);
+                    }
                     $this->ci->email_lib->order_cancelation_confirmation_mail($info[0]->person_email, $info[0]);
-                    $this->ci->email_lib->order_cancelation_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0]);
+                    
 
                     $this->_status = true;
                     $this->_message = $this->ci->lang->line('order_cancelation_confirmed');
@@ -1649,6 +1663,69 @@ class Admin_lib extends Base_lib{
         
     }
     
+    /** Function to get the canceled Order list.
+    * @param null
+    * @return JSON returns JSON with canceled Orders List
+    */
+    function _canceledServiceOrdersList(){
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $person_id = $this->ci->session->userdata('user_id');
+
+
+            $canceledServices = $this->model->getCanceledBookings();
+            //print_r($activeServices); exit;
+
+            if (!empty($canceledServices)) {
+                $result = array();
+                $i = 0;
+                foreach ($canceledServices as $service) {
+                    $result[$i]['booking_id'] = $service->booking_id;
+                    $result[$i]['booking_pincode'] = $service->booking_pincode;
+                    $result[$i]['person_mobile'] = $service->person_mobile;
+                    $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                    $result[$i]['company_name'] = $service->company_name;
+                    $result[$i]['company_landphone'] = $service->company_landphone;
+                    $result[$i]['service_name'] = $service->service_name;
+                    $result[$i]['booking_service_date'] = $service->booking_service_date;
+                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    $result[$i]['booking_status'] = $service->booking_status;
+                    $result[$i]['booking_amount'] = $service->booking_amount;
+                    $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;
+                    $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
+                    if($service->booking_cancelled_by === $this->ci->session->userdata('user_id')){
+                        $result[$i]['booking_cancelation_request_sent_from'] = 'Self';
+                    }else{
+                        $result[$i]['booking_cancelation_request_sent_from'] = 'User';
+                    }
+                    $result[$i]['booking_cancelled_approved_by_admin'] = $service->booking_cancelled_approved_by_admin;
+                    $result[$i]['booking_cancelled_approved_by_admin_on'] = $service->booking_cancelled_approved_by_admin_on;
+
+                    $i++;
+                }
+
+                if (!empty($result)) {
+                    $this->_status = true;
+                    $this->_message = '';
+                    $this->_rdata = $result;
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+
+
     /** Function to Confirm the order and credit the vendor wallet with service amount.
      * @param null
      * @return JSON returns order confirmation status
@@ -1675,7 +1752,7 @@ class Admin_lib extends Base_lib{
 
                 if(strtotime($now) >= strtotime($service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED) ){
                     
-                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_COMPLETED, 'booking_completion_admin_confirmed' => 1));
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_COMPLETED, 'booking_completion_admin_confirmed' => 1, 'booking_completion_admin_confirmed_on'=>$now));
                     if ($this->model->getAffectedRowCount() > 0) {
                         //get the booking details
                         $info = $this->model->getServiceBookingDetail($booking_id, $booking_detail[0]->booking_vendor_company_id);
@@ -1683,7 +1760,7 @@ class Admin_lib extends Base_lib{
                         //get the Vendor and Admin Share for the service price
                         $profit_share = $this->calculateCutoffAmount($info[0]->booking_amount);
                         $this->updateVendorWallet($profit_share['vendor_share'], $booking_id, Globals::WALLET_CREDIT, $info[0]->company_person_id, "Service completion payment");
-                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, "Service completion payment");
+                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, $person_id, "Service completion payment");
                         //Send Emails to Vendor 
                         //$this->ci->email_lib->order_completion_confirmation_mail($info[0]->person_email, $info[0]);
                         $this->ci->email_lib->order_completion_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0], $profit_share['vendor_share']);
@@ -1710,5 +1787,208 @@ class Admin_lib extends Base_lib{
         }
     }
     
+    /** Function to get the Completed Order list.
+    * @param null
+    * @return JSON returns JSON with Completed Orders List
+    */
+    function _completedServiceOrdersList(){
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $person_id = $this->ci->session->userdata('user_id');
+
+
+            $completedServices = $this->model->getCompletedServiceOrders();
+            //print_r($completedServices); exit;
+
+            if (!empty($completedServices)) {
+                $result = array();
+                $i = 0;
+                foreach ($completedServices as $service) {
+                    $result[$i]['booking_id'] = $service->booking_id;
+                    $result[$i]['booking_pincode'] = $service->booking_pincode;
+                    $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
+                    $result[$i]['person_mobile'] = $service->person_mobile;
+                    $result[$i]['company_name'] = $service->company_name;
+                    $result[$i]['company_landphone'] = $service->company_landphone;
+                    $result[$i]['service_name'] = $service->service_name;
+                    $result[$i]['booking_service_date'] = $service->booking_service_date;
+                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    $result[$i]['booking_status'] = $service->booking_status;
+                    $result[$i]['booking_amount'] = $service->booking_amount;
+                    $result[$i]['booking_completion_company_confirmed'] = $service->booking_completion_company_confirmed;
+                    $result[$i]['booking_completion_user_comfirmed'] = $service->booking_completion_user_comfirmed;
+                    $result[$i]['booking_completion_admin_confirmed_on'] = $service->booking_completion_admin_confirmed_on;
+
+                    $i++;
+                }
+
+                if(!empty($result)) {
+                    $this->_status = true;
+                    $this->_message = '';
+                    $this->_rdata = $result;
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+
+        return $this->getResponse();
+    }
+    
+    /** Function to get Companies for New Service(Bookings).
+     * @param null
+     * @return JSON returns the JSON with Companies for New Service    
+     */
+    function _getCompaniesForService(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('booking_id', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id = $this->ci->input->post('booking_id', true);
+
+
+                $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date', array('booking_id' => $booking_id))->result();
+
+
+                if (!empty($booking_detail)) {
+
+                    $result = $this->model->getAvailableCompaniesForService($booking_detail[0]->booking_service_date);
+
+                    $this->_message = "";
+                    $this->_status = true;
+                    $this->_rdata = $result;
+                } else {
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                    $this->_status = false;
+                }
+
+
+            return $this->getResponse();
+        }
+    }
+    
+    /** Function to get Employees for New Job(Bookings).
+     * @param null
+     * @return JSON returns the JSON with Employees for New Job    
+     */
+    function _getEmployeesForService(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('companyId', 'Company Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id = $this->ci->input->post('bookingId', true);
+            $company_id = $this->ci->input->post('companyId', true);
+
+            $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_id' => $company_id))->result();
+
+            if (!empty($company)) {
+
+                $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date', array('booking_id' => $booking_id))->result();
+
+
+                if (!empty($booking_detail)) {
+
+                    $result = $this->model->getAvailableEmployees($company_id, $booking_detail[0]->booking_service_date);
+
+                    $this->_message = "";
+                    $this->_status = true;
+                    $this->_rdata = $result;
+                } else {
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                    $this->_status = false;
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+
+            return $this->getResponse();
+        }
+    }
+    
+    /** Function to assign Service to Employee/s.
+    * @param null
+    * @return JSON returns the JSON with service assign status    
+    */
+    function _assignEmployeesToService(){
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('companyId', 'Company Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $booking_id     = $this->ci->input->post('bookingId', true);
+            $employee_id    = $this->ci->input->post('employeeId', true);
+            $company_id     = $this->ci->input->post('companyId', true);
+
+            $company = $this->model->get_tb('mm_vendor_company', '*', array('company_id' => $company_id))->result();
+
+            if (!empty($company)) {
+
+                $service_not_assigned = $this->model->check_booking_job_is_assigned($booking_id);
+
+                if (!empty($service_not_assigned)) {
+                    $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_vendor_company_id' => $company_id, 'booking_status' => Globals::BOOKING_CONFIRMED));
+                    $job = array();
+                    $job['employee_job_booking_id'] = $booking_id;
+                    $job['employee_job_employee_id'] = $employee_id;
+                    $job['employee_job_assigned_on'] = date('Y-m-d H:i:s', strtotime('now'));
+
+                    $insert_id = $this->model->insert_tb('mm_employee_job', $job);
+                    $booking_detail = $this->model->getServiceBookingDetail($booking_id, $company_id);
+                    
+                    $this->ci->email_lib->service_confirmation_mail_to_user($booking_detail[0]);
+                                       
+                    // SMS
+                    $this->sendSMS("+60" . $booking_detail[0]->person_mobile, "Your Service request has been accepted by company: " . $company[0]->company_name);
+                    /* Admin */ $this->sendSMS('+601124129717', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
+                    /* Admin */ $this->sendSMS('+60146771436', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
+                    /* Admin */ $this->sendSMS('+60125918491', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
+                    /* Admin */ $this->sendSMS('+60126570387', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
+
+
+                    $this->_message = $this->ci->lang->line('service_assigned_successfully');
+                    ;
+                    $this->_status = true;
+                    $this->_rdata = $insert_id;
+                } else {
+                    $this->_message = $this->ci->lang->line('service_already_assigned');
+                    $this->_status = false;
+                }
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_user');
+            }
+
+            return $this->getResponse();
+        }
+    }
      
 }

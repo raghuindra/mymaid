@@ -111,6 +111,10 @@ class User_lib extends Base_lib {
         return $this->getResponse();
     }
 
+    /** Function to List the Cancelled Orders.
+    * @param null
+    * @return JSON returns the JSON with Cancelled Orders list.    
+    */
     function _listCanceledOrders() {
 
         $this->resetResponse();
@@ -136,6 +140,14 @@ class User_lib extends Base_lib {
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;
+                    $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
+                    if($service->booking_cancelled_by == $this->ci->session->userdata('user_id')){
+                        $result[$i]['booking_cancelation_request_sent_from'] = 'Self';
+                    }else{
+                        $result[$i]['booking_cancelation_request_sent_from'] = 'Admin';
+                    }
+                    $result[$i]['booking_cancelled_approved_by_admin'] = $service->booking_cancelled_approved_by_admin;
+                    $result[$i]['booking_cancelled_approved_by_admin_on'] = $service->booking_cancelled_approved_by_admin_on;
 
                     $i++;
                 }
