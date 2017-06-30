@@ -440,6 +440,7 @@ class Admin extends Base {
             
             $this->data['content']          = "admin/vendor_list.php";
             $this->data['admin']            = 1;
+            $this->data['title']            = "Vendors List";
             $this -> load -> view('template', $this->data);
             
         }
@@ -524,6 +525,7 @@ class Admin extends Base {
             }else{
                 $this->data['content']          = "admin/vendor_company_list.php";
                 $this->data['admin']            = 1;
+                $this->data['title']            = "Companies";
                 $this -> load -> view('template', $this->data);
             }
             
@@ -742,6 +744,44 @@ class Admin extends Base {
     public function vendorsWithdrawalRequest(){
         $this->data['content']          = "admin/withdrawal_request.php";
         $this->data['admin']            = 1;
+        $this->data['title']            = "Wallet Withdrawal Requests";
         $this -> load -> view('template', $this->data);
     }
+    
+    /** Function to approve the vendor withdrawal request.
+    * @param null
+    * @return JSON returns the approval status of vendor withdrawal request
+    */
+    public function approveWithdrawalRequest(){
+        
+        if(isset($_POST['withdrawId']) ){
+            $response = $this->admin_lib->_approveWithdrawalRequest();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+        
+    }
+    
+    /** Function to reject the vendor withdrawal request.
+    * @param null
+    * @return JSON returns the rejection status of vendor withdrawal request
+    */
+    public function rejectWithdrawalRequest(){
+        if(isset($_POST['withdrawId']) ){
+            $response = $this->admin_lib->_rejectWithdrawalRequest();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
+        echo json_encode($response);
+    }
+    
 }

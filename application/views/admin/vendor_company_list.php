@@ -358,6 +358,10 @@ $this->load->view("block/admin_leftMenu");
 
         /* new Vendor Detail List Table START */
         var vendorCompanyListTable = $('#vendorCompanyList').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+               'excel'
+            ],
             "responsive": true,
             "paging": true,
             "lengthChange": true,
@@ -445,3 +449,11 @@ $this->load->view("block/admin_leftMenu");
 </script>
 <!-- Vendor Company List Scripts END -->
 
+<link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/export/buttons.dataTables.min.css');?>">
+<script src="<?php echo plugin_url('plugins/datatables/export/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/jszip.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/vfs_fonts.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.print.min.js'); ?>"></script>

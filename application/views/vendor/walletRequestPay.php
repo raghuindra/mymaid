@@ -16,7 +16,7 @@ $this->load->view("block/vendor_leftMenu");
                         <div>Current Balance :<span class="wallet_balance"><span></div>
                     </div>
                     <div class="col-lg-3">
-                        <button id="request_payment" type=" button " class="btn btn-block btn-danger ">Request Withdrawal</button>
+                        <button id="request_payment" type=" button " class="btn btn-block bg-maroon ">Request Withdrawal</button>
                     </div>
                 </div>
             </div>
@@ -80,6 +80,10 @@ $(function(){
     
     /* Wallet Withdrawal Requesr List Datatable */
     var walletWithdrawalList = $('#withdrawal_request_list').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+           'excel', 'pdf'
+        ],
         "responsive": true,
         "paging": true,
         "lengthChange": true,
@@ -157,29 +161,68 @@ $(function(){
         
     $(document).on('click', '#request_payment', function(){
         
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url().'request_wallet_withdrawal.html';?>",
-            data: {},
-            cache: false,
-            success: function (res) {
-                var result = JSON.parse(res);
-
-                if (result.status === true) {
-                    notifyMessage('success', result.message);
-                    walletWithdrawalList.ajax.reload(); //call datatable to reload the Ajax resource
                     
-                } else {                       
-                }
+        $.confirm({
+            title: 'Withdrawal Amount!',               
+            'useBootstrap': true,
+            'type': 'blue',
+            'typeAnimated': true,
+            'animation': 'scaleX',
+            'content': '' +
+                '<div class="row"><div class="col-xs-12"><div class="form-group">' +
+                '<label class="col-sm-3 control-label">Amount</label><div class="col-sm-6">' +
+                '<input type="text" placeholder="withdrawal amount" value="" class="name withdrawAmountReq form-control" />' +
+                '</div></div></div></div>', 
+            buttons: {
+                confirm:{ 
+                    btnClass: 'btn-green',
+                    action:function () {
+                        var amount = this.$content.find('.withdrawAmountReq').val();
+                        if( parseFloat(amount) <= 0 || amount === ''){ $.alert('Provide amount to withdraw!!'); return false;}
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo base_url().'request_wallet_withdrawal.html';?>",
+                            data: {'amount':parseFloat(amount)},
+                            cache: false,
+                            success: function (res) {
+                                var result = JSON.parse(res);
 
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                notifyMessage('error', errorThrown);
+                                if (result.status === true) {
+                                    notifyMessage('success', result.message);
+                                    walletWithdrawalList.ajax.reload(); //call datatable to reload the Ajax resource
+
+                                } else {                       
+                                }
+
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                notifyMessage('error', errorThrown);
+                            }
+                        });
+                    }
+                },
+                cancel:{
+                    btnClass: 'btn-default bg-maroon',
+                    action: function () {
+
+                    }
+                }
             }
-        });
+            });
+        
         
     });
     
 });
 
 </script>
+
+<link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/export/buttons.dataTables.min.css');?>">
+<script src="<?php echo plugin_url('plugins/datatables/export/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/jszip.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/vfs_fonts.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.print.min.js'); ?>"></script>

@@ -45,6 +45,9 @@ $lang['order_cancelation_confirmed']            = "Order Cancelled Successfully"
 
 $lang['service_already_assigned']               = "Service has been already assigned.";
 $lang['service_assigned_successfully']          = "Service assigned successfully";
+$lang['withdrawal_request_approved']            = "Withdrawal request approved and amount has been debited from vendor wallet.";
+$lang['wallet_balance_low_than_requested']      = "Withdrawal amount is greater than wallet balance.";
+$lang['withdrawal_request_rejected']            = "Withdrawal request rejected successfully";
 
 ?>
 

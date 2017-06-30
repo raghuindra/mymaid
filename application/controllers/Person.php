@@ -237,7 +237,7 @@ class Person extends CI_Controller{
     
     public function walletWithdrawalRequest(){
         
-        if($this->session->userdata('user_id') != NULL) {
+        if($this->session->userdata('user_id') != NULL && isset($_POST['amount'])) {
             $response = $this->person_lib->walletWithdrawalRequest();
             
         }else{

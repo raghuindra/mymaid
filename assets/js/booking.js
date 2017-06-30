@@ -317,6 +317,7 @@ $(function() {
         $(".ct-new-user-details").show();
         $(".ct-login-existing").hide();
     }else if(user_logged_in == "Yes"){
+        showExistingUserDetails();
         $(".ct-new-user-details").hide();
         $(".ct-login-exist").hide();
     }

@@ -147,6 +147,8 @@ $route['a_getEmployeesForService.html']         = "admin/getEmployeesForService"
 $route['a_assignEmployeeToService.html']        = "admin/assignEmployeeToService";
 $route['vendors_withdrawal_request.html']       = "admin/vendorsWithdrawalRequest";
 $route['vendors_withdrawal_request_list.html']  = "admin/vendorsWithdrawalRequestList";
+$route['approveWithdrawalRequest.html']         = "admin/approveWithdrawalRequest";
+$route['rejectWithdrawalRequest.html']          = "admin/rejectWithdrawalRequest";
 
 
 

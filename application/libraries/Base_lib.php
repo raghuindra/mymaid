@@ -117,7 +117,16 @@ class Base_lib {
         $wallet['admin_wallet_transaction_type'] = $transaction_type;
         $wallet['admin_wallet_transaction_amount'] = $amount;
         $wallet['admin_wallet_note'] = $msg;
-        return $this->model->insert_tb('mm_admin_wallet', $wallet);
+        $this->model->insert_tb('mm_admin_wallet', $wallet);
+        
+        if($transaction_type == Globals::WALLET_CREDIT){
+            $this->model->update_person_wallet_credit($person_id, $amount);
+            
+        }else if($transaction_type == Globals::WALLET_DEBIT){
+            $this->model->update_person_wallet_debit($person_id, $amount);
+ 
+        }
+        
     }
 
 }

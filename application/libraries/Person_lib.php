@@ -846,31 +846,48 @@ class Person_lib extends Base_lib{
             $person_id = $this->ci->session->userdata('user_id');
             $user_type = $this->ci->session->userdata('user_type');
             $now = date('Y-m-d H:i:s', strtotime('now'));
-            
-            $person_info = $this->model->get('person_id, person_wallet_amount', array('person_id'=>$person_id))->result();
-            
-            if( $user_type == Globals::PERSON_TYPE_VENDOR_NAME || $user_type == Globals::PERSON_TYPE_FREELANCER_NAME){
-                $data = array(
-                    'vendor_wallet_withdrawal_vendor_id' => $person_id,
-                    'vendor_wallet_withdrawal_amount' =>$person_info[0]->person_wallet_amount,
-                    'vendor_wallet_withdrawal_request_on' => $now,                  
-                );
-                $this->model->insert_tb('mm_vendor_wallet_withdrawal', $data);
+            if(isset($_POST['amount'])){
+                $amount = $this->ci->input->post('amount', true);
+                $v_amount = number_format((float) ($amount), 2, '.', ''); unset($amount);
                 
-                if($this->model->getAffectedRowCount() > 0) {
-                    $response = array(
-                        'status' => true,
-                        'message' => $this->ci->lang->line('wallet_withdrawal_request_Sent'),
-                        'data' => array()
-                    );
-                }else{
-                    $response = array(
-                        'status' => false,
-                        'message' => $this->ci->lang->line('no_changes_to_update'),
-                        'data' => array()
-                    );
+                $person_info = $this->model->get('person_id, person_wallet_amount', array('person_id'=>$person_id))->result();
+                if($person_info[0]->person_wallet_amount >= $v_amount){
+                    if( $user_type == Globals::PERSON_TYPE_VENDOR_NAME || $user_type == Globals::PERSON_TYPE_FREELANCER_NAME){
+                        $data = array(
+                            'vendor_wallet_withdrawal_vendor_id' => $person_id,
+                            'vendor_wallet_withdrawal_amount' =>$v_amount,
+                            'vendor_wallet_withdrawal_request_on' => $now,                  
+                        );
+                        $this->model->insert_tb('mm_vendor_wallet_withdrawal', $data);
 
+                        if($this->model->getAffectedRowCount() > 0) {
+                            $response = array(
+                                'status' => true,
+                                'message' => $this->ci->lang->line('wallet_withdrawal_request_Sent'),
+                                'data' => array()
+                            );
+                        }else{
+                            $response = array(
+                                'status' => false,
+                                'message' => $this->ci->lang->line('no_changes_to_update'),
+                                'data' => array()
+                            );
+
+                        }
+                    }
+                }else{
+                   $response = array(
+                        'status' => false,
+                        'message' => $this->ci->lang->line('wallet_balance_low_than_requested'),
+                        'data' => array()
+                    ); 
                 }
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
+                );
             }
             
         }else{

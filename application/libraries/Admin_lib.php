@@ -2030,4 +2030,120 @@ class Admin_lib extends Base_lib{
         
         return $this->getResponse();
     }
+    
+    
+    function _approveWithdrawalRequest(){
+        $this->ci->load->library('form_validation');
+        
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('withdrawId', 'Withdrawal Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $withdraw_id = $this->ci->input->post('withdrawId', true);
+
+
+            $withdraw_detail = $this->model->get_tb('mm_vendor_wallet_withdrawal', '*', array('vendor_wallet_withdrawal_id' => $withdraw_id))->result();
+            
+            if (!empty($withdraw_detail)) {
+                $vendor_person_id = $withdraw_detail[0]->vendor_wallet_withdrawal_vendor_id;
+                $vendor_detail = $this->model->get_tb('mm_person', '*', array('person_id' => $vendor_person_id))->result();
+                
+                if(!empty($vendor_detail)){
+                    if($vendor_detail[0]->person_wallet_amount >= $withdraw_detail[0]->vendor_wallet_withdrawal_amount){
+                        
+                        $now = date('Y-m-d H:i:s', strtotime('now'));
+                        
+                        $this->updateVendorWallet($withdraw_detail[0]->vendor_wallet_withdrawal_amount, $withdraw_id, Globals::WALLET_DEBIT, $vendor_person_id, "Wallet Withdrawal Request");
+                        $this->model->update_tb('mm_vendor_wallet_withdrawal', array('vendor_wallet_withdrawal_id' => $withdraw_id), array('vendor_wallet_withdrawal_approval_status' => Globals::WALLET_WITHDRAWAL_REQUEST_APPROVED, 'vendor_wallet_withdrawal_approved_on' => $now));
+                        
+                        if ($this->model->getAffectedRowCount() > 0) {
+                            
+                            //Send Emails to Vendor 
+                            //$this->ci->email_lib->order_completion_confirmation_mail($info[0]->person_email, $info[0]);
+                            $this->ci->email_lib->withdrawal_approval_mail_to_vendor($vendor_detail[0]->person_email, $withdraw_detail[0], $withdraw_detail[0]->vendor_wallet_withdrawal_amount);
+
+                            $this->_status = true;
+                            $this->_message = $this->ci->lang->line('withdrawal_request_approved');
+                        } else {
+                            $this->_status = false;
+                            $this->_message = $this->ci->lang->line('no_changes_to_update');
+                        }
+                    }else{
+                        $this->_message = $this->ci->lang->line('wallet_balance_low_than_requested');
+                        $this->_status = false;
+                    }
+                    
+                }else {
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                    $this->_status = false;
+                }
+
+            } else {
+                $this->_message = $this->ci->lang->line('no_records_found');
+                $this->_status = false;
+            }
+
+
+            return $this->getResponse();
+        }
+    }
+    
+    
+    function _rejectWithdrawalRequest(){
+        $this->ci->load->library('form_validation');
+        
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('withdrawId', 'Withdrawal Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $withdraw_id = $this->ci->input->post('withdrawId', true);
+
+
+            $withdraw_detail = $this->model->get_tb('mm_vendor_wallet_withdrawal', '*', array('vendor_wallet_withdrawal_id' => $withdraw_id))->result();
+            
+            if (!empty($withdraw_detail)) {
+                $vendor_person_id = $withdraw_detail[0]->vendor_wallet_withdrawal_vendor_id;
+                $vendor_detail = $this->model->get_tb('mm_person', '*', array('person_id' => $vendor_person_id))->result();
+                
+                if(!empty($vendor_detail)){
+
+                    $now = date('Y-m-d H:i:s', strtotime('now'));
+
+                    $this->model->update_tb('mm_vendor_wallet_withdrawal', array('vendor_wallet_withdrawal_id' => $withdraw_id), array('vendor_wallet_withdrawal_approval_status' => Globals::WALLET_WITHDRAWAL_REQUEST_REJECTED));
+
+                    if ($this->model->getAffectedRowCount() > 0) {
+
+                        //Send Emails to Vendor 
+                        //$this->ci->email_lib->order_completion_confirmation_mail($info[0]->person_email, $info[0]);
+                        $this->ci->email_lib->withdrawal_rejection_mail_to_vendor($vendor_detail[0]->person_email, $withdraw_detail[0]->vendor_wallet_withdrawal_amount);
+
+                        $this->_status = true;
+                        $this->_message = $this->ci->lang->line('withdrawal_request_rejected');
+                    } else {
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('no_changes_to_update');
+                    }
+                    
+                }else {
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                    $this->_status = false;
+                }
+
+            } else {
+                $this->_message = $this->ci->lang->line('no_records_found');
+                $this->_status = false;
+            }
+
+
+            return $this->getResponse();
+        }
+    }
 }

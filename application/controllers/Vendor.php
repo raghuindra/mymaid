@@ -102,6 +102,7 @@ class Vendor extends Base {
         $this->data['content'] = "vendor/walletRequestPay.php";
         $this->data['vendor'] = 1;
         $this->data['active'] = "wallet||request";
+        $this->data['title']  = "Wallet Withdrawal";
         $this->load->view('template', $this->data);
     }
 

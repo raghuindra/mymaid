@@ -72,6 +72,10 @@ $(function(){
     
     /* Wallet Withdrawal Requesr List Datatable */
     var walletWithdrawalList = $('#withdrawal_request_list').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+           'excel', 'pdf'
+        ],
         "responsive": true,
         "paging": true,
         "lengthChange": true,
@@ -154,11 +158,12 @@ $(function(){
         ]
     });
     
-    /* Handle the Withdrawal Request Datatable Refresh. */
+    /* Handle the Reload of Withdrawal Request Datatable. */
     $(".withdrawalRefresh").on('click', function(){            
         walletWithdrawalList.ajax.reload(); //call datatable to reload the Ajax resource        
     });
-        
+    
+    /* Handle the Approval of Withdrawal Request. */
     $(document).on('click', '.approveRequest', function(){
         
         var id = $(this).data('id');
@@ -177,7 +182,57 @@ $(function(){
                             
                             $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url() . 'approveWithdrwalRequest.html'; ?>",
+                                url: "<?php echo base_url() . 'approveWithdrawalRequest.html'; ?>",
+                                data: {'withdrawId':id},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        walletWithdrawalList.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel:{
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+        
+    });
+    
+    /* Handle the Rejection of Withdrawal Request. */
+    $(document).on('click', '.rejectRequest', function(){
+        
+        var id = $(this).data('id');
+            
+            $.confirm({
+                title: 'Confirm Rejection!',               
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'content': 'Are you sure you want to reject the withdrawal request?',
+                buttons: {
+                    confirm:{ 
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'rejectWithdrawalRequest.html'; ?>",
                                 data: {'withdrawId':id},
                                 cache: false,
                                 success: function (res) {
@@ -211,5 +266,12 @@ $(function(){
     
 });
 
-
 </script>
+<link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/export/buttons.dataTables.min.css');?>">
+<script src="<?php echo plugin_url('plugins/datatables/export/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/jszip.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/vfs_fonts.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo plugin_url('plugins/datatables/export/buttons.print.min.js'); ?>"></script>

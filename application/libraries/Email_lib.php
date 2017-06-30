@@ -112,6 +112,37 @@ class Email_lib extends Base_lib{
     public function booking_received_mail(){
         
     }
+    
+    public function withdrawal_approval_mail_to_vendor($recipient, $info, $amount){
+        $sender = $this->ci->data['config']['sender_email'];
+        $subject = "Wallet Withdrawal Request Approved!";
+        $message = "<html><body>";
+        $message .= "<p>Dear Vendor,</p><br>";
+        $message .= "<p>Withdrawal request has been approved by admin.</p>";
+        $message .= "<p>Please contact Admin for any queries.</p>";
+        $message .= "<p>Amount Debited from your wallet: &nbsp; <b>".$amount."</b></p>";
+        $message .= "<p>Approved Date: &nbsp; <b>".$info->vendor_wallet_withdrawal_approved_on."</b></p>";
+        
+        $message .= "</body></html>";
+        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+    }
+    
+    
+    public function withdrawal_rejection_mail_to_vendor($recipient, $amount){
+        $now = date('Y-m-d H:i:s', strtotime('now'));
+        $sender = $this->ci->data['config']['sender_email'];
+        $subject = "Wallet Withdrawal Request Rejected!";
+        $message = "<html><body>";
+        $message .= "<p>Dear Vendor,</p><br>";
+        $message .= "<p>Withdrawal request has been rejected by admin for the amount".$amount."</p>";
+        $message .= "<p>Please contact Admin for any queries.</p>";
+        $message .= "<p>Rejected Date: &nbsp; <b>".$now."</b></p>";
+        
+        $message .= "</body></html>";
+        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+    }
+    
+    
  
     
 }
