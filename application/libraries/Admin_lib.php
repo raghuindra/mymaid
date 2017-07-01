@@ -1449,6 +1449,7 @@ class Admin_lib extends Base_lib{
         $this->ci->form_validation->set_rules('senderEmail', 'Sender Email', 'trim|required|xss_clean|encode_php_tags|valid_email', array('required' => 'You must provide a valid %s.'));
         $this->ci->form_validation->set_rules('gst', 'GST', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('gstStatus', 'GST Status', 'trim|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('profit_cutoff', 'Commission', 'trim|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         
         if ($this->ci->form_validation->run() == FALSE) {
                 $this->_status = FALSE;
@@ -1458,6 +1459,7 @@ class Admin_lib extends Base_lib{
 
             $senderEmail = $this->ci->input->post('senderEmail', true);
             $gst         = $this->ci->input->post('gst', true);
+            $profitCutoff         = $this->ci->input->post('profit_cutoff', true);
             $config      = array();
             
             if(isset($_POST['gstStatus']) && ($_POST['gstStatus'] == 'on') ){
@@ -1467,6 +1469,7 @@ class Admin_lib extends Base_lib{
             }
             
             $config[] = array('config_name'=>'sender_email', 'config_value'=>$senderEmail);
+            $config[] = array('config_name'=>'profit_cutoff', 'config_value'=>$profitCutoff);
             
             $this->model->update_batch_tb('mm_config', $config, 'config_name');
             

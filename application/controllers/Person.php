@@ -267,6 +267,22 @@ class Person extends CI_Controller{
         
         echo json_encode($response);
     }
+    
+    
+    public function widgetsUpdates(){
+        if($this->session->userdata('user_id') != NULL) {
+            $response = $this->person_lib->_getWidgetsUpdates();
+            
+        }else{
+           $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        
+        echo json_encode($response);
+    }
 
 }
 

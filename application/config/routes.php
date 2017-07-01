@@ -60,6 +60,7 @@ $route['refundPolicy.html']                     = "person/refundPolicyPage";
 $route['person_wallet_balance.html']            = "person/getPersonWalletBalance";
 $route['request_wallet_withdrawal.html']        = "person/walletWithdrawalRequest";
 $route['listWalletWithdrawalRequest.html']      = "person/listWalletWithdrawalRequest";
+$route['widgets_updates.html']                  = "person/widgetsUpdates";
 
 
 /* ........User Module Routing............................ */

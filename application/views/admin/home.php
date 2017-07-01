@@ -30,14 +30,14 @@ $this->load->view("block/admin_leftMenu");
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3 class="w_completed_orders"></h3>
 
                         <p>New Orders</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-shopping-cart"></i>
                     </div>
-                    <a href="#" class="small-box-footer hidden">More info <i class="fa fa-shopping-cart"></i></a>
+                    <a href="<?php echo base_url().'a_new_orders.html';?>" class="small-box-footer">More info <i class="fa fa-shopping-cart"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -45,14 +45,14 @@ $this->load->view("block/admin_leftMenu");
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53</h3>
+                        <h3 class="w_processing_orders"></h3>
 
-                        <p>Pending orders </p>
+                        <p>Active orders </p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-hourglass-end"></i>
                     </div>
-                    <a href="#" class="small-box-footer hidden">More info <i class="fa fa-hourglass-end"></i></a>
+                    <a href="<?php echo base_url().'a_active_ordrers.html';?>" class="small-box-footer">More info <i class="fa fa-hourglass-end"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -60,14 +60,14 @@ $this->load->view("block/admin_leftMenu");
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3 class="w_completed_orders"></h3>
 
-                        <p>Complete orders</p>
+                        <p>Completed orders</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-arrow-circle-right"></i>
                     </div>
-                    <a href="#" class="small-box-footer hidden">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?php echo base_url().'a_completed_orders.html';?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -75,14 +75,14 @@ $this->load->view("block/admin_leftMenu");
                 <!-- small box -->
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3 class="w_wallet_balance"></h3>
 
                         <p>Total earnings </p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-money"></i>
                     </div>
-                    <a href="#" class="small-box-footer hidden">More info <i class="fa fa-money"></i></a>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-money"></i></a>
                 </div>
             </div>
             <!-- ./col -->

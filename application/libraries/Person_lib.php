@@ -938,5 +938,65 @@ class Person_lib extends Base_lib{
         
         return $response;
     }
+    
+    
+    function _getWidgetsUpdates(){
+        $person_id = $this->ci->session->userdata('user_id');
+        $dataArray = array();
+        if($person_id != null){
+            $respo_1 = $this->model->get('person_wallet_amount', array('person_id'=>$person_id))->result();
+            $dataArray['wallet_balance'] = $respo_1[0]->person_wallet_amount;
+            //Get New Orders Count
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+            $respo_2 = $this->model->getServiceBookings($now);
+            $dataArray['new_orders'] = count($respo_2);
+            
+            //Get Processing Orders and Completed Orders
+            if( ($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME) || ($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME) ){
+                $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
+                
+                $respo_3 = $this->model->getVendorServiceBookings($company[0]->company_id);
+                $dataArray['processing_orders'] = count($respo_3);
+                
+                $respo_4 = $this->model->getVendorCompletedServiceBookings($company[0]->company_id);
+                $dataArray['completed_orders'] = count($respo_4);
+            }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME){
+                $respo_3 = $this->model->getAllServiceBookingsUnderProcess();
+                $dataArray['processing_orders'] = count($respo_3);
+                
+                $respo_4 = $this->model->getAllCompletedServiceOrders();
+                $dataArray['completed_orders'] = count($respo_4);
+                
+            }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_USER_NAME){
+                $respo_3 = $this->model->getAllUserServiceBookingsUnderProcess($person_id);
+                $dataArray['processing_orders'] = count($respo_3);
+                
+                $respo_4 = $this->model->getUserCompletedBookings($person_id);
+                $dataArray['completed_orders'] = count($respo_4);
+            }
+
+            
+            if(!empty($dataArray)){
+                $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $dataArray
+                );
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                );
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            );
+        }
+        return $response;
+    }
 
 }
