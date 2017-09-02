@@ -1,3 +1,15 @@
+<?php 
+//print_r($config);
+
+?>
+<style>
+    .text-red{
+        color: red;
+    }
+    .error_message{
+        margin-left: 15px;
+    }
+</style>
 <a href="javascript:void(0)" class="ct-back-to-top" style="display: none;"></a>
 <div id="postcodeSearch" style="display: none;" data-val="<?php echo $this->session->userdata('service_location_search'); ?>"></div>
 <!--<form id="book-id">-->
@@ -13,7 +25,7 @@
                 <!-- left side main booking form -->
                 <div class="ct-main-left ct-sm-7 ct-md-7 ct-xs-12 mt-30 br-5 np">
                     <div class="ct-sm-12 ct-md-12 ta-c ct-location-header">
-                        <h2 class="header2">MyMaidz</h2>
+                        <h2 class="header2"><a href="<?php echo base_url();?>" style="text-decoration: none;">MyMaidz</a></h2>
                         <h6 class="header6 hidden">Bengaluru, Banasawadi, 586112<span class="ct-company-phone">
                             </span></h6>
 
@@ -48,208 +60,12 @@
                         </div>
                         <input id="total_cart_count" type="hidden" name="total_cart_count" value="1">
                         <!-- area based select cleaning -->
+                        
                         <!-- 1.box style services selection radio selection -->
                         <ul class="services-list" id="booking_service_list">
 
-
-                            <!--                            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class ser_details" data-servicetitle="Plumbing Services" data-id="2">
-                                                            <input type="radio" name="service-radio" id="ct-service-2" class="make_service_disable">
-                                                            <label class="ct-service border-c" for="ct-service-2">
-                                                                <div class="ct-service-img"><img class="ct-image" src="./assets/images/service_26571.jpg">
-                                                                </div>
-                            
-                                                            </label>
-                            
-                                                            <div class="service-name fl ta-c">Plumbing Services</div>
-                                                        </li>
-                                                        <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class ser_details" data-servicetitle="Handyman Services" data-id="3">
-                                                            <input type="radio" name="service-radio" id="ct-service-3" class="make_service_disable">
-                                                            <label class="ct-service border-c" for="ct-service-3">
-                                                                <div class="ct-service-img"><img class="ct-image" src="./assets/images/service_12253.jpg">
-                                                                </div>
-                            
-                                                            </label>
-                            
-                                                            <div class="service-name fl ta-c">Handyman Services</div>
-                                                        </li>
-                                                        <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class ser_details" data-servicetitle="Office Cleaning" data-id="4">
-                                                            <input type="radio" name="service-radio" id="ct-service-4" class="make_service_disable">
-                                                            <label class="ct-service border-c" for="ct-service-4">
-                                                                <div class="ct-service-img"><img class="ct-image" src="./assets/images/service_38708.jpg">
-                                                                </div>
-                            
-                                                            </label>
-                            
-                                                            <div class="service-name fl ta-c">Office Cleaning</div>
-                                                        </li>-->
                         </ul>
                         <!--  1 end box style service selection -->
-
-                        <div class="ct-scroll-meth-unit"></div>
-                        <!--                        <label class="method_not_selected_error plumbing-service show_methods_after_service_selection" id="method_not_selected_error" style="display:none">Please Select Method</label>
-                        
-                                                <div class="services-method-list-dropdown plumbing-service fl show_methods_after_service_selection show_single_service_method" id="ct-type-method" style="display: none;">
-                                                    <div class="service-method-selection-main">
-                                                        <div class="service-method-is" title="Choose Your Service">
-                                                            <select class="data-list">
-                                                                <option value="">Service Usage Methods</option>
-                                                                <option value="">Commercial Services</option>
-                                                                <option value="">Commercial Services</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="services-method-list-dropdown handyman-service fl show_methods_after_service_selection show_single_service_method" id="ct-type-method" style="display: none;">
-                                                    <div class="service-method-selection-main">
-                                                        <div class="service-method-is" title="Choose Your Service">
-                                                            <select class="data-list">
-                                                                <option value="">Service Usage Methods</option>
-                                                                <option value="">Area Based</option>
-                                                                <option value="">Property Based</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="services-method-list-dropdown office-service fl show_methods_after_service_selection show_single_service_method" id="ct-type-method" style="display: none;">
-                                                    <div class="service-method-selection-main">
-                                                        <div class="service-method-is" title="Choose Your Service">
-                                                            <select class="data-list">
-                                                                <option value="">Service Usage Methods</option>
-                                                                <option value="">Area Based</option>
-                                                                <option value="">Property Based</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-                        <label class="empty_cart_error home-service" id="empty_cart_error" style="display:none">Please select units or addons</label>
-                        <!-- hrs selected  -->
-                        <div class="ct-service-duration ct-md-12 ct-sm-12 s_m_units_design_1" id="ct-duration-main" >
-                            <div class="ct-inner-box border-c">
-
-                                <div class="fl ct-md-12 mt-5 mb-15 np duration_hrs">
-                                </div>
-                                <!-- end duration hrs  -->
-                            </div>
-                        </div>
-                        <!-- 1. bedroom and bathroom counting dropdown -->
-                        <div class="ct-meth-unit-count ct-md-12 ct-sm-12 np  fl s_m_units_design_2" style="display:none">
-                            <div class="ct-inner-box border-c ser_design_2_units">
-                                <div class="ct-bedrooms ct-btn-group ct-md-6 ct-sm-6 mb-15 ">
-                                    <label> Bedroom Cleaning</label>
-                                    <div class="common-selection-main">
-                                        <div class="selected-is select-bedrooms" data-mnamee="ad_unit1" data-un_title="Bedroom Cleaning" data-un_id="1" title="Choose Your Bedroom Cleaning">
-                                            <!-- <div class="data-list" id="ct_selected_"> -->
-                                            <select class="data-list" id="_selected_1">
-                                                <option>Bedroom Cleaning</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                            </select>
-                                        </div>
-                                        <!-- <div class="common-data-dropdown ct--dropdown"> -->
-                                        <div class="common-data-dropdown ct-1-dropdown">
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="1" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="10" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">1</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="2" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="20" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">2</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="3" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="30" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">3</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="4" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="40" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">4</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="5" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="40" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">5</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="6" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="48" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">6</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="7" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="42" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">7</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="8" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="48" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">8</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="9" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="54" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">9</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="10" data-units_id="1" data-service_id="1" data-method_id="1" data-method_name="Bedroom Cleaning" data-un_title="Bedroom Cleaning" data-rate="45" data-type="method_units" data-mnamee="ad_unit1">
-                                                <p class="ct-count">10</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="ct-bedrooms ct-btn-group ct-md-6 ct-sm-6 mb-15 ">
-                                    <label> Bathroom Cleaning</label>
-                                    <div class="common-selection-main">
-                                        <div class="selected-is select-bedrooms" data-mnamee="ad_unit2" data-un_title="Bathroom Cleaning" data-un_id="2" title="Choose Your Bathroom Cleaning">
-                                            <!-- <div class="data-list" id="ct_selected_"> -->
-                                            <select class="data-list" id="ct_selected_1">
-                                                <option>Bathroom Cleaning</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                                <option>2</<option>
-                                            </select>
-                                        </div>
-                                        <!-- <div class="common-data-dropdown ct--dropdown"> -->
-                                        <div class="common-data-dropdown ">
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="1" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="12" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">1</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="2" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="24" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">2</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="3" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="30" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">3</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="4" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="40" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">4</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="5" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="50" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">5</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="6" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="48" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">6</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="7" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="56" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">7</p>
-                                            </div>
-                                            <div class="data-list select_bedroom add_item_in_cart" data-duration_value="8" data-units_id="2" data-service_id="1" data-method_id="1" data-method_name="Bathroom Cleaning" data-un_title="Bathroom Cleaning" data-rate="64" data-type="method_units" data-mnamee="ad_unit2">
-                                                <p class="ct-count">8</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- 1.end dropdown list bathroom bedroom -->
-                        <!-- 2. boxed bathroom bedroom  -->
-                        <div class="ct-meth-unit-count ct-md-12 ct-sm-12 np s_m_units_design_3" id="ct-meth-unit-type-2" >
-                            <div class="ct-inner-box border-c ser_design_3_units">
-
-                            </div>
-                        </div>
-                        <!-- 2. end boxed bathroom bedroom -->
-
-                        <div class="ct-meth-unit-count ct-md-12 ct-sm-12 s_m_units_design_4" id="ct-meth-unit-type-3">
-                            <div class="ct-inner-box border-c ">
-                                <div class="fl ct-bedrooms ct-btn-group ct-md-12 mt-5 mb-15 np">
-                                    <div class="ct-inner-box border-c ser_design_4_units">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
 
                     </div>
                     <!-- end service list -->
@@ -267,27 +83,6 @@
                         <div class="packageDiv">
                             <!-- 1.box style services Package selection radio selection -->
                             <ul class="services-list">
-                                <!--                                <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class" data-servicetitle="Plumbing Services" >
-                                                                    <input type="radio" name="package-radio" id="ct-pk-service-1" class="make_service_disable">
-                                                                    <label class="ct-service border-c" for="ct-pk-service-1">
-                                                                        <div class="ct-service-img">
-                                                                            <div class="row">
-                                                                                <div class="col-xs-12 text-center spring-body">
-                                                                                     ngIf: booking.house_size != 1000 
-                                                                                     ngIf: booking.house_size == 1000 <img ng-if="booking.house_size == 1000" src="./assets/images/icon-small-house.png" class="icon-md mt-sm ng-scope" height="40"> end ngIf: booking.house_size == 1000 
-                                                                                    <p class="p-header">Small Apartment / Studio</p>
-                                                                                    <p class="p-content">Up to 1,000 sqft</p>
-                                                                                    <p class="p-content">Up to 3 bedrooms and 2 bathrooms</p>
-                                                                                    <p class="p-content">2 cleaning crew</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                
-                                                                    </label>
-                                
-                                                                    <div class="service-name fl ta-c">Plumbing Services</div>
-                                                                </li>
-                                -->
 
                             </ul>
 
@@ -311,7 +106,7 @@
                         </div>
                         <ul class="addon-service-list fl remove_addonsss">
                             <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="4" id="ct-addon-4" data-mnamee="ad_unit4">
+                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess" data-id="4" id="ct-addon-4" data-mnamee="ad_unit4">
                                 <label class="ct-addon-ser border-c" for="ct-addon-4"><span></span>
                                     <div class="addon-price">$10.00</div>
                                     <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
@@ -331,7 +126,7 @@
                                 <div class="addon-name fl ta-c">Damaged Flooring</div>
                             </li>
                             <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="5" id="ct-addon-5" data-mnamee="ad_unit5">
+                                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess" data-id="5" id="ct-addon-5" data-mnamee="ad_unit5">
                                 <label class="ct-addon-ser border-c" for="ct-addon-5"><span></span>
                                     <div class="addon-price">$10.00</div>
                                     <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png"></div>
@@ -413,15 +208,46 @@
                     </div>
                     <!-- how often discount end -->
                     <!-- date time selection -->
-                    <div class="ct-date-time-main ct-common-box hide_allsss">
+                    <div class="ct-date-time-main ct-common-box hide_allsss ">
                         <div class="ct-list-header">
                             <h3 class="header3">When would you like us to come?</h3>
                             <!--<p class="ct-sub">Choose a date for your cleaning session. Time can not be guaranteed</p>-->
                         </div>
-                        <div id="select-date" class="ct-md-12 ct-sm-12 ct-xs-12">
+<!--                        <div id="select-date" class="ct-md-12 ct-sm-12 ct-xs-12">
+                        </div>-->
+                        <div class="date_session_div" id="date_session_div">
+                            <div class="row">
+                                <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
+                                    <label for="ct-first-name">Service Date</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                          <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right add_show_error_class error date_selection" id="service_date_0" required>
+                                    </div>
+                                      <!-- /.input group -->
+                                    
+                                </div>
+
+                                <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
+                                    <label for="ct-session">Session</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                          <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <select placeholder="Select session" name="ct_session" id="service_session_0" class="add_show_error_class error session_selection" required >
+                                            
+                                            <?php
+                                            foreach ($sessions as $key => $value) {
+                                                echo '<option value="' . $value->session_id . '" >' . $value->session_name . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class='text-red error_message' style='clear:both'> </div>
+                            </div>
                         </div>
-
-
 
                     </div>
                     <!-- date and time slots end  -->
@@ -484,11 +310,15 @@
 
                             <div id="user_details_div" class="" novalidate="novalidate">
                                 <div class="ct-new-user-details">
-                                    <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
+                                    <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-email">Preferred Email</label>
                                         <input type="email" name="ct_email" required id="ct-email" class="add_show_error_class error" placeholder="Your valid email address">
                                     </div>
-                                    <div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row">
+                                    <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
+                                        <label for="ct-email">Re-enter Email</label>
+                                        <input type="email" name="ct_re_email" required id="ct-re-email" class="add_show_error_class error" placeholder="Your valid email address">
+                                    </div>
+                                    <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-preffered-pass">Preferred Password</label>
                                         <input type="password" required name="ct_preffered_pass" id="ct-preffered-pass" class="add_show_error_class error" placeholder="Password">
                                     </div>
@@ -516,8 +346,8 @@
                                         <input type="text" required name="ct_street_address" id="ct-street-address" class="add_show_error_class error" placeholder="e.g. Central Ave">
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
-                                        <label for="ct-zip-code">Zip Code</label>
-                                        <input type="text" required name="ct_zip_code" id="ct-zip-code" class="add_show_error_class error" placeholder="e.g. 90001"  onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6">
+                                        <label for="ct-zip-code">Postcode</label>
+                                        <input type="text" required name="ct_zip_code" id="ct-zip-code" class="add_show_error_class error" placeholder="e.g. 90001"  onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" value="<?php echo $this->session->userdata('service_location_search'); ?>" disabled="">
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-city">City</label>
@@ -715,9 +545,9 @@
                                         <h6 class="header6 ct-item-list"></h6>
                                     </div>
                                     <div class="cart-items-main f-l">
-                                        <label class="cart_empty_msg addons">Addons: <span class="addons_names"></span></label>
+                                        <label class="cart_empty_msg addons" style="font-weight: bold;">Addons: <span class="addons_names" style="font-weight: normal;"></span></label>
 
-                                        <label class="cart_empty_msg spl_req" style="display:none;">Special Request: <span class="spl_req_names"></span></label>                                        
+                                        <label class="cart_empty_msg spl_req" style="display:none;font-weight: bold;">Special Request: <span class="spl_req_names" style="font-weight: normal;"></span></label>                                        
                                     </div>
                                 </div>
                                 <div class="step_heading f-l">
@@ -727,7 +557,7 @@
                                     <div class="ct-image">
                                         <img src="./assets/images/icon-calendar.png" alt="">
                                     </div>
-                                    <p class="ct-text sel-datetime"><span class="cart_session" ></span><span class="cart_date" data-date_val=""></span><span class="space_between_date_time" style=""> @ </span><span class="cart_time" data-time_val=""></span></p>
+                                    <p class="ct-text sel-datetime"><span class="cart_session" ></span><span class="cart_date" data-date_val=""></span><span class="space_between_date_time hidden" style=""> @ </span><span class="cart_time" data-time_val=""></span></p>
                                 </div>
                                 <div class="ct-summary frequency_value">
                                     <div class="ct-image f_dis_img">
@@ -755,12 +585,14 @@
                                         <span class="ct-coupon-discount cart_discount">XXXX</span>
                                     </div>
                                 </div>
-                                <div class="ct-form-rown tax_display" style="display: none;">
-                                    <div class="ct-cart-label-common ofh">GST</div>
-                                    <div class="ct-cart-amount-common ofh">
-                                        <span class="ct-tax-amount cart_tax"></span>
+                                <?php  if( $config['status']['gst'] == 1 ){ ?>
+                                    <div class="ct-form-rown tax_display" style="display: none;">
+                                        <div class="ct-cart-label-common ofh">GST</div>
+                                        <div class="ct-cart-amount-common ofh">
+                                            <span class="ct-tax-amount cart_tax"></span>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php } ?>
                                 <div class="ct-clear"></div>
                                 <div id="ct-line"></div>
                                 <div class="ct-form-rown total_price_display" style="display: none;">
@@ -960,7 +792,7 @@
         <ul class="addon-service-list fl ">
 
             <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
-                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess_2" data-id="1" id="ct-addon-1" data-mnamee="ad_unit1">
+                <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess" data-id="1" id="ct-addon-1" data-mnamee="ad_unit1">
                 <label class="ct-addon-ser border-c" for="ct-addon-1"><span></span>
                     <div class="addon-price">$5.00</div>
                     <div class="ct-addon-img"><img src="http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-fridge.png"></div>
@@ -1064,7 +896,8 @@
 <script>
     base_url = "<?php echo base_url(); ?>";
     gst = <?php echo $config['gst']; ?>;
-    home_url = "<?php echo base_url() . "home.html" ?>";
+    gst_status = <?php echo $config['status']['gst'];?>;
+    home_url = "<?php echo base_url() . 'home.html' ?>";
     user_logged_in = "<?php if ($this->session->userdata('user_id') == null) {
                                                 echo "No";
                                             } else {

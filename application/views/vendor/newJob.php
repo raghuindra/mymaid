@@ -27,53 +27,6 @@ $this->load->view("block/vendor_leftMenu");
                         <h3 class="box-title">Data Table With Full Features</h3>
                     </div>
                     <!-- /.box-header -->
-<!--                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>order id </th>
-                                    <th>customer Name</th>
-                                    <th>service type</th>
-                                    <th>amount </th>
-                                    <th>date of request</th>
-                                    <th>service time</th>
-                                    <th class="action">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>1234</td>
-                                    <td>Shiva</td>
-                                    <td>Cleaning</td>
-                                    <td>65,000</td>
-                                    <td>2/20/2017</td>
-                                    <td> 10:11 PM</td>
-                                    <td><button class="label label-success">Approved</button><button class="label label-warning">Pending</button><button class="label label-primary">Approved</button><button class="label label-danger">Denied</button></td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot class="hidden">
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>-->
-
-
                     <div class="form-horizontal">
 
                         <div class="box-body">
@@ -83,9 +36,10 @@ $this->load->view("block/vendor_leftMenu");
                                         <th>Booking id</th>
                                         <th>Customer Name</th>
                                         <th>Service Name</th>
-<!--                                        <th>Amount </th>-->
-                                        <th>Date of request</th>
-                                        <th>Service date</th>
+                                        <th>Amount </th>
+                                        <th>Date of Request</th>
+                                        <th>Service Date</th>
+                                        <th>Frequency</th>
                                         <th class="action">Action</th>
                                     </tr>
                                 </thead>
@@ -112,7 +66,8 @@ $this->load->view("block/vendor_leftMenu");
 
 <script>
 
-
+var jConfirm;
+    
 $(function(){
     
     /* Service Location List Datatable */
@@ -138,13 +93,21 @@ $(function(){
                 {"data": "booking_id"},
                 {"data": "customer_name"},
                 {"data": "service_name"},
+                {"data": "booking_amount"},
                 {"data": "booking_booked_on"},
                 {"data": "booking_service_date"},
+                {"data": "frequency_name"},
                 {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [0, 1, 2, 3,4], searchable: true, orderable: true},
-                {"responsivePriority": '1', "targets": [5], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [0], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class=""><a href="#" class="orderDetails" data-id="'+row.booking_id+'">' + row.booking_id + ' </a></td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [1, 2, 3, 4, 5, 6], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                         
                         var string = ' <td class=""> <div class="text-center">';                                                      
@@ -165,9 +128,10 @@ $(function(){
         $(document).on('click', ".serviceAccept", function(){
             
             var id = $(this).data('id');
+            var last_valid_selection = null;
             
-            $.confirm({
-                title: 'Assign Job To:',
+            jConfirm = $.confirm({
+                title: 'Assign Job:',
                 content: function(){
                     var self = this;
                     //self.setContent('Checking callback flow');
@@ -188,39 +152,29 @@ $(function(){
                     //self.setContentAppend(data);
                 },
                 onContentReady: function(){
-                    
+                    $(".ser_employee").on('focusout', function(){
+                        let mincount = $(this).attr('data-minCount');
+                        
+                        if($(this).val().length < mincount){
+                            $.alert('Please assign minimum '+mincount+' employee/s.');
+                            
+                        }else if($(this).val().length > mincount){
+                            $(this).val('');                          
+                            $.alert('Can assign maximum '+mincount+' employee/s.');
+                        }
+                    });
                 },
                 'useBootstrap': true,
                 'type': 'blue',
                 'typeAnimated': true,
                 'animation': 'scaleX',
+                'columnClass': 'col-md-8 col-md-offset-2',
                 buttons: {
                     confirm:{ 
                         btnClass: 'btn-green',
                         action:function () {
-                            var employeeId = this.$content.find('#assign_employee').val();
-                            if( employeeId == '' || employeeId == null){ $.alert('Select Employee!'); return false;}
-                            $.ajax({
-                                type: "POST",
-                                url: "<?php echo base_url() . 'assignEmployeeToJob.html'; ?>",
-                                data: {'employeeId':employeeId,'bookingId':id},
-                                cache: false,
-                                success: function (res) {
-                                    var result = JSON.parse(res);
-
-                                    if (result.status === true) {
-                                        notifyMessage('success', result.message);
-                                        newServiceJobList.ajax.reload(); //call datatable to reload the Ajax resource
-                                        
-                                    } else {
-                                        notifyMessage('error', result.message);
-                                    }
-
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    notifyMessage('error', errorThrown);
-                                }
-                            });
+                            $("#assign_job_form").submit();                         
+                            return false;
                         }
                     },
                     cancel:{
@@ -233,5 +187,121 @@ $(function(){
             });
             
         });
+        
+    /* Fetch the Order/booking Deatils */       
+    $(document).on('click', '.orderDetails', function(e){
+            e.preventDefault();
+            var bookingId = $(this).data('id');
+            
+            $.confirm({
+                title: 'Order Information:',
+                content: function(){
+                    var self = this;
+                    //self.setContent('Checking callback flow');
+                    return $.ajax({
+                        url: '<?php echo base_url() . 'serviceOrderDeatils.html'; ?>',
+                        dataType: 'html',
+                        method: 'post',
+                        data:{'booking_id':bookingId}
+                    }).done(function (response) {
+                        self.setContentAppend(response);
+                    }).fail(function(){
+                        self.setContentAppend('<br>Fail to load!');
+                    }).always(function(){
+                        //self.setContentAppend("sdsa");
+                    });
+                },
+                contentLoaded: function(data, status, xhr){
+                    //self.setContentAppend(data);
+                },
+                onContentReady: function(){
+                    
+                },
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                columnClass: 'col-md-6 col-md-offset-3',
+                buttons: {
+                    
+                    cancel:{
+                        text: 'Close',
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+                       
+        });
+    
+    
+    $(document).on('submit', '#assign_job_form', function(e){
+        e.preventDefault();
+        console.log('Submitted');
+        var flag = 1;
+        var flag_1 = 1;
+        var flag_2 = 1;
+        var date = "<ul>";
+        var date_1 = "<ul>";
+        var date_2 = "<ul>";
+        var mincount = 0;
+        $(".ser_employee").each(function () {
+            mincount = $(this).attr('data-mincount');
+            
+            if($(this).val()==null || $(this).val().length < mincount){
+                //$.alert('Please assign minimum '+mincount+' employee/s.');
+                flag_1 = flag_1 *0;
+                date_1 += "<li>"+ $(this).closest('.row').children().children().find('.ser_date').val() +"</li>";
+            }else if($(this).val()==null || $(this).val().length > mincount){
+                $(this).val('');                          
+                //$.alert('Can assign maximum '+mincount+' employee/s.');
+                flag_2 = flag_2 *0;
+                date_2 += "<li>"+ $(this).closest('.row').children().children().find('.ser_date').val() +"</li>";
+            }
+            
+            if($(this).val() == '' || $(this).val() == null){               
+                flag = flag * 0;
+                date += "<li>"+ $(this).closest('.row').children().children().find('.ser_date').val() +"</li>";
+            }
+
+        });
+        
+        date += "</ul>"; date_1 += "</ul>"; date_2 += "</ul>";
+        
+        if(!flag){
+            $.alert('Please choose employee for service date/s: '+date);
+        }else if(!flag_1){
+            $.alert('Please assign minimum '+mincount+' employee/s for service date/s: '+date_1);
+        }else if(!flag_2){
+            $.alert('Can assign maximum '+mincount+' employee/s for service date/s: '+date_2);
+        }else{
+            
+            var data = $('#assign_job_form').serializeArray();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'assignEmployeeToJob.html'; ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        newServiceJobList.ajax.reload(); //call datatable to reload the Ajax resource
+                        jConfirm.close();
+                    } else {
+                       $.alert(result.message);
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $.alert(errorThrown);
+                }
+            });
+        }
+    });
 });
 </script>

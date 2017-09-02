@@ -34,7 +34,7 @@ $this->load->view("block/user_leftMenu");
                                 <thead>
                                     <tr>
                                         <th>Order id </th>
-                                        <th>Vendor Company</th>
+                                        <th>Company Employee</th>
                                         <th>Company Contact</th>
                                         <th>Service Name</th>
                                         <th>Amount </th>
@@ -92,7 +92,7 @@ $(function(){
             },
             "columns": [
                 {"data": "booking_id"},
-                {"data": "company_name"},
+                {"data": "employee_name"},
                 {"data": "company_landphone"},
                 {"data": "service_name"},
                 {"data": "booking_amount"},
@@ -103,15 +103,21 @@ $(function(){
                 {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '1', "targets": [0, 3, 4, 5, 6, 7, 8], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [0], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class=""><a href="#" class="orderDetails" data-id="'+row.booking_id+'">' + row.booking_id + ' </a></td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [3, 4, 5, 6, 7, 8], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [1], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';
-                        if(row.company_name == null){
+                        if(row.employee_name == null){
                             string += ' <td class=""> -- </td>';  
                         }else{
-                            string += '<td class=""> '+ row.company_name +'</td>';
+                            string += '<td class=""> <a href="#" class="employeeDetails" data-id="'+row.booking_id+'">Employee Detail</a></td>';
                         }
                             
                         return string;
@@ -121,7 +127,7 @@ $(function(){
                     "render": function (data, type, row) {
                         
                         var string ='';
-                        if(row.company_name === null){
+                        if(row.company_landphone === null){
                             string += ' <td class=""> -- </td>';  
                         }else{
                             string += '<td class=""> '+ row.company_landphone +'</td>';
@@ -152,7 +158,106 @@ $(function(){
             canceledBookingList.ajax.reload(); //call datatable to reload the Ajax resource        
         });
     
-    
+        
+        /* Fetch the Order/booking Deatils */       
+        $(document).on('click', '.orderDetails', function(e){
+            e.preventDefault();
+            var bookingId = $(this).data('id');
+            
+            $.confirm({
+                title: 'Order Information:',
+                content: function(){
+                    var self = this;
+                    //self.setContent('Checking callback flow');
+                    return $.ajax({
+                        url: '<?php echo base_url() . 'serviceOrderDeatils.html'; ?>',
+                        dataType: 'html',
+                        method: 'post',
+                        data:{'booking_id':bookingId}
+                    }).done(function (response) {
+                        self.setContentAppend(response);
+                    }).fail(function(){
+                        self.setContentAppend('<br>Fail to load!');
+                    }).always(function(){
+                        //self.setContentAppend("sdsa");
+                    });
+                },
+                contentLoaded: function(data, status, xhr){
+                    //self.setContentAppend(data);
+                },
+                onContentReady: function(){
+                    $(document).on('click', '#get_invoice', function(){
+                        $("#invoice_modal").modal('show');
+                    });
+                },
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                columnClass: 'col-md-8 col-md-offset-2',
+                buttons: {
+                    
+                    cancel:{
+                        text: 'Close',
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+                       
+        });
+        
+        /* Fetch Employee Details */        
+        $(document).on('click', '.employeeDetails', function(e){
+            e.preventDefault();
+            var bookingId = $(this).data('id');
+            
+            $.confirm({
+                title: 'Employee Information:',
+                content: function(){
+                    var self = this;
+                    //self.setContent('Checking callback flow');
+                    return $.ajax({
+                        url: '<?php echo base_url() . 'employee_details.html'; ?>',
+                        dataType: 'html',
+                        method: 'post',
+                        data:{'bookingId':bookingId}
+                    }).done(function (response) {
+                        self.setContentAppend(response);
+                    }).fail(function(){
+                        self.setContentAppend('<br>Fail to load!');
+                    }).always(function(){
+                        //self.setContentAppend("sdsa");
+                    });
+                },
+                contentLoaded: function(data, status, xhr){
+                    //self.setContentAppend(data);
+                },
+                onContentReady: function(){
+                    
+                },
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                columnClass: 'col-md-6 col-md-offset-3',
+                buttons: {
+                    
+                    cancel:{
+                        text: 'Close',
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+                       
+        });
         
 });
 </script>

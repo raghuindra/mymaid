@@ -50,7 +50,18 @@
 
 <?php } ?>
     
+     <?php if($this->session->flashdata('service_availability') != null) { 
+                if( $this->session->flashdata('service_availability') ){ ?> 
+
+                    $("#service_request_modal").modal('show');
+                    
+    <?php    }
+
+         } ?>
+        
+    
     });
+    
     
     function notifyMessage(type, msg){
         noty({
@@ -59,7 +70,7 @@
                 theme: 'defaultTheme',
                 dismissQueue: true,
                 layout: 'topRight',
-                timeout: 6000,
+                timeout: 10000,
                 template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
                 progressBar: true,
                 animation: {
@@ -90,6 +101,7 @@
     <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
     <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
     <script src="<?php echo js_url('app_utils');?>"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <?php if(!isset($home) ){ ?>
     <script src="<?php echo js_url('ct-common-jquery');?>" type="text/javascript"></script>
     <script src="<?php echo js_url('jquery-ui.min');?>" type="text/javascript"></script>
@@ -102,6 +114,7 @@
     <script src="<?php echo js_url('jquery.sticky-kit.min');?>" type="text/javascript"></script>
     <script src="<?php echo js_url('booking');?>"></script>
 <?php } ?>
+    <script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
 </body>
 <!-- END BODY -->
 </html>

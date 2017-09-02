@@ -74,7 +74,8 @@
                     <li><a href="<?php echo base_url().'vendors_list.html'; ?>"><i class="fa fa-list"></i> Vendors List</a></li>
                     <li><a href="<?php echo base_url().'vendors_company_list.html'; ?>"><i class="fa fa-bank"></i> Vendors Company</a></li>
                     <li><a href="<?php echo base_url().'vendors_withdrawal_request.html'; ?>"><i class="fa fa-money"></i> Withdrawal Request</a></li>
-<!--                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
+                    <li><a href="<?php echo base_url().'vendors_employee_schedule.html'; ?>"><i class="fa fa-circle-o"></i> Employee Scheduling</a></li>
+                    <li><a href="<?php echo base_url().'vendors_employee_calender.html'; ?>"><i class="fa fa-circle-o"></i> Employee Calender</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -89,7 +90,14 @@
                     </span>-->
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="<?php echo base_url().'a_new_orders.html'; ?>"><i class="fa fa-sign-in"></i>New Orders</a></li>
+                    <li>
+                        <a href="<?php echo base_url().'a_new_orders.html'; ?>">
+                            <i class="fa fa-sign-in"></i>New Orders
+                            <!-- <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-blue w_new_orders">4</span>
+                            </span> -->
+                        </a>
+                    </li>
                     <li><a href="<?php echo base_url().'a_active_ordrers.html'; ?>"><i class="fa fa-tachometer"></i>Active Orders</a></li>
                     <li><a href="<?php echo base_url().'a_completed_orders.html'; ?>"><i class="fa fa-sign-out"></i>Completed Orders</a></li>
                     <li><a href="<?php echo base_url().'a_canceled_orders.html'; ?>"><i class="fa fa-user-times"></i>Canceled Orders</a></li>

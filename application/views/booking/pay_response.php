@@ -14,7 +14,7 @@ if($pay_data['status']){
 ?>
 <script>
 
-    home_url = "<?php echo base_url() . "home.html" ?>";
+    redirect_url = "<?php echo base_url() . '/get_order_invoice.html?booking_id=' .$pay_data['data']['booking_id'] ?>";
   
 </script>
 
@@ -33,7 +33,7 @@ if($pay_data['status']){
                          btnClass: 'btn-green',
                          text: 'ok',
                          action: function () {
-                             window.location.href = home_url;
+                             window.location.href = redirect_url;
                              
                          }
                      }

@@ -3,7 +3,7 @@
 
 if ($response['status']) {
     ?>
-
+<form name="assign_job_form" class="assign_job_form" method="post" id="assign_job_form">
     <div class="row">
         <div class="col-xs-12">
 
@@ -13,7 +13,7 @@ if ($response['status']) {
                     <div class="form-group">
                         <label for="state" class="col-sm-4 control-label">Company: <span class="text-red">*</span></label>
                         <div class="col-sm-6">
-                            <select id="assign_company" name="assign_company" required class="form-control">
+                            <select id="assign_company" name="assign_company" required class="form-control assign_company">
                                 <option value="">Select company</option>
                                 <?php
                                 foreach ($response['data'] as $value) {
@@ -25,24 +25,22 @@ if ($response['status']) {
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="state" class="col-sm-4 control-label">Employee: <span class="text-red">*</span></label>
-                        <div class="col-sm-6">
-                            <select id="assign_employee" name="assign_employee" required class="form-control" disabled="disabled">
-                                <option value="">Select employee</option>
-                                
-                            </select>
-                        </div>
-                    </div> 
                 </div>
-                <!-- /.box-body -->
             </div>
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <?php echo "<b class='text-red'>*Note:</b> Please assign '".$response['extra']['crew_count']."' employee/s for each service date..!" ?>
+                </div>
+            </div>
+            <div id="employee_service_rows"></div>
         </div>
 
     </div>
     <!-- /.box body-->
+    <input type="hidden" name="ser_booking_id" value="<?php echo $response['extra']['booking_id']; ?>" />
+    <input type="hidden" name="ser_crew_count" value="<?php echo $response['extra']['crew_count']; ?>" />
 
+</form>
 <?php
 } else {
 ?>

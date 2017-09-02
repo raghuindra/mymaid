@@ -11,6 +11,7 @@ include_once APPPATH . 'libraries/Base_lib.php';
 class Person_lib extends Base_lib{
 
     var $model;
+    var $google;
 
     function __construct() {
         $this->ci = &get_instance();
@@ -392,9 +393,9 @@ class Person_lib extends Base_lib{
                     $user_info['vendor_status'] = 0;
 
                     $user_id = $this->_create_user('mm_vendor', $user_info);
-
+                    $comp_info = array();
                     if ($this->ci->input->post('type', true) == 1) {
-                        $comp_info = array();
+                        
                         $comp_info['company_person_id'] = $person_id;
                         $comp_info['company_name'] = $this->ci->input->post('compName', true);
                         $comp_info['company_reg_number'] = $this->ci->input->post('compRegister', true);
@@ -405,11 +406,39 @@ class Person_lib extends Base_lib{
                         $comp_info['company_fax'] = $this->ci->input->post('compFax', true);
                         $comp_info['company_emp_min'] = $this->ci->input->post('compEmpMin', true);
                         $comp_info['company_emp_max'] = $this->ci->input->post('compEmpMax', true);
-
-                        $this->_create_company('mm_vendor_company', $comp_info);
+                        
+                    }else{
+                        
+                        $comp_info['company_person_id'] = $person_id;
+                        $comp_info['company_name'] = "Freelancer - ". $info['person_first_name']." ".$info['person_last_name'];
+                        $comp_info['company_email_id'] = $info['person_email'];
+                        $comp_info['company_contact_person_name'] = $info['person_first_name']." ".$info['person_last_name'];
+                        $comp_info['company_reg_number'] = $info['person_identity_card_number'];
+                        $comp_info['company_address'] = $info['person_address'];
+                        $comp_info['company_address1'] = $info['person_address1'];
+                        $comp_info['company_pincode'] = $info['person_postal_code'];
+                        $comp_info['company_mobile'] = $info['person_mobile'];
+                        $comp_info['company_landphone'] = $info['person_mobile'];
+                        $comp_info['company_fax'] = $info['person_mobile'];
+                        $comp_info['company_emp_min'] = '1';
+                        $comp_info['company_emp_max'] = '1';                       
                     }
-
+                    
+                    $comp_id = $this->_create_company('mm_vendor_company', $comp_info);
+                    
                     if ($user_id != '') {
+                        if($comp_id > 0 && $role == Globals::ROLE_FREELANCER){
+                            $emp_info = array();
+                            $emp_info['employee_name'] = "Freelancer - ". $info['person_first_name']." ".$info['person_last_name'];
+                            $emp_info['employee_passport_number'] = $info['person_identity_card_number'];
+                            $emp_info['employee_citizenship'] = 'my';
+                            $emp_info['employee_house_phone'] = $info['person_mobile'];
+                            $emp_info['employee_hp_phone'] = $info['person_mobile'];                            
+                            $emp_info['employee_created_on'] = date('Y-m-d H:i:s', strtotime('now'));
+                            $emp_info['employee_company_id'] = $comp_id;
+                            $emp_info['employee_job_session_id'] = Globals::SESSION_FULL_DAY;
+                            $this->model->insert_tb('mm_company_employees', $emp_info);
+                        }
                         $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_vendor_registration_successfull'));
                         
                         $sender = $this->ci->data['config']['sender_email'];
@@ -558,9 +587,8 @@ class Person_lib extends Base_lib{
     /**
      * sets the session for active logged in user
      */
-    function _set_session($type, $data) {
-        // Set session data array
-
+    function _set_session($type, $data, $googleUser=false, $token=false) {
+        // Set session data array       
         $user = array(
             'user_id' => $data->person_id,
             'user_email' => $data->person_email,
@@ -572,8 +600,20 @@ class Person_lib extends Base_lib{
             'user_profile_image' => $data->person_profile_image,
             'user_lang_code' => $data->person_lang_code,
             'user_status' => $data->person_status,
-            'user_lang' => 'english'
+            'user_lang' => 'english',
         );
+        if($googleUser===true){
+            $user['google_login'] = true;
+            $user['id_token'] = $token;
+        }
+
+        if( ($type == Globals::PERSON_TYPE_VENDOR_NAME) || ($type == Globals::PERSON_TYPE_FREELANCER_NAME) ){
+            $company = $this->model->get_tb('mm_vendor_company', 'company_id, company_name', array('company_person_id'=>$data->person_id))->result();
+            if($company){
+                $user['company_id'] = $company[0]->company_id;
+                $user['company_name'] = $company[0]->company_name;
+            }
+        }
         $this->ci->session->set_userdata($user);
         $user_role['role'] = $this->get_person_role($data->person_id);
         //$all_languages['languages'] = $this->get_all_language();
@@ -603,7 +643,38 @@ class Person_lib extends Base_lib{
                     break;
             }
             redirect($redirect_url, 'refresh');
+        }else{
+            redirect('home.html', 'refresh');
         }
+    }
+
+/**
+     *
+     * return the respective user home page url 
+     *
+     */
+    function getUserHomeUrl(){
+        if ($this->ci->session->userdata('user_id') != NULL) {
+            //echo $this->ci->session->userdata['user_type']; exit;
+            switch ($this->ci->session->userdata['user_type']) {
+                case Globals::PERSON_TYPE_ADMIN_NAME:
+                    $redirect_url = "admin_home.html";
+                    break;
+                case Globals::PERSON_TYPE_USER_NAME:
+                    $redirect_url = "user_home.html";
+                    break;
+                case Globals::PERSON_TYPE_VENDOR_NAME:
+                    $redirect_url = "vendor_home.html";
+                    break;
+                case Globals::PERSON_TYPE_FREELANCER_NAME:
+                    $redirect_url = "vendor_home.html";
+                    break;
+            }
+            
+        }else{
+            $redirect_url = '';
+        }
+        return $redirect_url;
     }
 
     /**
@@ -620,11 +691,26 @@ class Person_lib extends Base_lib{
         } else {
             $redirect_url = 'home.html';
         }
+        if($this->ci->session->userdata('google_login')){
+            $token = $this->ci->session->userdata('id_token');
+            //$this->logoutGoogleuser($token);
+        }
+
         $this->ci->session->sess_destroy();
         //$this->ci->session->sess_create();
 
         $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('np_frontend_message_logout_successfully'));
         redirect($redirect_url, 'refresh');
+    }
+
+    function logoutGoogleuser($token){
+        $this->ci->load->library('curl'); 
+            //Request using GET Method
+            echo $get_url = "https://accounts.google.com/o/oauth2/revoke?token=".$token;  
+            $response = $this->ci->curl->_simple_call('post', $get_url, false, array(CURLOPT_USERAGENT => true)); 
+print_r($response); exit;
+            $response = json_decode($response);
+            
     }
 
     function _forgotpass() {
@@ -948,9 +1034,8 @@ class Person_lib extends Base_lib{
             $dataArray['wallet_balance'] = $respo_1[0]->person_wallet_amount;
             //Get New Orders Count
             $now = date('Y-m-d H:i:s', strtotime('now'));
-            $respo_2 = $this->model->getServiceBookings($now);
-            $dataArray['new_orders'] = count($respo_2);
-            
+
+
             //Get Processing Orders and Completed Orders
             if( ($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME) || ($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME) ){
                 $company = $this->model->get_tb('mm_vendor_company', 'company_id', array('company_person_id' => $person_id))->result();
@@ -960,19 +1045,28 @@ class Person_lib extends Base_lib{
                 
                 $respo_4 = $this->model->getVendorCompletedServiceBookings($company[0]->company_id);
                 $dataArray['completed_orders'] = count($respo_4);
+
+                $respo_5 = $this->model->getNewServiceBookingsForVendorFreelanc($now, $person_id);
+                $dataArray['new_orders'] = count($respo_5);
+
             }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME){
-                $respo_3 = $this->model->getAllServiceBookingsUnderProcess();
+                
+                $respo_3 = $this->model->getAllServiceBookingsUnderProcess();                 
                 $dataArray['processing_orders'] = count($respo_3);
                 
                 $respo_4 = $this->model->getAllCompletedServiceOrders();
                 $dataArray['completed_orders'] = count($respo_4);
+
+                $respo_2 = $this->model->getServiceBookings($now);
+                //echo $this->model->last_query();
+                $dataArray['new_orders'] = count($respo_2);
                 
             }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_USER_NAME){
-                $respo_3 = $this->model->getAllUserServiceBookingsUnderProcess($person_id);
-                $dataArray['processing_orders'] = count($respo_3);
+                // $respo_3 = $this->model->getAllUserServiceBookingsUnderProcess($person_id);
+                // $dataArray['processing_orders'] = count($respo_3);
                 
-                $respo_4 = $this->model->getUserCompletedBookings($person_id);
-                $dataArray['completed_orders'] = count($respo_4);
+                // $respo_4 = $this->model->getUserCompletedBookings($person_id);
+                // $dataArray['completed_orders'] = count($respo_4);
             }
 
             
@@ -997,6 +1091,327 @@ class Person_lib extends Base_lib{
             );
         }
         return $response;
+    }
+    
+    
+    function _getEmployeeSessionsList(){
+        
+        if(isset($_POST['companyId'])){
+            if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+                $company_id = $this->ci->session->userdata('company_id');
+            }else{
+                $company_id = $this->ci->input->post('companyId', true);
+            }
+            
+            $employeeSessions = $this->model->getEmployeeSessions($company_id)->result();
+            $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $employeeSessions
+                );
+        }else{
+            $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+        }
+        return $response;
+    }
+    
+    
+    function _updateEmployeeSession(){
+        
+       $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse(); 
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('sessions[]', 'Employee Sessions', 'required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            
+            return $response = array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+            $sessions = $this->ci->input->post('sessions[]', true);
+            $employeeId = $this->ci->input->post('employeeId', true);
+            
+            $info = array();
+            $info['employee_session_monday']    = $sessions[0];
+            $info['employee_session_tuesday']   = $sessions[1];
+            $info['employee_session_wednesday'] = $sessions[2];
+            $info['employee_session_thursday']  = $sessions[3];
+            $info['employee_session_friday']    = $sessions[4];
+            $info['employee_session_saturday']  = $sessions[5];
+            $info['employee_session_sunday']    = $sessions[6];
+            $info['employee_session_updated_by'] = $person_id;
+            
+            $employee_data = $this->model->get_tb('mm_employee_session','*', array('employee_session_employee_id'=>$employeeId))->result();
+            
+            if($employee_data && !empty($employee_data)){
+                $this->model->update_tb('mm_employee_session', array('employee_session_employee_id'=>$employeeId), $info);
+                if ($this->model->getAffectedRowCount() > 0) {
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('employee_updated');
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_changes_to_update');
+                }
+            }else{
+                $info['employee_session_employee_id'] = $employeeId;
+                $insert_id = $this->model->insert_tb('mm_employee_session',$info);  
+                if($insert_id > 0){
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('employee_updated');
+                }
+            }
+            unset($info);
+            
+            return $this->getResponse();
+        }
+    }
+    
+    function _getEmployeesOfCompany(){
+        
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse(); 
+        $this->ci->form_validation->set_rules('companyId', 'Company Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            
+            return $response = array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $companyId = $this->ci->input->post('companyId', true);
+
+            $employee_data = $this->model->get_tb('mm_company_employees','employee_id, employee_name', array('employee_company_id'=>$companyId))->result();
+            
+            if($employee_data && !empty($employee_data)){
+                $this->_status = true;
+                $this->_rdata = $employee_data;
+            }else{
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_data'); 
+            }
+            
+            
+            return $this->getResponse();
+        }
+    }
+    
+    
+    function _addEmployeeSplSession(){
+       $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse(); 
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('fromdate', 'From Date', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('toDate', 'To Date', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('session', 'Session Id', 'trim|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('dayOff', 'Day Off', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            
+            return $response = array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+            
+            $fromDate   = date('Y-m-d',strtotime($this->ci->input->post('fromdate', true)));
+            $toDate     = date('Y-m-d',strtotime($this->ci->input->post('toDate', true)));
+            $session    = $this->ci->input->post('session', true);
+            $dayOff     = $this->ci->input->post('dayOff', true);
+            $employeeId = $this->ci->input->post('employeeId', true);
+            
+            if($dayOff == 0 && $session == ''){
+                return $response = array('status' => false, 'message' => $this->ci->lang->line('select_session'));
+            }
+            
+            $info = array();
+            $info['employee_session_spl_employee_id']   = $employeeId;
+            $info['employee_session_spl_date_from']     = $fromDate;
+            $info['employee_session_spl_date_to']       = $toDate;
+            if($session != ''){
+                $info['employee_session_spl_session_id']    = $session;
+            }
+            $info['employee_session_spl_off_status']    = $dayOff;
+            $info['employee_session_spl_updated_by']    = $person_id;
+            
+            $employee_data = $this->model->get_tb('mm_employee_session_spl','*', $info)->result();
+            
+            if($employee_data && !empty($employee_data)){
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('record_already_exists');
+            }else{
+                $insert_id = $this->model->insert_tb('mm_employee_session_spl',$info);  
+                if($insert_id > 0){
+                    $this->_status = true;
+                    $this->_message = $this->ci->lang->line('employee_updated');
+                }
+            }
+            unset($info);
+            
+            return $this->getResponse();
+        } 
+    }
+    
+    
+    function _getEmployeeSplSessionsList(){
+        if(isset($_POST['company_spl'])){
+            if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+                $company_id = $this->ci->session->userdata('company_id');
+            }else{
+                $company_id = $this->ci->input->post('company_spl', true);
+            }
+            
+            $employeeSplSessions = $this->model->getEmployeeSplSessions($company_id)->result();
+            $response = array(
+                    'status' => true,
+                    'message' => '',
+                    'data' => $employeeSplSessions
+                );
+        }else{
+            $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+        }
+        return $response;
+    }
+
+
+    function _googlePlusLogin(){
+$this->resetResponse();
+        if(isset($_POST['id_token']) && $_POST['id_token'] !=''){
+            $token = $_POST['id_token'];
+            //$this->ci->load->library('googleplus_lib');           
+            //$response = $this->ci->googleplus_lib->verifyToken($token);
+            
+            //load the Curl library
+            $this->ci->load->library('curl'); 
+            //Request using GET Method
+            $get_url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=".$token;  
+            $response = $this->ci->curl->_simple_call('get', $get_url, false, array(CURLOPT_USERAGENT => true)); 
+
+            $response = json_decode($response);
+            $email = $response->email;
+            $email_verified = $response->email_verified;
+            if($email != '' && $email_verified == true){
+//print_r($response); 
+                    $res = $this->_loginGoogleUser($email, $token);
+                    //print_r($res); exit;
+                    if($res['status']){
+                            $this->_status = true;
+                            $this->_message = $this->ci->lang->line('mm_user_login_welcome');
+                            $this->_rdata  = array('url' => $res['home_url']);
+                            $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_user_login_welcome'));
+                    }else{
+                        $this->_status = false;
+                        $this->_message = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
+                        $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('mm_frontend_login_error_login_incorrect'));
+                    }
+               
+            }else{
+                $this->_status = false;
+                $this->_message = "Please provide access to email-id in google plus account to verify your email id for login.";
+                $this->ci->session->set_flashdata('error_message', "Please provide access to email-id in google plus account to verify your email id for login.");
+                }
+        }else{
+                $this->_status = false;
+                $this->_message = $this->lang->line('invalid_data');  
+                $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('invalid_data'));             
+        }
+        return $this->getResponse();    
+
+    }
+
+    function _loginGoogleUser($email, $token){
+
+        $user = $this->model->getPersonDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $email, 'person_status' => 1))->row();
+
+            if (isset($user->person_id) && strlen($user->person_id) > 0) {
+
+                $this->_set_last_ip_and_last_login($user->person_id);
+                $this->_set_session($user->person_type_name, $user, true, $token);
+
+                
+                return array('status' => true,'home_url' => $this->getUserHomeUrl());
+                
+
+            } else {
+
+                return array('status' => false, 'home_url' => '');
+            }
+
+    }
+
+    function _getEmployeeBookedDates(){
+        $this->ci->load->library('form_validation');
+
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        if ($this->ci->form_validation->run() == FALSE) {
+            
+            return $response = array();
+        } else {
+
+            $employeeId = $this->ci->input->post('employeeId', true);
+            $startDate  = $this->ci->input->post('start', true);
+            $endDate    = $this->ci->input->post('end', true); 
+            $result = $this->model->getEmployeeBookedDates($employeeId, $startDate, $endDate);
+            //echo $this->model->last_query();
+            $events = array();
+            if(!empty($result))
+            {
+                $i=0;
+                foreach($result as $date){
+                  $events[$i]['class'] = 'show_model';  
+                  $events[$i]['title'] = 'Booking Id - '.$date->booking_id;
+                  $events[$i]['start'] = $date->booking_sessions_service_date;
+                  $events[$i]['allDay']= true;
+                  $events[$i]['url']   = '';
+                  $i++;
+                }
+            }
+            return $events;
+        }
+
+    }
+
+
+    function _getEmployeeOffDates(){
+
+        $this->ci->load->library('form_validation');
+
+        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        if ($this->ci->form_validation->run() == FALSE) {
+            
+            return $response = array();
+        } else {
+
+            $employeeId = $this->ci->input->post('employeeId', true);
+            $startDate  = $this->ci->input->post('start', true);
+            $endDate    = $this->ci->input->post('end', true); 
+            $result = $this->model->getEmployeeOffDates($employeeId, $startDate, $endDate);
+            //echo $this->model->last_query();
+            $events = array();
+            if(!empty($result))
+                    {
+                        $i=0;
+                        foreach($result as $date){
+                          $events[$i]['class'] = 'show_model';  
+                          $events[$i]['title'] = 'Holiday';
+                          $events[$i]['start'] = $date->employee_session_spl_date_from;
+                          $events[$i]['end'] = $date->employee_session_spl_date_to;
+                          $events[$i]['allDay']= true;
+                          $events[$i]['url']   = '';
+                          $i++;
+                        }
+                    }
+            return $events;
+        }
     }
 
 }

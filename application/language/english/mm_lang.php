@@ -1,26 +1,29 @@
 <?php
-$lang['Validation_error']  = 'Please provide all the required information.';
-$lang['mm_validation_error'] = 'Error : invalid data have been sent.';
-$lang['something_problem'] = 'An error occurred.';
-$lang['mm_email_available'] = 'Sorry, it looks like this email belongs to an existing account.';
-$lang['mm_user_created_successfully'] = 'You have successfully Signed Up. Please login to procced further.';
+$lang['Validation_error']                       = 'Please provide all the required information.';
+$lang['mm_validation_error']                    = 'Error : invalid data have been sent.';
+$lang['something_problem']                      = 'An error occurred.';
+$lang['mm_email_available']                     = 'Sorry, it looks like this email belongs to an existing account.';
+$lang['mm_user_created_successfully']           = 'You have successfully Signed Up. Please login to procced further.';
 $lang['mm_frontend_login_error_login_incorrect'] = 'Incorrect email and password combination. ';
-$lang['mm_user_login_welcome'] = 'Logged in Successfully..!!';
-$lang['mm_vendor_registration_successfull'] = 'Registration successfull...!! Please wait for admin approval by mail for further process. Thank You.';
-$lang['mm_forgotpass_resetlink_sent'] = 'Password reset link has been sent to mail. Please check mail.';
-$lang['mm_email_not_exists'] = "The email you entered doesn't appear to belong to an account. Please check your email address.";
-$lang['mm_passsword_mismatch'] = "Password and Confrim password doesn't matched..!!";
-$lang['mm_password_changed_success']  = "Password successfully changed!!";
-$lang['mm_invalid_token'] = "Invalid Token..!!";
-$lang['mm_no_service_coverage'] = "No coverage in your area at moment, Pls fill up Contact Us form, we will work vendor near your area to be listed.";
-$lang['cancelation_time_expired'] = "You cannot cancel your order after 24 hours of booking.";
-$lang['order_canceled_successfully'] = "Your order has been sent for cancellation successfully.";
-$lang['order_completion_confirmed'] = 'Successfully Confirmed the Order Completion.';
+$lang['mm_user_login_welcome']                  = 'Logged in Successfully..!!';
+$lang['mm_vendor_registration_successfull']     = 'Registration successfull...!! Please wait for admin approval by mail for further process. Thank You.';
+$lang['mm_forgotpass_resetlink_sent']           = 'Password reset link has been sent to mail. Please check mail.';
+$lang['mm_email_not_exists']                    = "The email you entered doesn't appear to belong to an account. Please check your email address.";
+$lang['mm_passsword_mismatch']                  = "Password and Confrim password doesn't matched..!!";
+$lang['mm_password_changed_success']            = "Password successfully changed!!";
+$lang['mm_invalid_token']                       = "Invalid Token..!!";
+$lang['mm_no_service_coverage']                 = "No coverage in your area at moment. Pls fill Service Request for.";
+$lang['cancelation_time_expired']               = "You cannot cancel your order after 24 hours of booking.";
+$lang['order_canceled_successfully']            = "Your order has been sent for cancellation successfully.";
+$lang['order_completion_confirmed']             = 'Successfully Confirmed the Order Completion.';
 $lang['unable_to_process_order_completion_update'] = 'Cannot confirm Order completion before Order service date.';
 
 $lang['wallet_withdrawal_request_Sent']         = "Wallet withdrawal request sent successfully";
 $lang['wallet_balance_low_than_requested']      = "Withdrawal amount is greater than wallet balance.";
-
+$lang['employee_updated']                       = "Employee Updated successfully";
+$lang['no_changes_to_update']                   = "No changes to update";
+$lang['select_session']                         = "Please select session.";
+$lang['record_already_exists']                  = "Record already exists.";
 $lang['invalid_data']                           = "Invalid data.";
 $lang['invalid_request']                        = "Invalid Request.";
 $lang['invalid_user']                           = "Invalid User";

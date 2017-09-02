@@ -8,6 +8,7 @@ class Base_lib {
     public $_status = false;
     public $_message = "";
     public $_rdata = array();
+    public $_extra = array();
     public $model;
 
     public function __construct() {
@@ -20,7 +21,8 @@ class Base_lib {
         return array(
             'status' => $this->_status,
             'message' => $this->_message,
-            'data' => $this->_rdata
+            'data' => $this->_rdata,
+            'extra'=> $this->_extra
         );
     }
 
@@ -28,6 +30,7 @@ class Base_lib {
         $this->_message = "";
         $this->_status = FALSE;
         $this->_rdata = array();
+        $this->_extra = array();
     }
 
     function move_file($source, $destination, $file) {
@@ -62,8 +65,13 @@ class Base_lib {
         $this->model->sendMessage($mobile, $message, $from, $createdDate, $updatedBy, $updatedDate);
     }
 
-    function calculateCutoffAmount($wholeAmt) {
-        $cutoff = $this->ci->data['config']['profit_cutoff'];
+    function calculateCutoffAmount($wholeAmt, $person_type) {
+        $cutoff = 0;
+        if( $person_type == Globals::PERSON_TYPE_VENDOR_NAME ){
+            $cutoff = $this->ci->data['config']['profit_cutoff'];
+        }else if($person_type == Globals::PERSON_TYPE_FREELANCER_NAME){
+            $cutoff = $this->ci->data['config']['freelance_profit_cutoff'];
+        }
         $profit = (float) $wholeAmt * (float) ($cutoff / 100);
         $vendor_amt = number_format((float) ($wholeAmt - $profit), 2, '.', '');
         return array('admin_share' => $profit, 'vendor_share' => $vendor_amt, 'cutoff' => $cutoff);

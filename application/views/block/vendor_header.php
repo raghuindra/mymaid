@@ -6,6 +6,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>MyMaidz | Vendor</title>
+	<meta name="google-signin-client_id" content="<?php echo $config['g_client_id'];?>">
+
 	<meta content="width=device-width,initial-scale=1" name="viewport">
 	<link rel="icon" href="./favicon.ico" type="image/x-icon">
 	<!--[if IE]>
@@ -16,7 +18,7 @@
 	<link rel="stylesheet" href="<?php echo plugin_url("bootstrap/css/bootstrap.css") ?>">
 	<link rel="stylesheet" media="all" href="<?php echo css_url("app") ?>">
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<!-- END PAGE LEVEL STYLES -->
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>

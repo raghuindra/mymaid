@@ -763,10 +763,10 @@ class Vendor_lib extends Base_lib {
         $this->resetResponse();
 
         if ($this->ci->session->userdata('user_id') != null) {
-            $now = date('Y-m-d H:i:s', strtotime('now'));
-
-            $newServices = $this->model->getServiceBookings($now);
-            //print_r($newServices); exit;
+            $now = date('Y-m-d', strtotime('now'));
+            $person_id = $this->ci->session->userdata('user_id');
+            $newServices = $this->model->getServiceBookings($now, $person_id);
+            //print_r($this->model->last_query()); exit;
 
             if (!empty($newServices)) {
                 $result = array();
@@ -776,8 +776,22 @@ class Vendor_lib extends Base_lib {
                     $result[$i]['booking_pincode'] = $service->booking_pincode;
                     $result[$i]['service_name'] = $service->service_name;
                     $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
-                    $result[$i]['booking_service_date'] = $service->booking_service_date;
+                    
+                    $dateObj = date_create($service->booking_service_date);
+                    $date = date_format($dateObj, 'd-m-Y');                    
+                    $result[$i]['booking_service_date'] = $date;
+  
                     $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+
+                    $person_type = $this->ci->session->userdata('user_type');
+                    $amount_share = $this->calculateCutoffAmount($service->booking_amount, $person_type); 
+                    //print_r($amount_share);
+                    $result[$i]['booking_amount'] = $amount_share['vendor_share'];
+                    if($service->service_frequency_name == null || $service->service_frequency_name == ''){
+                        $result[$i]['frequency_name'] = "Once";
+                    }else{
+                        $result[$i]['frequency_name'] = $service->service_frequency_name;
+                    }
                     $i++;
                 }
 
@@ -822,16 +836,30 @@ class Vendor_lib extends Base_lib {
 
             if (!empty($company)) {
 
-                $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date', array('booking_id' => $booking_id))->result();
-
-
+                $booking_detail = $this->model->get_tb('mm_booking', 'booking_service_date, booking_pincode, booking_package_id', array('booking_id' => $booking_id))->result();
+                $session_detail = $this->model->_getBookingSessionDetail($booking_id);
+                           
+                
                 if (!empty($booking_detail)) {
+                    
+                    $crews = $this->model->get_tb('mm_service_package','service_package_min_crew_member', array('service_package_id'=>$booking_detail[0]->booking_package_id))->result();
+                    
+                    if($crews && count($crews)>0){
+                        $employees = array();
 
-                    $result = $this->model->getAvailableEmployees($company[0]->company_id, $booking_detail[0]->booking_service_date);
-
-                    $this->_message = "";
-                    $this->_status = true;
-                    $this->_rdata = $result;
+                        foreach($session_detail as $sessions){
+                            $employees[$sessions->booking_sessions_id] = $this->_checkEmployeeAvailabilityForDate($sessions->booking_sessions_service_date, $sessions->booking_sessions_session_id, $booking_detail[0]->booking_pincode, $company[0]->company_id);
+                        }
+                        $this->_message = $crews[0]->service_package_min_crew_member;
+                        $this->_status = true;
+                        $this->_rdata = $employees;
+                        $this->_extra = $session_detail;
+                    
+                    }else{
+                        $this->_status = false;
+                        $this->_message = "Invalid service package selected.";
+                    }
+                    
                 } else {
                     $this->_message = $this->ci->lang->line('no_records_found');
                     $this->_status = false;
@@ -844,6 +872,92 @@ class Vendor_lib extends Base_lib {
             return $this->getResponse();
         }
     }
+    
+     /** Function to get Employees for New Job who are free for the new service.
+     * @param null
+     * @return JSON returns the JSON with Employees for New Job    
+     */
+    function _checkEmployeeAvailabilityForDate($service_date, $session_id, $postcode, $company_id){
+        
+        $dayofweek = strtolower(date('l', strtotime($service_date)));
+        $employee_ids = array();
+        $employees = array();
+        $response_1 = $this->model->getEmployeeSessionAndDayAvailability($dayofweek, $session_id, $company_id);
+        //echo $this->model->last_query(); echo "<br>";
+        $response_2 = $this->model->getEmployeeSplSessionAvailability($service_date, $session_id, $company_id);
+        //echo $this->model->last_query(); echo "<br>";
+        $response_3 = $this->model->getEmployeeAssignedJob($service_date, $company_id);
+        //echo $this->model->last_query(); echo "<br>";
+        
+        $response_5 = $this->model->getEmployeeWhoGotSplSession($service_date, $company_id);
+        //echo $this->model->last_query(); echo "<br>";
+        
+        $response_6 = $this->model->getEmployeeWhoGotSplSessionHoliday($service_date, $company_id);
+        //echo $this->model->last_query(); exit;
+        
+        if(!empty($response_1)){
+            foreach($response_1 as $id){
+                $employee_ids[] = $id->employee_id;
+                $employees[$id->employee_id]['employee_id'] = $id->employee_id;
+                $employees[$id->employee_id]['employee_name'] = $id->employee_name;
+            }
+        }
+        
+        if(!empty($response_5)){
+            $new_array = array();
+            foreach($response_5 as $id){
+                $new_array[] = $id->employee_id;
+            }
+            //Filter out(remove) the same employee of a spl session from default session
+            $employee_ids = array_diff($employee_ids, $new_array);
+        }
+        
+        if(!empty($response_2)){
+            foreach($response_2 as $id){
+                $employee_ids[] = $id->employee_id;
+                $employees[$id->employee_id]['employee_id'] = $id->employee_id;
+                $employees[$id->employee_id]['employee_name'] = $id->employee_name;
+            }
+        }
+        
+        if(!empty($response_6)){
+            $new_array = array();
+            foreach($response_6 as $id){
+                $new_array[] = $id->employee_id;
+            }
+            //Filter out(remove) the same employee Who took holiday on service date
+            $employee_ids = array_diff($employee_ids, $new_array);
+        }
+        
+        if(!empty($response_3)){
+            $new_array = array();          
+            foreach($response_3 as $id){
+                $new_array[] = $id->employee_id;
+                $employees[$id->employee_id]['employee_id'] = $id->employee_id;
+                $employees[$id->employee_id]['employee_name'] = $id->employee_name;
+            }
+            //Filter out(remove) the employees who assigned job oon selected date
+            $employee_ids = array_diff($employee_ids, $new_array);
+        }
+        
+        $employee_ids = array_unique($employee_ids);  
+        if(!empty($employee_ids)){
+            
+            $employeesStr = implode(',', $employee_ids);
+            $response_4 = $this->model->getEmployeeServingForLocation($employeesStr, $postcode, $company_id);        
+            $employee_ids = array();
+            if(!empty($response_4)){
+                foreach($response_4 as $id){
+                    $employee_ids[] = $employees[$id->employee_id];
+                }
+            }            
+        }
+        unset($employees);
+            
+        return $employee_ids;
+        
+    }
+    
 
     /** Function to assign Employee/s for New Job(Bookings).
      * @param null
@@ -855,15 +969,19 @@ class Vendor_lib extends Base_lib {
         $person_id = $this->ci->session->userdata('user_id');
         $this->resetResponse();
 
-        $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('ser_employee[]', 'Employee Id', 'required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('ser_booking_id', 'Booking Id', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));   
+        $this->ci->form_validation->set_rules('ser_session_id[]', 'Session Id', 'required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('ser_crew_count', 'Crew Count', 'required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
 
         if ($this->ci->form_validation->run() == FALSE) {
             return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
         } else {
 
-            $booking_id = $this->ci->input->post('bookingId', true);
-            $employee_id = $this->ci->input->post('employeeId', true);
+            $booking_id     = $this->ci->input->post('ser_booking_id', true);
+            $employee_ids    = $this->ci->input->post('ser_employee[]', true); //array
+            $booking_sessions_ids = $this->ci->input->post('ser_session_id[]', true); //array
+            $ser_crew_count  = $this->ci->input->post('ser_crew_count', true);
 
             $company = $this->model->get_tb('mm_vendor_company', '*', array('company_person_id' => $person_id))->result();
 
@@ -873,12 +991,23 @@ class Vendor_lib extends Base_lib {
 
                 if (!empty($service_not_assigned)) {
                     $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_vendor_company_id' => $company[0]->company_id, 'booking_status' => Globals::BOOKING_CONFIRMED));
+                    
                     $job = array();
-                    $job['employee_job_booking_id'] = $booking_id;
-                    $job['employee_job_employee_id'] = $employee_id;
-                    $job['employee_job_assigned_on'] = date('Y-m-d H:i:s', strtotime('now'));
+                    $k=0;
+                    for($i=0; $i< count($booking_sessions_ids); $i++){
+                                         
+                        for($j=$k; $j<count($employee_ids); $j++){
+                            $job[$j]['employee_job_booking_id'] = $booking_id;
+                            $job[$j]['employee_job_employee_id'] = $employee_ids[$j];
+                            $job[$j]['employee_job_booking_sessions_id'] = $booking_sessions_ids[$i];
+                            $job[$j]['employee_job_assigned_on'] = date('Y-m-d H:i:s', strtotime('now'));
+                            $k++;
+                            if($k % $ser_crew_count == 0){ break;}
+                        }
+                    }
 
-                    $insert_id = $this->model->insert_tb('mm_employee_job', $job);
+                    $this->model->insert_batch_tb('mm_employee_job', $job);
+                    
                     $booking_detail = $this->model->getServiceBookingDetail($booking_id);
                     $sender = $this->ci->data['config']['sender_email'];
                     $recipient = $booking_detail[0]->person_email;
@@ -899,9 +1028,8 @@ class Vendor_lib extends Base_lib {
 
 
                     $this->_message = $this->ci->lang->line('job_assigned_successfully');
-                    ;
                     $this->_status = true;
-                    $this->_rdata = $insert_id;
+                    
                 } else {
                     $this->_message = $this->ci->lang->line('job_already_assigned');
                     $this->_status = false;
@@ -941,12 +1069,26 @@ class Vendor_lib extends Base_lib {
                         $result[$i]['service_name'] = $service->service_name;
                         $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
                         $result[$i]['person_mobile'] = $service->person_mobile;
-                        $result[$i]['booking_service_date'] = $service->booking_service_date;
+                        
+                        $dateObj = date_create($service->booking_service_date);
+                        $date = date_format($dateObj, 'd-m-Y');                    
+                        $result[$i]['booking_service_date'] = $date;
+
+                        $person_type = $this->ci->session->userdata('user_type');
+                        $amount_share = $this->calculateCutoffAmount($service->booking_amount, $person_type); 
+                        //print_r($amount_share);
+                        $result[$i]['booking_amount'] = $amount_share['vendor_share'];
                         $result[$i]['booking_booked_on'] = $service->booking_booked_on;
                         $result[$i]['booking_status'] = $service->booking_status;
                         $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
                         $result[$i]['booking_completion_user_comfirmed'] = $service->booking_completion_user_comfirmed;
-
+                        
+                        if($service->service_frequency_name == null || $service->service_frequency_name == ''){
+                            $result[$i]['frequency_name'] = "Once";
+                        }else{
+                            $result[$i]['frequency_name'] = $service->service_frequency_name;
+                        }
+                        
                         $now = date('Y-m-d H:i:s');
                         $service_date = date('Y-m-d H:i:s', strtotime($service->booking_service_date));
                         if (strtotime($now) >= strtotime($service_date) && $service->booking_vendor_company_id != null && ( $service->booking_status == Globals::BOOKING_CONFIRMED || $service->booking_status == Globals::BOOKING_COMPLETED)) {
@@ -1007,7 +1149,21 @@ class Vendor_lib extends Base_lib {
                         $result[$i]['service_name'] = $service->service_name;
                         $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
                         $result[$i]['person_mobile'] = $service->person_mobile;
-                        $result[$i]['booking_service_date'] = $service->booking_service_date;
+                        
+                        if($service->service_frequency_name == null || $service->service_frequency_name == ''){
+                            $result[$i]['frequency_name'] = "Once";
+                        }else{
+                            $result[$i]['frequency_name'] = $service->service_frequency_name;
+                        }
+                        $dateObj = date_create($service->booking_service_date);
+                        $date = date_format($dateObj, 'd-m-Y');                    
+                        $result[$i]['booking_service_date'] = $date;
+                        
+                        $person_type = $this->ci->session->userdata('user_type');
+                        $amount_share = $this->calculateCutoffAmount($service->booking_amount, $person_type); 
+                        //print_r($amount_share);
+                        $result[$i]['booking_amount'] = $amount_share['vendor_share'];
+                        
                         $result[$i]['booking_booked_on'] = $service->booking_booked_on;
                         $result[$i]['booking_completion_company_confirmed'] = $service->booking_completion_company_confirmed;
                         $result[$i]['booking_completion_admin_confirmed'] = $service->booking_completion_admin_confirmed;
@@ -1063,8 +1219,9 @@ class Vendor_lib extends Base_lib {
             if (!empty($booking_detail)) {
                 $now = date('Y-m-d H:i:s');
                 $service_date = date('Y-m-d H:i:s', strtotime($booking_detail[0]->booking_service_date));
-
-                if (strtotime($now) >= strtotime($service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED)) {
+                $lastServiceDate = $this->model->getLastDateofServiceDate($booking_id);
+                
+                if (strtotime($now) >= strtotime($lastServiceDate[0]->service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED)) {
 
                     $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_COMPLETED, 'booking_completion_company_confirmed' => 1));
                     if ($this->model->getAffectedRowCount() > 0) {
@@ -1114,12 +1271,27 @@ class Vendor_lib extends Base_lib {
                         $result[$i]['customer_name'] = $service->person_first_name . " " . $service->person_last_name;
                         $result[$i]['person_mobile'] = $service->person_mobile;
                         $result[$i]['service_name'] = $service->service_name;
-                        $result[$i]['booking_service_date'] = $service->booking_service_date;
+                        
+                        if($service->service_frequency_name == null || $service->service_frequency_name == ''){
+                            $result[$i]['frequency_name'] = "Once";
+                        }else{
+                            $result[$i]['frequency_name'] = $service->service_frequency_name;
+                        }
+                        $dateObj = date_create($service->booking_service_date);
+                        $date = date_format($dateObj, 'd-m-Y');                    
+                        $result[$i]['booking_service_date'] = $date;
+                        
+                        $person_type = $this->ci->session->userdata('user_type');
+                        $amount_share = $this->calculateCutoffAmount($service->booking_amount, $person_type); 
+                        //print_r($amount_share);
+                        $result[$i]['booking_amount'] = $amount_share['vendor_share'];
+                        
                         $result[$i]['booking_booked_on'] = $service->booking_booked_on;
                         $result[$i]['booking_status'] = $service->booking_status;
                         $result[$i]['booking_amount'] = $service->booking_amount;
                         $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;
                         $result[$i]['booking_cancelled_by'] = $service->booking_cancelled_by;
+                        
                         if ($service->booking_cancelled_by == $this->ci->session->userdata('user_id')) {
                             $result[$i]['booking_cancelation_request_sent_from'] = 'Self';
                         } else {

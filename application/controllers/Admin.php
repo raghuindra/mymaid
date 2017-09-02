@@ -8,7 +8,7 @@ class Admin extends Base {
         
         public function __construct() {
             parent::__construct();
-            $this->load->library(array('admin_lib', 'admin_vendor_lib','email_lib'));              
+            $this->load->library(array('admin_lib', 'admin_vendor_lib','email_lib', 'page_load_lib'));              
             $this -> lang -> load("admin", $this->uLang);
             $this->page_load_lib->validate_user(Globals::PERSON_TYPE_ADMIN_NAME);
         }
@@ -447,7 +447,7 @@ class Admin extends Base {
         
         /** Function to list New vendors.
          * @param null
-         * @return JSON returns the Data to view    
+         * @return JSON returns the JSON DATA    
          */
         public function postNewVendorsList(){
            
@@ -459,7 +459,7 @@ class Admin extends Base {
         
         /** Function to list Active vendors(Archived/UnArchived).
          * @param null
-         * @return JSON returns the Data to view    
+         * @return JSON returns the JSON DATA   
          */
         public function postActiveVendorsList(){
             
@@ -476,9 +476,28 @@ class Admin extends Base {
             
         }
         
+        /** Function to list Active Free lancers(Archived/UnArchived).
+         * @param null
+         * @return JSON returns the JSON DATA   
+         */
+        public function postActiveFreelancersList(){
+            
+            if(isset($_POST['archived'])){
+                $response = $this->admin_vendor_lib->_getActiveFreelancers();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+            
+        }        
+        
         /** Function to approve New Vendor.
          * @param null
-         * @return JSON returns the Data to view    
+         * @return JSON returns the JSON DATA    
          */
         public function approveNewVendor(){
             
@@ -502,6 +521,23 @@ class Admin extends Base {
         public function postArchiveVendor(){
             if(isset($_POST['personId'])){
                 $response = $this->admin_vendor_lib->_archiveVendor();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
+        /** Function to Archive/Un archive Free lancer.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postArchiveFreelancer(){
+            if(isset($_POST['personId'])){
+                $response = $this->admin_vendor_lib->_archiveFreelancer();
             }else{
                 $response = array(
                     'status' => false,
@@ -684,10 +720,13 @@ class Admin extends Base {
             $response = array(
                 'status' => false,
                 'message' => $this->lang->line('invalid_request'),
-                'data' => array()
+                'data' => array(),
+                'extra' => array()
             );
         }
-        echo json_encode($response);
+        $this->data['response'] = $response;
+        $this -> load -> view('admin/popup/assign_employee_to_job', $this->data);
+        
     }
     
     /** Function to get the Employees for New Job.
@@ -716,7 +755,7 @@ class Admin extends Base {
     * @return JSON returns the JSON with service assign status    
     */
     public function assignEmployeeToService(){
-        if(isset($_POST['employeeId']) && isset($_POST['companyId'])){
+        if(isset($_POST['ser_employee']) && isset($_POST['assign_company'])){
             $response = $this->admin_lib->_assignEmployeesToService();
         }else{
             $response = array(

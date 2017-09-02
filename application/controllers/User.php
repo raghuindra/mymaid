@@ -107,7 +107,20 @@ class User extends Base {
         }
         echo json_encode($response);
     }
-        
-        
+
+    /** Function to Show User Profile.
+    * @param null
+    * @return JSON returns the View.    
+    */
+    public function profile(){
+        $this->load->model('mm_model');       
+        $this->data['states']       = $this->mm_model->get_tb('mm_state', '*')->result();
+        $this->data['profile'] = $this->user_lib->getProfileDetails();
+        $this->data['content']  = "user/profile.php";
+        $this->data['user']     = 1;
+        $this -> load -> view('template', $this->data);
+
+    }
+          
         
 }

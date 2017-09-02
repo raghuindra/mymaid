@@ -156,7 +156,9 @@ class Vendor extends Base {
     }
 
     public function profile() {
-
+        $this->load->model('mm_model'); 
+        $this->data['states']  = $this->mm_model->get_tb('mm_state', '*')->result();
+        
         $this->data['profile'] = $this->vendor_lib->getProfileDetails();
         $this->data['bank'] = $this->vendor_lib->getBankDetails();
         $this->data['content'] = "vendor/profile.php";
@@ -451,11 +453,11 @@ class Vendor extends Base {
             $response = array(
                 'status' => false,
                 'message' => $this->lang->line('invalid_request'),
-                'data' => array()
+                'data' => array(),
+                'extra' => array()
             );
         }
         
-        $this->data['content'] = "vendor/popup/assignEmployeeJob.php";
         $this->data['response'] = $response;
         $this -> load -> view('vendor/popup/assignEmployeeJob', $this->data);
         
@@ -467,7 +469,7 @@ class Vendor extends Base {
     */
     public function assignEmployeeToJob(){
         
-        if(isset($_POST['employeeId'])){
+        if(isset($_POST['ser_employee'])){
             $response = $this->vendor_lib->_assignEmployeesToJob();
         }else{
             $response = array(

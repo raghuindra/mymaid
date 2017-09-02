@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var self;
+var selectedDates = Array();
+
 postcode = $("#postcodeSearch").data('val');
 function ajaxCall(url, data, successCallback, failureCallback) {
     console.log("AJAx Call Params: "); console.log(data);
@@ -12,7 +15,7 @@ function ajaxCall(url, data, successCallback, failureCallback) {
         data: data,
         cache: false,
         success: function (res) {
-console.log('Json Response' +res);
+    console.log('Json Response' +res);
             var result = JSON.parse(res);
 
             if (result.status === true) {
@@ -261,6 +264,17 @@ var ServiceJSON = (function(){
             
         },
         
+        getEmployeeAvailabilityJson: function(data){
+               
+            var json = JSON.stringify({
+                "data":data,
+                "header":{
+                    "active":true
+                }
+            });
+            return json;
+        }
+        
         
         
     };
@@ -271,7 +285,7 @@ var ServiceResponseHandler = {
     
     ServiceSuccessHandler: function(data){
         var dataObj = ServiceData.service(data);
-        console.log(dataObj.getAllServices());
+        //console.log(dataObj.getAllServices());
         ServiceObjects.ServiceObject = dataObj;
         var serviceIds = dataObj.getServiceIds();
         //get Service Packages
@@ -280,11 +294,11 @@ var ServiceResponseHandler = {
     },
     
     ServiceFailureHandler: function(data){
-        console.log("Service Call failure..!!!");
+        //console.log("Service Call failure..!!!");
     },
     
     TriggerServicePackageCall: function(serviceIds, postcode){
-        var jsonData = ServiceJSON.getServicePackageJson({'serviceId':serviceIds,'postcode':postcode}); console.log(jsonData);
+        var jsonData = ServiceJSON.getServicePackageJson({'serviceId':serviceIds,'postcode':postcode}); //console.log(jsonData);
         var servicePackage = ServiceFactory.getServicesCommand(jsonData, 'getServicePackages.html',ServiceResponseHandler.ServicePackageSuccessHandler, ServiceResponseHandler.ServicePackageFailureHandler);
         ServiceFactory.executeTask(servicePackage);
     },
@@ -294,7 +308,7 @@ var ServiceResponseHandler = {
         ServiceObjects.ServicePackageObject = dataObj;
         var packages = dataObj.getAllServicePackages();
 
-        console.log(packages); 
+        //console.log(packages); 
         RenderView.renderServices();
         //RenderView.renderServicePackage(id);
         if(ServiceObjects.ServiceObject !== null){
@@ -310,12 +324,12 @@ var ServiceResponseHandler = {
     },
     
     ServicePackageFailureHandler: function(data){
-        console.log("Package Call failure..!!!");
+        //console.log("Package Call failure..!!!");
     },
     
     TriggerServiceFrequencycall: function(serviceIds, postcode){
-        console.log("Frequency Ajax Call..!!!");
-        var jsonData = ServiceJSON.getServiceFrequencyJson({'serviceId':serviceIds,'postcode':postcode}); console.log(jsonData);
+        //console.log("Frequency Ajax Call..!!!");
+        var jsonData = ServiceJSON.getServiceFrequencyJson({'serviceId':serviceIds,'postcode':postcode}); //console.log(jsonData);
         var serviceFrequency = ServiceFactory.getServicesCommand(jsonData, 'getServiceFrequencies.html',ServiceResponseHandler.ServiceFrequencySuccessHandler, ServiceResponseHandler.ServiceFrequencyFailureHandler);
         ServiceFactory.executeTask(serviceFrequency);
     },
@@ -323,18 +337,18 @@ var ServiceResponseHandler = {
     ServiceFrequencySuccessHandler: function(data){
         var dataObj = ServiceData.serviceFrequency(data);
         ServiceObjects.ServiceFrequencyObject = dataObj;
-        console.log("Frequency Call Success...");
-        console.log(ServiceObjects.ServiceFrequencyObject.getAllServiceFrequency());
+        //console.log("Frequency Call Success...");
+        //console.log(ServiceObjects.ServiceFrequencyObject.getAllServiceFrequency());
         RenderView.renderFrequencyPrices();
     },
     
     ServiceFrequencyFailureHandler: function(data){
-        console.log("Frequency Call failure..!!!");
+        //console.log("Frequency Call failure..!!!");
     },
     
     TriggerServiceAddoncall: function(serviceIds, postcode){
-        console.log("Addon Ajax Call..!!!");
-        var jsonData = ServiceJSON.getServiceAddonsJson({'serviceId':serviceIds,'postcode':postcode}); console.log(jsonData);
+       // console.log("Addon Ajax Call..!!!");
+        var jsonData = ServiceJSON.getServiceAddonsJson({'serviceId':serviceIds,'postcode':postcode}); //console.log(jsonData);
         var serviceAddon = ServiceFactory.getServicesCommand(jsonData, 'getServiceAddons.html',ServiceResponseHandler.ServiceAddonSuccessHandler, ServiceResponseHandler.ServiceAddonFailureHandler);
         ServiceFactory.executeTask(serviceAddon);
     },
@@ -342,19 +356,19 @@ var ServiceResponseHandler = {
     ServiceAddonSuccessHandler: function(data){
         var dataObj = ServiceData.serviceAddon(data);
         ServiceObjects.ServiceAddonsObject = dataObj;
-        console.log("Service Addons Call Success..");
-        console.log(ServiceObjects.ServiceAddonsObject.getAllServiceAddons());
+        //console.log("Service Addons Call Success..");
+        //console.log(ServiceObjects.ServiceAddonsObject.getAllServiceAddons());
         
         RenderView.renderServiceAddons();
     },
     
     ServiceAddonFailureHandler: function(data){
-        console.log("Addon Call failure..!!!");
+        //console.log("Addon Call failure..!!!");
     },
     
     TriggerServiceSplRequestcall: function(serviceIds, postcode){
-        console.log("Spl Request Ajax Call..!!!");
-        var jsonData = ServiceJSON.getServiceSplRequestJson({'serviceId':serviceIds,'postcode':postcode}); console.log(jsonData);
+        //console.log("Spl Request Ajax Call..!!!");
+        var jsonData = ServiceJSON.getServiceSplRequestJson({'serviceId':serviceIds,'postcode':postcode}); //console.log(jsonData);
         var serviceSplRequest = ServiceFactory.getServicesCommand(jsonData, 'getServiceSplRequests.html',ServiceResponseHandler.ServiceSplRequestSuccessHandler, ServiceResponseHandler.ServiceSplRequestFailureHandler);
         ServiceFactory.executeTask(serviceSplRequest);
     },
@@ -362,13 +376,13 @@ var ServiceResponseHandler = {
     ServiceSplRequestSuccessHandler: function(data){
         var dataObj = ServiceData.serviceSplRequest(data);
         ServiceObjects.ServiceSplRequestObject = dataObj;
-        console.log("Spl Request Call Success..!!!");
-        console.log(ServiceObjects.ServiceSplRequestObject.getAllServiceSplRequest());
+        //console.log("Spl Request Call Success..!!!");
+        //console.log(ServiceObjects.ServiceSplRequestObject.getAllServiceSplRequest());
         RenderView.renderSplRequest();
     },
     
     ServiceSplRequestFailureHandler: function(data){
-        console.log("Spl Request Call failure..!!!");
+        //console.log("Spl Request Call failure..!!!");
     },
     
     ServiceBookingSuccessHandler: function(data){
@@ -485,6 +499,20 @@ var ServiceData = (function(){
             return [];
         }
     };
+    serviceFrequencyDataFun.prototype.getFrequencyName = function(serviceId, frequencyId){       
+        if ( this.frequency[serviceId] !== undefined ) {
+            return this.frequency[serviceId][frequencyId].service_frequency_name;
+        }else{
+            return null;
+        }
+    };
+    serviceFrequencyDataFun.prototype.getFrequencyDiscount = function(serviceId, frequencyId){       
+        if ( this.frequency[serviceId] !== undefined ) {
+            return this.frequency[serviceId][frequencyId].service_frequency_offer_value;
+        }else{
+            return null;
+        }
+    };
     
     
     var serviceAddonDataFun = function(data){
@@ -561,13 +589,15 @@ var RenderView = {
         if( (servicesObj !== null) && (packagesObj !== null)){  
             var services = servicesObj.getAllServices();
             var packages = packagesObj.getAllServicePackages();
+            console.log(packages);
             for(var i=0; i<services.length; i++ ){
                 var id = services[i].service_id;
                 if(packages[id] !== undefined){
                     
                     $("#service_temp_html").html($("#service_html").html());
 
-                    $("#service_temp_html li").attr('data-servicetitle', services[i].service_name);
+                    $("#service_temp_html li").attr('data-servicetitle', services[i].service_name);                    
+                    $("#service_temp_html li .ct-image").attr('src', services[i].service_image_url);
                     $("#service_temp_html li").attr('data-id', i+1);
                     $("#service_temp_html li input[type=radio]").attr('id', "ct-service-"+i);
                     $("#service_temp_html li input[type=radio]").addClass('service-radio');
@@ -641,7 +671,7 @@ var RenderView = {
                     <ul class='addon-service-list fl '>";
                     
                     for(var addonId in addons[id]){
-                        html_str += "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'><input type='checkbox' name='addon-checkbox' class='addon-checkbox addons_servicess_2' data-id='"+ addons[id][addonId].service_addon_price_id +"' id='ct-addon-"+ addons[id][addonId].service_addon_price_id +"' data-mnamee='ad_unit1' value='"+ addons[id][addonId].service_addon_price_id +"' >";
+                        html_str += "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'><input type='checkbox' name='addon-checkbox' class='addon-checkbox addons_servicess' data-id='"+ addons[id][addonId].service_addon_price_id +"' id='ct-addon-"+ addons[id][addonId].service_addon_price_id +"' data-mnamee='ad_unit1' value='"+ addons[id][addonId].service_addon_price_id +"' >";
                         html_str += "<label class='ct-addon-ser border-c' for='ct-addon-"+ addons[id][addonId].service_addon_price_id +"'><span></span>";
                         html_str += "   <div class='addon-price'>RM "+ addons[id][addonId].service_addon_price_price +"</div>";
                         html_str += "    <div class='ct-addon-img'><img src='http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-fridge.png'></div></label>";               
@@ -689,7 +719,7 @@ var RenderView = {
                         var freq = "<li class='ct-sm-6 ct-md-3 ct-xs-12 mb-10'>\n\
                             <div class='discount-text f-l'><span class='discount-price'> -Save "+ frequency[id][freqId].service_frequency_offer_value +"%- </span>\n\
                             </div>\n\
-                            <input type='radio' name='frequently_discount_radio' checked='' data-id='"+ frequency[id][freqId].service_frequency_offer_id +"' class='cart_frequently_discount' id='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"' data-name='Monthly' value='"+ frequency[id][freqId].service_frequency_offer_value +"' >\n\
+                            <input type='radio' name='frequently_discount_radio' checked='' data-id='"+ frequency[id][freqId].service_frequency_offer_id +"' class='cart_frequently_discount' id='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"' data-name='"+ frequency[id][freqId].service_frequency_name +"' value='"+ frequency[id][freqId].service_frequency_offer_value +"' >\n\
                             <label class='ct-btn-discount border-c' for='discount-often-"+ frequency[id][freqId].service_frequency_offer_id +"'>\n\
                             <span class='float-left freq_disc_name'>"+ frequency[id][freqId].service_frequency_name +"</span>\n\
                             <span class='ct-discount-check float-right'></span>\n\
@@ -737,7 +767,7 @@ var RenderView = {
                     //$("#frequency_temp_html div ul").addClass();
                     for(var splReqId in splReq[id]){
                         var freq = "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'>\n\
-                            <input type='checkbox' name='spl-request-checkbox' class='addon-checkbox addons_servicess_2' data-serviceId='"+id+"' data-id='"+ splReq[id][splReqId].service_spl_request_id +"' id='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"' data-mnamee='ad_unit4'>\n\
+                            <input type='checkbox' name='spl-request-checkbox' class='addon-checkbox addons_servicess' data-serviceId='"+id+"' data-id='"+ splReq[id][splReqId].service_spl_request_id +"' id='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"' data-mnamee='"+splReq[id][splReqId].spl_request_name+"'>\n\
                             <label class='ct-addon-ser border-c' for='ct-spl-req-"+ splReq[id][splReqId].service_spl_request_id +"'><span></span>";
                         
                         if(splReq[id][splReqId].service_spl_request_price !== null &&  splReq[id][splReqId].service_spl_request_price !== ""){
@@ -761,6 +791,60 @@ var RenderView = {
                 
             }
             
+        }
+    },
+    
+    renderSessionCalender: function(count){
+        var calSession = "";
+        for(var i=0; i< count; i++){
+            var string='<div class="row"><div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row"><label for="ct-first-name">Service Date</label><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input type="text" class="form-control pull-right add_show_error_class error date_selection" id="service_date_'+i+'" required></div></div><div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row"><label for="ct-session">Session</label> <div class="input-group date"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div><select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required ><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option><option value="4">2 hours - Evening</option></select></div></div><div class="text-red error_message" style="clear:both;"> </div></div>';
+            calSession += string;
+        }
+        
+        $("#date_session_div").html();
+        $("#date_session_div").html(calSession);
+    },
+    
+    showAddonNames: function(){
+        var addonNames = Booking.getAddonNames();
+        var Splnames = Booking.getExtraServiceNames();
+        var string ="";
+        if(Object.keys(addonNames).length >0){
+            $('.ct-addons-list-main').show();
+            $('.ct-addons-list-main .addons').show();
+            for(var name in addonNames){
+                string += name +"; ";
+            }
+            $('.ct-addons-list-main .addons .addons_names').html(string);
+            $('.ct-addons-list-main').show();
+        }else{
+            $('.ct-addons-list-main .addons .addons_names').html('');
+            $('.ct-addons-list-main .addons').hide();
+            if(Object.keys(Splnames).length <=0){
+                $('.ct-addons-list-main').hide();
+            }
+        }
+        
+    },
+    
+    showExtraServiceNames: function(){
+        var names = Booking.getExtraServiceNames();
+        var addonNames = Booking.getAddonNames();
+        var string = "";
+        if(Object.keys(names).length >0){
+            $('.ct-addons-list-main').show();
+            $('.ct-addons-list-main .spl_req').show();
+            for(var i in names){
+                string += names[i] +"; ";
+            }
+            $('.ct-addons-list-main .spl_req .spl_req_names').html(string);
+            $('.ct-addons-list-main, .spl_req').show();
+        }else{
+            $('.ct-addons-list-main .spl_req .spl_req_names').html('');
+            $('.ct-addons-list-main .spl_req').hide();
+            if(Object.keys(addonNames).length <=0){
+                $('.ct-addons-list-main').hide();
+            }
         }
     }
     
@@ -787,41 +871,85 @@ $(function () {
         
         $(document).on("click", ".services-list .ser_details .service-radio", function(e){
 
-            console.log("Service Selected: "+ $(this).val());
+            //console.log("Service Selected: "+ $(this).val());
+            //Reset the date selected array
+            selectedDates = Array();
             
             var serviceId = $(this).val();
             
             Booking.reset();
             Booking.setService(serviceId); 
             
-            var services = ServiceObjects.ServiceObject.getAllServices();
-            for(var i=0; i<services.length; i++ ){
+            //Reset the addons/spl service/packge related info from floating bar
+            //$('.cart-items-main f-l').hide();
+            RenderView.showExtraServiceNames();
+            Booking.removeAddonNames();
+            RenderView.showAddonNames();
+            RenderView.renderSessionCalender(1);                
+                $('.date_selection').datepicker({
+                    autoclose: true,
+                    dateFormat: "yy-mm-dd", 
+                      minDate:0,
+                      onSelect: function(){
+                        var selectedDate = $(this).val();
+                        var sessionId =  $(this).closest('.ct-form-row').next().children().find('.session_selection').val();
+                         self = this;  
+                        checkEmployeeAvailability(selectedDate, sessionId);
+                      }
+                });
+            //Reset the addon quantity of all services to zero
+            $('.addon_qty').val(0);
+           
+           var services = ServiceObjects.ServiceObject.getAllServices();
+            for(var i=0; i<services.length; i++ ){                
                 if( services[i].service_id == serviceId){
-                    $(".ct_service_spl_request_"+services[i].service_id).show();
-                    $(".ct_service_frequency_"+services[i].service_id).show();
-                    $(".ct_service_addons_"+services[i].service_id).show();
-                    $(".ct_service_package_"+services[i].service_id).show();
+                    if(services[i].service_name == 'Basic Home Cleaning'){
+                        $(".ct_service_package_"+services[i].service_id+" .package-radio").trigger('click');
+                        //$(".ct_service_frequency_"+services[i].service_id+" .ct-discount-often li .cart_frequently_discount").trigger('click');
+                        $(".ct_service_frequency_"+services[i].service_id).hide();
+                        $(".tax_display, .total_price_display, .sub_total_display").show();
+                        $(".ct_service_addons_"+services[i].service_id).hide();
+                        $('.session_selection').val('2');
+                        $('.session_selection').trigger('change');
+
+                        $('.service_package_list_div').hide();
+                       // $('.cart-items-main f-l').show();
+                    }else{
+                        $(".ct_service_frequency_"+services[i].service_id).show();
+                        $(".ct_service_package_"+services[i].service_id).show();
+                        $(".ct_service_addons_"+services[i].service_id).show();
+                        $(".ct_service_package_"+services[i].service_id+" .package-radio").prop('checked', false);
+                        $(".tax_display, .total_price_display, .sub_total_display").hide();
+                        $('.service_package_list_div').show();
+                    }
+                    $(".ct_service_spl_request_"+services[i].service_id).show();                    
+                    
                 }else{
                     $(".ct_service_spl_request_"+services[i].service_id).hide();
                     $(".ct_service_frequency_"+services[i].service_id).hide();
                     $(".ct_service_addons_"+services[i].service_id).hide();
                     $(".ct_service_package_"+services[i].service_id).hide();
+
                 }
+
             }
-            
+            $('.session_selection').val('2');
             var service = ServiceObjects.ServiceObject.getServiceById(serviceId);
             $("#ct-price-scroll-new .service_name p.sel-service").html(service.service_name);
-            $(".tax_display, .total_price_display, .sub_total_display").hide();
-            $(".packageDiv .services-list .package-radio").prop('checked', false);
+            
+            
+            $(".cart_frequently_discount").prop('checked', false);
+            //$(".ct_service_package_"+services[0].service_id+" .package-radio").trigger('click');
         });
         $('.service-radio').trigger('click');
+        $('.session_selection').val('2');
         
         //Service package Selection Event Handling
         $(document).on("click", ".packageDiv .services-list .package-radio", function(e){           
             Booking.setPackage($(this).val());
-            console.log(Booking.getPackage());
+            //console.log(Booking.getPackage());
             var package = ServiceObjects.ServicePackageObject.getPackage(Booking.getService(), Booking.getPackage());
-            console.log(package);
+            //console.log(package);
             var price = parseFloat( (package.spl_price !== null) ? package.spl_price : package.package.service_package_onetime_price );
             
             $("#ct-price-scroll-new .service_name label.package_detail").html(package.package.building_name+", "+package.package.service_package_bedroom+" Bedroom with "+package.package.service_package_bathroom+" Bathroom");
@@ -834,16 +962,16 @@ $(function () {
             price = Booking.calculateTotalPrice();
             $("#ct-price-scroll-new .cart_total").html(price);
             $(".tax_display, .total_price_display, .sub_total_display").show();
-            console.log(Booking.getPrice());
+            //console.log(Booking.getPrice());
         });
         
         //Service Addons Selection Event Handling
         $(document).on("click", "#service_addons_div .add_on_lists .addon-service-list .addon-checkbox", function(){
             var addons = {};
-           console.log("Addon Is Checked: " +$(this).is(":checked"));
+          // console.log("Addon Is Checked: " +$(this).is(":checked"));
            if($(this).is(":checked")){
                addons[$(this).val()] = $("#addon_qty_"+$(this).val()).val();
-               console.log("Addon Count: "+addons[$(this).val()]);
+             //  console.log("Addon Count: "+addons[$(this).val()]);
            }
             
         });
@@ -851,53 +979,196 @@ $(function () {
         //Special Service Request Selection Event Handling
         $(document).on("click", "#service_spl_request_div .ct-extra-services-list .addon-service-list .addon-checkbox", function(){
             var splRequest = new Array();
-            console.log("Spl request Is Checked: " +$(this).is(":checked"));
+            //console.log("Spl request Is Checked: "+ $(this).is(":checked"));
+            var serviceId = $(this).attr('data-serviceid');
+            var splService = Booking.getExtraService();
             
             if($(this).is(":checked")){               
-               splRequest.push($(this).attr('data-serviceId')); //[$(this).data('id')] = 1;              
+
+                splService.push($(this).attr('data-id'));
+               
+                Booking.setExtraServiceName($(this).attr('data-mnamee'));
+                
             }else{
-                splRequest.push($(this).attr('data-serviceId')); //[$(this).data('id')] = 0;
+                
+                if(splService.length > 0){
+                    var splId = $(this).attr('data-id');
+                    var index = splService.indexOf(splId);
+                    if (index >= 0) {
+                      splService.splice( index, 1 );
+                    }
+                    
+                }
+                Booking.removeExtraServiceName($(this).attr('data-mnamee'));
             }
-            //if()
-            console.log("Addon Count: "+splRequest);
+            RenderView.showExtraServiceNames();
+            
+            //console.log(splService);
+
         });
         
-        
+        //Frequency Selection Event Handling
+        $(document).on('click', '#service_frequency_price_div .ct-discount-often li .cart_frequently_discount', function(){
+            //console.log('Freq Discount ID:');
+            
+            //Reset the date selected array
+            selectedDates = Array();
+            var freqId = $(this).data('id');
+            var servId = Booking.getService();
+            var freqName = "Once";
+            var freqDisc = 0;
+            if(freqId != 0){
+                freqDisc = ServiceObjects.ServiceFrequencyObject.getFrequencyDiscount(servId, freqId);
+                freqName = ServiceObjects.ServiceFrequencyObject.getFrequencyName(servId, freqId);
+            }
+                //console.log(freqDisc+" - "+freqName);
+                Booking.setFrequencyDisc(freqDisc);
+                Booking.setFrequencyName(freqName);
+                
+                $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
+                $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+                $('.coupon_display .cart_discount').html(Booking.getDiscount());
+                $('.f_discount_name').html(freqName);
+                $('.coupon_display').show();
+                
+                if( freqName.toLowerCase() === 'weekly'){
+                    RenderView.renderSessionCalender(4);
+                }else if( freqName.toLowerCase() === 'biweekly'){
+                    RenderView.renderSessionCalender(2);
+                }else{
+                    RenderView.renderSessionCalender(1);
+                }
+                $('.date_selection').datepicker({
+                    autoclose: true,
+                    dateFormat: "yy-mm-dd", 
+                      minDate:0,
+                      onSelect: function(){
+                        var selectedDate = $(this).val();
+                        var sessionId =  $(this).closest('.ct-form-row').next().children().find('.session_selection').val();
+                          self = this;
+                         checkEmployeeAvailability(selectedDate, sessionId);
+                      }
+                });
+                
+            Booking.setFrequency(freqId);
+            
+        });
+
+
+        $(document).on('change', ".session_selection", function(){
+
+            var selectedService = Booking.getService(); 
+            var sessionId = $(this).val();
+            var service = ServiceObjects.ServiceObject.getServiceById(selectedService);
+            var serviceName = service.service_name;
+
+            var package = ServiceObjects.ServicePackageObject.getPackage(Booking.getService(), Booking.getPackage());
+            var calBy = package.package.service_package_price_cal_by;
+            var minHours = package.package.service_package_min_hours;
+            var price = 0;
+                if(package.spl_price !== null){
+                    price = package.spl_price;
+                }else{
+                    price = package.package.service_package_onetime_price;
+                }
+
+            if(serviceName == 'Basic Home Cleaning' && calBy == 'hour'){
+                Booking.resetPrice();
+                var hours = getHoursFromSession(sessionId);
+                var price = price * (hours/minHours);
+                Booking.addPrice(price)
+                $("#ct-price-scroll-new .cart_sub_total").html(price);           
+                
+                price = Booking.calculateTotalPrice();
+                $("#ct-price-scroll-new .cart_total").html(price);
+                $(".tax_display, .total_price_display, .sub_total_display").show();
+            }
+            
+            self = $(this).parentsUntil('.row').prev().children().find('.date_selection');
+            var selectedDate = $(this).parentsUntil('.row').prev().children().find('.date_selection').val();
+            if(selectedDate != ''){
+                checkEmployeeAvailability(selectedDate, sessionId);
+            }
+        });
+       
 
     }, 2000);
     
     $("#paymentForm").submit( function(e){
         e.preventDefault();
-        var data = Booking.getBookingDetail();
-        var json = ServiceJSON.getServiceBookingJson(data);
-        var booking = ServiceFactory.getServiceBookingCommand(json, 'booking_info.html',ServiceResponseHandler.ServiceBookingSuccessHandler, ServiceResponseHandler.ServiceBookingFailureHandler);
+        if( $("#accept-conditions").is(":checked") ){
+            var data = Booking.getBookingDetail();
+            var json = ServiceJSON.getServiceBookingJson(data);
+            var booking = ServiceFactory.getServiceBookingCommand(json, 'booking_info.html',ServiceResponseHandler.ServiceBookingSuccessHandler, ServiceResponseHandler.ServiceBookingFailureHandler);
+            //console.log(booking);  
             ServiceFactory.executeTask(booking);
+        }else{
+            notifyMessage('error', "Please read Terms & Conditions and accept it by checking checkbox to proceed further with booking service.");
+        }
     });
                            
-    
+
 });
+
+function checkEmployeeAvailability(serviceDate, sessionId){
+    
+//    if( $.inArray(serviceDate, selectedDates) < 0){
+//        selectedDates.push(serviceDate);
+//        
+        var data = ServiceJSON.getEmployeeAvailabilityJson({'serviceDate':serviceDate, 'sessionId':sessionId, 'postcode':postcode, 'package': Booking.getPackage()});
+        ajaxCall('checkEmployeeAvailability.html', 
+            data,  
+        (result)=>{
+            $(self).parentsUntil('row').next().next('.error_message').html('');
+            //$.inArray()
+        },  
+        (result)=>{
+            $(self).val('');
+            $(self).parentsUntil('row').next().next('.error_message').html('');
+            $(self).parentsUntil('row').next().next('.error_message').html(result.message);
+
+        });
+        
+//    }else{
+//        $(self).val('');
+//        $(self).parentsUntil('row').next().next('.error_message').html('Service Date:'+serviceDate+' already selected.');
+//    }
+    
+    
+    
+}
 
 var Booking = (function() {
     var service = null;
     var package = null;
     var addon = {};
     var addonPrice = 0;
-    var extraService = {};
-    var frequency = null;
-    var frequencyPrice = 0;
+    var addonNames = {};
+    var extraService = [];
+    var extraServiceNames = [];
+    var frequency = 0;
+    var frequencyDisc = 0;
+    var frequencyName = 'Once';
+    var discount = '';
     var price   = 0;
     var gstax   = gst * 0.01;
-    
+    var serviceDateSession = [];
+    var gstStatus = gst_status;
+
     return{
         reset : function(){
             this.package = null;
             this.addon = {};
-            this.extraService = {};
-            this.frequency = null;
-            this.frequencyPrice = 0;
+            this.addonNames = {};
+            this.extraService = [];
+            this.extraServiceNames = [];
+            this.frequency = 0;
+            this.frequencyDisc = 0;
+            this.discount = 0;
             this.price = 0;
             this.addonPrice = 0;
-
+            this.serviceDateSession = [];
+            this.frequencyName = 'Once';
         },
 
         setService : function(val){
@@ -928,6 +1199,38 @@ var Booking = (function() {
 
         getAddon : function(){
             return this.addon;
+        },
+        
+        setAddonName: function(name, count){
+            if(count <= 0){               
+                delete this.addonNames[name];
+                
+            }else{
+                this.addonNames[name] = count;
+            }
+        },
+        
+        getAddonNames: function(){
+            return this.addonNames;
+        },
+
+        removeAddonNames: function(){
+            this.addonNames = {};
+        },
+        
+        setExtraServiceName: function(name){
+            this.extraServiceNames.push(name);
+        },
+        
+        removeExtraServiceName: function(name){
+            var index = this.extraServiceNames.indexOf(name);
+            if (index >= 0) {
+              this.extraServiceNames.splice( index, 1 );
+            }
+        },
+        
+        getExtraServiceNames: function(){
+            return this.extraServiceNames;
         },
         
         addAddonPrice: function(price){
@@ -964,13 +1267,52 @@ var Booking = (function() {
             return this.frequency;
         },
         
-        setFrequencyPrice: function(price){
+        setFrequencyDisc: function(price){
+            this.frequencyDisc = price;
+        },
+        
+        getFrequencyDisc: function(){
+            return this.frequencyDisc;
+        },
+        
+        setFrequencyName: function(name){
+            this.frequencyName = name;
+        },
+        
+        getFrequencyName: function(){
+            return this.frequencyName;
+        },
+        
+        getDiscount: function(){
+            return this.discount;
+        },
+        
+        calculatePriceWithFrequency: function(price){
+            var freqDisc = this.frequencyDisc;
+            var freqName = this.frequencyName;
+            if( freqName.toLowerCase() === 'weekly'){
+                price = parseFloat( price * 4 );                
+                this.discount = parseFloat(price * (freqDisc/100));
+            }else if( freqName.toLowerCase() === 'biweekly'){
+                price = parseFloat( price * 2 );
+                this.discount = parseFloat(price * (freqDisc/100));
+            }else{
+                this.discount = 0;
+            }           
+            price = parseFloat( price - this.discount );
+            this.discount.toFixed(2);
+           return price;
             
         },
         
         calculateTotalPrice: function(){
             var price = this.price + this.addonPrice;
-            return parseFloat( (price * gstax) + parseFloat(price));
+            price = Booking.calculatePriceWithFrequency(price);
+            if(gst_status == 1){
+                return parseFloat( (price * gstax) + price).toFixed(2);
+            }else{
+                return parseFloat(price).toFixed(2);
+            }
         },
         
         addPrice: function(price){
@@ -984,6 +1326,21 @@ var Booking = (function() {
         getPrice : function(){
             return this.price;
         },
+
+        getGstStatus: function(){
+           return this.gstStatus;
+        },
+        
+        getServiceDateSession : function(){
+            var i=0;
+            var self = this;
+            this.serviceDateSession = [];
+            $("#date_session_div .date_selection").each(function() {
+               self.serviceDateSession.push({'date': $("#service_date_"+i).val(), 'session': $('#service_session_'+i).val()});
+                i++;
+            });
+            return this.serviceDateSession;
+        },
         
         getBookingDetail: function(){
             var data = new Object();
@@ -992,15 +1349,17 @@ var Booking = (function() {
                 data.addon  = this.addon;
                 data.extraService = this.extraService;
                 data.frequency = this.frequency;
-                data.frequencyValue = $(".cart_frequently_discount").val();
+                data.frequencyValue = this.frequencyDisc;
                 data.price = this.price;
                 data.totalPrice = this.calculateTotalPrice();
                 data.servicePostcode = $("#postcodeSearch").attr('data-val');
                 data.userRegStatus = $(".user-selection").val();
-                
+                data.serviceDateSession = this.getServiceDateSession();
+                data.gstStatus  = this.gstStatus;
+                data.gst        = this.gstax;
                 var info = new Object();
-                    info.serviceDate = $("#select-date").val();
                     info.email = $("#ct-email").val();
+                    info.reEmail = $("#ct-re-email").val();
                     info.pass = $("#ct-preffered-pass").val();
                     info.firstName = $("#ct-first-name").val();
                     info.lastName = $("#ct-last-name").val();
@@ -1021,5 +1380,16 @@ var Booking = (function() {
     };
     
 })();
+
+function getHoursFromSession(sessionId){
+    var hours = 0;
+    switch(sessionId){
+        case '1': hours = 8; break;
+        case '2': hours = 4; break;
+        case '3': hours = 4; break;
+        case '4': hours = 2; break;
+    }
+    return hours;
+}
 
 

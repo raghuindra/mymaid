@@ -67,12 +67,276 @@ $this->load->view("block/admin_leftMenu");
 </div>
 <!-- /.content-wrapper -->
 
+<!-- Order Detail Hidden Field -->
+<div style="display:none" id="order_detail_div">
+
+    <div class='row'>
+        <div class='col-xs-12'>
+            <div class='form-horizontal'>
+                <div class='box-body'>
+                    <!-- Service Package Creation Form Start -->
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-3 control-label'>Service Date :</label>
+                        <div class='col-sm-6' id="venRegDate">
+                            19-07-2017
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-3 control-label'>Service Name :</label>
+                        <div class='col-sm-6' id="venName">
+                            Basic Home Cleaning
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-3 control-label'>Package :</label>
+                        <div class='col-sm-6' id='venEmail'>
+                            Bungalow, 3 Bedroom with 3 Bathroom
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-3 control-label'>Addons</label>
+                        <div class='col-sm-9' id='venAddress'>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h4 class="box-title ">Addons</h4>
+
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /.box-tools -->
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover table-bordered addon_table">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bathroom</td>
+                                                    <td>3</td>                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>Bedroom</td>
+                                                    <td>3</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>Swimming Pool</td>
+                                                    <td>1</td>                                                   
+                                                </tr>
+     
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-3 control-label'>Special Request</label>
+                        <div class='col-sm-9' id='venAddress1'>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h4 class="box-title ">Special Request</h4>
+
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /.box-tools -->
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover table-bordered spl_request_table">
+                                                <tr>
+                                                    <th>Name</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>Wardrobe</td>                    
+                                                </tr>
+                                                <tr>
+                                                    <td>Kitchen</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>IronBox</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Parking</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-3 control-label'>Frequency:</label>
+                        <div class='col-sm-9' id='venCity'>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h4 class="box-title ">Weekly</h4>
+
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /.box-tools -->
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover table-bordered addon_table">
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>19-07-2017</td>                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>26-07-2017</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>02-08-2017</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>09-08-2017</td>                                                   
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="box collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h4 class="box-title ">User Detail</h4>
+
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /.box-tools -->
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover table-bordered addon_table">
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Test User</td>                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone</td>
+                                                    <td>+601234567892</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>Street Address</td>
+                                                    <td>hebbal, Nagawara, benaluru</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>Pincode</td>
+                                                    <td>560024</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>City</td>
+                                                    <td>Bengaluru</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>State</td>
+                                                    <td>Karnataka</td>                                                   
+                                                </tr>
+                                                <tr>
+                                                    <td>Special note</td>
+                                                    <td>Sample not for the vendor from the user regarding the service.</td>                                                   
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                            </div>
+
+            </div>
+        </div>
+    </div> 
+
+</div>
+<!-- /. Order Detail Hidden Field END-->
+
 <script>
 
 
-$(function(){
-    
-    /* Active Orders List Datatable */
+    $(function () {
+
+        /* Upadte the vendor detail Div details. */
+        var getOrderDetail = function (rowData, callback) {
+
+//            $("#venRegDate").html(rowData.person_creation_date);
+//            $("#venName").html(rowData.person_first_name + " " + rowData.person_last_name);
+//            $("#venEmail").html(rowData.person_email);
+//            $("#venAddress").html(rowData.person_address);
+//            $("#venAddress1").html(rowData.person_address1);
+//            $("#venCity").html(rowData.person_city);
+//            $("#venState").html(rowData.person_state);
+//            $("#venMobile").html(rowData.person_mobile);
+//            $("#venTelephone").html(rowData.person_telephone);
+//            $("#venIdentity").html(rowData.person_identity_card + " - " + rowData.person_identity_card_number);
+            callback(true);
+
+        };
+
+        /* JConfirm for the Order Detail */
+        var detailPopUp = function (title, divId) {
+            $.confirm({
+                title: title,
+                content: $("#" + divId).html(),
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                'columnClass': 'col-md-6 col-md-offset-3',
+                buttons: {
+                    cancel: {
+                        text: 'Close',
+                        btnClass: 'btn-red',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+        };
+
+        /* Active Orders List Datatable */
         var activeOrderList = $('#active_orders_list').DataTable({
             "responsive": true,
             "paging": true,
@@ -104,61 +368,67 @@ $(function(){
                 {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [0, 1, 2, 5, 6, 7], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [0], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class=""><a href="#" class="orderDetails" data-id="'+row.booking_id+'">' + row.booking_id + ' </a></td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [1, 2, 5, 6, 7], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [2], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
 
-                        var string = '<td class=""> +60 '+ row.person_mobile +'</td>';
-        
+                        var string = '<td class=""> +60 ' + row.person_mobile + '</td>';
+
                         return string;
                     }
                 },
                 {"responsivePriority": '1', "targets": [3], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
-                        
-                        var string ='';
-                        if(row.company_name == null){
-                            string += ' <td class=""> -- </td>';  
-                        }else{
-                            string += '<td class=""> '+ row.company_name +'</td>';
+
+                        var string = '';
+                        if (row.company_name == null) {
+                            string += ' <td class=""> -- </td>';
+                        } else {
+                            string += '<td class=""> ' + row.company_name + '</td>';
                         }
-                            
+
                         return string;
                     }
                 },
                 {"responsivePriority": '1', "targets": [4], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
-                        
-                        var string ='';
-                        if(row.company_name === null){
-                            string += ' <td class=""> -- </td>';  
-                        }else{
-                            string += '<td class=""> +60 '+ row.company_landphone +'</td>';
+
+                        var string = '';
+                        if (row.company_name === null) {
+                            string += ' <td class=""> -- </td>';
+                        } else {
+                            string += '<td class=""> +60 ' + row.company_landphone + '</td>';
                         }
-                            
+
                         return string;
                     }
                 },
                 {"responsivePriority": '1', "targets": [8], searchable: true, orderable: false, data: null,
                     "render": function (data, type, row) {
-                        
-                        var string ='<td class="bg-aqua">';
-                        if(row.booking_status === "<?php echo Globals::BOOKING_CONFIRMED;?>" && row.company_name !== null){
-                            string += '<div class="text-center bg-yellow color-palette"><i>Confirmed</i></div> ';  
-                        }else if(row.booking_status === "<?php echo Globals::BOOKING_COMPLETED;?>" && row.company_name !== null){
+
+                        var string = '<td class="bg-aqua">';
+                        if (row.booking_status === "<?php echo Globals::BOOKING_CONFIRMED; ?>" && row.company_name !== null) {
+                            string += '<div class="text-center bg-yellow color-palette"><i>Confirmed</i></div> ';
+                        } else if (row.booking_status === "<?php echo Globals::BOOKING_COMPLETED; ?>" && row.company_name !== null) {
                             string += '<div class="text-center bg-green color-palette">';
-                           
-                            if(row.booking_completion_user_confirmed === '1'){
-                                string +='<a class="badge btn-social-icon bg-green" data-toggle="tooltip" title="User Confirmed Completed"><i class="fa fa-user"></i></a>';
+
+                            if (row.booking_completion_user_confirmed === '1') {
+                                string += '<a class="badge btn-social-icon bg-green" data-toggle="tooltip" title="User Confirmed Completed"><i class="fa fa-user"></i></a>';
                             }
-                            if(row.booking_completion_company_confirmed === '1'){
-                                string +='<a class="badge btn-social-icon bg-green" data-toggle="tooltip" title="vendor Confirmed Completed"><i class="fa fa-bank"></i></a>';
+                            if (row.booking_completion_company_confirmed === '1') {
+                                string += '<a class="badge btn-social-icon bg-green" data-toggle="tooltip" title="vendor Confirmed Completed"><i class="fa fa-bank"></i></a>';
                             }
-                            string +='<div><i>Completed</i></div></div>';
-                        }else if(row.booking_status === "<?php echo Globals::BOOKING_CANCELLED;?>" && row.booking_cancelled_by !== null ){
+                            string += '<div><i>Completed</i></div></div>';
+                        } else if (row.booking_status === "<?php echo Globals::BOOKING_CANCELLED; ?>" && row.booking_cancelled_by !== null) {
                             string += '<div class="text-center bg-red color-palette">';
-                            string +='<a class="badge btn-social-icon bg-red" data-toggle="tooltip" title="User Requested Cancellation"><i class="fa fa-user"></i></a>';
-                            string +='<div><i>Canceled</i></div></div>';
+                            string += '<a class="badge btn-social-icon bg-red" data-toggle="tooltip" title="User Requested Cancellation"><i class="fa fa-user"></i></a>';
+                            string += '<div><i>Canceled</i></div></div>';
                         }
                         string += '</td>';
                         return string;
@@ -166,35 +436,35 @@ $(function(){
                 },
                 {"responsivePriority": '1', "targets": [9], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
-                        
+
                         var string = ' <td class=""> <div class="text-center">';
-                        if(row.booking_cancelable && (row.booking_completion_user_confirmed === '0')){
-                            string += '<a href="#" class="btn btn-social-icon bookingCancel" data-toggle="tooltip" title="Cancel Order" data-id="'+row.booking_id+'"><i class="fa fa-close"></i></a>';  
+                        if (row.booking_cancelable && (row.booking_completion_user_confirmed === '0')) {
+                            string += '<a href="#" class="btn btn-social-icon bookingCancel" data-toggle="tooltip" title="Cancel Order" data-id="' + row.booking_id + '"><i class="fa fa-close"></i></a>';
                         }
-                        
-                        if(row.confirm_completed){
-                            string += '<a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="'+row.booking_id+'"><i class="fa fa-check-square"></i></a></div></td>';  
+
+                        if (row.confirm_completed) {
+                            string += '<a href="#" class="btn btn-social-icon orderCompleted" data-toggle="tooltip" title="Confrim Order Completion" data-id="' + row.booking_id + '"><i class="fa fa-check-square"></i></a></div></td>';
                         }
-                        
+
                         string += '</div></td>';
-                       
+
                         return string;
                     }
                 }
             ]
         });
-        
-        
+
+
         /* Handle the Service Jobs Datatable Refresh. */
-        $(".servicesRefresh").on('click', function(){            
+        $(".servicesRefresh").on('click', function () {
             activeOrderList.ajax.reload(); //call datatable to reload the Ajax resource        
         });
-    
-    
-        $(document).on('click', ".bookingCancel", function(){
-            
+
+
+        $(document).on('click', ".bookingCancel", function () {
+
             var id = $(this).data('id');
-            
+
             $.confirm({
                 title: 'Cancel Order!',
                 content: 'Are you sure want to cancel the order?',
@@ -203,14 +473,14 @@ $(function(){
                 'typeAnimated': true,
                 'animation': 'scaleX',
                 buttons: {
-                    confirm:{ 
+                    confirm: {
                         btnClass: 'btn-green',
-                        action:function () {
-                            
+                        action: function () {
+
                             $.ajax({
                                 type: "POST",
                                 url: "<?php echo base_url() . 'a_cancelOrder.html'; ?>",
-                                data: {'bookingId':id},
+                                data: {'bookingId': id},
                                 cache: false,
                                 success: function (res) {
                                     var result = JSON.parse(res);
@@ -218,7 +488,7 @@ $(function(){
                                     if (result.status === true) {
                                         notifyMessage('success', result.message);
                                         activeOrderList.ajax.reload(); //call datatable to reload the Ajax resource
-                                        
+
                                     } else {
                                         notifyMessage('error', result.message);
                                     }
@@ -230,7 +500,7 @@ $(function(){
                             });
                         }
                     },
-                    cancel:{
+                    cancel: {
                         btnClass: 'btn-default bg-maroon',
                         action: function () {
 
@@ -238,13 +508,13 @@ $(function(){
                     }
                 }
             });
-            
+
         });
-        
-        $(document).on('click', ".orderCompleted", function(){
-            
+
+        $(document).on('click', ".orderCompleted", function () {
+
             var id = $(this).data('id');
-            
+
             $.confirm({
                 title: 'Confirm Order Completed!',
                 content: 'Are you sure you want to confirm the order completed?',
@@ -253,14 +523,14 @@ $(function(){
                 'typeAnimated': true,
                 'animation': 'scaleX',
                 buttons: {
-                    confirm:{ 
+                    confirm: {
                         btnClass: 'btn-green',
-                        action:function () {
-                            
+                        action: function () {
+
                             $.ajax({
                                 type: "POST",
                                 url: "<?php echo base_url() . 'a_confirmOrderCompletion.html'; ?>",
-                                data: {'bookingId':id},
+                                data: {'bookingId': id},
                                 cache: false,
                                 success: function (res) {
                                     var result = JSON.parse(res);
@@ -268,7 +538,7 @@ $(function(){
                                     if (result.status === true) {
                                         notifyMessage('success', result.message);
                                         activeOrderList.ajax.reload(); //call datatable to reload the Ajax resource
-                                        
+
                                     } else {
                                         notifyMessage('error', result.message);
                                     }
@@ -280,7 +550,7 @@ $(function(){
                             });
                         }
                     },
-                    cancel:{
+                    cancel: {
                         btnClass: 'btn-default bg-maroon',
                         action: function () {
 
@@ -288,8 +558,60 @@ $(function(){
                     }
                 }
             });
-            
+
         });
         
-});
+                
+        /* Fetch the Order/booking Deatils */       
+        $(document).on('click', '.orderDetails', function(e){
+            e.preventDefault();
+            var bookingId = $(this).data('id');
+            
+            $.confirm({
+                title: 'Order Information:',
+                content: function(){
+                    var self = this;
+                    //self.setContent('Checking callback flow');
+                    return $.ajax({
+                        url: '<?php echo base_url() . 'serviceOrderDeatils.html'; ?>',
+                        dataType: 'html',
+                        method: 'post',
+                        data:{'booking_id':bookingId}
+                    }).done(function (response) {
+                        self.setContentAppend(response);
+                    }).fail(function(){
+                        self.setContentAppend('<br>Fail to load!');
+                    }).always(function(){
+                        //self.setContentAppend("sdsa");
+                    });
+                },
+                contentLoaded: function(data, status, xhr){
+                    //self.setContentAppend(data);
+                },
+                onContentReady: function(){
+                    $(document).on('click', '#get_invoice', function(){
+                        $("#invoice_modal").modal('show');
+                    });
+                },
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                columnClass: 'col-md-8 col-md-offset-2',
+                buttons: {
+                    
+                    cancel:{
+                        text: 'Close',
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+                       
+        });
+        
+    });
 </script>

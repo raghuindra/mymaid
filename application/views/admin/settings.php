@@ -43,7 +43,7 @@ $this->load->view("block/admin_leftMenu");
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Sender EMail: <span class="text-red">*</span></label>
                                                         <div class="col-sm-8">
-                                                            <input type="text" name="senderEmail" class="form-control" required id="senderEmail" placeholder="Sender Email" value="<?php echo ($config) ? $config['sender_email'] : '';?>">
+                                                            <input type="email" name="senderEmail" class="form-control" required id="senderEmail" placeholder="Sender Email" value="<?php echo ($config) ? $config['sender_email'] : '';?>">
                                                         </div>
                                                     </div>
 
@@ -60,9 +60,17 @@ $this->load->view("block/admin_leftMenu");
                                                     </div>
                                                     
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-3 control-label">Commission: <span class="text-red">*</span></label>
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Vendor Margin: <span class="text-red">*</span></label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" name="profit_cutoff" class="form-control" required id="gst" placeholder="Commission" value="<?php echo ($config) ? $config['profit_cutoff'] : '';?>">
+                                                            <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" name="profit_cutoff" class="form-control" required id="profit_cutoff" placeholder="margin" value="<?php echo ($config) ? $config['profit_cutoff'] : '';?>">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-3 control-label">Freelancer Margin: <span class="text-red">*</span></label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" name="freelance_profit_cutoff" class="form-control" required id="freelance_profit_cutoff" placeholder="margin" value="<?php echo ($config) ? $config['freelance_profit_cutoff'] : '';?>">
                                                         </div>
 
                                                     </div>
@@ -96,9 +104,9 @@ $this->load->view("block/admin_leftMenu");
                                         <div class="box-header with-border">
                                             <div class="form-group">                                             
                                                 <div class="col-sm-6">
-                                                    <div class="btn-group" role="group" id="active_vendor_list_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
-                                                        <button type="button" class="btn margin btn-primary btn-sm active active_vendor_list_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
-                                                        <button type="button" class="btn margin btn-primary btn-sm active_vendor_list_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                    <div class="btn-group" role="group" id="active_vendor_list_status" aria-label="Archive Un Archive condition" data-val="<?php //echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active active_vendor_list_status_unarchive" data-val="<?php //echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                        <button type="button" class="btn margin btn-primary btn-sm active_vendor_list_status_archive" data-val="<?php //echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
                                                     </div>
                                                 </div>
                                             </div>

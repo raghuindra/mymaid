@@ -2,7 +2,11 @@
 $this->load->view("block/admin_topNavigation");
 $this->load->view("block/admin_leftMenu");
 ?>
-
+<style>
+    div.container {
+        width: 80%;
+    }
+</style>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -26,7 +30,7 @@ $this->load->view("block/admin_leftMenu");
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#newVendorsTab" data-toggle="tab">New Vendors</a></li>
                         <li><a href="#activeVendorsTab" data-toggle="tab">Active Vendors</a></li>
-                        <!--                        <li><a href="#resetPassTab" data-toggle="tab">Reset Password</a></li>-->
+                        <li><a href="#activeFreelancerTab" data-toggle="tab">Active Free lancers</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="active tab-pane" id="newVendorsTab">              
@@ -36,16 +40,16 @@ $this->load->view("block/admin_leftMenu");
                                     <!--                                        <div class="box-header with-border">
                                                                                 <div class="form-group">                                             
                                                                                     <div class="col-sm-6">
-                                                                                        <div class="btn-group" role="group" id="_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
-                                                                                            <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
-                                                                                            <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                                                        <div class="btn-group" role="group" id="_status" aria-label="Archive Un Archive condition" data-val="<?php //echo Globals::UN_ARCHIVE; ?>">
+                                                                                            <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php //echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                                                            <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php //echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>-->
                                     <!-- /.box-header -->
                                     <div class="box-body col-sm-12">
-                                        <table id="newVendorsList" class="table table-bordered table-striped">
+                                        <table id="newVendorsList" class="table table-bordered table-striped" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>
@@ -89,7 +93,7 @@ $this->load->view("block/admin_leftMenu");
                                         </div>
                                         <!-- /.box-header -->
                                         <div class="box-body col-sm-12">
-                                            <table id="activeVendorsList" class="table table-bordered table-striped">
+                                            <table id="activeVendorsList" class="table table-bordered table-striped"  width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th>Name</th>
@@ -117,11 +121,53 @@ $this->load->view("block/admin_leftMenu");
                         </div>
                         <!-- /.tab-pane -->
 
-                        <!--                        <div class="tab-pane" id="resetPassTab">
-                                                    <form class="form-horizontal">
-                                                        
-                                                    </form>
-                                                </div>-->
+                        <div class="tab-pane" id="activeFreelancerTab">
+                            <div class="form-horizontal">
+                                <div class="box-body" style="display: block;">
+                                    <div class="box box-primary">
+                                        <!-- /.box-header -->
+                                        <div class="box-header with-border">
+                                            <div class="form-group">                                             
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group" id="active_freelancer_list_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
+                                                        <button type="button" class="btn margin btn-primary btn-sm active active_freelancer_list_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
+                                                        <button type="button" class="btn margin btn-primary btn-sm active_freelancer_list_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-header -->
+                                        <div class="box-body col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="activeFreelancersList" class="table table-bordered table-striped dataTable" role="grid" style="width:100% !important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Location</th>
+                                                        <th>Mobile</th>
+                                                        <th>Email</th>
+                                                        <th>Company Name</th>
+                                                        <th>Company Telephone</th>
+                                                        <th>Company Contact Person</th>
+                                                        <th class="action">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                </tbody>
+
+                                            </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- /.box body-->
+                            </div>   
+                        </div>
                         <!-- /.tab-pane -->
                     </div>
                     <!-- /.tab-content -->
@@ -588,7 +634,7 @@ $this->load->view("block/admin_leftMenu");
 <!-- New Vendors Scripts END -->
 
 
-<!-- Vendors List Scrupt START -->
+<!-- Vendors List Scripts START -->
 <script>
     
     $(function(){
@@ -605,7 +651,7 @@ $this->load->view("block/admin_leftMenu");
             "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": false,
+            "autoWidth": true,
             "scrollX": true,
             "processing": true,
             "serverSide": false,
@@ -783,7 +829,204 @@ $this->load->view("block/admin_leftMenu");
     });
     
 </script>
-<!-- Vendors List Script END -->
+<!-- Vendors List Scripts END -->
+
+<!-- Freelancers List Scripts START -->
+<script>
+    
+    $(function(){
+      
+      /* Active Vendor Detail List Table START */
+        var activeFreelanersListTable = $('#activeFreelancersList').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+               'excel'
+            ],
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "scrollX": true,
+            "processing": true,
+            "serverSide": false,
+            "ajax": {
+                "url": '<?php echo base_url() . 'active_freelancers_list.html'; ?>',
+                "type": "POST",
+                "data": function(d){                     
+                    d.archived = $("#active_freelancer_list_status").attr('data-val');
+                },
+                "dataSrc": 'data'
+            },
+            "columns": [
+                {"data": null},
+                {"data": null},
+                {"data": "person_mobile"},
+                {"data": "person_email"},
+                {"data": null},
+                {"data": "company_landphone"},
+                {"data": "company_contact_person_name"},
+                {"data": null}
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class=""><a href="#" class="actFreelancerDetails">' + row.person_first_name + ' ' + row.person_last_name + ' </a></td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [1], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class="">' + row.person_city + ', ' + row.person_state + ' </td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [2], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class="">+60' + row.person_mobile + ' </td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [5], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = "";
+                        if(row.company_landphone != null && row.company_landphone != ''){
+                            string = ' <td class="">+60' + row.company_landphone + ' </td>';
+                        }else{
+                            string = ' <td class="centered"> -- </td>';
+                        }
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [ 3, 6], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [4], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = "";
+                        if(row.person_type == <?php echo Globals::PERSON_TYPE_FREELANCER;?>){
+                            string = ' <td class="">Freelancer</td>';
+                        }else{
+                            string = ' <td class=""><a href="#" class="actFreelancerCompanyDetails">' + row.company_name + ' </a></td>';
+                        }                       
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var archived = $("#active_freelancer_list_status").attr('data-val');
+                        var string = ' <td class=""> <div class="text-center">';
+                        
+                        if(archived === '0'){
+                            string  += '<a href="#" class="btn btn-social-icon archiveFreelancer" title="Archive" ><i class="fa fa-archive"></i></a></div></td>';
+                        }else{
+                            string  += '<a href="#" class="btn btn-social-icon unarchiveFreelancer" title="Un Archive"><i class="fa fa-folder-open"></i></a></div></td>';
+                        }
+                        return string;                        
+                    }
+                }
+            ]
+        });
+        /* /. Active Vendor Detail List Table END*/
+        
+        /* Archived / Un Archived Datatable list event */
+        $(document).on("click",".btn-group .active_freelancer_list_status_archive, .active_freelancer_list_status_unarchive",function () {
+            $(".btn-group#active_freelancer_list_status button").removeClass('active');
+            $(this).addClass('active');
+            $("#active_freelancer_list_status").attr('data-val',$(this).data('val'));           
+            activeFreelanersListTable.ajax.reload(); //call datatable to reload the Ajax resource
+            
+        });
+        
+        /* Active Vendor Detail Window popup */
+        $(document).on('click', '.actFreelancerDetails', function (e) {
+            e.preventDefault();
+            var rowData = activeFreelanersListTable.row($(this).closest('tr')).data();
+
+            COMMON_FUN.getVendorDetail(rowData, function (status) {
+                COMMON_FUN.detailPopUp('Freelancer Detail','vendor_detail_div');
+            });
+
+        });
+        /* /. Active Vendor Detail Window popup */
+        
+        /* Active Comapny Detail Window popup */
+        $(document).on('click', '.actFreelancerCompanyDetails', function (e) {
+            e.preventDefault();
+            var rowData = activeFreelanersListTable.row($(this).closest('tr')).data();
+          
+            COMMON_FUN.getCompanyDetail(rowData, function (status) {
+                COMMON_FUN.detailPopUp('Freelancer Company Detail','vendor_company_detail_div');
+            });      
+        
+        });
+        /* /. Active Comapny Detail Window popup */
+        
+        
+        /* Archive/UnArchive Vendors START  */
+        $(document).on('click', '.archiveFreelancer, .unarchiveFreelancer', function (e) {
+
+            e.preventDefault();
+            var rowData     = activeFreelanersListTable.row($(this).closest('tr')).data();
+            var personId    = rowData.person_id;
+            
+            if($(this).hasClass('unarchiveFreelancer')){
+                archive = <?php echo Globals::UN_ARCHIVE;?>;
+                message = "Are you sure you want to un-archive?";
+            }else{
+                archive = <?php echo Globals::ARCHIVE;?>;
+                message = "Are you sure you want to archive?";
+            }
+
+            $.confirm({
+                title: 'Confirm!',
+                content: message,
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                buttons: {
+                    confirm: {
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'archiveFreelancer.html'; ?>",
+                                data: {'personId': personId, 'archive':archive},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        activeFreelanersListTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel: {
+                    btnClass: 'bg-maroon',
+                    action:function () {
+
+                        }
+                    }
+                }
+            });
+
+        }); /* Archive/UnArchive Vendors END */
+        
+    });
+    
+</script>
+<!-- Freelancers List Script END -->
 
 <link rel="stylesheet" href="<?php echo plugin_url('plugins/datatables/export/buttons.dataTables.min.css');?>">
 <script src="<?php echo plugin_url('plugins/datatables/export/dataTables.buttons.min.js'); ?>"></script>

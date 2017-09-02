@@ -94,7 +94,16 @@
                         </a>
                     </li>-->
                 </ul>
-            </li>           
+            </li>
+            <li>
+                <a href="<?php echo base_url() . 'user_profile.html'; ?>">
+                    <i class="fa fa-user"></i>
+                    <span>Profile</span>
+                    <span class="pull-right-container">
+<!--                                <span class="label pull-right bg-red">4</span>-->
+                    </span>
+                </a>
+            </li>     
 <!--            <li class="treeview">
                 <a href="#">
                     <i class="fa fa-money"></i> <span>My Wallet</span>

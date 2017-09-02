@@ -96,14 +96,14 @@
                 </ul>
             </li>           
             <li class="treeview">
-                <a href="#">
+                <a href="<?php echo base_url() . 'vendor_wallet_request.html'; ?>">
                     <i class="fa fa-money"></i> <span>My Wallet</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
-                <ul class="treeview-menu">
-<!--                    <li class="active">
+<!--                 <ul class="treeview-menu">
+                    <li class="active">
                         <a href="<?php //echo base_url() . 'vendor_wallet_pending.html'; ?>">
                             <i class="fa fa-hourglass-2"></i>
                             <span>Pending Pay</span>
@@ -111,9 +111,9 @@
                                 <span class="label label-primary pull-right bg-green">4</span>
                             </span>
                         </a>
-                    </li>-->
+                    </li>
                     <li class="active">
-                        <a href="<?php echo base_url() . 'vendor_wallet_request.html'; ?>">
+                        <a href="<?php //echo base_url() . 'vendor_wallet_request.html'; ?>">
                             <i class="fa fa-exchange"></i>
                             <span>Request Payment</span>
                             <span class="pull-right-container">
@@ -122,7 +122,7 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a href="<?php echo base_url() . 'vendor_wallet_report.html'; ?>">
+                        <a href="<?php //echo base_url() . 'vendor_wallet_report.html'; ?>">
                             <i class="fa fa-external-link"></i>
                             <span>Payment report </span>
                             <span class="pull-right-container">
@@ -130,7 +130,7 @@
                             </span>
                         </a>
                     </li>
-                </ul>
+                </ul> -->
             </li>
             <!-- settings links -->
             <li class="treeview">
@@ -168,6 +168,21 @@
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right bg-green"></span>
                             </span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'vendors_employee_schedule.html'; ?>">
+                            <i class="fa fa-male"></i>
+                            <span>Employee Schedule</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green"></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo base_url().'vendors_employee_calender.html'; ?>">
+                            <i class="fa fa-circle-o"></i> 
+                            <span>Employee Calender</span>
                         </a>
                     </li>
                 </ul>

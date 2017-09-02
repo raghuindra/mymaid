@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +10,9 @@
         <?php } else { ?>
             <title>MyMaidz | Dashboard</title>
          <?php } ?>
+
+         <meta name="google-signin-client_id" content="<?php echo $config['g_client_id'];?>">
+
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
@@ -25,7 +29,7 @@
         <link rel="stylesheet" href="<?php echo plugin_url('dist/css/skins/_all-skins.min.css');?>">
         <!-- iCheck -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/flat/blue.css');?>"> 
-<!--        <link rel="stylesheet" href="<?php //echo plugin_url('plugins/iCheck/square/blue.css');?>">-->
+        <link rel="stylesheet" href="<?php echo plugin_url('plugins/iCheck/square/blue.css');?>">
         <!-- Morris chart -->
         <link rel="stylesheet" href="<?php echo plugin_url('plugins/morris/morris.css');?>">
         <!-- jvectormap -->

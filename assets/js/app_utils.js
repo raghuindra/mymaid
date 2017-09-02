@@ -37,14 +37,16 @@
     function resetForm($form) {
         $form.find('input:text, input:password, input:file, select, textarea').val('');
         $form.find(':input[type=number]').val('');
+        $form.find(':input[type=email]').val('');
         $form.find(".select2").val(null).trigger("change");
         $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
     }
 
+// base_url declared in template.php file to get available in all pages
     function getPersonWalletBalance(){ 
         $.ajax({
             type: "POST",
-            url: window.location.origin +'/person_wallet_balance.html',
+            url: base_url +'/person_wallet_balance.html',
             data: {},
             cache: false,
             success: function (res) {
@@ -65,33 +67,33 @@
     }
     
     
-    function getWidgetsdata(){
+    // function getWidgetsdata(){
         
-        $.ajax({
-            type: "POST",
-            url: window.location.origin +'/widgets_updates.html',
-            data: {},
-            cache: false,
-            success: function (res) {
-                var result = JSON.parse(res);
+    //     $.ajax({
+    //         type: "POST",
+    //         url: window.location.origin +'/widgets_updates.html',
+    //         data: {},
+    //         cache: false,
+    //         success: function (res) {
+    //             var result = JSON.parse(res);
 
-                if (result.status === true) {
-                    //notifyMessage('success', result.message);
+    //             if (result.status === true) {
+    //                 //notifyMessage('success', result.message);
 
-                    $(".wallet_balance").html(result.data.wallet_balance);
-                    $(".w_wallet_balance").html(result.data.wallet_balance);
-                    $(".w_new_orders").html(result.data.new_orders);
-                    $(".w_processing_orders").html(result.data.processing_orders);
-                    $(".w_completed_orders").html(result.data.completed_orders);
-                } else {                       
-                }
+    //                 $(".wallet_balance").html(result.data.wallet_balance);
+    //                 $(".w_wallet_balance").html(result.data.wallet_balance);
+    //                 $(".w_new_orders").html(result.data.new_orders);
+    //                 $(".w_processing_orders").html(result.data.processing_orders);
+    //                 $(".w_completed_orders").html(result.data.completed_orders);
+    //             } else {                       
+    //             }
 
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                //notifyMessage('error', errorThrown);
-            }
-        });
-    }
+    //         },
+    //         error: function (jqXHR, textStatus, errorThrown) {
+    //             //notifyMessage('error', errorThrown);
+    //         }
+    //     });
+    // }
     
 //    /* AJAX call to get the user Walet balance on interval. */
 //    getPersonWalletBalance();
@@ -100,7 +102,7 @@
 //    }, 30000);
     
     /* AJAX call to get the Dashboard widgets. */
-    getWidgetsdata();
-    setInterval(function () {
-        getWidgetsdata();
-    }, 30000);
+    //getWidgetsdata();
+    // setInterval(function () {
+    //     getWidgetsdata();
+    // }, 30000);

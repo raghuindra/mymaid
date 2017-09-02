@@ -6,6 +6,7 @@ $(function() {
         $('#ct-user-email').attr('required', true);
         $('#ct-user-pass').attr('required', true);
         $('#ct-email').attr('required', false);
+        $('#ct-re-email').attr('required', false);
         $('#ct-preffered-pass').attr('required', false);
     }
     
@@ -15,18 +16,29 @@ $(function() {
         $('#ct-user-email').attr('required', false);
         $('#ct-user-pass').attr('required', false);
         $('#ct-email').attr('required', true);
+        $('#ct-re-email').attr('required', true);
         $('#ct-preffered-pass').attr('required', true);
     }
     
     
     $("#select-date")
         .datepicker({ 
-        dateFormat: "yy-mm-dd", 
+        dateFormat: "dd-mm-yy", 
         minDate:0,
         onSelect: function(){
         var selected = $(this).val();
         //alert(selected);
         }
+    });
+
+    $('.date_selection').datepicker({
+        autoclose: true,
+        dateFormat: "yy-mm-dd", 
+          minDate:0,
+          onSelect: function(){
+          var selected = $(this).val();
+          //alert(selected);
+          }
     });
 
 
@@ -254,10 +266,12 @@ $(function() {
                 $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
                 //Booking.calculateTotalPrice(price);
                 $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+                var addonName = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_name;
+                Booking.setAddonName(addonName,count);
             }
-            
-            console.log(Booking.getAddon());
-            console.log("Addon Count: "+ count);
+            RenderView.showAddonNames();
+            //console.log(Booking.getAddon());
+            //console.log("Addon Count: "+ count);
         });
         
     $(document)
@@ -276,8 +290,8 @@ $(function() {
             var addonId = $(this).attr('data-ids');
             var obj = {'addonId':addonId, 'addonCount':count};
             Booking.setAddon(addonId, obj);
-            console.log(Booking.getAddon());
-            console.log("Addon Count: "+ count); 
+            //console.log(Booking.getAddon());
+            //console.log("Addon Count: "+ count); 
             var Addon = ServiceObjects.ServiceAddonsObject;
             var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
             if(count >= 0){
@@ -286,7 +300,10 @@ $(function() {
                 $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
                 //Booking.calculateTotalPrice(price);
                 $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+                var addonName = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_name;
+                Booking.setAddonName(addonName,count);
             }
+            RenderView.showAddonNames();
         });
     
     //Right Price Floater DIV
@@ -316,10 +333,12 @@ $(function() {
     if(user_logged_in == "No"){
         $(".ct-new-user-details").show();
         $(".ct-login-existing").hide();
+        $("#new-user").trigger('click');
     }else if(user_logged_in == "Yes"){
         showExistingUserDetails();
         $(".ct-new-user-details").hide();
         $(".ct-login-exist").hide();
+        $("#existing-user").trigger('click');
     }
     
    
@@ -337,16 +356,18 @@ $(function() {
                 var result = JSON.parse(res);
 
                 if (result.status === true) {
-                    console.log(result);
+                    //console.log(result);
                     $(".ct-new-user-details").hide();
                     $(".ct-login-exist").hide();
+                    $('#ct-user-email').attr('required', false);
+                    $('#ct-user-pass').attr('required', false);
 
                     var info = result.data[0];
                         $("#ct-first-name").val(info.person_first_name);
                         $("#ct-last-name").val(info.person_last_name);
                         $("#ct-user-phone").val(info.person_mobile);
                         $("#ct-street-address").val(info.person_address);
-                        $("#ct-zip-code").val(info.person_postal_code);
+                        //$("#ct-zip-code").val(info.person_postal_code);
                         $("#ct-city").val(info.person_city);
                         $("#ct-state").val(info.person_state);
 

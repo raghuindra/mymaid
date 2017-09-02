@@ -34,6 +34,28 @@ class User_lib extends Base_lib {
         }
     }
 
+    function getProfileDetails() {
+        $this->resetResponse();
+
+        if ($this->ci->session->userdata('user_id') != null) {
+            $person_id = $this->ci->session->userdata('user_id');
+            $result = $this->model->get_tb('mm_person', '*', array('person_id' => $person_id))->result();
+            if ($result) {
+                $this->_status = true;
+                $this->_rdata = $result;
+            } else {
+                $this->_status = FALSE;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+        } else {
+
+            $this->_status = FALSE;
+            $this->_message = $this->ci->lang->line('invalid_request');
+        }
+
+        return $this->getResponse();
+    }
+
     /**
      *
      * Create new user in the Db 
@@ -57,7 +79,7 @@ class User_lib extends Base_lib {
 
 
             $activeServices = $this->model->getUserActiveBookings($person_id);
-            //print_r($activeServices); exit;
+            //print_r($this->model->last_query()); exit;
 
             if (!empty($activeServices)) {
                 $result = array();
@@ -72,6 +94,8 @@ class User_lib extends Base_lib {
                     $result[$i]['booking_booked_on'] = $service->booking_booked_on;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
+                    $result[$i]['employee_name'] = $service->employee_name;
+                    $result[$i]['employee_id'] = $service->employee_id;
                     
                     $now = date('Y-m-d H:i:s');
                     $cancelableDate = date('Y-m-d H:i:s', strtotime($service->booking_booked_on . ' +1 day'));
@@ -148,7 +172,10 @@ class User_lib extends Base_lib {
                     }
                     $result[$i]['booking_cancelled_approved_by_admin'] = $service->booking_cancelled_approved_by_admin;
                     $result[$i]['booking_cancelled_approved_by_admin_on'] = $service->booking_cancelled_approved_by_admin_on;
-
+                    
+                    $result[$i]['employee_name'] = $service->employee_name;
+                    $result[$i]['employee_id'] = $service->employee_id;
+                    
                     $i++;
                 }
 
@@ -244,7 +271,8 @@ class User_lib extends Base_lib {
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;
-
+                    $result[$i]['employee_name'] = $service->employee_name;
+                    $result[$i]['employee_id'] = $service->employee_id;
                     $i++;
                 }
 
@@ -289,7 +317,9 @@ class User_lib extends Base_lib {
                 $now = date('Y-m-d H:i:s');
                 $service_date = date('Y-m-d H:i:s', strtotime($booking_detail[0]->booking_service_date));
 
-                if(strtotime($now) >= strtotime($service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED) ){
+                $lastServiceDate = $this->model->getLastDateofServiceDate($booking_id);
+
+                if(strtotime($now) >= strtotime($lastServiceDate[0]->service_date) && $booking_detail[0]->booking_vendor_company_id != null && ( $booking_detail[0]->booking_status == Globals::BOOKING_CONFIRMED || $booking_detail[0]->booking_status == Globals::BOOKING_COMPLETED) ){
                     
                     $this->model->update_tb('mm_booking', array('booking_id' => $booking_id), array('booking_status' => Globals::BOOKING_COMPLETED, 'booking_completion_user_comfirmed' => 1));
                     if ($this->model->getAffectedRowCount() > 0) {
@@ -313,5 +343,9 @@ class User_lib extends Base_lib {
 
             return $this->getResponse();
         }
+    }
+
+    function _getOrderInvoice(){
+        
     }
 }

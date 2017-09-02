@@ -16,7 +16,63 @@ class Mm_model extends CI_Model
 {
 	function __construct() {
 		parent::__construct();
+        $this->loadTableNames();
 	}
+    
+    /*
+    * Load the table names
+    */
+    function loadTableNames(){
+        
+        $this->_admin                           = 'mm_admin';
+        $this->_area                            = "mm_area";
+        
+        $this->_booking                         = "mm_booking";
+        $this->_booking_addons                  = "mm_booking_addons";
+        $this->_booking_spl_request             = "mm_booking_spl_request";
+        $this->_booking_frequency               = "mm_booking_frequency";
+        $this->_booking_sessions                = "mm_booking_sessions";
+        $this->_booking_user_detail             = "mm_booking_user_detail";
+        $this->_booking_spl_request             = "mm_booking_spl_request";
+        $this->_building                        = "mm_building";
+        
+        $this->_company_employees               = "mm_company_employees";
+        $this->_country                         = 'mm_country';
+        
+        $this->_employee_job                    = "mm_employee_job";
+        $this->_employee_session_spl            = "mm_employee_session_spl";
+        
+        $this->_lang                            = 'mm_language';
+        
+        $this->_postcode                        = "mm_postcode";
+        $this->_person                          = 'mm_person';
+        $this->_person_type                     = 'mm_person_type';
+        $this->_postcode                        = "mm_postcode";
+        $this->_postcode_service_price          = "mm_postcode_service_price";
+        $this->_permission_type                 = 'mm_permission_type';
+        $this->_permission                      = 'mm_permission';
+        
+        $this->_session                         = "mm_session";
+        $this->_state                           = "mm_state";
+        $this->_services                        = "mm_services";
+        $this->_service_package                 = "mm_service_package";
+        $this->_service_frequency_offer         = "mm_service_frequency_offer";
+        $this->_service_frequency               = "mm_service_frequency";
+        $this->_service_addon_price             = "mm_service_addon_price";
+        $this->_service_addon                   = "mm_service_addon";
+        $this->_service_spl_request             = "mm_service_spl_request";
+        $this->_service_building                = "mm_building";
+        $this->_service_area                    = "mm_area";
+        $this->_spl_request                     = "mm_spl_request";
+        
+        $this->_vendor                          = 'mm_vendor';
+        $this->_vendor_company                  = "mm_vendor_company";
+        $this->_vendor_service_location         = 'mm_vendor_service_location';
+        $this->_vendor_wallet_withdrawal        = "mm_vendor_wallet_withdrawal";
+        
+        $this->_user                            = 'mm_user';
+        
+    }
 	
 	/**
 	 *
@@ -245,6 +301,10 @@ VALUES ('$mobile', '$message', '$from', '$createdDate', '$updatedBy', '$updatedD
         function update_person_wallet_debit($person_id, $amount){
             return $this->db->query("UPDATE `mm_person` SET `person_wallet_amount` = `person_wallet_amount` - $amount WHERE `person_id`= $person_id");
             
+        }
+
+        function get_table_row_count($tbl){
+        	return $this->db->query("select count(*) as count from ".$tbl);
         }
 }
 ?>

@@ -30,7 +30,7 @@ $this->load->view("block/vendor_leftMenu");
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3 class="w_completed_orders"></h3>
+                        <h3 class="w_new_orders"></h3>
 
                         <p>New Jobs</p>
                     </div>

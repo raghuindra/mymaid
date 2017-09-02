@@ -1,21 +1,11 @@
-#   Emp�che la visualisation de l'arborescence, n'a rien � voir avec le masquage du � index.php �.
 Options -Indexes
 
-#   Active le module de r��criture d'URL.
 RewriteEngine on
 
-#
-#   Fixe les r�gles de r��criture d'URL. Ici, nous utilisons une liste blanche.
-#
 
-#   Toutes les URL qui ne correspondent pas � ces masques sont r��crites.
 RewriteCond $1 !^(index\.php|assets)
-
-#   Toutes les autres URL vont �tre redirig�es vers le fichier index.php.
-RewriteRule ^(.*)$ index.php/$1 [L]
-
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-
-
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^(.*)$ index.php?/$1 [L]

@@ -61,13 +61,23 @@ $route['person_wallet_balance.html']            = "person/getPersonWalletBalance
 $route['request_wallet_withdrawal.html']        = "person/walletWithdrawalRequest";
 $route['listWalletWithdrawalRequest.html']      = "person/listWalletWithdrawalRequest";
 $route['widgets_updates.html']                  = "person/widgetsUpdates";
-
+$route['vendors_employee_schedule.html']        = "person/vendorsEmployeeSchedule";
+$route['listEmployeeSessions.html']             = "person/listEmployeeSessions";
+$route['updateEmployeeSession.html']            = "person/updateEmployeeSession";
+$route['getEmployeesOfCompany.html']            = "person/getEmployeesOfCompany";
+$route['addEmployeeSplSession.html']            = "person/addEmployeeSplSession";
+$route['listEmployeeSplSessions.html']          = "person/listEmployeeSplSessions";
+$route['vendors_employee_calender.html']        = "person/employeeCalender";
+$route['googlePlusLogin.html']					= "person/googlePlusLogin";
+$route['employee_booked_dates.html']			= "person/employeeBookedDates";
+$route['employee_off_dates.html']				= "person/employeeOffDates";
 
 /* ........User Module Routing............................ */
 $route['user_login.html']                       = "person/userLogin";
 $route['user_register.html']                    = "person/userRegister";
 $route['bookingUserLogin.html']                 = "person/bookingUserLogin";
 $route['user_home.html']                        = "user";
+$route['user_profile.html']						= "user/profile";
 $route['user_active_orders.html']               = "user/activeOrders";
 $route['listUserActiveOrder.html']              = "user/activeOrdersList";
 $route['user_canceled_orders.html']             = "user/canceledOrders";
@@ -88,7 +98,12 @@ $route['pay_test.html']                         = "booking/payTest";
 $route['booking_info.html']                     = "booking/bookingInfo";
 $route['getUserDetails.html']                   = "booking/getUserDetails";
 $route['pay_response.html']                     = "booking/payResponseHandler";
-
+$route['serviceOrderDeatils.html']              = "booking/getServiceOrderDetails";
+$route['employee_details.html']                 = "booking/employeeDetails";
+$route['contact_us_message.html']				= "booking/contactUsMessage";
+$route['get_order_invoice.html']				= "booking/getOrderInvoice";
+$route['service_request.html']					= "booking/serviceRequest";
+$route['checkEmployeeAvailability.html']        = "booking/checkEmployeeAvailabilityForDate";
 
 
 /* ................  Admin Module Routing  ......................... */
@@ -127,9 +142,10 @@ $route['updateServicePackagePostcodePrice.html']= "admin/postUpdateServicePackag
 $route['vendors_list.html']                     = "admin/postVendorsList";
 $route['new_vendors_list.html']                 = "admin/postNewVendorsList";
 $route['active_vendors_list.html']              = "admin/postActiveVendorsList";
+$route['active_freelancers_list.html']          = "admin/postActiveFreelancersList";
 $route['approveNewVendor.html']                 = "admin/approveNewVendor";
-$route['active_vendors_list.html']              = "admin/postActiveVendorsList";
 $route['archiveVendor.html']                    = "admin/postArchiveVendor";
+$route['archiveFreelancer.html']                = "admin/postArchiveFreelancer";
 $route['vendors_company_list.html']             = "admin/postVendorCompanyList";
 $route['admin_settings.html']                   = "admin/adminSettings";
 $route['updateConfig.html']                     = "admin/updateConfigSettings";

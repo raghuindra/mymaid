@@ -142,6 +142,57 @@ class Email_lib extends Base_lib{
         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
     }
     
+    public function invoice_Inline_Mail($resposne) {
+        $this->data['response'] = $resposne; 
+        $message = $this->ci->load->view('booking/email_invoice.php', $this->data, true);
+        $recipient = $resposne['other'][0]->booking_user_detail_email;
+        $sender = $this->ci->data['config']['sender_email'];
+        $subject = "Booking Information!";
+        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+
+    
+    }
+
+    public function contactUsMessageIntimation($info){
+
+        $now = date('Y-m-d H:i:s', strtotime('now'));
+        $sender = $this->ci->data['config']['sender_email'];
+        $recipient = $this->ci->data['config']['contactus_receiver'];
+        $subject = "Contact Us Message!";
+        $message = "<html><body>";
+        $message .= "<p>Dear Admin,</p><br>";
+        $message .= "<p> Contact Us Message from User: </p>";
+        $message .= "<p> <b>Name: </b>".$info['contact_us_name']."</p>";
+        $message .= "<p> <b>Email: </b>". $info['contact_us_email'] ."</p>";
+        $message .= "<p> <b>Subject: </b>". $info['contact_us_subject'] ."</p>";
+        $message .= "<p> <b>Message: </b>". $info['contact_us_message'] ."</p>";
+        $message .= "<p>&nbsp</p>";
+        $message .= "<p> <b>Sent On:</b>  <b>".$now."</b></p>";       
+        $message .= "</body></html>";
+        $mail = $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+        //print_r($mail); exit;
+
+    }
+
+    public function service_request_mail($info){
+        $now = date('Y-m-d H:i:s', strtotime('now'));
+        $recipient = $this->ci->data['config']['sender_email'];
+        $sender = $this->ci->data['config']['contactus_receiver'];
+        $subject = "Postcode Service Request!";
+        $message = "<html><body>";
+        $message .= "<p>Dear Admin,</p><br>";
+        $message .= "<p> Service Request from User: </p>";
+        $message .= "<p> <b>Name: </b>".$info['request_name']."</p>";
+        $message .= "<p> <b>Email: </b>". $info['request_email'] ."</p>";
+        $message .= "<p> <b>Postcode: </b>". $info['request_postcode'] ."</p>";
+        if($info['request_tel_number'] != ''){
+            $message .= "<p> <b>Tel Number: </b>". $info['request_tel_number'] ."</p>";
+        }
+        $message .= "<p>&nbsp</p>";
+        $message .= "<p> <b>Sent On:</b>  <b>".$now."</b></p>";       
+        $message .= "</body></html>";
+        $mail = $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+    }
     
  
     

@@ -44,10 +44,11 @@ class Person extends CI_Controller{
                 exit;
             }
         }
-        
-        $this->data['content']  = "user/login.php";
-        $this->data['booking']  = 1;
-        $this->data['home']     = 1;
+        // $this->config->load('googleplus');
+        // $this->data['g_client_id']  = $this->config->item('client_id', 'googleplus');
+        $this->data['content']      = "user/login.php";
+        $this->data['oldvendor']    = 1;
+        $this->data['home']         = 1;
         $this->load->view('template', $this->data);
     }
     
@@ -94,7 +95,8 @@ class Person extends CI_Controller{
                 exit;
             }
         }
-        
+        // $this->config->load('googleplus');
+        // $this->data['g_client_id']  = $this->config->item('client_id', 'googleplus');
         $this->data['content']      = "vendor/login.php";
         $this->data['oldvendor']    = 1;
         $this->data['home']         = 1;
@@ -281,6 +283,221 @@ class Person extends CI_Controller{
             ); 
         }
         
+        echo json_encode($response);
+    }
+    
+    
+    public function vendorsEmployeeSchedule(){
+        
+        if($this->session->userdata('user_id') == NULL) { $this->person_lib->redirect_home(); exit;}
+        $this->load->model('person_model');
+        $this->data['vendors_company'] = $this->person_model->getVendorsCompany();
+        if( ($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME) || ($this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME) ){
+            $company_id = $this->session->userdata('company_id');
+            if($company_id != null){
+                $this->data['employees'] = $this->person_model->get_tb('mm_company_employees','employee_id, employee_name', array('employee_company_id'=>$company_id, 'employee_archived'=> Globals::UN_ARCHIVE))->result();
+            }
+        }
+        
+        $this->data['sessions'] = $this->person_model->get_tb('mm_session','*')->result();
+        $this->data['content'] = "vendor/employee_schedule.php";       
+        $this->data['vendor']  = 1;
+        $this->load->view('template', $this->data);
+    }
+    
+    public function listEmployeeSessions(){
+        if($this->session->userdata('user_id') != NULL) { 
+        
+            if($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+
+                $response = $this->person_lib->_getEmployeeSessionsList();
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+    }
+    
+    
+    public function updateEmployeeSession(){
+        if($this->session->userdata('user_id') != NULL) { 
+        
+            if($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+
+                $response = $this->person_lib->_updateEmployeeSession();
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+    }
+    
+    
+    public function getEmployeesOfCompany(){
+        
+        if($this->session->userdata('user_id') != NULL) { 
+        
+            if($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME){
+
+                $response = $this->person_lib->_getEmployeesOfCompany();
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+        
+    }
+    
+    
+    public function addEmployeeSplSession(){
+        
+        if($this->session->userdata('user_id') != NULL) { 
+        
+            if($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+
+                $response = $this->person_lib->_addEmployeeSplSession();
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+        
+    }
+    
+    
+    public function listEmployeeSplSessions(){
+        if($this->session->userdata('user_id') != NULL) { 
+        
+            if($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+
+                $response = $this->person_lib->_getEmployeeSplSessionsList();
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);
+    }
+    
+    public function employeeCalender(){
+        if($this->session->userdata('user_id') == NULL) { $this->person_lib->redirect_home(); exit;}
+        $this->load->model('person_model');
+        $this->data['vendors_company'] = $this->person_model->getVendorsCompany();
+        if( ($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME) || ($this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME) ){
+            $company_id = $this->session->userdata('company_id');
+            if($company_id != null){
+                $this->data['employees'] = $this->person_model->get_tb('mm_company_employees','employee_id, employee_name', array('employee_company_id'=>$company_id, 'employee_archived'=> Globals::UN_ARCHIVE))->result();
+            }
+        }
+        
+        $this->data['sessions'] = $this->person_model->get_tb('mm_session','*')->result();
+        $this->data['content'] = "vendor/employee_calendar.php";       
+        $this->data['vendor']  = 1;
+        $this->load->view('template', $this->data);
+        
+    }
+
+    public function googlePlusLogin(){
+        if(isset($_POST['id_token']) && $_POST['id_token'] !=''){
+            $this->person_lib->_googlePlusLogin();
+        }  
+    }
+
+    public function employeeBookedDates(){
+        if($this->session->userdata('user_id') == NULL) { 
+            $this->person_lib->redirect_home(); exit;
+        }
+
+        if( ($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME) || ($this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME) || ($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME) ){
+
+            if(isset($_POST['employeeId']) && !empty($_POST['employeeId'])){
+                
+                $response = $this->person_lib->_getEmployeeBookedDates();
+
+            }else{
+                $response = array(); 
+            }
+        }else{
+            $response = array();  
+        }
+
+        echo json_encode($response);
+    }
+
+
+    public function employeeOffDates(){
+
+        if($this->session->userdata('user_id') == NULL) { 
+            $this->person_lib->redirect_home(); exit;
+        }
+
+        if( ($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME) || ($this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME) || ($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME) ){
+
+            if(isset($_POST['employeeId']) && !empty($_POST['employeeId'])){
+                
+                $response = $this->person_lib->_getEmployeeOffDates();
+
+            }else{
+                $response = array(); 
+            }
+        }else{
+            $response = array();  
+        }
+
         echo json_encode($response);
     }
 

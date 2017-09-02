@@ -1,3 +1,9 @@
+<style type="text/css">
+    .text-red{
+        color: red;
+    }    
+</style>
+
 <div class="nobg loginPage home">
     <div class="overlay">
         <div class="topNav">
@@ -26,7 +32,7 @@
                             <div class="table-outer">
                                 <div class="table-inner">
                                     <div class="div-inline">
-                                        <form id="search-service" action="<?php echo base_url() . 'booking.html'; ?>" method="post">
+                                        <form id="search_service" action="<?php echo base_url() . 'booking.html'; ?>" method="post">
                                             <h1>Book your Maid now </h1>
                                             <hr>
                                             <div class="col-lg-3">
@@ -34,15 +40,8 @@
                                                     <label></label>
                                                 </div>
                                             </div>
-                                            <!--                                            <div class="col-lg-3">
-                                                                                            <div class="row"><select class="form-control">
-                                                                                                    <option value="">Service 1</option>
-                                                                                                    <option value="">Service 2</option>
-                                                                                                    <option value="">Service 3</option>
-                                                                                                </select></div>
-                                                                                        </div>-->
                                             <div class="col-lg-4">
-                                                <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="pincode" id="" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required></div>
+                                                <div class="row"><input type="text" placeholder="Enter your postal code" class="form-control" name="pincode" id="pincode" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" required></div>
                                             </div>
                                             <div class="col-lg-3">
                                                 <div class="row"><button type="submit" placeholder="Find" class="form-control btn-success">Find Services</button> </div>
@@ -332,26 +331,26 @@
                     <div class="form">
                         <!--            <div id="sendmessage">Your message has been sent. Thank you!</div>-->
                         <div id="errormessage"></div>
-                        <form action="" method="post" role="form" class="contactForm">
+                        <form action="<?php echo base_url().'contact_us_message.html';?>" method="post" role="form" class="contactForm">
                             <div class="form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                                <input required type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
                                 <div class="validation"></div>
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                                <input required type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
                                 <div class="validation"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                                <input type="text" required class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
                                 <div class="validation"></div>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                                <textarea required class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
                                 <div class="validation"></div>
                             </div>
 
                             <p class="actions">
-                                <span class="link_to_another_page"><a class="btn btn-success btn-lg" href="#">Send Message</a></span>
+                                <span class="link_to_another_page"><button type="submit" class="btn btn-success btn-lg" >Send Message</button></span>
                             </p>
                         </form>
                     </div>
@@ -365,45 +364,109 @@
     <!-- END BODY -->
 
     <!-- BEGIN # MODAL LOGIN -->
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Begin # Login Form -->
-                <form class="form-signin" id="login_box" method="post" action="user_login.html">
-
-                    <p class="head_login_005">Login Detail <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span class="" aria-hidden="true">X</span>
-                        </button></p>
-                    <div><input type="email" placeholder="Email id" class="form-control" name="email" required></div>
-                    <div><input type="password" placeholder="Password" class="form-control" name="password" required></div>
-                    <hr>
+    <div class="modal fade" id="service_request_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <form action="#" method="post" id="service_request_form">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Service Request</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:-27px;font-size: x-large">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
                     <div class="row">
-                        <div class="col-lg-4">
-                            <button class="form-control btn btn-primary" value="Login" type="submit"><strong>Login</strong></button>
-                        </div>
-                        <div class="col-lg-8" id="sednmail-group">
-                            <p><a href="#" class="forgot-pass"><strong>Forgot Password?</strong></a></p>
-                            <div>
-                                <div class="input-group">
-                                    <input type="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" required>
-                                    <span class="input-group-addon" id="sizing-addon2">Send</span>
+                        <div class="col-xs-12">
+                            <div class="form-horizontal">
+                                <div class="box box-default box-solid">
+                     
+                                <div class="box-body">
+                                    <!-- Service package Postcode Price addition Form Start -->
+                                    <form id='setPostalcodePriceForm' name="setPostalcodePriceForm" action="" method="post">
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Name: <span class="text-red">*</span></label>
+                                        <div class="col-sm-6">
+                                            <input type="text" step="0.5" name="requester_name" class="form-control postcodePrice" min="1" max="10000" id="requesterName" placeholder="Enter Name" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Email: <span class="text-red">*</span></label>
+                                        <div class="col-sm-6">
+                                             <input type="email" step="0.5" name="requester_email" class="form-control postcodePrice" min="1" max="10000" id="requesterEmail" placeholder="Enter Email Id" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-4 control-label"> Service Postcode: <span class="text-red">*</span></label>
+                                        <div class="col-sm-6">
+                                             <input type="text" step="0.5" name="requester_postcode" class="form-control postcodePrice" min="1" max="10000" id="requesterPostcode" placeholder="Enter postcode" required onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">Tel Number :</label>
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                             <span class="input-group-addon">+60</span>
+                                             <input type="text" step="0.5" name="requester_tel_number" class="form-control postcodePrice" min="1" max="10000" id="requesterTelNum" placeholder="Enter Telephone Number" required onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10">
+                                             </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- /.box-footer -->
+                                    </form>
                                 </div>
+                                <!-- /.box-body -->
+                                </div>
+                                
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center"><strong>Dont have Account?</strong></div>
-                    <div class="row">
-                        <div class="col-lg-5 col-xs-4">
-                            <div class="button facebook btn btn-danger"><a class="" href="<?php echo base_url() . 'user_register.html'; ?>">Register</a> </div>
-                        </div>
-                        <div class="col-lg-7 col-xs-8">
-                            <div class="button google"><i class="fa fa-google-plus"></i>Signup with Google</div>
-                        </div>
-                    </div>
-                </form>
-                <!-- End # Login Form -->
-            </div>
+                    </div>                
+            </div><!-- .modal Body Ends -->
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button type="submit" class="btn btn-success" id="submit_request">Submit Request</button>
+            </div><!-- .modal Footer Ends -->           
         </div>
+        </form>
+      </div>
     </div>
-</div>
-<!-- END # MODAL LOGIN -->
+
+
+    <!-- END # MODAL LOGIN -->
+
+
+
+<script type="text/javascript">
+    $(function(){
+
+        $("#service_request_form").on('submit', function(e){
+            e.preventDefault();
+            var data = $('#service_request_form').serializeArray();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() . 'service_request.html' ?>",
+                data: data,
+                cache: false,
+                success: function (res) {
+                    var result = JSON.parse(res);
+
+                    if (result.status === true) {
+                        notifyMessage('success', result.message);
+                        
+                        $("#service_request_modal").modal('hide');
+                    } else {
+                        notifyMessage('error', result.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    notifyMessage('error', errorThrown);
+                }
+            });
+        });
+    });
+
+</script>

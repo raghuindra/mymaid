@@ -10,11 +10,11 @@ $this->load->view("block/admin_leftMenu");
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Vendors
+            Vendors Companies
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Vendors</li>
+            <li class="active">Vendors Companies</li>
         </ol>
     </section>
 
@@ -304,8 +304,8 @@ $this->load->view("block/admin_leftMenu");
             $("#venAddress1").html(rowData.person_address1);
             $("#venCity").html(rowData.person_city);
             $("#venState").html(rowData.person_state);
-            $("#venMobile").html(rowData.person_mobile);
-            $("#venTelephone").html(rowData.person_telephone);
+            $("#venMobile").html( (rowData.person_mobile) ? "+60 "+rowData.person_mobile: '');
+            $("#venTelephone").html( (rowData.person_telephone) ? "+60 "+rowData.person_telephone: '');
             $("#venIdentity").html(rowData.person_identity_card + " - " + rowData.person_identity_card_number);
             callback(true);
 
@@ -320,10 +320,10 @@ $this->load->view("block/admin_leftMenu");
             $("#compAddress").html(rowData.company_address);
             $("#compAddress1").html(rowData.company_address1);
             $("#compCity").html(rowData.company_city);
-            $("#compState").html(rowData.company_state);
-            $("#compMobile").html(rowData.company_mobile);
-            $("#compTelephone").html(rowData.company_landphone);
-            $("#compHPphone").html(rowData.company_hp_phone);
+            $("#compState").html(rowData.state_name);
+            $("#compMobile").html( (rowData.company_mobile) ? "+60 "+rowData.company_mobile: '' );
+            $("#compTelephone").html( (rowData.company_landphone) ? "+60 "+rowData.company_landphone: '');
+            $("#compHPphone").html( (rowData.company_hp_phone) ? "+60 "+rowData.company_hp_phone: '' );
             $("#compEmployees").html(rowData.company_emp_min+ " - "+rowData.company_emp_max);
             callback(true);
             

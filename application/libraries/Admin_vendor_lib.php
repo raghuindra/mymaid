@@ -43,9 +43,9 @@ class Admin_vendor_lib extends Base_lib{
         return $this->getResponse();
     }
     
-    /** Function to get the Newly registered vendors list
+    /** Function to get the Active registered vendors list
      * @param null
-     * @return Array returns Array with new vendors list and status value
+     * @return Array returns Array with active vendors list and status value
      */
     function _getActiveVendors() {
         $this->resetResponse();
@@ -53,6 +53,36 @@ class Admin_vendor_lib extends Base_lib{
             $archived = $this->ci->input->post('archived', true);
 
             $result = $this->model->getActiveVendors($archived)->result();
+
+            if ($result) {
+                $this->_status = true;
+                $this->_message = '';
+                $this->_rdata = $result;
+
+            } else {
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('no_records_found');
+            }
+            
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+                            
+        }
+
+        return $this->getResponse();
+    }
+       
+     /** Function to get the Active registered vendors list
+     * @param null
+     * @return Array returns Array with active vendors list and status value
+     */
+    function _getActiveFreelancers() {
+        $this->resetResponse();
+        if ($this->ci->session->userdata('user_id') != null) {
+            $archived = $this->ci->input->post('archived', true);
+
+            $result = $this->model->getActiveFreelancers($archived)->result();
 
             if ($result) {
                 $this->_status = true;
@@ -165,6 +195,46 @@ class Admin_vendor_lib extends Base_lib{
 
                 $this->model->update_tb('mm_person', array('person_id' => $person_id, 'person_type' => Globals::PERSON_TYPE_VENDOR), $info);
                 $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('vendor_archived') : $this->ci->lang->line('vendor_unarchived'); 
+                $this->_status   = true;
+                
+            } else {
+                $this->_message  = $this->ci->lang->line('invalid_data'); 
+                $this->_status   = false;
+            }
+
+            return $this->getResponse();
+        }
+    }
+    
+    /** Function to Archive/Un Archive Vendor
+     * @param null
+     * @return Array returns Array with status of Archive/UnArchive
+     */
+    function _archiveFreelancer(){
+
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse();
+        
+        $this->ci->form_validation->set_rules('personId', 'Person Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {           
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $person_id = $this->ci->input->post('personId', true);
+            $archive = intval($this->ci->input->post('archive', true));
+
+
+            $result = $this->model->get_tb('mm_person', 'person_id', array('person_id' => $person_id, 'person_type' => Globals::PERSON_TYPE_FREELANCER))->result();
+            if (!empty($result)) {
+
+                $info = array();
+                $info['person_archived'] = ($archive == Globals::ARCHIVE) ? Globals::ARCHIVE : Globals::UN_ARCHIVE;;
+
+                $this->model->update_tb('mm_person', array('person_id' => $person_id, 'person_type' => Globals::PERSON_TYPE_FREELANCER), $info);
+                $this->_message  = ($archive == Globals::ARCHIVE) ? $this->ci->lang->line('freelancer_archived') : $this->ci->lang->line('freelancer_unarchived'); 
                 $this->_status   = true;
                 
             } else {

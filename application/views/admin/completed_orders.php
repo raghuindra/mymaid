@@ -102,8 +102,40 @@ $(function(){
                 {"data": "booking_completion_admin_confirmed_on"}
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [0, 3, 4, 5, 6, 7, 8], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [0], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class=""><a href="#" class="orderDetails" data-id="'+row.booking_id+'">' + row.booking_id + ' </a></td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [ 5, 6, 7, 8], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [1], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';
+                        if(row.customer_name == null){
+                            string += ' <td class=""> -- </td>';  
+                        }else{
+                            string += '<td class=""> '+ row.customer_name +'</td>';
+                        }
+                            
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [2], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';
+                        if(row.person_mobile === null){
+                            string += ' <td class=""> -- </td>';  
+                        }else{
+                            string += '<td class=""> '+ row.person_mobile +'</td>';
+                        }
+                            
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [3], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';
@@ -116,11 +148,11 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [2], searchable: true, orderable: true, data: null,
+                {"responsivePriority": '1', "targets": [4], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string ='';
-                        if(row.company_name === null){
+                        if(row.company_landphone === null){
                             string += ' <td class=""> -- </td>';  
                         }else{
                             string += '<td class=""> '+ row.company_landphone +'</td>';
@@ -138,7 +170,56 @@ $(function(){
             completedBookingList.ajax.reload(); //call datatable to reload the Ajax resource        
         });
     
-    
+        /* Fetch the Order/booking Deatils */       
+        $(document).on('click', '.orderDetails', function(e){
+            e.preventDefault();
+            var bookingId = $(this).data('id');
+            
+            $.confirm({
+                title: 'Order Information:',
+                content: function(){
+                    var self = this;
+                    //self.setContent('Checking callback flow');
+                    return $.ajax({
+                        url: '<?php echo base_url() . 'serviceOrderDeatils.html'; ?>',
+                        dataType: 'html',
+                        method: 'post',
+                        data:{'booking_id':bookingId}
+                    }).done(function (response) {
+                        self.setContentAppend(response);
+                    }).fail(function(){
+                        self.setContentAppend('<br>Fail to load!');
+                    }).always(function(){
+                        //self.setContentAppend("sdsa");
+                    });
+                },
+                contentLoaded: function(data, status, xhr){
+                    //self.setContentAppend(data);
+                },
+                onContentReady: function(){
+                    $(document).on('click', '#get_invoice', function(){
+                        $("#invoice_modal").modal('show');
+                    });
+                },
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                columnClass: 'col-md-8 col-md-offset-2',
+                buttons: {
+                    
+                    cancel:{
+                        text: 'Close',
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+                       
+        });
         
 });
 </script>

@@ -9,6 +9,56 @@
 <?php } ?>
 <div style="display: none" id='loader'><img  src="<?php echo img_url('default.gif'); ?>"</div>
 
+<!-- Google Plus Login Scripts -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="text/javascript">
+    function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      var id_token = googleUser.getAuthResponse().id_token;
+      // console.log(id_token);
+      // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      // console.log('Name: ' + profile.getName());
+      // console.log('Image URL: ' + profile.getImageUrl());
+      // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+      var data = {'profileName':profile.getName(),'firstName':profile.getGivenName(), 'lastName':profile.getFamilyName(), 'email':profile.getEmail(), 'profileImage':profile.getImageUrl(), 'id_token':id_token};
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() . 'googlePlusLogin.html' ?>",
+            data: data,
+            cache: false,
+            success: function (res) {
+                //var result = JSON.parse(res);
+                //print_r(result);
+                var auth2 = gapi.auth2.getAuthInstance();
+                gapi.auth2.getAuthInstance().disconnect();
+                auth2.signOut().then(function () {
+                  //console.log('User signed out.');
+                  location.reload();
+                });
+
+                
+                // var result = JSON.parse(res);
+
+                // if (result.status === true) {
+                //     notifyMessage('success', result.message);
+                //     location.reload();
+                // } else {
+                //     notifyMessage('error', result.message);
+                // }
+            }
+        });
+    }
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+    }
+</script> 
+
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -92,8 +142,6 @@ $(function () {
             notifyMessage('success', msg);
 
 <?php } ?>
-        
-
 
     });
     
@@ -106,7 +154,7 @@ $(function () {
             theme: 'defaultTheme',
             dismissQueue: true,
             layout: 'topRight',
-            timeout: 6000,
+            timeout: 10000,
             template: '<div class="noty_message"><span class="noty_text" style="font-weight:bold;"></span><div class="noty_close"></div></div>',
             progressBar: true,
             animation: {
@@ -124,6 +172,46 @@ $(function () {
 <!-- Notyfy Notifications Plugin -->
 <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
 <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
+<script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+
+<script type="text/javascript">
+    var base_url = "<?php echo base_url();?>";
+
+    function getWidgetsdata(){
+        
+        $.ajax({
+            type: "POST",
+            url: base_url +'/widgets_updates.html',
+            data: {},
+            cache: false,
+            success: function (res) {
+                var result = JSON.parse(res);
+
+                if (result.status === true) {
+                    //notifyMessage('success', result.message);
+
+                    $(".wallet_balance").html(result.data.wallet_balance);
+                    $(".w_wallet_balance").html(result.data.wallet_balance);
+                    $(".w_new_orders").html(result.data.new_orders);
+                    $(".w_processing_orders").html(result.data.processing_orders);
+                    $(".w_completed_orders").html(result.data.completed_orders);
+                } else {                       
+                }
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                //notifyMessage('error', errorThrown);
+            }
+        });
+    }
+
+    /* AJAX call to get the Dashboard widgets. */
+    getWidgetsdata();
+    setInterval(function () {
+        getWidgetsdata();
+    }, 30000);
+</script>
+
 </body>
 
 </html>

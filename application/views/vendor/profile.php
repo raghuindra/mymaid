@@ -103,7 +103,7 @@ $bank_info      = $bank['data'];
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#personalInfoTab" data-toggle="tab">Personal Info</a></li>
                         <li><a href="#bankDetailsTab" data-toggle="tab">Bank Details</a></li>
-                        <li><a href="#resetPassTab" data-toggle="tab">Reset Password</a></li>
+                        <!-- <li><a href="#resetPassTab" data-toggle="tab">Reset Password</a></li> -->
                     </ul>
                     <div class="tab-content">
                         <div class="active tab-pane" id="personalInfoTab">              
@@ -150,13 +150,32 @@ $bank_info      = $bank['data'];
                                         <input type="text" disabled class="form-control" id="inputCity" placeholder="City" value="<?php echo $profile_info[0]->person_city; ?>">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="inputSkills" class="col-sm-2 control-label">State</label>
 
                                     <div class="col-sm-8">
-                                        <input type="text" disabled class="form-control" id="inputSate" placeholder="State" value="<?php echo $profile_info[0]->person_state; ?>">
+                                        <input type="text" disabled class="form-control" id="inputSate" placeholder="State" value="<?php //echo $profile_info[0]->person_state; ?>">
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label for="state" class="col-sm-2 control-label">State: </label>
+                                    <div class="col-sm-8">
+                                        <select id="state" disabled name="state" required class="form-control">
+                                            <option>Select state</option>
+                                            <?php
+                                            foreach ($states as $key => $value) {
+                                                if( $profile_info && ($profile_info[0]->person_state == $value->state_code) ){
+                                                    echo '<option value="' . $value->state_code . '" selected>' . $value->state_name . '</option>';
+                                                } else {
+                                                    echo '<option value="' . $value->state_code . '">' . $value->state_name . '</option>';
+                                                }
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="mobile" class="col-sm-2 control-label">Mobile</label>
 
@@ -247,11 +266,11 @@ $bank_info      = $bank['data'];
                         </div>
                         <!-- /.tab-pane -->
 
-                        <div class="tab-pane" id="resetPassTab">
+                        <!-- <div class="tab-pane" id="resetPassTab">
                             <form class="form-horizontal">
                                 
                             </form>
-                        </div>
+                        </div> -->
                         <!-- /.tab-pane -->
                     </div>
                     <!-- /.tab-content -->

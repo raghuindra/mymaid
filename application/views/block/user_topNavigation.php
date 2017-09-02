@@ -251,7 +251,7 @@
                                 <a href="#" class="btn btn-info btn-social btn-dropbox"><i class="fa fa-money"></i><span class="wallet_balance"></span></a>
                             </div>
                             <div class="pull-right">
-                                <a href="<?php echo base_url().'logout.html'; ?>" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="<?php echo base_url().'logout.html'; ?>" class="btn btn-default btn-flat" onclick="signOut();">Sign out</a>
                             </div>
                         </li>
                     </ul>
@@ -264,3 +264,21 @@
         </div>
     </nav>
 </header>
+
+<script> 
+    function signOut() {
+        // var auth2 = gapi.auth2.getAuthInstance();
+        // auth2.signOut().then(function () {
+        //   console.log('User signed out.');
+        // });
+        window.onLoadCallback = function(){
+          gapi.auth2.init({
+              client_id: '822405432936-5v9vbotf4rvak4fbmvmd35epg69n87tvd.apps.googleusercontent.com'
+            });
+          var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+              console.log('User signed out.');
+            });
+        }
+    }
+</script> 

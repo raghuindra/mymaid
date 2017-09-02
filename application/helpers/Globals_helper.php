@@ -26,6 +26,18 @@ class Globals
     
     const EMPLOYEE_FULLTIME         = 1;
     const EMPLOYEE_PARTTIME         = 2;
+    const SESSION_FULL_DAY          = 1;
+    const SESSION_MORNING           = 2;
+    const SESSION_AFTERNOON         = 3;
+    const SESSION_EVENING           = 4;
+    const SESSION_FULL_DAY_NAME     = "Full-day (9am - 6pm)";
+    const SESSION_MORNING_NAME      = "4 hours - Morning";
+    const SESSION_AFTERNOON_NAME    = "4 hours - Afternoon";
+    const SESSION_EVENING_NAME      = "2 hours - Evening";
+    
+    //frequency types
+    const FREQUENCY_WEEKLY  = 'weekly';
+    const FREQUENCY_BIWEEKLY = 'biweekly';
     
     //Payment Status
     const PAYMENT_SUCCESS   = 1;
@@ -58,6 +70,23 @@ class Globals
                 
         }
         
+    }
+    
+    public static function getSessionNamesArray(){
+        
+        return array(self::SESSION_FULL_DAY_NAME, self::SESSION_MORNING_NAME, self::SESSION_AFTERNOON_NAME, self::SESSION_EVENING_NAME);
+        
+    }
+    
+    public static function getSessionName($sessionId){
+      
+        switch ($sessionId){
+            case self::SESSION_FULL_DAY : return self::SESSION_FULL_DAY_NAME; 
+            case self::SESSION_MORNING : return self::SESSION_MORNING_NAME;
+            case self::SESSION_AFTERNOON : return self::SESSION_AFTERNOON_NAME;
+            case self::SESSION_EVENING : return self::SESSION_EVENING_NAME;
+                
+        }
     }
     
 }
