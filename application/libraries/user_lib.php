@@ -90,8 +90,14 @@ class User_lib extends Base_lib {
                     $result[$i]['company_name'] = $service->company_name;
                     $result[$i]['company_landphone'] = $service->company_landphone;
                     $result[$i]['service_name'] = $service->service_name;
-                    $result[$i]['booking_service_date'] = $service->booking_service_date;
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+
+                    $dateObj = date_create($service->booking_service_date);
+                    $date = date_format($dateObj, 'd-m-Y');
+                    $result[$i]['booking_service_date'] = $date;
+
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');
+                    $result[$i]['booking_booked_on'] = $date;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     $result[$i]['employee_name'] = $service->employee_name;
@@ -159,8 +165,14 @@ class User_lib extends Base_lib {
                     $result[$i]['company_name'] = $service->company_name;
                     $result[$i]['company_landphone'] = $service->company_landphone;
                     $result[$i]['service_name'] = $service->service_name;
-                    $result[$i]['booking_service_date'] = $service->booking_service_date;
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y');
+                    $result[$i]['booking_service_date'] = $date;
+
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');
+                    $result[$i]['booking_booked_on'] = $date;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;
@@ -266,8 +278,14 @@ class User_lib extends Base_lib {
                     $result[$i]['company_name'] = $service->company_name;
                     $result[$i]['company_landphone'] = $service->company_landphone;
                     $result[$i]['service_name'] = $service->service_name;
-                    $result[$i]['booking_service_date'] = $service->booking_service_date;
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+
+                    $dateObj = date_create($service->booking_service_date);
+                    $date = date_format($dateObj, 'd-m-Y');
+                    $result[$i]['booking_service_date'] = $date;
+
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');
+                    $result[$i]['booking_booked_on'] = $date;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     $result[$i]['booking_cancelled_on'] = $service->booking_cancelled_on;

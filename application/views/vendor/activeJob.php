@@ -90,6 +90,7 @@ $(function(){
                     //d.archived = $("#service_location_status").attr('data-val');
                 }
             },
+            "order": [[ 0, "DESC" ]],
             "columns": [
                 {"data": "booking_id"},
                 {"data": "customer_name"},
@@ -108,11 +109,20 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [ 1, 3, 4, 5, 6], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [ 1, 3, 5, 6], searchable: true, orderable: true},
                 {"responsivePriority": '2', "targets": [2], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
                         var string = '<td class="">+60 '+ row.person_mobile +'</td>';
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [4], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';                        
+                        string += ' <td class="">RM '+ row.booking_amount +'</td>';  
+                   
                         return string;
                     }
                 },

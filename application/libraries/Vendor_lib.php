@@ -207,8 +207,8 @@ class Vendor_lib extends Base_lib {
 
         $this->ci->form_validation->set_rules('cpname', 'Contact Person Name', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('icnumber', 'IC Number', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('ofcnumber', 'Office Phone Number', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('hpphone', 'HP Phone Number', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('ofcnumber', 'Office Phone Number', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('hpphone', 'HP Phone Number', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('addr', 'Address', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('city', 'City', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('postalcode', 'Postal code', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -345,8 +345,8 @@ class Vendor_lib extends Base_lib {
         $this->ci->form_validation->set_rules('employee_name', 'Employee Name', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employee_passport', 'Employee Passport', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employee_citizenship', 'Employee citizenship', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric', array('required' => 'You must provide a %s.'));
         //$this->ci->form_validation->set_rules('employee_jobtype', 'Employee Job Type', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employeeIdFileUpData', 'Employee Id Card file', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employee_session', 'Employee Job Session', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
@@ -387,6 +387,20 @@ class Vendor_lib extends Base_lib {
                 }
 
                 if ($insertId > 0) {
+
+                    $session_info = array();
+                    $session_info['employee_session_employee_id'] = $insertId;
+                    $session_info['employee_session_monday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_tuesday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_wednesday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_thursday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_friday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_saturday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_sunday'] = $this->ci->input->post('employee_session', true);
+                    $session_info['employee_session_updated_by'] = $person_id;
+                    // Insert the employee session in session table
+                    $insertId = $this->model->insert_tb('mm_employee_session
+', $session_info);
 
                     $sender = $this->ci->data['config']['sender_email'];
                     //$recipient = $result[0]->person_email;
@@ -492,8 +506,8 @@ class Vendor_lib extends Base_lib {
         $this->ci->form_validation->set_rules('edit_employee_name', 'Employee Name', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employeeId', 'Employee Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('edit_employee_citizenship', 'Employee citizenship', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('edit_employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('edit_employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|alpha_numeric_spaces', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('edit_employee_housephone', 'Employee Housephone', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('edit_employee_hp_phone', 'Employee HP Phone', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('employee_session', 'Employee Session', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
 
         if ($this->ci->form_validation->run() == FALSE) {
@@ -780,8 +794,10 @@ class Vendor_lib extends Base_lib {
                     $dateObj = date_create($service->booking_service_date);
                     $date = date_format($dateObj, 'd-m-Y');                    
                     $result[$i]['booking_service_date'] = $date;
-  
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');  
+                    $result[$i]['booking_booked_on'] = $date;
 
                     $person_type = $this->ci->session->userdata('user_type');
                     $amount_share = $this->calculateCutoffAmount($service->booking_amount, $person_type); 

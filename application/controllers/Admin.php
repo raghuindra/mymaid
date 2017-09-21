@@ -567,6 +567,23 @@ class Admin extends Base {
             
         }
         
+        /** Function to get List of Employee of a company.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function postEmployeeList(){
+            if(isset($_POST['companyId'])){
+                $response = $this->admin_vendor_lib->_companyEmployeesList();
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_request'),
+                    'data' => array()
+                );
+            }
+            echo json_encode($response);
+        }
+        
         /** Function to set/get Admin settings.
          * @param null
          * @return JSON returns the Data to view    
@@ -592,6 +609,21 @@ class Admin extends Base {
                     'data' => array()
                 );
             }
+            echo json_encode($response);
+        }
+
+        /** Function to get Customers List.
+         * @param null
+         * @return JSON returns the Data to view    
+         */
+        public function customersList(){
+            $this->data['content']          = "admin/customers_list.php";
+            $this->data['admin']            = 1;
+            $this -> load -> view('template', $this->data);
+        }
+
+        public function customerListAjax(){
+            $response = $this->admin_lib->_customerListAjax();
             echo json_encode($response);
         }
         

@@ -80,7 +80,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         <div class="col-sm-6">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">+60</span>
-                                                                <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee House Phone">
+                                                                <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" placeholder="Employee House Phone">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -90,7 +90,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         <div class="col-sm-6">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">+60</span>
-                                                                <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee H/P Phone">
+                                                                <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" placeholder="Employee H/P Phone">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -295,10 +295,11 @@ $vendorId = $this->session->userdata('user_id');
                 {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4,5], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [6], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
-                       
-                        var string = ' <td class=""> <div class="text-center">'
+                       var string = '';
+                        if(row.employee_idcard_path != '' && row.employee_idcard_path != null){
+                        string = ' <td class=""> <div class="text-center">'
                                 + '<a href="<?php echo base_url();?>assets/uploads/vendor/<?php echo $vendorId;?>/company/employee/'+row.employee_idcard_path+'" target="_blank" class="btn btn-social-icon" title="IdCard">View</a></div></td>';
-                        
+                        }
                         return string;
                     }
                 },

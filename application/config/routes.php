@@ -71,6 +71,7 @@ $route['vendors_employee_calender.html']        = "person/employeeCalender";
 $route['googlePlusLogin.html']					= "person/googlePlusLogin";
 $route['employee_booked_dates.html']			= "person/employeeBookedDates";
 $route['employee_off_dates.html']				= "person/employeeOffDates";
+$route['remove_spl_session.html']				= "person/removeSplSession";
 
 /* ........User Module Routing............................ */
 $route['user_login.html']                       = "person/userLogin";
@@ -98,6 +99,7 @@ $route['pay_test.html']                         = "booking/payTest";
 $route['booking_info.html']                     = "booking/bookingInfo";
 $route['getUserDetails.html']                   = "booking/getUserDetails";
 $route['pay_response.html']                     = "booking/payResponseHandler";
+$route['pay_response_callback.html']			= "booking/payResponseCallBackHandler";
 $route['serviceOrderDeatils.html']              = "booking/getServiceOrderDetails";
 $route['employee_details.html']                 = "booking/employeeDetails";
 $route['contact_us_message.html']				= "booking/contactUsMessage";
@@ -147,6 +149,7 @@ $route['approveNewVendor.html']                 = "admin/approveNewVendor";
 $route['archiveVendor.html']                    = "admin/postArchiveVendor";
 $route['archiveFreelancer.html']                = "admin/postArchiveFreelancer";
 $route['vendors_company_list.html']             = "admin/postVendorCompanyList";
+$route['a_listEmployees.html']                  = "admin/postEmployeeList";
 $route['admin_settings.html']                   = "admin/adminSettings";
 $route['updateConfig.html']                     = "admin/updateConfigSettings";
 $route['a_new_orders.html']                     = "admin/newOrders";
@@ -166,6 +169,8 @@ $route['vendors_withdrawal_request.html']       = "admin/vendorsWithdrawalReques
 $route['vendors_withdrawal_request_list.html']  = "admin/vendorsWithdrawalRequestList";
 $route['approveWithdrawalRequest.html']         = "admin/approveWithdrawalRequest";
 $route['rejectWithdrawalRequest.html']          = "admin/rejectWithdrawalRequest";
+$route['customers_list.html']					= "admin/customersList";
+$route['customer_list_ajax.html']				= "admin/customerListAjax";
 
 
 

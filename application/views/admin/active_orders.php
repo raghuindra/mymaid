@@ -355,6 +355,7 @@ $this->load->view("block/admin_leftMenu");
                     //d.archived = $("#service_location_status").attr('data-val');
                 }
             },
+            "order": [[ 0, "DESC" ]],
             "columns": [
                 {"data": "booking_id"},
                 {"data": "customer_name"},
@@ -374,7 +375,7 @@ $this->load->view("block/admin_leftMenu");
                         return string;
                     }
                 },
-                {"responsivePriority": '2', "targets": [1, 2, 5, 6, 7], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [1, 2, 5, 7], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [2], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
 
@@ -406,6 +407,15 @@ $this->load->view("block/admin_leftMenu");
                             string += '<td class=""> +60 ' + row.company_landphone + '</td>';
                         }
 
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [6], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';                        
+                        string += ' <td class="">RM '+ row.booking_amount +'</td>';  
+                   
                         return string;
                     }
                 },

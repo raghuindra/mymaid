@@ -204,7 +204,29 @@ class Admin_model extends Mm_model{
           return $this->db->get($this->_vendor_company);
         
     }
+
+    /*
+    * Get customers list
+    */
+    function getCustomersList(){
+        return $this->db->select('person_id, person_first_name, person_last_name, person_email, person_address, person_address1, person_city, person_state, person_mobile, person_postal_code, person_creation_date, state_name')
+                        ->from($this->_person)
+                        ->join($this->_person_type, 'person_type_id = person_type','left')
+                        ->join($this->_state, 'state_code = person_state','left')
+                        ->where('person_type', Globals::PERSON_TYPE_USER)
+                        ->get()
+                        ->result();
+    }
     
+    function getCompanyEmployees($companyId){
+        return $this->db->select('*')
+                        ->from($this->_company_employees)
+                        ->join($this->_session, 'session_id = employee_job_session_id','left')
+                        ->where('employee_company_id', $companyId)
+                        //->where('employee_archived', $archived)
+                        ->get()
+                        ->result();
+    }
     
     function getNewServiceOrders($now){
         return $this->db->select('*')
@@ -218,12 +240,16 @@ class Admin_model extends Mm_model{
                         ->join($this->_service_frequency_offer, 'service_frequency_offer_id = booking_frequency_frequency_offer_id','left')
                         ->join($this->_service_frequency, 'service_frequency_id = service_frequency_offer_frequency_id','left')
                         ->join($this->_person, 'person_id = booking_user_id','left')
-                        ->where('booking_service_date >=', $now)
+                        ->group_start()
+                        ->where('booking_service_date >', $now)
+                        ->or_where('booking_service_date =', $now)
+                        ->group_end()
                         ->where('booking_vendor_company_id IS NULL', null)             
                         ->where('booking_cancelled_by IS NULL', null)
                         ->where('booking_status', Globals::BOOKING_PROCESSING)
                         ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }
@@ -242,6 +268,7 @@ class Admin_model extends Mm_model{
                         ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
                         ->where('booking_status != '.Globals::BOOKING_PROCESSING)
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }
@@ -273,6 +300,7 @@ class Admin_model extends Mm_model{
                         ->where('booking_status', Globals::BOOKING_COMPLETED)
                         ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }
@@ -290,6 +318,7 @@ class Admin_model extends Mm_model{
                         ->where("booking_cancelled_approved_by_admin ", 1)
                         ->where("booking_cancelled_by IS NOT NULL", null)
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }
@@ -365,7 +394,7 @@ class Admin_model extends Mm_model{
                                 WHERE employee_id IN (SELECT employee_session_employee_id 
                                                 FROM mm_employee_session 
                                                 WHERE employee_session_".$day." = 1 OR employee_session_".$day." = $sessionId)
-                                                AND employee_company_id = $company_id";
+                                                AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'";
         
         return $this->db->query($query)->result();
         
@@ -379,7 +408,7 @@ class Admin_model extends Mm_model{
                             WHERE employee_id IN (SELECT employee_session_spl_employee_id 
                                                 FROM mm_employee_session_spl
                                                 WHERE employee_session_spl_off_status = 0
-                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = $company_id ")->result();
+                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
     }
     
     /*
@@ -390,7 +419,7 @@ class Admin_model extends Mm_model{
                             WHERE employee_id IN (SELECT employee_session_spl_employee_id 
                                                 FROM mm_employee_session_spl
                                                 WHERE employee_session_spl_off_status = 1
-                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = $company_id")->result();
+                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
     }
     
     /*
@@ -405,20 +434,21 @@ class Admin_model extends Mm_model{
                                                 WHERE employee_session_spl_off_status = 0
                                                 AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to AND (employee_session_spl_session_id = 1
                                                 OR employee_session_spl_session_id = $sessionId))
-                            AND employee_job_session_id = 1 AND employee_company_id = $company_id ")->result();
+                            AND employee_job_session_id = 1 AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."' ")->result();
         
     }
     
     /*
-    * SQL to get the employees who has not assigned job on the perticular date.
+    * SQL to get the employees who has assigned job on the perticular date.
     */
     function getEmployeeAssignedJob($date, $company_id){
         
         return $this->db->query("SELECT DISTINCT(employee_job_employee_id) as `employee_id`, `employee_name`
                             FROM `mm_employee_job`
                             LEFT JOIN `mm_booking_sessions` ON `booking_sessions_id` = `employee_job_booking_sessions_id`
+                            LEFT JOIN `mm_booking` ON `booking_id` = `booking_sessions_booking_id`
                             LEFT JOIN `mm_company_employees` ON `employee_id` = `employee_job_employee_id`
-                            WHERE `booking_sessions_service_date` = '$date' AND `employee_company_id` = $company_id")->result();
+                            WHERE `booking_sessions_service_date` = '$date' AND `employee_company_id` = $company_id AND `booking_status` != '".Globals::BOOKING_CANCELLED."'")->result();
     }
     
     /*
@@ -429,8 +459,7 @@ class Admin_model extends Mm_model{
                                 FROM `mm_company_employees`
                                 LEFT JOIN `mm_vendor_company` AS `vc` ON `company_id` = `employee_company_id`
                                 LEFT JOIN `mm_vendor_service_location` AS `vsl` ON `vsl`.`vendor_service_location_vendor_id` = `vc`.`company_person_id`
-                                WHERE `vsl`.`vendor_service_location_postcode` = '$postcode' AND `employee_company_id` = $company_id
-                                AND `employee_id` IN ($employeesStr)")->result();
+                                WHERE `vsl`.`vendor_service_location_postcode` = '$postcode' AND `employee_company_id` = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."' AND `employee_id` IN ($employeesStr) ")->result();
     }
     
     function _getBookingSessionDetail($booking_id){

@@ -38,6 +38,7 @@ $this->load->view("block/admin_leftMenu");
                             <table id="withdrawal_request_list" class="table table-bordered table-striped tables-button-edit ">
                                 <thead>
                                     <tr>
+                                        <th>Request Id</th>
                                         <th>Vendor Id</th>
                                         <th>Vendor Name</th>
                                         <th>Company</th>
@@ -72,10 +73,10 @@ $(function(){
     
     /* Wallet Withdrawal Requesr List Datatable */
     var walletWithdrawalList = $('#withdrawal_request_list').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-           'excel', 'pdf'
-        ],
+        // dom: 'Bfrtip',
+        // buttons: [
+        //    'excel', 'pdf'
+        // ],
         "responsive": true,
         "paging": true,
         "lengthChange": true,
@@ -93,7 +94,9 @@ $(function(){
                 //d.archived = $("#service_location_status").attr('data-val');
             }
         },
+        "order": [[ 0, "ASC" ]],
         "columns": [
+            {"data": "vendor_wallet_withdrawal_id"},
             {"data": "vendor_wallet_withdrawal_vendor_id"},
             {"data": "vendor_full_name"},
             {"data": "vendor_company"},
@@ -104,8 +107,8 @@ $(function(){
             {"data": null}
         ],
         "columnDefs": [
-            {"responsivePriority": '1', "targets": [0, 1, 2, 3, 4, 5], searchable: true, orderable: true},
-            {"responsivePriority": '2', "targets": [6], searchable: true, orderable: true, data: null,
+            {"responsivePriority": '1', "targets": [0, 1, 2, 3, 4, 5, 6], searchable: true, orderable: true},
+            {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
                 "render": function (data, type, row) {
                     
                     var string = ' <td>';
@@ -124,7 +127,7 @@ $(function(){
                     return string;
                 }
             },
-            {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
+            {"responsivePriority": '2', "targets": [8], searchable: true, orderable: true, data: null,
                 "render": function (data, type, row) {
 
                     var string = ' <td>';

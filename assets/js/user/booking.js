@@ -674,7 +674,41 @@ var RenderView = {
                         html_str += "<li class='ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected'><input type='checkbox' name='addon-checkbox' class='addon-checkbox addons_servicess' data-id='"+ addons[id][addonId].service_addon_price_id +"' id='ct-addon-"+ addons[id][addonId].service_addon_price_id +"' data-mnamee='ad_unit1' value='"+ addons[id][addonId].service_addon_price_id +"' >";
                         html_str += "<label class='ct-addon-ser border-c' for='ct-addon-"+ addons[id][addonId].service_addon_price_id +"'><span></span>";
                         html_str += "   <div class='addon-price'>RM "+ addons[id][addonId].service_addon_price_price +"</div>";
-                        html_str += "    <div class='ct-addon-img'><img src='http://skymoonlabs.com/cleanto/demo//assets/images/addons-images/ct-icon-fridge.png'></div></label>";               
+                        let name = addons[id][addonId].service_addon_name;
+                        if(name.toLowerCase() == 'bedroom' || name.toLowerCase() == 'bedrooms'){
+                            html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/bedroom.png'></div></label>";               
+
+                        }else if(name.toLowerCase() == 'bathroom' || name.toLowerCase() == 'bathrooms'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/bathroom.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'cupboard' || name.toLowerCase() == 'cupboards'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/cupboard.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'wardrobe' || name.toLowerCase() == 'wardrobes'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/cupboard.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'oven' || name.toLowerCase() == 'ovens'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/oven.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'fridge' || name.toLowerCase() == 'fridges'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/fridge.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'car' || name.toLowerCase() == 'cars'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/car.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'window' || name.toLowerCase() == 'windows'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/window.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'kitchen' || name.toLowerCase() == 'kitchens'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/kitchen.png'></div></label>";
+
+                        }else if(name.toLowerCase() == 'ironing' || name.toLowerCase() == 'ironing'){
+                          html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/ironing.png'></div></label>";
+
+                        }else{
+                           html_str += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/other_addon.png'></div></label>";
+ 
+                        }
                         html_str += "<div class='ct-addon-count border-c  add_minus_button add_minus_buttonid1' style='display: none;'>";
 
                         html_str += "<div class='ct-btn-group'><button data-ids='"+ addons[id][addonId].service_addon_price_id +"' id='minus_"+ addons[id][addonId].service_addon_price_id +"' class='minus ct-btn-left ct-small-btn' type='button' data-units_id='"+ addons[id][addonId].service_addon_price_id +"' data-duration_value='' data-mnamee='ad_unit"+ addons[id][addonId].service_addon_price_id +"' data-method_name='"+ addons[id][addonId].service_addon_name +"' data-service_id='"+ id +"' data-rate='' data-method_id='0' data-type='addon'>-</button>";
@@ -775,10 +809,44 @@ var RenderView = {
                         }else{
                           freq += "<div class='addon-price'></div>";  
                         }
-                               
-                        freq += "<div class='ct-addon-img'><img src='http://skymoonlabs.com/cleanto/demo//assets/images/services/default.png'>\n\
-                                </div>\n\
-                            </label>\n\
+
+                        let name = splReq[id][splReqId].spl_request_name;
+                        if(name.toLowerCase() == 'bedroom' || name.toLowerCase() == 'bedrooms'){
+                            freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/bedroom.png'></div>";               
+
+                        }else if(name.toLowerCase() == 'bathroom' || name.toLowerCase() == 'bathrooms'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/bathroom.png'></div>";
+
+                        }else if(name.toLowerCase() == 'cupboard' || name.toLowerCase() == 'cupboards'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/cupboard.png'></div>";
+
+                        }else if(name.toLowerCase() == 'wardrobe' || name.toLowerCase() == 'wardrobes'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/cupboard.png'></div>";
+
+                        }else if(name.toLowerCase() == 'oven' || name.toLowerCase() == 'ovens'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/oven.png'></div>";
+
+                        }else if(name.toLowerCase() == 'fridge' || name.toLowerCase() == 'fridges'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/fridge.png'></div>";
+
+                        }else if(name.toLowerCase() == 'car' || name.toLowerCase() == 'cars'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/car.png'></div>";
+
+                        }else if(name.toLowerCase() == 'window' || name.toLowerCase() == 'windows'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/window.png'></div>";
+
+                        }else if(name.toLowerCase() == 'kitchen' || name.toLowerCase() == 'kitchens'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/kitchen.png'></div>";
+
+                        }else if(name.toLowerCase() == 'ironing' || name.toLowerCase() == 'ironing'){
+                          freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/ironing.png'></div>";
+
+                        }else{
+                           freq += "   <div class='ct-addon-img'><img src='"+base_url+"/assets/images/other_addon.png'></div>";
+ 
+                        }
+
+                        freq +="</label>\n\
                             <div class='addon-name fl ta-c'>"+ splReq[id][splReqId].spl_request_name +"</div>\n\
                         </li>";
             
@@ -888,8 +956,8 @@ $(function () {
             RenderView.renderSessionCalender(1);                
                 $('.date_selection').datepicker({
                     autoclose: true,
-                    dateFormat: "yy-mm-dd", 
-                      minDate:0,
+                    dateFormat: "dd-mm-yy", 
+                      minDate:1,
                       onSelect: function(){
                         var selectedDate = $(this).val();
                         var sessionId =  $(this).closest('.ct-form-row').next().children().find('.session_selection').val();
@@ -899,7 +967,9 @@ $(function () {
                 });
             //Reset the addon quantity of all services to zero
             $('.addon_qty').val(0);
-           
+
+            //reset the Package Details
+           $("#ct-price-scroll-new .service_name label.package_detail").html('');
            var services = ServiceObjects.ServiceObject.getAllServices();
             for(var i=0; i<services.length; i++ ){                
                 if( services[i].service_id == serviceId){
@@ -914,6 +984,7 @@ $(function () {
 
                         $('.service_package_list_div').hide();
                        // $('.cart-items-main f-l').show();
+                        $('.building_type_div').show(); // Show the Building type selection div
                     }else{
                         $(".ct_service_frequency_"+services[i].service_id).show();
                         $(".ct_service_package_"+services[i].service_id).show();
@@ -921,6 +992,7 @@ $(function () {
                         $(".ct_service_package_"+services[i].service_id+" .package-radio").prop('checked', false);
                         $(".tax_display, .total_price_display, .sub_total_display").hide();
                         $('.service_package_list_div').show();
+                        $('.building_type_div').hide(); // Hide the Building type selection div
                     }
                     $(".ct_service_spl_request_"+services[i].service_id).show();                    
                     
@@ -942,6 +1014,7 @@ $(function () {
             //$(".ct_service_package_"+services[0].service_id+" .package-radio").trigger('click');
         });
         $('.service-radio').trigger('click');
+        //$('.services-list .ser_details .service-radio:eq(0)').trigger('click');
         $('.session_selection').val('2');
         
         //Service package Selection Event Handling
@@ -952,7 +1025,15 @@ $(function () {
             //console.log(package);
             var price = parseFloat( (package.spl_price !== null) ? package.spl_price : package.package.service_package_onetime_price );
             
-            $("#ct-price-scroll-new .service_name label.package_detail").html(package.package.building_name+", "+package.package.service_package_bedroom+" Bedroom with "+package.package.service_package_bathroom+" Bathroom");
+            var servId = Booking.getService();
+            var service = ServiceObjects.ServiceObject.getServiceById(servId);
+            if(service.service_name == 'Basic Home Cleaning'){
+                $("#ct-price-scroll-new .service_name label.package_detail").html('');
+            }else{
+                $("#ct-price-scroll-new .service_name label.package_detail").html(package.package.building_name+", "+package.package.service_package_bedroom+" Bedroom with "+package.package.service_package_bathroom+" Bathroom");
+            }
+
+            
             $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(package.package.service_package_min_hours+" Hour Session");
             //reset the price before adding the new price
             Booking.resetPrice();
@@ -1040,8 +1121,8 @@ $(function () {
                 }
                 $('.date_selection').datepicker({
                     autoclose: true,
-                    dateFormat: "yy-mm-dd", 
-                      minDate:0,
+                    dateFormat: "dd-mm-yy", 
+                      minDate:1,
                       onSelect: function(){
                         var selectedDate = $(this).val();
                         var sessionId =  $(this).closest('.ct-form-row').next().children().find('.session_selection').val();
@@ -1091,6 +1172,12 @@ $(function () {
             }
         });
        
+       
+       $('.house_type').on('click', function(){
+            var hType = $(this).val();
+           $("#ct-price-scroll-new .service_name label.package_detail").html(hType);
+ 
+       });
 
     }, 2000);
     
@@ -1114,7 +1201,22 @@ function checkEmployeeAvailability(serviceDate, sessionId){
     
 //    if( $.inArray(serviceDate, selectedDates) < 0){
 //        selectedDates.push(serviceDate);
-//        
+//      
+    let now = new Date();
+    let date = new Date(serviceDate);
+    let hour = getSessionHour(sessionId);
+    if(now.getDate() === date.getDate()){
+        now.setHours(now.getHours() + 2);
+
+        if( now.getHours() >= hour){
+            $(self).val('');
+            $(self).parentsUntil('row').next().next('.error_message').html('');
+            $(self).parentsUntil('row').next().next('.error_message').html("For today's service, selected session need to be booked 2 hour(s) prior.");
+            return;
+        }
+    }
+
+
         var data = ServiceJSON.getEmployeeAvailabilityJson({'serviceDate':serviceDate, 'sessionId':sessionId, 'postcode':postcode, 'package': Booking.getPackage()});
         ajaxCall('checkEmployeeAvailability.html', 
             data,  
@@ -1390,6 +1492,17 @@ function getHoursFromSession(sessionId){
         case '4': hours = 2; break;
     }
     return hours;
+}
+
+function getSessionHour(sessionId){
+    var hour = 0;
+    switch(sessionId){
+        case '1': hour = 9; break;
+        case '2': hour = 9; break;
+        case '3': hour = 14; break;
+        case '4': hour = 20; break;
+    }
+    return hour;
 }
 
 

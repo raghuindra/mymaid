@@ -9,6 +9,37 @@
     .error_message{
         margin-left: 15px;
     }
+
+    .services-list li label, .addon-service-list li label {
+    
+    text-align:center;    
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    font-size: 14px;
+    /*color: #ffffff;*/
+    padding: 10px 20px;
+/*    background: -webkit-gradient(
+        linear, left top, left bottom,
+        from(#ffcb69),
+        color-stop(0.50, #f0a733),
+        color-stop(0.92, #f2a324),
+        to(#ffb730));*/
+        -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #965F06;
+    -moz-box-shadow:
+        0px 1px 1px rgba(000,000,000,0.5),
+        inset 1px 2px 0px rgba(255,255,255,0.4);
+    -webkit-box-shadow:
+        0px 1px 1px rgba(000,000,000,0.5),
+        inset 1px 2px 0px rgba(255,255,255,0.4);
+    box-shadow:
+        0px 1px 1px rgba(000,000,000,0.5),
+        inset 1px 2px 0px rgba(255,255,255,0.4);
+    /*text-shadow:
+        1px 1px 2px rgba(000,000,000,0.7),
+        0px 1px 0px rgba(255,255,255,0.4);*/
+}
 </style>
 <a href="javascript:void(0)" class="ct-back-to-top" style="display: none;"></a>
 <div id="postcodeSearch" style="display: none;" data-val="<?php echo $this->session->userdata('service_location_search'); ?>"></div>
@@ -91,6 +122,48 @@
                     </div>
                     <!-- end module third area based -->
 
+                    <!-- Choose Bulding Type Div only for Basic Home Clenaing -->
+                    <div class="ct-user-info-main ct-common-box building_type_div hide_allsss" style="border-top: 1px solid RGBA(0, 0, 0, 0.13);margin-bottom: 20px; display: none;">
+                        <div class="ct-list-header">
+                            <h3 class="header3">Choose House Type</h3>
+
+                            <!-- <p class="ct-sub" >Please provide your address and contact details</p>
+ -->                           
+                        </div>
+
+                        <div class="ct-main-details">
+                            <div class="">
+                                <div class="ct-custom-radio">
+                                    <ul class="ct-radio-list ">
+                                        <li class="ct-md-4 ct-sm-6 ct-xs-12" style="margin-bottom: 10px;">
+                                            <input id="apartment" type="radio" class="house_type input-radio" name="house_type[]" value="APARTMENT">
+                                            <label for="apartment" class=""><span></span>Apartment / Condo</label>
+                                        </li>
+                                        <li class="ct-md-4 ct-sm-6 ct-xs-12" style="margin-bottom: 10px;">
+                                            <input id="semi_d" type="radio" class="house_type input-radio" name="house_type[]" value="Semin - D">
+                                            <label for="semi_d" class=""><span></span>Semin - D</label>
+                                        </li>
+                                        
+                                        <li class="ct-md-4 ct-sm-6 ct-xs-12" style="margin-bottom: 10px;">
+                                            <input id="pent_house" type="radio" class="house_type input-radio" name="house_type[]" value="Pent-House">
+                                            <label for="pent_house" class=""><span></span>Pent-House</label>
+                                        </li>
+                                        <li class="ct-md-4 ct-sm-6 ct-xs-12" style="margin-bottom: 10px;">
+                                            <input id="link_house" type="radio" class="house_type input-radio" name="house_type[]" value="Link-House">
+                                            <label for="link_house" class=""><span></span>Link-House</label>
+                                        </li>
+                                        <li class="ct-md-4 ct-sm-6 ct-xs-12" style="margin-bottom: 10px;">
+                                            <input id="bunglow" type="radio" class="house_type input-radio" name="house_type[]" value="Bunglow">
+                                            <label for="bunglow" class=""><span></span>Bunglow</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div >&nbsp;</div>
+                    <!-- /. Choose Building Type. END-->
+
                     <!-- Service Addons Div -->
                     <div id="service_addons_div">
 
@@ -102,7 +175,7 @@
                     <div class="ct-extra-services-list service-method-selection-main ct-common-box add_on_lists hide_allsss_addons" style="display:none;">
                         <div class="ct-list-header">
                             <h3 class="header3">Extra Services</h3>
-                            <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
+                            <p class="ct-sub" style="display:none;"></p>
                         </div>
                         <ul class="addon-service-list fl remove_addonsss">
                             <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
@@ -211,7 +284,7 @@
                     <div class="ct-date-time-main ct-common-box hide_allsss ">
                         <div class="ct-list-header">
                             <h3 class="header3">When would you like us to come?</h3>
-                            <!--<p class="ct-sub">Choose a date for your cleaning session. Time can not be guaranteed</p>-->
+                            <p class="ct-sub" style="display: none;">Choose a date and session for your cleaning session.</p>
                         </div>
 <!--                        <div id="select-date" class="ct-md-12 ct-sm-12 ct-xs-12">
                         </div>-->
@@ -347,7 +420,7 @@
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-zip-code">Postcode</label>
-                                        <input type="text" required name="ct_zip_code" id="ct-zip-code" class="add_show_error_class error" placeholder="e.g. 90001"  onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" value="<?php echo $this->session->userdata('service_location_search'); ?>" disabled="">
+                                        <input type="text" required name="ct_zip_code" id="ct-zip-code" class="add_show_error_class error" placeholder="e.g. 90001"  onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "5" value="<?php echo $this->session->userdata('service_location_search'); ?>" disabled="">
                                     </div>
                                     <div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row">
                                         <label for="ct-city">City</label>
@@ -612,11 +685,12 @@
                         <div class="clearfix"></div>
                     </div>
                     <!-- features -->
+                    <!--
                     <div class="main-inner-container border-c  not-scroll-custom" id="ct-not-scroll">
 
                         <div class="ct-cart-wrapper f-l">
                             <div class="main-inner-container">
-                                <!--  partial amount pay -->
+                                
                                 <div class="mb-30"></div>
                                 <div class="features-list">
                                     <div class="features">
@@ -653,7 +727,7 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- right side card end -->
 
@@ -668,7 +742,7 @@
                         <p class="ct-sub-complete-booking"><br></p>
                     </div>
 
-                    <div class="ct-complete-booking ct-md-12">
+                    <!-- <div class="ct-complete-booking ct-md-12">
                         <h5 class="ct-cancel-booking">Cancellation Policy</h5>
 
                         <div class="ct-cancel-policy">
@@ -679,7 +753,7 @@
                                     or in case of no-show, order will not be refunded.</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="bi-terms-agree ct-md-12">
                         <div class="ct-custom-checkbox">
@@ -743,7 +817,7 @@
 <div id="service_html" style="display:none;">
     <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class ser_details" data-id="">
         <input type="radio" name="service-radio" class="make_service_disable" >
-        <label class="ct-service border-c">
+        <label class="ct-service border-c" style="border-radius: 10px;">
             <div class="ct-service-img"><img class="ct-image" src="./assets/images/service_22007.jpg">
             </div>
 
@@ -761,7 +835,7 @@
     <!-- 1.box style services Package selection radio selection -->
     <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 remove_service_class" data-servicetitle="" >
         <input type="radio" name="package-radio" id="ct-pk-service-1" class="make_service_disable">
-        <label class="ct-service border-c" for="ct-pk-service-1">
+        <label class="ct-service border-c" for="ct-pk-service-1" style="border-radius: 10px;">
             <div class="ct-service-img">
                 <div class="row">
                     <div class="col-xs-12 text-center spring-body">
@@ -838,7 +912,7 @@
     <div class="ct-extra-services-list service-method-selection-main ct-common-box add_on_lists hide_allsss_addons" >
         <div class="ct-list-header">
             <h3 class="header3">Special Request Services</h3>
-            <p class="ct-sub">For initial cleaning only. Contact us to apply to recurrings.</p>
+            <p class="ct-sub" style="display: none;">For initial cleaning only. Contact us to apply to recurrings.</p>
         </div>
         <ul class="addon-service-list fl remove_addonsss">
             <!--            <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">

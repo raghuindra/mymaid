@@ -384,7 +384,11 @@ class Booking_lib extends Base_lib{
                         $info['booking_price_alter_found'] = $price['price_alter'];
                         $info['booking_payment_status'] = Globals::PAYMENT_PENDING;
                         $info['booking_status']         = Globals::BOOKING_PROCESSING;
-                        $info['booking_service_date']   = $data->serviceDateSession[0]->date;
+
+                        $dateObj = date_create($data->serviceDateSession[0]->date);
+                        $date = date_format($dateObj, 'Y-m-d');
+
+                        $info['booking_service_date']   = $date;
                         $info['booking_service_session']= $data->serviceDateSession[0]->session;
                         $info['booking_note']           = $data->userInfo->note;
                         $info['booking_user_id']        = $this->ci->session->userdata('user_id');
@@ -450,8 +454,12 @@ class Booking_lib extends Base_lib{
                             $sessions_info = array();
                             $i=0;
                             foreach($data->serviceDateSession as $dateSess){
+
+                                $dateObj = date_create($dateSess->date);
+                                $date = date_format($dateObj, 'Y-m-d');
+
                                 $sessions_info[$i]['booking_sessions_session_id']   = $dateSess->session;
-                                $sessions_info[$i]['booking_sessions_service_date'] = $dateSess->date;
+                                $sessions_info[$i]['booking_sessions_service_date'] = $date;
                                 $sessions_info[$i]['booking_sessions_booking_id']   = $booking_id;
                                 $i++;
                             }
@@ -505,19 +513,36 @@ class Booking_lib extends Base_lib{
         $package_id = $data->package;
         $postcode   = $data->servicePostcode;
         
+        $package_detail = $this->model->get_tb('mm_service_package', '*', array('service_package_service_id'=>$service_id, 'service_package_id'=>$package_id, 'service_package_archive'=> Globals::UN_ARCHIVE))->result();
+
         $splPackageDetail = $this->model->get_tb('mm_postcode_service_price', '*', array('postcode_service_price_postcode'=>$postcode, 'postcode_service_price_package_id'=>$package_id, 'postcode_service_archived'=> Globals::UN_ARCHIVE))->result();
+
         if($splPackageDetail && !empty($splPackageDetail)){
             
             $price = $splPackageDetail[0]->postcode_service_price_price;
             
-        }else{
-            $package_detail = $this->model->get_tb('mm_service_package', '*', array('service_package_service_id'=>$service_id, 'service_package_id'=>$package_id, 'service_package_archive'=> Globals::UN_ARCHIVE))->result();
+        }else{           
             if($package_detail && !empty($package_detail)){
                 $price = $package_detail[0]->service_package_onetime_price;
             }
         }
+
         
         if($price > 0){
+
+            $serviceDetail = $this->model->get_tb('mm_services', '*', array('service_id'=>$service_id))->result();
+
+            // price calculation for Basic home cleaning will be based on the hours in the session (4 Hours, 2 Hours) and multiple by package price
+            $service_name = $serviceDetail[0]->service_name;
+            if($service_name == 'Basic Home Cleaning' || $service_name == 'basic home cleaning'){
+
+                if($package_detail[0]->service_package_price_cal_by == 'hour'){
+                    $session_id = $data->serviceDateSession[0]->session;
+                    $session_detail = $this->model->get_tb('mm_session', '*', array('session_id'=>$session_id))->result();
+                    $hours = $session_detail[0]->session_hours;
+                    $price = $price * $hours;
+                }
+            }
             
             //Get Addon Price if choosen
             //TODO:: Need to optmize the code
@@ -626,6 +651,7 @@ class Booking_lib extends Base_lib{
         $data['payment_attempt_amount']         = $booking_info[0]->booking_amount;
         $data['payment_attempt_hash_value']     = $payData['payment_hash_value'];
         $data['payment_attempt_description']    = $payData['payment_desc'];
+        $date['payment_attempt_time']           = date('Y-m-d H:i:s', strtotime('now'));
         $insertId = $this->model->insert_tb('mm_payment_attempt', $data);
         unset($data);
         if($insertId > 0){
@@ -667,7 +693,7 @@ class Booking_lib extends Base_lib{
         $pay_data['payment_page_timeout']       = '780';
        
         // $Password.$ServiceID.$PaymentID.$MerchantReturnURL.$Amount.$CurrencyCode.$CustIP.$PageTimeout;
-        $HashString = $pay_data['payment_pass'].$pay_data['payment_service_id'].$pay_data['payment_id'].$pay_data['payment_return_url'].$pay_data['payment_amount'].$pay_data['payment_currency_code'].$pay_data['payment_customer_ip'].$pay_data['payment_page_timeout'];
+        $HashString = $pay_data['payment_pass'].$pay_data['payment_service_id'].$pay_data['payment_id'].$pay_data['payment_return_url'].$pay_data['payment_callback_url'].$pay_data['payment_amount'].$pay_data['payment_currency_code'].$pay_data['payment_customer_ip'].$pay_data['payment_page_timeout'];
 
         $pay_data['payment_hash_value'] = hash("SHA256", $HashString);
 
@@ -700,8 +726,29 @@ class Booking_lib extends Base_lib{
             $flag = (int)($flag * 0); 
             
         }
+
+        if(isset($_POST['TxnID']) && $_POST['TxnID'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+
+        if(isset($_POST['AuthCode'])){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
         
         if(isset($_POST['HashValue']) && $_POST['HashValue'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+
+        if(isset($_POST['HashValue2']) && $_POST['HashValue2'] != ''){
             $flag = (int)($flag * 1);
         } else {
             $flag = (int)($flag * 0); 
@@ -714,41 +761,58 @@ class Booking_lib extends Base_lib{
             $order_number = $this->ci->input->post('OrderNumber', true);
             $resp_msg = $this->ci->input->post('TxnMessage', true);
             $hash_value = $this->ci->input->post('HashValue', true);
+            $hash_value2 = $this->ci->input->post('HashValue2', true);
+            $authCode = $this->ci->input->post('AuthCode', true);
+            $txnID = $this->ci->input->post('TxnID', true);
             
             $now = date('Y-m-d H:i:s', strtotime('now'));
             
             if($payment_status == '0'){
+
+                $password   = $this->ci->data['config']['payment_test_pass'];
+                $service_id = $this->ci->data['config']['payment_test_service_id'];
+               
                 
                 $info = $this->model->get_tb('mm_payment_attempt', '*', array('payment_attempt_order_id'=>$order_number, 'payment_attempt_payment_id'=>$payment_id))->result();
                 if(!empty($info)){
+
                     $pay_attempt_id = $info[0]->payment_attempt_id;
                     $booking_id = $info[0]->payment_attempt_for_id;
                     
-                    $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS, 'booking_payment_id'=>$payment_id));
-                    
-                    $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value));
-                    
-                    $booking_detail = $this->model->getServiceBookingDetail($booking_id);
-                    
-                    $result = $this->model->getVendorAndServiceDetails($booking_detail[0]->booking_pincode);
-                    if($result) {
-                        
-                        foreach($result as $val){                           
-                            //SMS
-                            $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$booking_detail[0]->booking_service_date);                     
-                        }   
-                    }
-                    //SMS to User
-                    $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully. The Service date is: ".$booking_detail[0]->booking_service_date); 
-                    
-                    //Send Mail to User
-                    $paymentId = $_POST['PaymentID'];
-                    $this->_sendEmailInvoiceToUser($booking_id, $order_number);
+                    $newHashKeyString2 = $password.$txnID.$service_id.$payment_id.$payment_status."1.00"."MYR".$authCode.$order_number;
 
-                    $this->_status = true;
-                    $this->_message = 'Transaction Successfull!';
-                    $this->_rdata = array('booking_id'=>$booking_detail[0]->booking_id);
-                
+                    $newHashKey2 = hash("SHA256", $newHashKeyString2);
+
+                    if($hash_value2 == $newHashKey2){
+                        $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS, 'booking_payment_id'=>$payment_id));
+                        
+                        $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value, 'payment_attempt_response_transaction_id'=>$txnID, 'payment_attempt_response_hash_value2'=>$hash_value2, 'payment_attempt_response_auth_code'=>$authCode));
+                        
+                        $booking_detail = $this->model->getServiceBookingDetail($booking_id);
+                        
+                        $result = $this->model->getVendorAndServiceDetails($booking_detail[0]->booking_pincode);
+                        if($result) {
+                            
+                            foreach($result as $val){                           
+                                //SMS
+                                $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$booking_detail[0]->booking_service_date);                     
+                            }   
+                        }
+                        //SMS to User
+                        $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully. The Service date is: ".$booking_detail[0]->booking_service_date); 
+                        
+                        //Send Mail to User
+                        $paymentId = $_POST['PaymentID'];
+                        $this->_sendEmailInvoiceToUser($booking_id, $order_number);
+
+                        $this->_status = true;
+                        $this->_message = 'Transaction Successfull!';
+                        $this->_rdata = array('booking_id'=>$booking_detail[0]->booking_id);
+                    }else{
+                    $this->_status = false;
+                    $this->_message = 'Order Information Missing!';
+                    $this->_rdata = null;
+                    }
                 }else{
                     $this->_status = false;
                     $this->_message = 'Order Information Missing!';
@@ -770,6 +834,144 @@ class Booking_lib extends Base_lib{
         
         return $this->getResponse();
     }
+
+
+    function _checkPayResponseCallBackHandler(){
+
+        $response = "OK";
+        $flag = 1;
+        if(isset($_POST['PaymentID']) && $_POST['PaymentID'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if(isset($_POST['OrderNumber']) && $_POST['OrderNumber'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if(isset($_POST['TxnStatus']) && $_POST['TxnStatus'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+
+        if(isset($_POST['TxnID']) && $_POST['TxnID'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+
+        if(isset($_POST['AuthCode'])){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if(isset($_POST['HashValue']) && $_POST['HashValue'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+
+        if(isset($_POST['HashValue2']) && $_POST['HashValue2'] != ''){
+            $flag = (int)($flag * 1);
+        } else {
+            $flag = (int)($flag * 0); 
+            
+        }
+        
+        if($flag === 1){
+            $payment_status = $this->ci->input->post('TxnStatus', true);
+            $payment_id = $this->ci->input->post('PaymentID', true);
+            $order_number = $this->ci->input->post('OrderNumber', true);
+            $resp_msg = $this->ci->input->post('TxnMessage', true);
+            $hash_value = $this->ci->input->post('HashValue', true);
+            $hash_value2 = $this->ci->input->post('HashValue2', true);
+            $authCode = $this->ci->input->post('AuthCode', true);
+            $txnID = $this->ci->input->post('TxnID', true);
+            
+            $now = date('Y-m-d H:i:s', strtotime('now'));
+            $info = $this->model->get_tb('mm_payment_attempt', '*', array('payment_attempt_order_id'=>$order_number, 'payment_attempt_payment_id'=>$payment_id))->result();
+
+            $pay_attempt_id = $info[0]->payment_attempt_id;
+            $booking_id = $info[0]->payment_attempt_for_id;
+                    
+
+            $newHashKeyString2 = $password.$txnID.$service_id.$payment_id.$payment_status."1.00"."MYR".$authCode.$order_number;
+
+            $newHashKey2 = hash("SHA256", $newHashKeyString2);
+
+            if($hash_value2 == $newHashKey2){
+                if($payment_status == '0'){
+
+                    $password   = $this->ci->data['config']['payment_test_pass'];
+                    $service_id = $this->ci->data['config']['payment_test_service_id'];          
+                    
+                    if(!empty($info)){    
+                       
+                            $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS, 'booking_payment_id'=>$payment_id));
+                            
+                            $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value, 'payment_attempt_response_transaction_id'=>$txnID, 'payment_attempt_response_hash_value2'=>$hash_value2, 'payment_attempt_response_auth_code'=>$authCode));
+                            
+                            $booking_detail = $this->model->getServiceBookingDetail($booking_id);
+                            
+                            $result = $this->model->getVendorAndServiceDetails($booking_detail[0]->booking_pincode);
+                            if($result) {
+                                
+                                foreach($result as $val){                           
+                                    //SMS
+                                    $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$booking_detail[0]->booking_service_date);                     
+                                }   
+                            }
+                            //SMS to User
+                            $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully. The Service date is: ".$booking_detail[0]->booking_service_date); 
+                            
+                            //Send Mail to User
+                            $paymentId = $_POST['PaymentID'];
+                            $this->_sendEmailInvoiceToUser($booking_id, $order_number);
+
+                            $response = "OK";
+                        
+                    }else{
+                        $response = "NO";
+                    }
+                    
+                }else if($payment_status == '1'){
+                    if(!empty($info)){
+                        $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_FAILURE, 'booking_payment_id'=>$payment_id));
+  
+                       $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value, 'payment_attempt_response_transaction_id'=>$txnID, 'payment_attempt_response_hash_value2'=>$hash_value2, 'payment_attempt_response_auth_code'=>$authCode)); 
+
+                       $booking_detail = $this->model->getServiceBookingDetail($booking_id);    
+                        //SMS to User
+                        $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service Payment was unsuccessfull.!!");
+
+                        $response = "OK";
+                    }
+                    
+                }else if($payment_status == '2'){
+                    $response = "OK";
+                }
+
+            }else{
+                $response = "NO";
+            }
+            
+        }
+        
+        return $response;
+
+    }
+
 
     function _sendEmailInvoiceToUser($booking_id, $invoiceId){
         $this->ci->load->library('email_lib');
@@ -876,26 +1078,30 @@ class Booking_lib extends Base_lib{
         $session_id = $data->sessionId;
         $postcode = $data->postcode;
         $package_id = $data->package;
+
+        //Change Date format
+        $dateObj = date_create($service_date);
+        $updatedDateFormat = date_format($dateObj, 'Y-m-d');
         
         $crews = $this->model->get_tb('mm_service_package','service_package_min_crew_member', array('service_package_id'=>$package_id))->result();
         
         if($crews && count($crews) >0){
             $crewCount = $crews[0]->service_package_min_crew_member;
             
-            $dayofweek = strtolower(date('l', strtotime($service_date)));
+            $dayofweek = strtolower(date('l', strtotime($updatedDateFormat)));
             $employee_ids = array();
             $response_1 = $this->model->getEmployeeSessionAndDayAvailability($dayofweek, $session_id);
             //echo $this->model->last_query(); echo "<br>";
-            $response_2 = $this->model->getEmployeeSplSessionAvailability($service_date, $session_id);
+            $response_2 = $this->model->getEmployeeSplSessionAvailability($updatedDateFormat, $session_id);
             //echo $this->model->last_query(); echo "<br>";
-            $response_3 = $this->model->getEmployeeAssignedJob($service_date);
-            //echo $this->model->last_query(); echo "<br>";
-
-            $response_5 = $this->model->getEmployeeWhoGotSplSession($service_date);
+            $response_3 = $this->model->getEmployeeAssignedJob($updatedDateFormat);
             //echo $this->model->last_query(); echo "<br>";
 
-            $response_6 = $this->model->getEmployeeWhoGotSplSessionHoliday($service_date);
-            //echo $this->model->last_query(); exit;
+            $response_5 = $this->model->getEmployeeWhoGotSplSession($updatedDateFormat);
+            //echo $this->model->last_query(); echo "<br>";
+
+            $response_6 = $this->model->getEmployeeWhoGotSplSessionHoliday($updatedDateFormat);
+            //echo $this->model->last_query(); exit;            
 
             if(!empty($response_1)){
                 foreach($response_1 as $id){
@@ -956,17 +1162,17 @@ class Booking_lib extends Base_lib{
                     }
                     if(!$meet_req_count){
                         $this->_status = false; 
-                        $this->_message = "Service not available for the selected date: ".$service_date." and session:  '".Globals::getSessionName($session_id)."' ";
+                        $this->_message = "Service not available for the selected date: '".$service_date."' and session:  '".Globals::getSessionName($session_id)."' ";
                     }
 
                 }else{
                     $this->_status = false;
-                    $this->_message = "Service not available for the selected date: ".$service_date." and session:  '".Globals::getSessionName($session_id)."' ";
+                    $this->_message = "Service not available for the selected date: '".$service_date."' and session:  '".Globals::getSessionName($session_id)."' ";
                 }
 
             }else{
                 $this->_status = false;
-                $this->_message = "Service not available for the selected date: ".$service_date." and session:  '".Globals::getSessionName($session_id)."' ";
+                $this->_message = "Service not available for the selected date: '".$service_date."' and session:  '".Globals::getSessionName($session_id)."' ";
             }
         }else{
             $this->_status = false;

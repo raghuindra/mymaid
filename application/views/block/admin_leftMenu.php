@@ -27,7 +27,7 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+           <!--  <li class="header">MAIN NAVIGATION</li> -->
             <li class="">
                 <a href="<?php echo base_url() . 'admin_home.html'; ?>"
                    <i class="fa fa-home"></i> <span>Dashboard</span>
@@ -116,6 +116,15 @@
                             </span>
                         </a>
                     </li>
+                    <li>
+                        <a href="<?php echo base_url() . 'customers_list.html'; ?>">
+                            <i class="fa fa-user"></i>
+                            <span>Customers</span>
+                            <span class="pull-right-container">
+<!--                                <span class="label pull-right bg-red">4</span>-->
+                            </span>
+                        </a>
+                    </li>
                 <!--     <li>
                         <a href="<?php //echo base_url() . 'admin_completedjobs.html'; ?>">
                             <i class="fa fa-check"></i>
@@ -134,8 +143,8 @@
                             </span>
                         </a>
                     </li>-->
-                </ul>
-            </li>            
+                <!-- </ul>
+            </li>   -->          
             <!-- settings links -->
             
             <!--

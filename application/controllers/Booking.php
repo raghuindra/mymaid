@@ -180,6 +180,17 @@ class Booking extends Base {
             redirect('home.html', 'refresh');
         }
     }
+
+    public function payResponseCallBackHandler(){
+        if (isset($_POST['HashValue']) && isset($_POST['PaymentID'])) {
+            $response = $this->booking_lib->_checkpayResponseCallBackHandler();
+            echo $response;
+
+        } else {
+            echo "NO";
+        }
+    }
+
     
     
     public function getServiceOrderDetails(){

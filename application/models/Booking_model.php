@@ -202,7 +202,7 @@ class Booking_model extends Mm_model {
         $query = "SELECT employee_id FROM mm_company_employees 
                                 WHERE employee_id IN (SELECT employee_session_employee_id 
                                                 FROM mm_employee_session 
-                                                WHERE employee_session_".$day." = 1 OR employee_session_".$day." = $sessionId)";
+                                                WHERE employee_session_".$day." = 1 OR employee_session_".$day." = $sessionId) AND `employee_archived` = '".Globals::UN_ARCHIVE."'";
         
         return $this->db->query($query)->result();
         
@@ -216,7 +216,7 @@ class Booking_model extends Mm_model {
                             WHERE employee_id IN (SELECT employee_session_spl_employee_id 
                                                 FROM mm_employee_session_spl
                                                 WHERE employee_session_spl_off_status = 0
-                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to)")->result();
+                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
     }
     
     /*
@@ -227,7 +227,7 @@ class Booking_model extends Mm_model {
                             WHERE employee_id IN (SELECT employee_session_spl_employee_id 
                                                 FROM mm_employee_session_spl
                                                 WHERE employee_session_spl_off_status = 1
-                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to)")->result();
+                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
     }
     
     /*
@@ -242,31 +242,33 @@ class Booking_model extends Mm_model {
                                                 WHERE employee_session_spl_off_status = 0
                                                 AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to AND (employee_session_spl_session_id = 1
                                                 OR employee_session_spl_session_id = $sessionId))
-                            AND employee_job_session_id = 1")->result();
+                            AND employee_job_session_id = 1 AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
         
     }
     
     /*
-    * SQL to get the employees who has not assigned job on the perticular date.
+    * SQL to get the employees who has assigned job on the perticular date.
     */
     function getEmployeeAssignedJob($date){
         
         return $this->db->query("SELECT DISTINCT(employee_job_employee_id) as employee_id
                             FROM mm_employee_job
                             LEFT JOIN mm_booking_sessions ON booking_sessions_id = employee_job_booking_sessions_id
-                            WHERE booking_sessions_service_date = '$date' ")->result();
+                            LEFT JOIN `mm_booking` ON `booking_id` = `booking_sessions_booking_id`
+                            WHERE booking_sessions_service_date = '$date' AND `booking_status` != '".Globals::BOOKING_CANCELLED."'")->result();
     }
     
     /*
     * SQL to get the employees who's company serving for the postcode location.
     */
     function getEmployeeServingForLocation($employeesStr, $postcode, $req_crew_count){
-        return $this->db->query("SELECT `employee_id`, IF ( count(`employee_id`) >= $req_crew_count, 1, 0)  as `meet_req_count`
+        $query = "SELECT `employee_id`, IF ( count(`employee_id`) >= $req_crew_count, 1, 0)  as `meet_req_count`
                                 FROM `mm_company_employees`
                                 LEFT JOIN `mm_vendor_company` AS `vc` ON `company_id` = `employee_company_id`
                                 LEFT JOIN `mm_vendor_service_location` AS `vsl` ON `vsl`.`vendor_service_location_vendor_id` = `vc`.`company_person_id`
                                 WHERE `vsl`.vendor_service_location_postcode = '$postcode'
-                                AND `employee_id` IN ($employeesStr) GROUP BY `employee_company_id`")->result();
+                                AND `employee_id` IN ($employeesStr) AND `employee_archived` = '".Globals::UN_ARCHIVE."' GROUP BY `employee_company_id`";
+        return $this->db->query($query)->result();
     }
        
 

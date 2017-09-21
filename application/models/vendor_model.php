@@ -74,7 +74,7 @@ class Vendor_model extends Mm_model{
 
     function getServiceBookings($now, $vendor_id){
             return $this->db->query("SELECT * FROM `mm_booking` LEFT JOIN `mm_booking_addons` ON `booking_addons_booking_id` = `booking_id` LEFT JOIN `mm_booking_spl_request` ON `booking_spl_request_booking_id` = `booking_id` LEFT JOIN `mm_services` ON `service_id` = `booking_service_id` LEFT JOIN `mm_person` ON `person_id` = `booking_user_id` LEFT JOIN `mm_booking_frequency` ON `booking_frequency_booking_id` = `booking_id` LEFT JOIN `mm_service_frequency_offer` ON `service_frequency_offer_id` = `booking_frequency_frequency_offer_id` LEFT JOIN `mm_service_frequency` ON `service_frequency_id` = `service_frequency_offer_frequency_id` WHERE (`booking_service_date` > '$now' OR `booking_service_date` = '$now') AND `booking_vendor_company_id` IS NULL AND `booking_cancelled_by` IS NULL AND `booking_status` = 2 AND `booking_payment_status` = 1 
-AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_vendor_service_location` WHERE `vendor_service_location_vendor_id` = '$vendor_id') GROUP BY `booking_id`")->result();
+AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_vendor_service_location` WHERE `vendor_service_location_vendor_id` = '$vendor_id') GROUP BY `booking_id` ORDER BY `booking_id` DESC")->result();
     }
     
     function getVendorServiceBookings($companyId){
@@ -93,6 +93,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                         ->where('booking_completion_admin_confirmed', 0)
                         ->where('booking_cancelled_approved_by_admin', 0)
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "DESC")
                         ->get()
                         ->result();
     }
@@ -112,6 +113,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                  ->where('booking_completion_company_confirmed', 1)
                  ->where('booking_cancelled_approved_by_admin', 0)
                  ->group_by('booking_id')
+                 ->order_by("booking_id", "DESC")
                  ->get()
                  ->result(); 
     }
@@ -133,6 +135,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                  ->where('booking_completion_company_confirmed', 0)
                  ->where('booking_completion_admin_confirmed', 0)
                  ->group_by('booking_id')
+                 ->order_by("booking_id", "DESC")
                  ->get()
                  ->result(); 
     }
@@ -146,7 +149,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                         ->join($this->_services, 'service_id = booking_service_id','left')
                         ->join($this->_person, 'person_id = booking_user_id','left')
                         ->where('booking_id ', $bookingId)
-                        ->group_by('booking_id')        
+                        ->group_by('booking_id')       
                         ->get()
                         ->result();
     }
@@ -182,7 +185,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                                 WHERE employee_id IN (SELECT employee_session_employee_id 
                                                 FROM mm_employee_session 
                                                 WHERE employee_session_".$day." = 1 OR employee_session_".$day." = $sessionId)
-                                                AND employee_company_id = $company_id";
+                                                AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'";
         
         return $this->db->query($query)->result();
         
@@ -196,7 +199,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                             WHERE employee_id IN (SELECT employee_session_spl_employee_id 
                                                 FROM mm_employee_session_spl
                                                 WHERE employee_session_spl_off_status = 0
-                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = $company_id ")->result();
+                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
     }
     
     /*
@@ -207,7 +210,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                             WHERE employee_id IN (SELECT employee_session_spl_employee_id 
                                                 FROM mm_employee_session_spl
                                                 WHERE employee_session_spl_off_status = 1
-                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = $company_id ")->result();
+                                                AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to) AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
     }
     
     /*
@@ -222,20 +225,21 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                                                 WHERE employee_session_spl_off_status = 0
                                                 AND '$date' BETWEEN employee_session_spl_date_from AND employee_session_spl_date_to AND (employee_session_spl_session_id = 1
                                                 OR employee_session_spl_session_id = $sessionId))
-                            AND employee_job_session_id = 1 AND employee_company_id = $company_id ")->result();
+                            AND employee_job_session_id = 1 AND employee_company_id = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'")->result();
         
     }
     
     /*
-    * SQL to get the employees who has not assigned job on the perticular date.
+    * SQL to get the employees who has assigned job on the perticular date.
     */
     function getEmployeeAssignedJob($date, $company_id){
         
         return $this->db->query("SELECT DISTINCT(employee_job_employee_id) as `employee_id`, `employee_name`
                             FROM `mm_employee_job`
                             LEFT JOIN `mm_booking_sessions` ON `booking_sessions_id` = `employee_job_booking_sessions_id`
+                            LEFT JOIN `mm_booking` ON `booking_id` = `booking_sessions_booking_id`
                             LEFT JOIN `mm_company_employees` ON `employee_id` = `employee_job_employee_id`
-                            WHERE `booking_sessions_service_date` = '$date' AND `employee_company_id` = $company_id")->result();
+                            WHERE `booking_sessions_service_date` = '$date' AND `employee_company_id` = $company_id AND `booking_status` != '".Globals::BOOKING_CANCELLED."'")->result();
     }
     
     /*
@@ -246,7 +250,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
                                 FROM `mm_company_employees`
                                 LEFT JOIN `mm_vendor_company` AS `vc` ON `company_id` = `employee_company_id`
                                 LEFT JOIN `mm_vendor_service_location` AS `vsl` ON `vsl`.`vendor_service_location_vendor_id` = `vc`.`company_person_id`
-                                WHERE `vsl`.`vendor_service_location_postcode` = '$postcode' AND `employee_company_id` = $company_id
+                                WHERE `vsl`.`vendor_service_location_postcode` = '$postcode' AND `employee_company_id` = '$company_id' AND `employee_archived` = '".Globals::UN_ARCHIVE."'
                                 AND `employee_id` IN ($employeesStr)")->result();
     }
     

@@ -21,6 +21,7 @@ $lang['unable_to_process_order_completion_update'] = 'Cannot confirm Order compl
 $lang['wallet_withdrawal_request_Sent']         = "Wallet withdrawal request sent successfully";
 $lang['wallet_balance_low_than_requested']      = "Withdrawal amount is greater than wallet balance.";
 $lang['employee_updated']                       = "Employee Updated successfully";
+$lang['spl_session_removed']					= "Employee Special Session Removed Successfully.";
 $lang['no_changes_to_update']                   = "No changes to update";
 $lang['select_session']                         = "Please select session.";
 $lang['record_already_exists']                  = "Record already exists.";

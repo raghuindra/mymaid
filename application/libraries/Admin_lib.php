@@ -1522,7 +1522,9 @@ class Admin_lib extends Base_lib{
                     $date = date_format($dateObj, 'd-m-Y');                    
                     $result[$i]['booking_service_date'] = $date;
                     
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');  
+                    $result[$i]['booking_booked_on'] = $date;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     if($service->service_frequency_name == null || $service->service_frequency_name == ''){
@@ -2190,7 +2192,11 @@ class Admin_lib extends Base_lib{
         return $this->getResponse();
     }
     
-    
+
+    /** Function to Approve the Wallet Withdrawal request.
+    * @param null
+    * @return JSON returns the JSON Withdrawal request approval status    
+    */
     function _approveWithdrawalRequest(){
         $this->ci->load->library('form_validation');
         
@@ -2251,7 +2257,10 @@ class Admin_lib extends Base_lib{
         }
     }
     
-    
+    /** Function to reject vendor Withdrawal request.
+    * @param null
+    * @return JSON returns the JSON vendor Withdrawal request rejection status    
+    */
     function _rejectWithdrawalRequest(){
         $this->ci->load->library('form_validation');
         
@@ -2304,5 +2313,55 @@ class Admin_lib extends Base_lib{
 
             return $this->getResponse();
         }
+    }
+
+
+    /** Function to list Customers.
+    * @param null
+    * @return JSON returns the JSON customer list    
+    */
+    function _customerListAjax(){
+
+      $this->resetResponse();
+        if($this->ci->session->userdata('user_id') != null){
+
+                $requests = $this->model->getCustomersList();
+                //print_r($this->model->last_query());
+                if($requests) {
+                    $result = array();
+                    $i = 0;
+                    foreach ($requests as $request) {
+                        $result[$i]['person_id']          = $request->person_id;
+                        $result[$i]['person_first_name']  = $request->person_first_name;
+                        $result[$i]['person_last_name'] = $request->person_last_name;
+                        $result[$i]['person_full_name'] = $request->person_first_name . " ". $request->person_last_name;
+                        $result[$i]['person_email']  = $request->person_email;
+                        $result[$i]['person_address']  = $request->person_address;
+                        $result[$i]['person_address1'] = $request->person_address1;
+                        $result[$i]['person_city']     = $request->person_city;
+                        $result[$i]['person_state'] = $request->state_name;
+                        $result[$i]['person_mobile'] = "+61 ".$request->person_mobile;
+                        $result[$i]['person_postal_code'] = $request->person_postal_code;
+
+                        $dateObj = date_create($request->person_creation_date);
+                        $date = date_format($dateObj, 'd-m-Y');
+                        $result[$i]['person_creation_date'] = $date;
+                        
+                        $i++;
+                    }
+                    $this->_status = true;
+                    $this->_rdata = $result;
+                }else{
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            
+        }else{
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+        }
+        
+        return $this->getResponse();  
+        
     }
 }

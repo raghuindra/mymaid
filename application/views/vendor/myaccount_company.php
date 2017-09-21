@@ -86,7 +86,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         <div class="col-sm-9">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">+60</span>
-                                                                <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
+                                                                <input type="text" class="form-control" id="ofcnumber" name="ofcnumber" placeholder="Office Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" pattern=".{8,10}" required title="8 to 10 numbers" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_landphone : ''; ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -95,7 +95,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         <div class="col-sm-9">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">+60</span>
-                                                                <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
+                                                                <input type="text" required class="form-control" id="hpphone" name="hpphone" placeholder="H/P Phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" value="<?php echo ($company) ? $company[0]->company_hp_phone : ''; ?>" required>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -114,11 +114,11 @@ class Person extends CI_Controller{
         } 
         $this->load->model('mm_model');
         $states = $this->mm_model->get_tb('mm_state', '*')->result();
-        $data['state'] = $states;
-        $data['content'] = "vendor/register.php";
-        $data['oldvendor']      = 1;
+        $this->data['state'] = $states;
+        $this->data['content'] = "vendor/register.php";
+        $this->data['oldvendor']      = 1;
         $this->data['home']     = 1;
-        $this->load->view('template', $data);
+        $this->load->view('template', $this->data);
         
     }
     
@@ -499,6 +499,32 @@ class Person extends CI_Controller{
         }
 
         echo json_encode($response);
+    }
+
+    public function removeSplSession(){
+
+        if($this->session->userdata('user_id') != NULL) { 
+        
+            if($this->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
+
+                $response = $this->person_lib->_removeSplSession();
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_data'),
+                'data' => array()
+            ); 
+        }
+        echo json_encode($response);   
+
     }
 
 }

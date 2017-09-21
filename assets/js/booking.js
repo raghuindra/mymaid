@@ -23,7 +23,7 @@ $(function() {
     
     $("#select-date")
         .datepicker({ 
-        dateFormat: "dd-mm-yy", 
+        dateFormat: "yy-mm-yy", 
         minDate:0,
         onSelect: function(){
         var selected = $(this).val();
@@ -33,7 +33,7 @@ $(function() {
 
     $('.date_selection').datepicker({
         autoclose: true,
-        dateFormat: "yy-mm-dd", 
+        dateFormat: "dd-mm-yy", 
           minDate:0,
           onSelect: function(){
           var selected = $(this).val();
@@ -341,6 +341,12 @@ $(function() {
         $("#existing-user").trigger('click');
     }
     
+
+    $('.house_type').on('click', function(){
+        
+        
+        
+    });
    
     
     getUserDetails();

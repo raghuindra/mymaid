@@ -41,6 +41,7 @@ class User_model extends Mm_model {
                         ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
                         ->where(" ( booking_status = ".Globals::BOOKING_CONFIRMED." OR booking_status = ".Globals::BOOKING_PROCESSING." ) ")
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }
@@ -57,6 +58,7 @@ class User_model extends Mm_model {
                         ->where('booking_user_id', $person_id)
                         ->where("booking_status ", Globals::BOOKING_CANCELLED)
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }
@@ -74,6 +76,7 @@ class User_model extends Mm_model {
                         ->where("booking_status ", Globals::BOOKING_COMPLETED)
                         ->where("booking_completion_user_comfirmed ", '1')
                         ->group_by('booking_id')
+                        ->order_by("booking_id", "desc")
                         ->get()
                         ->result();
     }

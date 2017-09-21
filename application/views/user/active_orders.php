@@ -106,8 +106,7 @@ $(function(){
                         var string = ' <td class=""><a href="#" class="orderDetails" data-id="'+row.booking_id+'">' + row.booking_id + ' </a></td>';
                         return string;
                     }
-                },
-                {"responsivePriority": '2', "targets": [3, 4, 5, 6], searchable: true, orderable: true},
+                },                
                 {"responsivePriority": '1', "targets": [1], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                         
@@ -134,6 +133,16 @@ $(function(){
                         return string;
                     }
                 },
+                {"responsivePriority": '1', "targets": [4], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';                        
+                        string += ' <td class="">RM '+ row.booking_amount +'</td>';  
+                   
+                        return string;
+                    }
+                },
+                {"responsivePriority": '2', "targets": [3, 5, 6], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                         

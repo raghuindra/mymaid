@@ -27,13 +27,15 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+            <li class="header"></li>
             <li class="treeview">
                 <a href="<?php echo base_url() . 'vendor_home.html'; ?>"
                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+<!--
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
+-->
                 </a>
                 <!--                <ul class="treeview-menu">
                                     <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
@@ -134,7 +136,7 @@
             </li>
             <!-- settings links -->
             <li class="treeview">
-                <a href="<?php echo base_url() . 'vendor_myaccount.html'; ?>">
+                <a href="#">
                     <i class="fa fa-wrench"></i> <span>My Account</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -150,7 +152,32 @@
                                 <span class="label label-primary pull-right bg-green"></span>
                             </span>
                         </a>
+                    </li>                  
+                    <?php } ?>
+                    <li class="active">
+                        <a href="<?php echo base_url() . 'vendor_profile.html'; ?>">
+                            <i class="fa fa-male"></i>
+                            <span>Profile</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right bg-green"></span>
+                            </span>
+                        </a>
                     </li>
+                    
+                </ul>
+            </li>
+            <!-- settings links -->
+            
+            <!-- Employee Links -->
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-male"></i> <span>Employee Details</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <?php if($this->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME){?>
                     <li class="active">
                         <a href="<?php echo base_url() . 'vendor_myaccount_employees.html'; ?>">
                             <i class="fa fa-users"></i>
@@ -162,15 +189,6 @@
                     </li>
                     <?php } ?>
                     <li class="active">
-                        <a href="<?php echo base_url() . 'vendor_profile.html'; ?>">
-                            <i class="fa fa-male"></i>
-                            <span>Profile</span>
-                            <span class="pull-right-container">
-                                <span class="label label-primary pull-right bg-green"></span>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="active">
                         <a href="<?php echo base_url() . 'vendors_employee_schedule.html'; ?>">
                             <i class="fa fa-male"></i>
                             <span>Employee Schedule</span>
@@ -181,28 +199,29 @@
                     </li>
                     <li>
                         <a href="<?php echo base_url().'vendors_employee_calender.html'; ?>">
-                            <i class="fa fa-circle-o"></i> 
-                            <span>Employee Calender</span>
+                            <i class="fa fa-calendar"></i> 
+                            <span>Employee Calendar</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <!-- settings links -->
-            
+            <!-- Employee Links END -->
            <li class="treeview">
-                <a href="#">
+                <a href="<?php echo base_url().'serviceLocation.html'?>">
                     <i class="fa fa-th-list"></i>
-                    <span>Service</span>
+                    <span>Service Location</span>
                     <span class="pull-right-container">
                         <span class="label label-primary pull-right"></span>
                     </span>
                 </a>                
+<!--
                 <ul class="treeview-menu">
-                    <li><a href="<?php echo base_url().'serviceLocation.html'?>"><i class="fa fa-map-marker"></i>Service Location</a></li>
-<!--                    <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
+                    <li><a href="<?php //echo base_url().'serviceLocation.html'?>"><i class="fa fa-map-marker"></i>Service Location</a></li>
+                    <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
                     <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>-->
+                    <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
                 </ul>
+-->
             </li>
             <!--
             <li>

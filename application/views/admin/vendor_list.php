@@ -6,6 +6,7 @@ $this->load->view("block/admin_leftMenu");
     div.container {
         width: 80%;
     }
+
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -37,17 +38,8 @@ $this->load->view("block/admin_leftMenu");
                             <div class="box-body" style="display: block;">
                                 <div class="box box-primary">
                                     <!-- /.box-header -->
-                                    <!--                                        <div class="box-header with-border">
-                                                                                <div class="form-group">                                             
-                                                                                    <div class="col-sm-6">
-                                                                                        <div class="btn-group" role="group" id="_status" aria-label="Archive Un Archive condition" data-val="<?php //echo Globals::UN_ARCHIVE; ?>">
-                                                                                            <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php //echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
-                                                                                            <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php //echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>-->
                                     <!-- /.box-header -->
+
                                     <div class="box-body col-sm-12">
                                         <table id="newVendorsList" class="table table-bordered table-striped" width="100%">
                                             <thead>
@@ -368,9 +360,16 @@ $this->load->view("block/admin_leftMenu");
                     </div>
 
                     <div class='form-group'>
-                        <label for='inputEmail3' class='col-sm-4 control-label'>Employees :</label>
-                        <div class='col-sm-6' id='compEmployees'>
+                        <label for='inputEmail3' class='col-sm-4 control-label'>Company SSM Document :</label>
+                        <div class='col-sm-6' id=''>
+                            <a href='' id='compSSMDocument' target='_blank'>View</a>
+                        </div>
+                    </div>
 
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-4 control-label'>Company ID Card :</label>
+                        <div class='col-sm-6' id=''>
+                        <a href='' id='compIdcard' target='_blank'>View</a>
                         </div>
                     </div>
                 </div>
@@ -384,6 +383,8 @@ $this->load->view("block/admin_leftMenu");
 
 <!-- New Vendors Tab Scripts START-->
 <script>
+
+    var base_url = '<?php echo base_url(); ?>';
     var COMMON_FUN = {
             /* Upadte the vendor detail Div details. */
         getVendorDetail: function (rowData, callback) {
@@ -412,7 +413,7 @@ $this->load->view("block/admin_leftMenu");
         
         /* Upadte the Vendor Company Div details. */
         getCompanyDetail:  function(rowData, callback){
-            console.log(rowData);
+            //console.log(rowData);
             $("#compName").html(rowData.company_name);
             $("#compEmail").html(rowData.company_email_id);
             $("#compReg").html(rowData.company_reg_number);
@@ -435,7 +436,22 @@ $this->load->view("block/admin_leftMenu");
             }else{
                 $("#compHPphone").html("+60"+rowData.company_hp_phone);
             }
-            $("#compEmployees").html(rowData.company_emp_min+ " - "+rowData.company_emp_max);
+
+            if(rowData.company_idcard_file_path != null){
+                $("#compIdcard").attr('href', base_url+'assets/uploads/vendor/'+rowData.company_person_id+'/company/'+rowData.company_idcard_file_path);
+                $("#compIdcard").text('View');
+            }else{
+                $("#compIdcard").attr('href','javascript:void(0)');
+                $("#compIdcard").text('No Document');
+            }
+
+            if(rowData.company_ssm_file_path != null){
+                $("#compSSMDocument").attr('href', base_url+'assets/uploads/vendor/'+rowData.company_person_id+'/company/'+rowData.company_ssm_file_path);
+                $("#compSSMDocument").text('View');
+            }else{
+                $("#compSSMDocument").attr('href','javascript:void(0)');
+                $("#compSSMDocument").text('No Document');
+            }
             callback(true);
             
         },
@@ -641,10 +657,10 @@ $this->load->view("block/admin_leftMenu");
       
       /* Active Vendor Detail List Table START */
         var activeVendorsListTable = $('#activeVendorsList').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-               'excel'
-            ],
+            // dom: 'Bfrtip',
+            // buttons: [
+            //    'excel'
+            // ],
             "responsive": true,
             "paging": true,
             "lengthChange": true,
@@ -838,10 +854,10 @@ $this->load->view("block/admin_leftMenu");
       
       /* Active Vendor Detail List Table START */
         var activeFreelanersListTable = $('#activeFreelancersList').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-               'excel'
-            ],
+            // dom: 'Bfrtip',
+            // buttons: [
+            //    'excel'
+            // ],
             "responsive": true,
             "paging": true,
             "lengthChange": true,

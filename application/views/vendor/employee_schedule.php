@@ -226,12 +226,14 @@ if (($this->session->userdata('user_type') !== null) && $this->session->userdata
                                     <table id="employee_spl_schedule" class="table table-bordered table-striped tables-button-edit responsive">
                                         <thead>
                                             <tr>
+                                                <th>Special Session<br>Id</th>
                                                 <th>Company</th>
                                                 <th>Employee</th>
                                                 <th>From Date</th>
                                                 <th>To Date</th>
                                                 <th>Session</th>
                                                 <th>Day(s) Off</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -620,17 +622,21 @@ if (($this->session->userdata('user_type') !== null) && $this->session->userdata
                     d.company_spl = '';
                 },
             },
+            "order": [[ 0, "desc" ]],
             "columns": [
+                {"data": "employee_session_spl_id"},
                 {"data": "company_name"},
                 {"data": "employee_name"},
                 {"data": "employee_session_spl_date_from"},
                 {"data": "employee_session_spl_date_to"},
                 {"data": null},
+                {"data": null},
                 {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [0, 1, 2, 3], searchable: true, orderable: true},
-                {"responsivePriority": '2', "targets": [4], searchable: false, orderable: false, data: null,
+                {"targets": [0], searchable: false, orderable: true, visible: false},
+                {"responsivePriority": '2', "targets": [1, 2, 3, 4], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [5], searchable: false, orderable: true, data: null,
                     "render": function (data, type, row) {
                         var string = ' <td class=""><div class="text-center">';
                         switch (row.employee_session_spl_session_id) {
@@ -652,15 +658,24 @@ if (($this->session->userdata('user_type') !== null) && $this->session->userdata
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [5], searchable: true, orderable: true, data: null,
+                {"responsivePriority": '1', "targets": [6], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         var string = ' <td class=""><div class="text-center">';
                         if (row.employee_session_spl_off_status === '1') {
-                            string += '<a href="#" class="badge bg-maroon color-palette" data-toggle="tooltip" title="Employee is Off">Off</a>';
+                            string += '<a href="#" class="badge btn-info color-palette" data-toggle="tooltip" title="Employee is Off">Off</a>';
                         } else {
-                            string += '<a href="#" class="badge bg-teal color-palette" data-toggle="tooltip" title="Employee is Available">No</a>';
+                            string += '<a href="#" class="badge btn-success color-palette" data-toggle="tooltip" title="Employee is Available">Spl Session</a>';
                         }
                         string += '</div></td>';
+
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                        var string = ' <td class=""><div class="text-center">';
+                        
+                        string += '<a href="#" class="badge bg-maroon color-palette remove_spl_session" data-toggle="tooltip" title="Remove Spl Session" data-id="'+row.employee_session_spl_id+'">Remove</a></div></td>';
 
                         return string;
                     }
@@ -673,6 +688,57 @@ if (($this->session->userdata('user_type') !== null) && $this->session->userdata
             //employeeSplScheduleTable.ajax.reload(); //call datatable to reload the Ajax resource   
         });
 
+        //Remove the Employee spl session
+        $(document).on('click','.remove_spl_session', function(e){
+            e.preventDefault();
+            var spl_session_id = $(this).attr('data-id');
+
+            $.confirm({
+                'title': 'Confirm!!',
+                'content':'Are you sure, you want to remove Special Session?',
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'closeIcon': true,
+                buttons: {
+                    confirm:{ 
+                        btnClass: 'btn-green',
+                        action:function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo base_url() . 'remove_spl_session.html'; ?>",
+                                data: { 'spl_session_id': spl_session_id},
+                                cache: false,
+                                success: function (res) {
+                                    var result = JSON.parse(res);
+
+                                    if (result.status === true) {
+                                        notifyMessage('success', result.message);
+                                        employeeSplScheduleTable.ajax.reload(); //call datatable to reload the Ajax resource
+                                        
+                                    } else {
+                                        notifyMessage('error', result.message);
+                                    }
+
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    notifyMessage('error', errorThrown);
+                                }
+                            });
+                        }
+                    },
+                    cancel:{
+                        text: 'Close',
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+
+        });
 
 
     });

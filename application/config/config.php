@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -30,7 +32,7 @@ if($_SERVER['SERVER_NAME']=="localhost"){
         $config['base_url']	= 'http://localhost/mymaid/';
 }else{
     
-    $config['base_url']	= 'http://mymaidz.com/test/';
+    $config['base_url']	= 'https://mymaidz.com/';
     
 }
 

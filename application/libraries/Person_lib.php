@@ -58,9 +58,9 @@ class Person_lib extends Base_lib{
         $this->ci->form_validation->set_rules('address', 'address', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('address1', 'address 1', 'trim|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('city', 'City', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('pincode', 'Postal Code', 'trim|xss_clean|encode_php_tags|numeric|min_length[4]');
+        $this->ci->form_validation->set_rules('pincode', 'Postal Code', 'trim|xss_clean|encode_php_tags|numeric|min_length[4]|max_length[5]');
         $this->ci->form_validation->set_rules('state', 'State', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('mobile', 'Mobile', 'trim|required|xss_clean|encode_php_tags|numeric|min_length[10]');
+        $this->ci->form_validation->set_rules('mobile', 'Mobile', 'trim|required|xss_clean|encode_php_tags|numeric|min_length[8]|max_length[10]');
         $this->ci->form_validation->set_rules('idcard', 'Id Card', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('idcardnumber', 'Id Card Number', 'trim|required|xss_clean|encode_php_tags');
 
@@ -123,7 +123,7 @@ class Person_lib extends Base_lib{
                         $message .= "<p>Dear User,</p><br>";
                         $message .= "<p>Your Login Credentials:</p>";
                         $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-                        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
+                        //$message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
                         $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
                         $message .= "</body></html>";
                         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
@@ -182,7 +182,7 @@ class Person_lib extends Base_lib{
                         $message .= "<p>Dear User,</p><br>";
                         $message .= "<p>Your Login Credentials:</p>";
                         $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-                        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
+                        //$message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
                         $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
                         $message .= "</body></html>";
                         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
@@ -316,9 +316,9 @@ class Person_lib extends Base_lib{
         $this->ci->form_validation->set_rules('address', 'address', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('address1', 'address 1', 'trim|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('city', 'City', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('pincode', 'Postal Code', 'trim|required|xss_clean|encode_php_tags|max_length[6]|numeric');
+        $this->ci->form_validation->set_rules('pincode', 'Postal Code', 'trim|required|xss_clean|encode_php_tags|max_length[5]|numeric');
         $this->ci->form_validation->set_rules('state', 'State', 'trim|required|xss_clean|encode_php_tags');
-        $this->ci->form_validation->set_rules('mobile', 'Mobile', 'trim|required|xss_clean|encode_php_tags|max_length[10]|numeric');
+        $this->ci->form_validation->set_rules('mobile', 'Mobile', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric');
         $this->ci->form_validation->set_rules('idcard', 'Id Card', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('idcardnumber', 'Id Card Number', 'trim|required|xss_clean|encode_php_tags');
         $this->ci->form_validation->set_rules('type', 'Vendor/Freelancer selection', 'trim|required|xss_clean|encode_php_tags|numeric');
@@ -327,9 +327,9 @@ class Person_lib extends Base_lib{
             $this->ci->form_validation->set_rules('compRegister', 'Company Registration number', 'trim|required|xss_clean|encode_php_tags');
             $this->ci->form_validation->set_rules('compAddress', 'Company Address', 'trim|required|xss_clean|encode_php_tags');
             $this->ci->form_validation->set_rules('compPin', 'Company Postal Code', 'trim|required|xss_clean|encode_php_tags|numeric');
-            $this->ci->form_validation->set_rules('compMobile', 'Company Mobile', 'trim|required|xss_clean|encode_php_tags|min_length[10]|numeric');
-            $this->ci->form_validation->set_rules('compLandPhone', 'Company Landphone', 'trim|required|xss_clean|encode_php_tags');
-            $this->ci->form_validation->set_rules('compFax', 'Company Fax', 'trim|required|xss_clean|encode_php_tags|min_length[8]|numeric');
+            $this->ci->form_validation->set_rules('compMobile', 'Company Mobile', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric');
+            $this->ci->form_validation->set_rules('compLandPhone', 'Company Landphone', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric');
+            $this->ci->form_validation->set_rules('compFax', 'Company Fax', 'trim|required|xss_clean|encode_php_tags|min_length[8]|max_length[10]|numeric');
             $this->ci->form_validation->set_rules('compEmpMin', 'Company Minimum Employees count', 'trim|required|xss_clean|encode_php_tags|numeric');
             $this->ci->form_validation->set_rules('compEmpMax', 'Company Maximum Employees count', 'trim|required|xss_clean|encode_php_tags|numeric');
         }
@@ -449,7 +449,7 @@ class Person_lib extends Base_lib{
                         $message .= "<p>You have registered in mymaidz as vendor - <b>pending for admin approval</b>.</p>";
                         $message .= "<p>Your Login Credentials:</p>";
                         $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-                        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";                       
+                        //$message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";                       
                         $message .= "<p><a href='". base_url()."vendor_login.html'>Click here</a> to login</p>";
                         $message .= "</body></html>";
                         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
@@ -1033,7 +1033,7 @@ print_r($response); exit;
             $respo_1 = $this->model->get('person_wallet_amount', array('person_id'=>$person_id))->result();
             $dataArray['wallet_balance'] = $respo_1[0]->person_wallet_amount;
             //Get New Orders Count
-            $now = date('Y-m-d H:i:s', strtotime('now'));
+            $now = date('Y-m-d', strtotime('now'));
 
 
             //Get Processing Orders and Completed Orders
@@ -1047,16 +1047,17 @@ print_r($response); exit;
                 $dataArray['completed_orders'] = count($respo_4);
 
                 $respo_5 = $this->model->getNewServiceBookingsForVendorFreelanc($now, $person_id);
+                //print_r($this->model->last_query());
                 $dataArray['new_orders'] = count($respo_5);
 
             }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_ADMIN_NAME){
                 
                 $respo_3 = $this->model->getAllServiceBookingsUnderProcess();                 
                 $dataArray['processing_orders'] = count($respo_3);
-                
+                //echo $this->model->last_query();
                 $respo_4 = $this->model->getAllCompletedServiceOrders();
                 $dataArray['completed_orders'] = count($respo_4);
-
+                //echo $this->model->last_query();
                 $respo_2 = $this->model->getServiceBookings($now);
                 //echo $this->model->last_query();
                 $dataArray['new_orders'] = count($respo_2);
@@ -1097,18 +1098,29 @@ print_r($response); exit;
     function _getEmployeeSessionsList(){
         
         if(isset($_POST['companyId'])){
+            
             if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
                 $company_id = $this->ci->session->userdata('company_id');
             }else{
                 $company_id = $this->ci->input->post('companyId', true);
             }
             
-            $employeeSessions = $this->model->getEmployeeSessions($company_id)->result();
-            $response = array(
+            if($company_id != null && $company_id != ''){
+                $employeeSessions = $this->model->getEmployeeSessions($company_id)->result();
+                $response = array(
                     'status' => true,
                     'message' => '',
                     'data' => $employeeSessions
                 );
+
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
+                ); 
+            }
+            
         }else{
             $response = array(
                     'status' => false,
@@ -1256,22 +1268,73 @@ print_r($response); exit;
             return $this->getResponse();
         } 
     }
+
+
+    function _removeSplSession(){
+
+          $person_id = $this->ci->session->userdata('user_id');
+
+        $this->ci->load->library('form_validation');
+
+        $this->resetResponse(); 
+        $this->ci->form_validation->set_rules('spl_session_id', 'Employee Special Session Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        
+        if ($this->ci->form_validation->run() == FALSE) {
+            
+            return $response = array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+            
+            $employeeSplSessionId = $this->ci->input->post('spl_session_id', true);
+            
+            
+            $info = array();
+            $info['employee_session_spl_id']   = $employeeSplSessionId;
+            
+            $employee_spl_data = $this->model->get_tb('mm_employee_session_spl','*', $info)->result();
+            
+            if($employee_spl_data && !empty($employee_spl_data)){
+
+                $this->model->delete_tb('mm_employee_session_spl',$info);
+                $this->_status = true;
+                $this->_message = $this->ci->lang->line('spl_session_removed');
+            }else{
+                
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_data');
+                
+            }
+            unset($info);
+            
+            return $this->getResponse();
+        } 
+
+    }
     
     
     function _getEmployeeSplSessionsList(){
         if(isset($_POST['company_spl'])){
+            
             if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_VENDOR_NAME || $this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_FREELANCER_NAME){
                 $company_id = $this->ci->session->userdata('company_id');
             }else{
                 $company_id = $this->ci->input->post('company_spl', true);
             }
             
-            $employeeSplSessions = $this->model->getEmployeeSplSessions($company_id)->result();
-            $response = array(
-                    'status' => true,
-                    'message' => '',
-                    'data' => $employeeSplSessions
+            if($company_id != null && $company_id != ''){
+                $employeeSplSessions = $this->model->getEmployeeSplSessions($company_id)->result();
+                $response = array(
+                        'status' => true,
+                        'message' => '',
+                        'data' => $employeeSplSessions
+                    );
+                
+            }else{
+                $response = array(
+                    'status' => false,
+                    'message' => $this->ci->lang->line('invalid_data'),
+                    'data' => array()
                 );
+            }
         }else{
             $response = array(
                     'status' => false,

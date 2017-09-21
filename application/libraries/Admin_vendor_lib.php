@@ -274,5 +274,42 @@ class Admin_vendor_lib extends Base_lib{
 
         return $this->getResponse();
     }
+    
+    /** Function to get Vendor company list
+     * @param null
+     * @return Array returns Array of vendor company details
+     */
+    function _companyEmployeesList(){
+        $this->resetResponse();
+        if ($this->ci->session->userdata('user_id') != null) {
+            $company_id = $this->ci->input->post('companyId', true);
+            
+            $company = $this->model->get_tb('mm_vendor_company', '*', array('company_id' => $company_id))->result();
+
+            if (!empty($company)) {
+
+                $result = $this->model->getCompanyEmployees($company_id);
+                if ($result) {
+                    $this->_status = true;
+                    $this->_message = '';
+                    $this->_rdata = $result;
+
+                } else {
+                    $this->_status = false;
+                    $this->_message = $this->ci->lang->line('no_records_found');
+                }
+            }else{
+                $this->_status = false;
+                $this->_message = $this->ci->lang->line('invalid_request');
+            }
+            
+        } else {
+            $this->_status = false;
+            $this->_message = $this->ci->lang->line('invalid_user');
+                            
+        }
+
+        return $this->getResponse();
+    }
 
 }

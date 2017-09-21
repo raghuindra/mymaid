@@ -89,6 +89,7 @@ $(function(){
                     //d.archived = $("#service_location_status").attr('data-val');
                 }
             },
+            "order": [[ 0, "DESC" ]],
             "columns": [
                 {"data": "booking_id"},
                 {"data": "customer_name"},
@@ -106,7 +107,16 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '2', "targets": [1, 2, 3, 4, 5, 6], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [1, 2, 4, 5, 6], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [3], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';                        
+                        string += ' <td class="">RM '+ row.booking_amount +'</td>';  
+                   
+                        return string;
+                    }
+                },
                 {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                         
@@ -152,6 +162,7 @@ $(function(){
                     //self.setContentAppend(data);
                 },
                 onContentReady: function(){
+                    //$('.ser_employee').select2();
                     $(".ser_employee").on('focusout', function(){
                         let mincount = $(this).attr('data-minCount');
                         

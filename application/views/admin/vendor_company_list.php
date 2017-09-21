@@ -34,17 +34,8 @@ $this->load->view("block/admin_leftMenu");
                             <div class="box-body" style="display: block;">
                                 <div class="box box-primary">
                                     <!-- /.box-header -->
-            <!--                                    <div class="box-header with-border">
-                                                    <div class="form-group">                                             
-                                                        <div class="col-sm-6">
-                                                            <div class="btn-group" role="group" id="_status" aria-label="Archive Un Archive condition" data-val="<?php echo Globals::UN_ARCHIVE; ?>">
-                                                                <button type="button" class="btn margin btn-primary btn-sm active service_spl_request_status_unarchive" data-val="<?php echo Globals::UN_ARCHIVE; ?>">Un Archived</button>                                   
-                                                                <button type="button" class="btn margin btn-primary btn-sm service_spl_request_status_archive" data-val="<?php echo Globals::ARCHIVE; ?>">Archived</button>                                                                           
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                                     <!-- /.box-header -->
+
                                     <div class="box-body col-sm-12">
                                         <table id="vendorCompanyList" class="table table-bordered table-striped">
                                             <thead>
@@ -70,6 +61,58 @@ $this->load->view("block/admin_leftMenu");
                                 </div>
                             </div>
                             <!-- /.box body-->
+                            
+                            <div class="clearfix"></div>
+                            
+                            <!-- Employee Detail Table START -->
+                            <div class="box box-default box-solid">
+                                <!-- /.box-header -->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title employee_box_heading">Employee List </h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body" style="display: block;">
+                                    <div class="box box-primary">
+                                        <!-- /.box-header -->
+
+                                        <!-- form start -->
+                                        <div class="form-horizontal">
+
+                                            <div class="box-body">
+                                                <table id="employee_list" class="table table-bordered table-striped tables-button-edit">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID </th>
+                                                            <th>Name</th>
+                                                            <th>Passport Number</th>
+                                                            <th>Citizenship</th>
+                                                            <th>H/P Phone</th>
+                                                            <th>Default<br>Job Session</th>
+                                                            <th>Id Card</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- /.box body-->
+                            </div>
+                            <!-- /.box -->
+                            <!-- Employee Detail Table END -->
                         </div>
                         <!-- /.tab-pane -->
 
@@ -277,11 +320,19 @@ $this->load->view("block/admin_leftMenu");
                     </div>
 
                     <div class='form-group'>
-                        <label for='inputEmail3' class='col-sm-4 control-label'>Employees :</label>
-                        <div class='col-sm-6' id='compEmployees'>
-
+                        <label for='inputEmail3' class='col-sm-4 control-label'>Company SSM Document :</label>
+                        <div class='col-sm-6' id=''>
+                            <a href='' id='compSSMDocument' target='_blank'>View</a>
                         </div>
                     </div>
+
+                    <div class='form-group'>
+                        <label for='inputEmail3' class='col-sm-4 control-label'>Company ID Card :</label>
+                        <div class='col-sm-6' id=''>
+                        <a href='' id='compIdcard' target='_blank'>View</a>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -293,6 +344,9 @@ $this->load->view("block/admin_leftMenu");
 
 <!-- Vendor Company List Tab Scripts START-->
 <script>
+
+    var base_url = '<?php echo base_url(); ?>';
+
     var COMMON_FUN = {
         /* Upadte the vendor detail Div details. */
         getVendorDetail: function (rowData, callback) {
@@ -313,7 +367,7 @@ $this->load->view("block/admin_leftMenu");
         
         /* Upadte the Vendor Company Div details. */
         getCompanyDetail:  function(rowData, callback){
-            console.log(rowData);
+            //console.log(rowData);
             $("#compName").html(rowData.company_name);
             $("#compEmail").html(rowData.company_email_id);
             $("#compReg").html(rowData.company_reg_number);
@@ -324,7 +378,23 @@ $this->load->view("block/admin_leftMenu");
             $("#compMobile").html( (rowData.company_mobile) ? "+60 "+rowData.company_mobile: '' );
             $("#compTelephone").html( (rowData.company_landphone) ? "+60 "+rowData.company_landphone: '');
             $("#compHPphone").html( (rowData.company_hp_phone) ? "+60 "+rowData.company_hp_phone: '' );
-            $("#compEmployees").html(rowData.company_emp_min+ " - "+rowData.company_emp_max);
+            
+            if(rowData.company_idcard_file_path != null && rowData.company_idcard_file_path != ''){
+                $("#compIdcard").attr('href', base_url+'assets/uploads/vendor/'+rowData.company_person_id+'/company/'+rowData.company_idcard_file_path);
+                $("#compIdcard").text('View');
+            }else{
+                $("#compIdcard").attr('href','javascript:void(0)');
+                $("#compIdcard").text('No Document');
+            }
+
+            if(rowData.company_ssm_file_path != null && rowData.company_ssm_file_path != ''){
+                $("#compSSMDocument").attr('href', base_url+'assets/uploads/vendor/'+rowData.company_person_id+'/company/'+rowData.company_ssm_file_path);
+                $("#compSSMDocument").text('View');
+            }else{
+                $("#compSSMDocument").attr('href','javascript:void(0)');
+                $("#compSSMDocument").text('No Document');
+            }
+            
             callback(true);
             
         },
@@ -353,15 +423,15 @@ $this->load->view("block/admin_leftMenu");
     }
     
     $(function () {
-
-        
-
+        // variable for company employee listing
+        var company_id = 0;
+        var vendor_id = 0;
         /* new Vendor Detail List Table START */
         var vendorCompanyListTable = $('#vendorCompanyList').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-               'excel'
-            ],
+            // dom: 'Bfrtip',
+            // buttons: [
+            //    'excel'
+            // ],
             "responsive": true,
             "paging": true,
             "lengthChange": true,
@@ -410,7 +480,7 @@ $this->load->view("block/admin_leftMenu");
                 },
                 {"responsivePriority": '1', "targets": [7], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
-                        var string = ' <td class="">' + row.company_emp_min + ' - '+  row.company_emp_max +' </td>';
+                        var string = ' <td class=""><a href="#" class="employee_details">Employees</a></td>';
                         return string;
                     }
                 }
@@ -442,7 +512,62 @@ $this->load->view("block/admin_leftMenu");
 
         });
         /* /. Comapny Detail Window popup */
-
+        
+        /* Employee List Datatable */
+        var employeeListTable = $('#employee_list').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "processing": true,
+            "ajax": {
+                "url": '<?php echo base_url() . 'a_listEmployees.html'; ?>',
+                "type": "POST",
+                "dataSrc": 'data',
+                "data": function(d){                     
+                    d.companyId = company_id; 
+                }
+            },
+            "columns": [
+                {"data": "employee_id"},
+                {"data": "employee_name"},
+                {"data": "employee_passport_number"},
+                {"data": "employee_citizenship"},
+                {"data": "employee_hp_phone"},
+                {"data": "session_name"},
+                {"data": null}
+            ],
+            "columnDefs": [
+                {"responsivePriority": '2', "targets": [0, 1, 2, 3, 4,5], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [6], searchable: false, orderable: false, data: null,
+                    "render": function (data, type, row) {
+                       var string = '';
+                        if(row.employee_idcard_path != '' && row.employee_idcard_path != null){
+                            string = ' <td class=""> <div class="text-center">'
+                                + '<a href="<?php echo base_url();?>assets/uploads/vendor/'+vendor_id+'/company/employee/'+row.employee_idcard_path+'" target="_blank" class="btn btn-social-icon" title="IdCard">View</a></div></td>';
+                       }
+                        return string;
+                    }
+                }
+            ]
+        });
+        
+        /* Get Employee list of Company*/
+        $(document).on('click', '.employee_details', function(e){
+            e.preventDefault();
+            var rowData = vendorCompanyListTable.row($(this).closest('tr')).data();
+            
+            company_id = rowData.company_id;
+            vendor_id = rowData.company_person_id;
+            
+            $('.employee_box_heading').html('Employee List of Company: <b>'+ rowData.company_name +'</b>');
+            employeeListTable.ajax.reload(); //call datatable to reload the Ajax resource
+        });
+        
 
     });
 

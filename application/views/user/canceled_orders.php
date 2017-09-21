@@ -109,7 +109,7 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [3, 4, 5, 6, 7, 8], searchable: true, orderable: true},
+                {"responsivePriority": '1', "targets": [3, 5, 6, 7, 8], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [1], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
@@ -133,6 +133,15 @@ $(function(){
                             string += '<td class=""> '+ row.company_landphone +'</td>';
                         }
                             
+                        return string;
+                    }
+                },
+                {"responsivePriority": '1', "targets": [4], searchable: true, orderable: true, data: null,
+                    "render": function (data, type, row) {
+                        
+                        var string ='';                        
+                        string += ' <td class="">RM '+ row.booking_amount +'</td>';  
+                   
                         return string;
                     }
                 },

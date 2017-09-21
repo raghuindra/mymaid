@@ -14,7 +14,7 @@ if($pay_data['status']){
 ?>
 <script>
 
-    redirect_url = "<?php echo base_url() . '/get_order_invoice.html?booking_id=' .$pay_data['data']['booking_id'] ?>";
+    redirect_url = "<?php echo base_url() . 'get_order_invoice.html?booking_id=' .$pay_data['data']['booking_id'] ?>";
   
 </script>
 
