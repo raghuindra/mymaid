@@ -62,7 +62,7 @@ class Vendor_model extends Mm_model{
                         ->join($this->_booking_frequency, 'booking_frequency_booking_id = booking_id','left') 
                         ->join($this->_service_frequency_offer, 'service_frequency_offer_id = booking_frequency_frequency_offer_id','left')
                         ->join($this->_service_frequency, 'service_frequency_id = service_frequency_offer_frequency_id','left')
-                        ->where('booking_service_date >', $now)
+                        //->where('booking_service_date >', $now)
                         ->where('booking_vendor_company_id IS NULL', null)             
                         ->where('booking_cancelled_by IS NULL', null)
                         ->where('booking_status', Globals::BOOKING_PROCESSING)
@@ -73,8 +73,8 @@ class Vendor_model extends Mm_model{
     }
 
     function getServiceBookings($now, $vendor_id){
-            return $this->db->query("SELECT * FROM `mm_booking` LEFT JOIN `mm_booking_addons` ON `booking_addons_booking_id` = `booking_id` LEFT JOIN `mm_booking_spl_request` ON `booking_spl_request_booking_id` = `booking_id` LEFT JOIN `mm_services` ON `service_id` = `booking_service_id` LEFT JOIN `mm_person` ON `person_id` = `booking_user_id` LEFT JOIN `mm_booking_frequency` ON `booking_frequency_booking_id` = `booking_id` LEFT JOIN `mm_service_frequency_offer` ON `service_frequency_offer_id` = `booking_frequency_frequency_offer_id` LEFT JOIN `mm_service_frequency` ON `service_frequency_id` = `service_frequency_offer_frequency_id` WHERE (`booking_service_date` > '$now' OR `booking_service_date` = '$now') AND `booking_vendor_company_id` IS NULL AND `booking_cancelled_by` IS NULL AND `booking_status` = 2 AND `booking_payment_status` = 1 
-AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_vendor_service_location` WHERE `vendor_service_location_vendor_id` = '$vendor_id') GROUP BY `booking_id` ORDER BY `booking_id` DESC")->result();
+            return $this->db->query("SELECT * FROM `mm_booking` LEFT JOIN `mm_booking_addons` ON `booking_addons_booking_id` = `booking_id` LEFT JOIN `mm_booking_spl_request` ON `booking_spl_request_booking_id` = `booking_id` LEFT JOIN `mm_services` ON `service_id` = `booking_service_id` LEFT JOIN `mm_person` ON `person_id` = `booking_user_id` LEFT JOIN `mm_booking_frequency` ON `booking_frequency_booking_id` = `booking_id` LEFT JOIN `mm_service_frequency_offer` ON `service_frequency_offer_id` = `booking_frequency_frequency_offer_id` LEFT JOIN `mm_service_frequency` ON `service_frequency_id` = `service_frequency_offer_frequency_id` WHERE `booking_vendor_company_id` IS NULL AND `booking_cancelled_by` IS NULL AND `booking_status` = 2 AND `booking_payment_status` = 1 
+AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_vendor_service_location` WHERE `vendor_service_location_vendor_id` = '$vendor_id' AND `vendor_service_location_archived` = 0) GROUP BY `booking_id` ORDER BY `booking_id` DESC")->result();
     }
     
     function getVendorServiceBookings($companyId){

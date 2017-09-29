@@ -69,6 +69,7 @@ class Mm_model extends CI_Model
         $this->_vendor_company                  = "mm_vendor_company";
         $this->_vendor_service_location         = 'mm_vendor_service_location';
         $this->_vendor_wallet_withdrawal        = "mm_vendor_wallet_withdrawal";
+        $this->_bank_details					= "mm_bank_details";
         
         $this->_user                            = 'mm_user';
         

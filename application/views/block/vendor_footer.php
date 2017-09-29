@@ -1,6 +1,6 @@
 
 <footer class="text-center">
-    <p>Copyright © 2017 Mymaid. All rights reserved. © 2016</p>
+    <p>Copyright © 2017 MyMaidz.com by Advance Dreams Venture Sdn. Bhd. All rights reserved</p>
 </footer>
 
 <!-- Google Plus Login Scripts -->

@@ -864,8 +864,20 @@ var RenderView = {
     
     renderSessionCalender: function(count){
         var calSession = "";
+        var servId = Booking.getService();
+        var service = ServiceObjects.ServiceObject.getServiceById(servId);
         for(var i=0; i< count; i++){
-            var string='<div class="row"><div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row"><label for="ct-first-name">Service Date</label><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input type="text" class="form-control pull-right add_show_error_class error date_selection" id="service_date_'+i+'" required></div></div><div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row"><label for="ct-session">Session</label> <div class="input-group date"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div><select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required ><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option><option value="4">2 hours - Evening</option></select></div></div><div class="text-red error_message" style="clear:both;"> </div></div>';
+
+            var string='<div class="row"><div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row"><label for="ct-first-name">Service Date</label><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input type="text" class="form-control pull-right add_show_error_class error date_selection" id="service_date_'+i+'" required></div></div>';
+                string += '<div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row"><label for="ct-session">Session</label> <div class="input-group date"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div>';
+                
+            if(service.service_name == 'Basic Home Cleaning'){
+                string += '<select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required ><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option><option value="4">2 hours - Evening</option></select>';
+            }else{
+                string += '<select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required disabled><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option><option value="4">2 hours - Evening</option></select>';
+            }
+                
+                string += '</div></div><div class="text-red error_message" style="clear:both;"> </div></div>';
             calSession += string;
         }
         
@@ -914,6 +926,18 @@ var RenderView = {
                 $('.ct-addons-list-main').hide();
             }
         }
+    },
+    renderSelectedDateSession: function(){
+        var i=0;
+        var string = "";
+        this.serviceDateSession = [];
+        $("#date_session_div .date_selection").each(function() {
+            if($("#service_date_"+i).val() != ''){
+                string += '<p>'+ $("#service_date_"+i).val() +' @ '+ $('#service_session_'+i+' :selected').text() +'</p>';
+            }
+            i++;
+        });
+        $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(string);
     }
     
 };
@@ -957,7 +981,7 @@ $(function () {
                 $('.date_selection').datepicker({
                     autoclose: true,
                     dateFormat: "dd-mm-yy", 
-                      minDate:1,
+                      minDate:2,
                       onSelect: function(){
                         var selectedDate = $(this).val();
                         var sessionId =  $(this).closest('.ct-form-row').next().children().find('.session_selection').val();
@@ -970,6 +994,8 @@ $(function () {
 
             //reset the Package Details
            $("#ct-price-scroll-new .service_name label.package_detail").html('');
+           $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html('');
+
            var services = ServiceObjects.ServiceObject.getAllServices();
             for(var i=0; i<services.length; i++ ){                
                 if( services[i].service_id == serviceId){
@@ -979,7 +1005,7 @@ $(function () {
                         $(".ct_service_frequency_"+services[i].service_id).hide();
                         $(".tax_display, .total_price_display, .sub_total_display").show();
                         $(".ct_service_addons_"+services[i].service_id).hide();
-                        $('.session_selection').val('2');
+                        $('.session_selection').val('1');
                         $('.session_selection').trigger('change');
 
                         $('.service_package_list_div').hide();
@@ -1005,7 +1031,7 @@ $(function () {
                 }
 
             }
-            $('.session_selection').val('2');
+            $('.session_selection').val('1');
             var service = ServiceObjects.ServiceObject.getServiceById(serviceId);
             $("#ct-price-scroll-new .service_name p.sel-service").html(service.service_name);
             
@@ -1015,7 +1041,7 @@ $(function () {
         });
         $('.service-radio').trigger('click');
         //$('.services-list .ser_details .service-radio:eq(0)').trigger('click');
-        $('.session_selection').val('2');
+        $('.session_selection').val('1');
         
         //Service package Selection Event Handling
         $(document).on("click", ".packageDiv .services-list .package-radio", function(e){           
@@ -1034,7 +1060,7 @@ $(function () {
             }
 
             
-            $("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(package.package.service_package_min_hours+" Hour Session");
+            //$("#ct-price-scroll-new .datetime_value p.sel-datetime .cart_session").html(package.package.service_package_min_hours+" Hour Session");
             //reset the price before adding the new price
             Booking.resetPrice();
             price = Booking.addPrice(price);
@@ -1122,7 +1148,7 @@ $(function () {
                 $('.date_selection').datepicker({
                     autoclose: true,
                     dateFormat: "dd-mm-yy", 
-                      minDate:1,
+                      minDate:2,
                       onSelect: function(){
                         var selectedDate = $(this).val();
                         var sessionId =  $(this).closest('.ct-form-row').next().children().find('.session_selection').val();
@@ -1223,20 +1249,19 @@ function checkEmployeeAvailability(serviceDate, sessionId){
         (result)=>{
             $(self).parentsUntil('row').next().next('.error_message').html('');
             //$.inArray()
+            RenderView.renderSelectedDateSession();
         },  
         (result)=>{
             $(self).val('');
             $(self).parentsUntil('row').next().next('.error_message').html('');
             $(self).parentsUntil('row').next().next('.error_message').html(result.message);
-
+            RenderView.renderSelectedDateSession();
         });
         
 //    }else{
 //        $(self).val('');
 //        $(self).parentsUntil('row').next().next('.error_message').html('Service Date:'+serviceDate+' already selected.');
-//    }
-    
-    
+//    }   
     
 }
 

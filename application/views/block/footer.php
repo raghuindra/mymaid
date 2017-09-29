@@ -3,7 +3,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; 2016-2017 <a href="http://mymaid.com">My MaidZ</a>.</strong> All rights reserved.
+        <strong>Copyright © 2017 MyMaidz.com by Advance Dreams Venture Sdn. Bhd.</strong> All rights reserved.
     </footer>
     </div>
 <?php } ?>
@@ -124,8 +124,7 @@ $(function () {
         increaseArea: '20%' // optional
     });
 
-    $('[data-toggle="tooltip"]').tooltip();
-    
+    $('[data-toggle="tooltip"]').tooltip({'html':true,'placement': "bottom"});
 
 });
 </script>

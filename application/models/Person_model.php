@@ -129,7 +129,7 @@ class Person_model extends Mm_model {
     function getServiceBookings($now){
         return $this->db->select('*')
                         ->from($this->_booking)
-                        ->where(" (booking_service_date > '".$now."' OR booking_service_date = '".$now."') ")
+                        //->where(" (booking_service_date > '".$now."' OR booking_service_date = '".$now."') ")
                         ->where('booking_vendor_company_id IS NULL', null)             
                         ->where('booking_cancelled_by IS NULL', null)
                         ->where('booking_status', Globals::BOOKING_PROCESSING)
@@ -140,7 +140,7 @@ class Person_model extends Mm_model {
     }
 
     function getNewServiceBookingsForVendorFreelanc($now, $vendor_id){
-        return $this->db->query("SELECT * FROM `mm_booking` WHERE (`booking_service_date` > '$now' OR `booking_service_date` = '$now') AND `booking_vendor_company_id` IS NULL AND `booking_cancelled_by` IS NULL AND `booking_status` = 2 AND `booking_payment_status` = 1 AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_vendor_service_location` WHERE `vendor_service_location_vendor_id` = '$vendor_id') GROUP BY `booking_id`")->result();
+        return $this->db->query("SELECT * FROM `mm_booking` WHERE `booking_vendor_company_id` IS NULL AND `booking_cancelled_by` IS NULL AND `booking_status` = 2 AND `booking_payment_status` = 1 AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_vendor_service_location` WHERE `vendor_service_location_vendor_id` = '$vendor_id' AND `vendor_service_location_archived` = 0) GROUP BY `booking_id`")->result();
     }
     
     function getVendorServiceBookings($company_id){

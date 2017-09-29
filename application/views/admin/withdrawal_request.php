@@ -39,9 +39,9 @@ $this->load->view("block/admin_leftMenu");
                                 <thead>
                                     <tr>
                                         <th>Request Id</th>
-                                        <th>Vendor Id</th>
                                         <th>Vendor Name</th>
                                         <th>Company</th>
+                                        <th>Bank Detail</th>
                                         <th>Wallet Balance</th>
                                         <th>Requested On</th>
                                         <th>Amount</th>
@@ -97,9 +97,9 @@ $(function(){
         "order": [[ 0, "ASC" ]],
         "columns": [
             {"data": "vendor_wallet_withdrawal_id"},
-            {"data": "vendor_wallet_withdrawal_vendor_id"},
             {"data": "vendor_full_name"},
             {"data": "vendor_company"},
+            {"data": null},
             {"data": "vendor_wallet_amount"},
             {"data": "vendor_wallet_withdrawal_request_on"},
             {"data": "vendor_wallet_withdrawal_amount"},
@@ -107,8 +107,25 @@ $(function(){
             {"data": null}
         ],
         "columnDefs": [
-            {"responsivePriority": '1', "targets": [0, 1, 2, 3, 4, 5, 6], searchable: true, orderable: true},
-            {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
+            {"responsivePriority": '1', "targets": [0, 1, 2, 4, 5], searchable: true, orderable: true},
+            {"responsivePriority": '2', "targets": [3], searchable: true, orderable: true, data: null,
+                "render": function (data, type, row) {
+                    
+                    var string = ' <td>';
+
+                    if(row.bank_id != '' && row.bank_id != null){
+
+                        string += '<a class="badge btn-social-icon bg-green getBankDetail" title="Bank Detail"><i class="fa fa-bank"></i></a>';
+                    
+                    }else{
+                        string += '--Not Available--';
+                    }
+             
+                    string += '</td>';
+                    return string;
+                }
+            },
+            {"responsivePriority": '2', "targets": [6], searchable: true, orderable: true, data: null,
                 "render": function (data, type, row) {
                     
                     var string = ' <td>';
@@ -127,7 +144,7 @@ $(function(){
                     return string;
                 }
             },
-            {"responsivePriority": '2', "targets": [8], searchable: true, orderable: true, data: null,
+            {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
                 "render": function (data, type, row) {
 
                     var string = ' <td>';
@@ -228,7 +245,7 @@ $(function(){
                 'type': 'blue',
                 'typeAnimated': true,
                 'animation': 'scaleX',
-                'content': 'Are you sure you want to reject the withdrawal request?',
+                'content': 'Are you sure you want to reject the withdrawal request?',               
                 buttons: {
                     confirm:{ 
                         btnClass: 'btn-green',
@@ -265,6 +282,33 @@ $(function(){
                 }
             });
         
+    });
+
+    /* get Bank details of a vendor*/
+    $(document).on('click', '.getBankDetail', function(e){
+        e.preventDefault();
+        var rowData = walletWithdrawalList.row($(this).closest('tr')).data();
+            var vendor_comp = rowData.vendor_company;
+
+            var content = "<ul><li><b>Bank Name:</b> "+rowData.bank_name+"</li><li><b>Holder Name:</b> "+rowData.bank_holder_name+"</li><li><b>Account Number:</b> "+rowData.bank_account_number+"</li><li><b>IFSC Code:</b> "+rowData.bank_ifsc_code+"</li><li><b>Address:</b> "+rowData.bank_address+"</li></ul>";
+
+        $.confirm({
+                title: '<b>Bank Details:</b> <i>'+vendor_comp+'</i>',               
+                'useBootstrap': true,
+                'type': 'blue',
+                'typeAnimated': true,
+                'animation': 'scaleX',
+                'content': content,
+                'columnClass': 'col-md-6 col-md-offset-3',
+                buttons: {
+                    ok:{
+                        btnClass: 'btn-default bg-maroon',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
     });
     
 });

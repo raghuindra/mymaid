@@ -25,7 +25,7 @@ class Email_lib extends Base_lib{
         $message .= "<p>Dear User,</p><br>";
         $message .= "<p>Your Login Credentials:</p>";
         $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-        $message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
+        $message .= "<p>Password: &nbsp; <b>Same password as you provided during registration.</b></p>";
         $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
         $message .= "</body></html>";
         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
@@ -100,6 +100,7 @@ class Email_lib extends Base_lib{
         $message .= "<p>Dear User,</p><br>";
         $message .= "<p>Your Service has been accepted by Company: " . $info->company_name . "</p>";
         $message .= "<p>Contact On: +60" . $info->company_mobile . " / +60" . $info->company_landphone . "</p>";
+        $message .= "<p>Please log in to your account to see the service members details.</p><br>";
         $message .= "</body></html>";
         $this->ci->page_load_lib->send_np_email($sender, $recipient, $subject, $message, array('mailtype' => 'html'));
 

@@ -154,6 +154,7 @@ $route['admin_settings.html']                   = "admin/adminSettings";
 $route['updateConfig.html']                     = "admin/updateConfigSettings";
 $route['a_new_orders.html']                     = "admin/newOrders";
 $route['a_listNewOrders.html']                  = "admin/listNewOrders";
+$route['get_custome_user.html']					= "person/get_custome_user";
 $route['a_active_ordrers.html']                 = "admin/activeOrders";
 $route['a_ActiveOrderList.html']                = "admin/listActiveOrders";
 $route['a_cancelOrder.html']                    = "admin/cancelOrder";

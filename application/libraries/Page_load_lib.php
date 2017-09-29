@@ -163,11 +163,5 @@ class Page_load_lib {
 		//echo $this->ci->email->print_debugger();
 	}
         
-        
-	
-	
-	
-	
-	
 
 }

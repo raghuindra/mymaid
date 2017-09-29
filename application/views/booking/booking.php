@@ -630,7 +630,7 @@
                                     <div class="ct-image">
                                         <img src="./assets/images/icon-calendar.png" alt="">
                                     </div>
-                                    <p class="ct-text sel-datetime"><span class="cart_session" ></span><span class="cart_date" data-date_val=""></span><span class="space_between_date_time hidden" style=""> @ </span><span class="cart_time" data-time_val=""></span></p>
+                                    <p class="ct-text sel-datetime"><span class="cart_session" ></span><span class="cart_date" data-date_val=""></span><!-- <span class="space_between_date_time" style=""> @ </span> --><span class="cart_time" data-time_val=""></span></p>
                                 </div>
                                 <div class="ct-summary frequency_value">
                                     <div class="ct-image f_dis_img">
@@ -685,41 +685,42 @@
                         <div class="clearfix"></div>
                     </div>
                     <!-- features -->
-                    <!--
-                    <div class="main-inner-container border-c  not-scroll-custom" id="ct-not-scroll">
+                    
+                    <div class="main-inner-container not-scroll-custom" id="ct-not-scroll" style="
+    border-color: white;>
 
                         <div class="ct-cart-wrapper f-l">
                             <div class="main-inner-container">
                                 
                                 <div class="mb-30"></div>
-                                <div class="features-list">
-                                    <div class="features">
-                                        <img class="feature-img" src="./assets/images/icon17.png" alt="">
+                                <div class="features-list" style="background-color: white;color: white;">
+                                    <!-- <div class="features">
+                                        <!-- <img class="feature-img" src="./assets/images/icon17.png" alt=""> 
                                         <h4 class="feature-tittle">Saves You Time</h4>
                                         <p class="feature-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                                     </div>
                                     <div class="features">
-                                        <img class="feature-img" src="./assets/images/icon21.png" alt="">
+                                         <img class="feature-img" src="./assets/images/icon21.png" alt=""> 
                                         <h4 class="feature-tittle">Safety First</h4>
                                         <p class="feature-text">contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.</p>
                                     </div>
                                     <div class="features">
-                                        <img class="feature-img" src="./assets/images/icon31.png" alt="">
+                                         <img class="feature-img" src="./assets/images/icon31.png" alt=""> 
                                         <h4 class="feature-tittle">Only The Best Quality</h4>
                                         <p class="feature-text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-                                    </div>
+                                    </div> -->
                                     <div class="features">
-                                        <img class="feature-img" src="./assets/images/icon41.png" alt="">
+                                        <!-- <img class="feature-img" src="./assets/images/icon41.png" alt=""> -->
                                         <h4 class="featureeature-tittle">Easy To Get Help</h4>
                                         <p class="feature-text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
                                     </div>
                                     <div class="features">
-                                        <img class="feature-img" src="./assets/images/icon51.png" alt="">
+                                        <!-- <img class="feature-img" src="./assets/images/icon51.png" alt=""> -->
                                         <h4 class="feature-tittle">Seamless Communication</h4>
                                         <p class="feature-text">All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
                                     </div>
                                     <div class="features">
-                                        <img class="feature-img" src="./assets/images/icon61.png" alt="">
+                                        <!-- <img class="feature-img" src="./assets/images/icon61.png" alt=""> -->
                                         <h4 class="feature-tittle">Cash-Free Payment</h4>
                                         <p class="feature-text"> It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.</p>
                                     </div>
@@ -727,7 +728,7 @@
 
                             </div>
                         </div>
-                    </div> -->
+                    </div> 
                 </div>
                 <!-- right side card end -->
 

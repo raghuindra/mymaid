@@ -2160,7 +2160,7 @@ class Admin_lib extends Base_lib{
         if($this->ci->session->userdata('user_id') != null){
 
                 $requests = $this->model->getVendorWithdrawalRequest();
-                
+                //print_r($requests); exit;
                 if($requests) {
                     $result = array();
                     $i = 0;
@@ -2174,7 +2174,15 @@ class Admin_lib extends Base_lib{
                         $result[$i]['vendor_wallet_withdrawal_id']          = $request->vendor_wallet_withdrawal_id;
                         $result[$i]['vendor_wallet_withdrawal_approval_status'] = $request->vendor_wallet_withdrawal_approval_status;
                         $result[$i]['vendor_wallet_withdrawal_approved_on'] = $request->vendor_wallet_withdrawal_approved_on;
-                        
+
+                        //vendor bankd details
+                        $result[$i]['bank_id'] = $request->bank_id;
+                        $result[$i]['bank_name'] = $request->bank_name;
+                        $result[$i]['bank_holder_name'] = $request->bank_holder_name;
+                        $result[$i]['bank_account_number'] = $request->bank_account_number;
+                        $result[$i]['bank_ifsc_code'] = $request->bank_ifsc_code;
+                        $result[$i]['bank_address'] = $request->bank_address;
+
                         $i++;
                     }
                     $this->_status = true;

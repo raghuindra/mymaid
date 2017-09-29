@@ -33,7 +33,7 @@
             <a href="<?php echo base_url().'home.html#contact';?>" style="">Contact Us</a>
         </div>
     </div>
-    <p>Copyright © 2017 MyMaidz. All rights reserved.</p>
+    <p>Copyright © 2017 MyMaidz.com by Advance Dreams Venture Sdn. Bhd. All rights reserved</p>
 </footer>
 <?php } ?>
 

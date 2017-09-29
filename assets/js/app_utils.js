@@ -34,6 +34,10 @@
         }
     }
 
+    function setTwoNumberDecimal(event) {
+        return event.value = parseFloat(event.value).toFixed(2);
+    }
+
     function resetForm($form) {
         $form.find('input:text, input:password, input:file, select, textarea').val('');
         $form.find(':input[type=number]').val('');
@@ -55,7 +59,7 @@
                 if (result.status === true) {
                     //notifyMessage('success', result.message);
 
-                    $(".wallet_balance").html(result.data[0].person_wallet_amount);
+                    $(".wallet_balance").html(result.data);
                 } else {                       
                 }
 

@@ -240,10 +240,10 @@ class Admin_model extends Mm_model{
                         ->join($this->_service_frequency_offer, 'service_frequency_offer_id = booking_frequency_frequency_offer_id','left')
                         ->join($this->_service_frequency, 'service_frequency_id = service_frequency_offer_frequency_id','left')
                         ->join($this->_person, 'person_id = booking_user_id','left')
-                        ->group_start()
-                        ->where('booking_service_date >', $now)
-                        ->or_where('booking_service_date =', $now)
-                        ->group_end()
+                        //->group_start()
+                        //->where('booking_service_date >', $now)
+                        //->or_where('booking_service_date =', $now)
+                        //->group_end()
                         ->where('booking_vendor_company_id IS NULL', null)             
                         ->where('booking_cancelled_by IS NULL', null)
                         ->where('booking_status', Globals::BOOKING_PROCESSING)
@@ -359,6 +359,7 @@ class Admin_model extends Mm_model{
                         ->from($this->_vendor_wallet_withdrawal)
                         ->join($this->_person, 'person_id = vendor_wallet_withdrawal_vendor_id','left')
                         ->join($this->_vendor_company, 'company_person_id = vendor_wallet_withdrawal_vendor_id','left')
+                        ->join($this->_bank_details, 'bank_person_id = vendor_wallet_withdrawal_vendor_id','left')
                         ->get()
                         ->result();
     }

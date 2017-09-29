@@ -171,7 +171,7 @@ $(function(){
             'content': '' +
                 '<div class="row"><div class="col-xs-12"><div class="form-group">' +
                 '<label class="col-sm-3 control-label">Amount</label><div class="col-sm-6">' +
-                '<input type="text" placeholder="withdrawal amount" value="" class="name withdrawAmountReq form-control" />' +
+                '<input type="number" placeholder="withdrawal amount" value="" class="name withdrawAmountReq form-control" onchange="setTwoNumberDecimal(this)" step="0.25"/>' +
                 '</div></div></div></div>', 
             buttons: {
                 confirm:{ 
