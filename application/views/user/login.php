@@ -66,6 +66,12 @@
                                 <div class="button facebook btn btn-danger" style="height: 40px;width: 120px;margin-top: 0px; float:right;"><a class="" href="<?php echo base_url().'user_register.html'; ?>">Register</a> </div>
                             </div>
                         </div>
+                        <!-- <div class="row">
+                              <div class="col-lg-12" style="text-align: -webkit-center;">
+                                <div class="g-recaptcha" data-sitekey="<?php //echo $config['captcha_site_key']; ?>"></div>
+                              </div>
+                        </div>
+                        <div class="row"><div class="col-lg-12" style="text-align: -webkit-center;"></div></div> -->
                     </form>
                 </div>
             </div>
@@ -84,6 +90,17 @@
          $(document).ajaxStart(function(){
              $("#ajax_loader").show();
          });    
-    });    
+    }); 
+
+    // $(function(){
+    //   $("#login_box").submit(function(event) {
+    //     var recaptcha = $("#g-recaptcha-response").val();
+    //      if (recaptcha === "") {
+    //         event.preventDefault();
+    //         notifyMessage('error', 'Please check the reCaptcha.!!');
+    //      }
+    //    });
+
+    // });   
 </script>
 

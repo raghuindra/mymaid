@@ -256,22 +256,24 @@ $(function() {
             
 
             var addonId = $(this).attr('data-ids');
-            var obj = {'addonId':addonId, 'addonCount':count};
-            Booking.setAddon(addonId, obj);
-            var Addon = ServiceObjects.ServiceAddonsObject;
-            var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
-            if(count >= 0){
-                Booking.deductAddonPrice(price);
-            
-                $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
-                //Booking.calculateTotalPrice(price);
-                $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
-                var addonName = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_name;
-                Booking.setAddonName(addonName,count);
+            if(addonId !== '0'){
+                var obj = {'addonId':addonId, 'addonCount':count};
+                Booking.setAddon(addonId, obj);
+                var Addon = ServiceObjects.ServiceAddonsObject;
+                var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
+                if(count >= 0){
+                    Booking.deductAddonPrice(price);
+                
+                    $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
+                    //Booking.calculateTotalPrice(price);
+                    $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+                    var addonName = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_name;
+                    Booking.setAddonName(addonName,count);
+                }
+                RenderView.showAddonNames();
+                //console.log(Booking.getAddon());
+                //console.log("Addon Count: "+ count);
             }
-            RenderView.showAddonNames();
-            //console.log(Booking.getAddon());
-            //console.log("Addon Count: "+ count);
         });
         
     $(document)
@@ -288,22 +290,24 @@ $(function() {
                 .val(count);
         
             var addonId = $(this).attr('data-ids');
-            var obj = {'addonId':addonId, 'addonCount':count};
-            Booking.setAddon(addonId, obj);
-            //console.log(Booking.getAddon());
-            //console.log("Addon Count: "+ count); 
-            var Addon = ServiceObjects.ServiceAddonsObject;
-            var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
-            if(count >= 0){
-                Booking.addAddonPrice(price);
-            
-                $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
-                //Booking.calculateTotalPrice(price);
-                $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
-                var addonName = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_name;
-                Booking.setAddonName(addonName,count);
+            if(addonId !== '0'){
+                var obj = {'addonId':addonId, 'addonCount':count};
+                Booking.setAddon(addonId, obj);
+                //console.log(Booking.getAddon());
+                //console.log("Addon Count: "+ count); 
+                var Addon = ServiceObjects.ServiceAddonsObject;
+                var price = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_price_price;
+                if(count >= 0){
+                    Booking.addAddonPrice(price);
+                
+                    $("#ct-price-scroll-new .cart_sub_total").html(Booking.getPrice());           
+                    //Booking.calculateTotalPrice(price);
+                    $("#ct-price-scroll-new .cart_total").html(Booking.calculateTotalPrice());
+                    var addonName = Addon.getServiceAddon(Booking.getService(), addonId).service_addon_name;
+                    Booking.setAddonName(addonName,count);
+                }
+                RenderView.showAddonNames();
             }
-            RenderView.showAddonNames();
         });
     
     //Right Price Floater DIV

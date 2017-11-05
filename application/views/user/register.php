@@ -88,11 +88,11 @@
                                 <p><a href="./user_login.html"><strong>Already Have Account?</strong></a></p>
                             </div>
                         </div>
-                        <div class="text-center"><strong>Or</strong></div>
+                        <!-- <div class="text-center"><strong>Or</strong></div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="button google"><i class="fa fa-google-plus"></i>Signup with Google</div>
-                            </div>
+                            </div> -->
                         </div>
                     </form>
                 </div>

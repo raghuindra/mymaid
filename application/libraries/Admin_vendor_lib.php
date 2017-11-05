@@ -136,14 +136,12 @@ class Admin_vendor_lib extends Base_lib{
                     /*Admin*/ $this->sendSMS('+60146771436', "Request approved for vendor, ".$result[0]->person_first_name." ".$result[0]->person_last_name.").");
                     /*Admin*/ $this->sendSMS('+60125918491', "Request approved for vendor, ".$result[0]->person_first_name." ".$result[0]->person_last_name.").");
                     
-                    //Email
-                    $sender = $this->ci->data['config']['sender_email'];
+                        //Email
+                        $sender = $this->ci->data['config']['sender_email'];
                         $recipient = $result[0]->person_email;
-                        $subject = "Account Approved";
-                        $message = "<html><body>";
-                        $message .= "<p>Hi Vendor,</p><br>";
-                        $message .= "<p>Congratulations your request is approved</p>";                       
-                        $message .= "</body></html>";
+                        //Account Approval Email
+                        $this-> ci -> email_lib-> vendor_registration_approval_mail($sender, $recipient);
+                        
                         $this->ci->load->library('page_load_lib');
                         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
                         /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'alaken.adv@gmail.com',$subject,$message,array('mailtype'=>'html'));

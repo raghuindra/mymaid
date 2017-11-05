@@ -80,10 +80,10 @@ $(function(){
     
     /* Wallet Withdrawal Requesr List Datatable */
     var walletWithdrawalList = $('#withdrawal_request_list').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-           'excel', 'pdf'
-        ],
+        // dom: 'Bfrtip',
+        // buttons: [
+        //    'excel', 'pdf'
+        // ],
         "responsive": true,
         "paging": true,
         "lengthChange": true,

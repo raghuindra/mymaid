@@ -416,10 +416,8 @@ class Vendor_lib extends Base_lib {
                     /* Admin */$this->ci->page_load_lib->send_np_email($sender, 'praveen.dexter@gmail.com', $subject, $message, array('mailtype' => 'html'));
 
                     //SMS                       
-                    /* Admin */ $this->sendSMS('+601124129717', "Vendor " . $this->ci->session->userdata('user_fullname') . " has added new Employee.");
-                    /* Admin */ $this->sendSMS('+60146771436', "Vendor " . $this->ci->session->userdata('user_fullname') . " has added new Employee.");
+                    /* Admin */ $this->sendSMS('+60175374794', "Vendor " . $this->ci->session->userdata('user_fullname') . " has added new Employee.");
                     /* Admin */ $this->sendSMS('+60125918491', "Vendor " . $this->ci->session->userdata('user_fullname') . " has added new Employee.");
-                    /* Admin */ $this->sendSMS('+60126570387', "Vendor " . $this->ci->session->userdata('user_fullname') . " has added new Employee.");
 
                     $this->_status = true;
                     $this->_message = $this->ci->lang->line('employee_created');
@@ -1027,14 +1025,9 @@ class Vendor_lib extends Base_lib {
                     $booking_detail = $this->model->getServiceBookingDetail($booking_id);
                     $sender = $this->ci->data['config']['sender_email'];
                     $recipient = $booking_detail[0]->person_email;
-                    $subject = "Booking Information";
-                    $message = "<html><body>";
-                    $message .= "<p>Dear User,</p><br>";
-                    $message .= "<p>Your Service has been accepted by Company: " . $company[0]->company_name . "</p>";
-                    $message .= "<p>Contact On: +60" . $company[0]->company_mobile . " / +60" . $company[0]->company_landphone . "</p>";
-                    $message .= "<p>Please log in to your account to see the service members details.</p><br>";
-                    $message .= "</body></html>";
-                    $this->ci->page_load_lib->send_np_email($sender, $recipient, $subject, $message, array('mailtype' => 'html'));
+
+                    //Email
+                    $this->ci->email_lib->service_confirmation_mail_to_user($booking_detail[0]);
 
                     // SMS
                     $this->sendSMS("+60" . $booking_detail[0]->person_mobile, "Your Service request has been accepted by company: " . $company[0]->company_name);
@@ -1350,6 +1343,58 @@ class Vendor_lib extends Base_lib {
 
     function getVendorAmountCreditForService($booking_id, $person_id) {
         $this->model->getVendorServiceAmountCredited($booking_id, $person_id);
+    }
+
+
+    /** Function to check any active service is available for the archiving pincode.
+    * @param null
+    * @return JSON returns the JSON with boolean status.    
+    */
+    function _checkActiveServiceForPincode(){
+
+        $this->ci->load->library('form_validation');
+        $person_id = $this->ci->session->userdata('user_id');
+        $this->resetResponse();
+
+        $this->ci->form_validation->set_rules('locationId', 'Location Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('archive', 'Archive Status', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+
+        if ($this->ci->form_validation->run() == FALSE) {
+            return array('status' => false, 'message' => $this->ci->lang->line('Validation_error'));
+        } else {
+
+            $location_id = $this->ci->input->post('locationId', true);
+            $archive = intval($this->ci->input->post('archive', true));
+
+            if( $archive == Globals::ARCHIVE ){
+
+                $result = $this->model->get_tb('mm_vendor_service_location', 'vendor_service_location_id,vendor_service_location_postcode', array('vendor_service_location_id' => $location_id, 'vendor_service_location_vendor_id' => $person_id))->result();
+                if (!empty($result)) {
+
+                    $postcode   = $result[0]->vendor_service_location_postcode;
+                    $company_id = $this->ci->session->userdata('company_id');
+
+                    $bookings = $this->model->checkVendorServiceBookingsForPostcode($company_id, $postcode);
+                    if(!empty($bookings)){
+                        
+                        $this->_message = "Some of your active service/s has to serve this location. Still you want to archive?";
+                    }else{
+                        
+                        $this->_message = "Are you sure you want to archive?";
+                    }                        
+                    $this->_status = true;
+
+                }else{
+                    $this->_message = $this->ci->lang->line('invalid_data');
+                    $this->_status = false;
+                }
+            }else{
+                $this->_status = true;
+                $this->_message = "Are you sure you want to un-archive?";
+            }
+        }
+
+        return $this->getResponse();
     }
 
 }

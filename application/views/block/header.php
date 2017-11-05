@@ -68,7 +68,7 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-        
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script src="<?php echo js_url('app_utils'); ?>"></script>
     </head>
 <?php if(isset($login)){?>

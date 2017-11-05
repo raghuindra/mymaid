@@ -99,7 +99,7 @@ $user = $response['other'][0];
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="https://test.mymaidz.com/assets/images/YellowMM_240.png" style="width:85%; max-width:200px;">
+                                <img src="https://www.mymaidz.com/assets/images/YellowMM_240.png" style="width:85%; max-width:200px;">
                             </td>
                             
                             <td>
@@ -175,18 +175,21 @@ $user = $response['other'][0];
                     <?php echo  $name = ($response['other'])? $response['other'][0]->service_name: ''; ?>              
                 </td>
             </tr>
-            
+
+            <?php if(($response['other']) && $response['other'][0]->service_name != 'Basic Home Cleaning'){ ?>
             <tr class="item">
                 <td>
                     Package
                 </td>
                 
                 <td>
-                    <?php 
+                    <?php                     
                         echo $package =  ($response['other'])? $response['other'][0]->building_name.", ".$response['other'][0]->service_package_bedroom." Bedroom(s), ".$response['other'][0]->service_package_bathroom." Bathroom(s), ".$response['other'][0]->area_size." ".$response['other'][0]->area_measurement: '';
                     ?> 
                 </td>
             </tr>
+            <?php } ?>
+
             <tr class="item last">
                 <td>
                     Frequency
@@ -285,7 +288,13 @@ $user = $response['other'][0];
                    <b>Total: <?php echo "MYR ".$response['other'][0]->booking_amount; ?></b>
                 </td>
             </tr>
-        </table>
+        </table>        
     </div>
+
+    <br/></br><p><b>Thanks</b></p>
+    <p><b>Admin Mymaidz.com</b></p><br/>
+    <p>For more info kindly browse our website <a href='https://www.mymaidz.com'>www.mymaidz.com</a></p>
+    <p>Like our page at <a href='https://www.facebook.com/mymaidz/'>https://www.facebook.com/mymaidz/</a></p>    
+
 </body>
 </html>

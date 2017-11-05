@@ -9,7 +9,7 @@ class Vendor extends Base {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library(array('vendor_lib', 'page_load_lib'));
+        $this->load->library(array('vendor_lib', 'page_load_lib', 'email_lib'));
         $this->uLang = $this->session->userdata('user_lang');
         $this->lang->load("vendor", $this->uLang);
         //$this->lang->load("vendor_msg", $this->uLang);
@@ -496,6 +496,25 @@ class Vendor extends Base {
     */
     public function listCanceledOrders(){
         $response = $this->vendor_lib->_listCanceledOrders(); 
+        echo json_encode($response);
+
+    }
+
+    /** Function to check any active service is available for the archiving pincode.
+    * @param null
+    * @return JSON returns the JSON with boolean status.    
+    */
+    public function checkActiveServiceForPincode(){
+
+        if(isset($_POST['locationId'])){
+            $response = $this->vendor_lib->_checkActiveServiceForPincode();
+        }else{
+            $response = array(
+                'status' => false,
+                'message' => $this->lang->line('invalid_request'),
+                'data' => array()
+            );
+        }
         echo json_encode($response);
 
     }

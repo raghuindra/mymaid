@@ -51,16 +51,16 @@
         <div class="ct-loading-main" style="display: none;">
             <div class="loader">Loading...</div>
         </div>
-        <div class="ct-main-wrapper">
+        <div class="ct-main-wrapper"  style="background-color: #D2D6DE;">
             <div class="container">
                 <!-- left side main booking form -->
-                <div class="ct-main-left ct-sm-7 ct-md-7 ct-xs-12 mt-30 br-5 np">
+                <div class="ct-main-left ct-sm-7 ct-md-7 ct-xs-12 mt-30 br-5 np" style="box-shadow: 0 5px 20px #000;">
                     <div class="ct-sm-12 ct-md-12 ta-c ct-location-header">
                         <h2 class="header2"><a href="<?php echo base_url();?>" style="text-decoration: none;">MyMaidz</a></h2>
-                        <h6 class="header6 hidden">Bengaluru, Banasawadi, 586112<span class="ct-company-phone">
-                            </span></h6>
+                        <!-- <h6 class="header6 hidden">Bengaluru, Banasawadi, 586112<span class="ct-company-phone">
+                            </span></h6> -->
 
-                        <a class="ct-link ct-mybookings" target="_blank" href="#">My Bookings</a>
+                        <!-- <a class="ct-link ct-mybookings" target="_blank" href="#">My Bookings</a> -->
                     </div>
                     <!--                    <div class="ct-list-services ct-common-box">
                                             <div class="ct-list-header">
@@ -113,9 +113,9 @@
                         <!-- Start Package Div Section -->
                         <div class="packageDiv">
                             <!-- 1.box style services Package selection radio selection -->
-                            <ul class="services-list">
+                            <!-- <ul class="services-list">
 
-                            </ul>
+                            </ul> -->
 
                         </div>
                         <!-- end Package Div Section -->
@@ -123,7 +123,7 @@
                     <!-- end module third area based -->
 
                     <!-- Choose Bulding Type Div only for Basic Home Clenaing -->
-                    <div class="ct-user-info-main ct-common-box building_type_div hide_allsss" style="border-top: 1px solid RGBA(0, 0, 0, 0.13);margin-bottom: 20px; display: none;">
+                    <div class="ct-user-info-main ct-common-box building_type_div hide_allsss" style="border: 1px solid RGBA(0, 0, 0, 0.13);margin-bottom: 20px; display: none; border-radius: 15px;">
                         <div class="ct-list-header">
                             <h3 class="header3">Choose House Type</h3>
 
@@ -160,7 +160,55 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ct-extra-services-list service-method-selection-main ct-common-box add_on_lists hide_allsss_addons" style="border-color: white;">
+                            <div class="ct-list-header">
+                                <h3 class="header3" style="display:none;"></h3>
+                                <p class="ct-sub" style="display:none;"></p>
+                            </div>
+                                <ul class="addon-service-list fl remove_addonsss">
+                                    <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
+                                        <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess" data-id="4" id="ct-addon-4" data-mnamee="ad_unit4">
+                                        <label class="ct-addon-ser border-c" for="ct-addon-4">
+                                            
+                                            <div class="ct-addon-img"><img src=<?php echo base_url()."/assets/images/bedroom.png"; ?>></div>
+
+                                        </label>
+                                        <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid4" style="display: none;">
+
+                                            <div class="ct-btn-group">
+                                                <button data-ids="0" id="minus4" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="0" data-duration_value="" data-mnamee="ad_unit4" data-method_name="Damaged Flooring" data-service_id="0" data-rate="" data-method_id="0" data-type="addon">-</button>
+
+                                                <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit4" data-rate="10">
+
+                                                <button data-ids="0" id="add4" data-db-qty="5" data-mnamee="ad_unit4" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="0" data-service_id="0" data-method_id="0" data-duration_value="" data-method_name="Damaged Flooring" data-rate=""
+                                                        data-type="addon">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="addon-name fl ta-c">Bedrooms</div>
+                                    </li>
+                                    <li class="ct-sm-6 ct-md-4 ct-lg-3 ct-xs-12 mb-15 add_addon_class_selected">
+                                        <input type="checkbox" name="addon-checkbox" class="addon-checkbox addons_servicess" data-id="5" id="ct-addon-5" data-mnamee="ad_unit5">
+                                        <label class="ct-addon-ser border-c" for="ct-addon-5">
+                                            
+                                            <div class="ct-addon-img"><img src=<?php echo base_url()."/assets/images/bathroom.png"; ?>></div>
+
+                                        </label>
+                                        <div class="ct-addon-count border-c  add_minus_button add_minus_buttonid5" style="display: none;">
+
+                                            <div class="ct-btn-group">
+                                                <button data-ids="0" id="minus1" class="minus ct-btn-left ct-small-btn" type="button" data-units_id="0" data-duration_value="" data-mnamee="ad_unit5" data-method_name="Door jams" data-service_id="0" data-rate="" data-method_id="0" data-type="addon">-</button>
+
+                                                <input type="text" value="0" class="ct-btn-text addon_qty data_addon_qtyrate qtyyy_ad_unit5" data-rate="10">
+
+                                                <button data-ids="0" id="add1" data-db-qty="0" data-mnamee="ad_unit5" class="add ct-btn-right float-right ct-small-btn" type="button" data-units_id="0" data-service_id="0" data-method_id="0" data-duration_value="" data-method_name="Door jams" data-rate="" data-type="addon">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="addon-name fl ta-c">Bathrooms</div>
+                                    </li>
+                                </ul>
+                        </div>
                     </div>
+
                     <div >&nbsp;</div>
                     <!-- /. Choose Building Type. END-->
 
@@ -491,6 +539,38 @@
                             </div>
                         </div>
                         <!-- main details end -->
+
+                                        <!-- conditions and complete booking details -->
+                <div class="ct-complete-booking-main ct-sm-12 ct-md-12 mb-30 ct-xs-12 hide_allsss">
+
+                    <div class="ct-list-header">
+                        <!--<h3 class="header3"></h3>
+
+                        <p class="ct-sub"></p> -->
+
+                        <p class="ct-sub-complete-booking"><br></p>
+                    </div>
+
+                    <div class="bi-terms-agree ct-sm-12 ct-md-12 ct-xs-12">
+                        <div class="ct-custom-checkbox">
+                            <ul class="ct-checkbox-list">
+                                <li>
+                                    <input type="checkbox" name="accept-conditions" class="input-radio" id="accept-conditions">
+                                    <label for="accept-conditions" class="">
+                                        <span></span>
+                                        I have read and accepted the                                                                                     <a href="javascript:void(0)" class="ct-link">Terms &amp; Conditions</a>
+                                        and                                            <a href="javascript:void(0)" class="ct-link">Privacy Policy Link</a>.
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <label class="terms_and_condition"></label>
+                    </div>
+                    <div class="ta-center fl ct-sm-12 ct-md-12 ct-xs-12">
+                        <button type="submit" data-currency_symbol="$" id="submitBooking" class="ct-button ct-btn-xbig ct_remove_id ct-sm-12 ct-md-12 ct-xs-12">Complete Booking</button>
+                    </div>
+                </div>
+
                     </div>
                     <!-- end personal details -->
                     <!-- payment details -->
@@ -595,11 +675,12 @@
 
 
                 <!-- right side cart -->
-                <div class="ct-main-right ct-sm-4 ct-md-4 ct-xs-12 mt-30 mb-30 br-5 pull-right hide_allsss">
+                <div class="ct-main-right ct-sm-4 ct-md-4 ct-xs-12 mt-30 mb-30 br-5 pull-right hide_allsss"  style="background-color: #D2D6DE;">
 
                     <!-- <div class="main-inner-container border-c  ct-price-scroll " id="ct-price-scroll"> -->
-                    <div class="fl">
-                        <div class="main-inner-container border-c ct-price-scroll" id="ct-price-scroll-new" style="margin-top: 0px; box-shadow: rgb(231, 71, 0) 0px 0px 10px; position: absolute;">
+                    <div class="fl" style="
+    border-color: #D2D6DE;">
+                        <div class="main-inner-container border-c ct-price-scroll" id="ct-price-scroll-new" style="margin-top: 0px; box-shadow: 0 5px 20px #000; position: absolute;">
                             <div class="ct-step-heading">
                                 <h3 class="header3">Booking Summary</h3></div>
                             <div class="ct-cart-wrapper f-l" id="">
@@ -687,13 +768,15 @@
                     <!-- features -->
                     
                     <div class="main-inner-container not-scroll-custom" id="ct-not-scroll" style="
-    border-color: white;>
+    border-color: #D2D6DE;">
 
-                        <div class="ct-cart-wrapper f-l">
-                            <div class="main-inner-container">
+                        <div class="ct-cart-wrapper f-l" style="
+    border-color: #D2D6DE;">
+                            <div class="main-inner-container" style="
+    border-color: #D2D6DE;">
                                 
-                                <div class="mb-30"></div>
-                                <div class="features-list" style="background-color: white;color: white;">
+                                
+                                <div class="features-list" style="background-color: #D2D6DE;color: #D2D6DE;">
                                     <!-- <div class="features">
                                         <!-- <img class="feature-img" src="./assets/images/icon17.png" alt=""> 
                                         <h4 class="feature-tittle">Saves You Time</h4>
@@ -709,17 +792,20 @@
                                         <h4 class="feature-tittle">Only The Best Quality</h4>
                                         <p class="feature-text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
                                     </div> -->
-                                    <div class="features">
+                                    <div class="features" style="
+    border-color: #D2D6DE;">
                                         <!-- <img class="feature-img" src="./assets/images/icon41.png" alt=""> -->
                                         <h4 class="featureeature-tittle">Easy To Get Help</h4>
                                         <p class="feature-text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
                                     </div>
-                                    <div class="features">
+                                    <div class="features" style="
+    border-color: #D2D6DE;">
                                         <!-- <img class="feature-img" src="./assets/images/icon51.png" alt=""> -->
                                         <h4 class="feature-tittle">Seamless Communication</h4>
                                         <p class="feature-text">All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
                                     </div>
-                                    <div class="features">
+                                    <div class="features" style="
+    border-color: #D2D6DE;">
                                         <!-- <img class="feature-img" src="./assets/images/icon61.png" alt=""> -->
                                         <h4 class="feature-tittle">Cash-Free Payment</h4>
                                         <p class="feature-text"> It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.</p>
@@ -731,53 +817,6 @@
                     </div> 
                 </div>
                 <!-- right side card end -->
-
-                <!-- conditions and complete booking details -->
-                <div class="ct-complete-booking-main ct-sm-7 ct-md-7 mb-30 ct-xs-12 hide_allsss">
-
-                    <div class="ct-list-header">
-                        <!--<h3 class="header3"></h3>
-
-            <p class="ct-sub"></p> -->
-
-                        <p class="ct-sub-complete-booking"><br></p>
-                    </div>
-
-                    <!-- <div class="ct-complete-booking ct-md-12">
-                        <h5 class="ct-cancel-booking">Cancellation Policy</h5>
-
-                        <div class="ct-cancel-policy">
-                            <p>Free cancellation before redemption</p>
-                            <span class="show-more-toggler ct-link">Show More</span>
-                            <ul class="bullet-more">
-                                <li>Full refund if cancelled within 24 hours of placing the order. If you cancel the order more than 24 hours, you can get a credit note for the amount paid. If cancelled in less than 24 hours before time of appointment/stay
-                                    or in case of no-show, order will not be refunded.</li>
-                            </ul>
-                        </div>
-                    </div> -->
-
-                    <div class="bi-terms-agree ct-md-12">
-                        <div class="ct-custom-checkbox">
-                            <ul class="ct-checkbox-list">
-                                <li>
-                                    <input type="checkbox" name="accept-conditions" class="input-radio" id="accept-conditions">
-                                    <label for="accept-conditions" class="">
-                                        <span></span>
-                                        I have read and accepted the                                                                                     <a href="javascript:void(0)" class="ct-link">Terms &amp; Conditions</a>
-                                        and                                            <a href="javascript:void(0)" class="ct-link">Privacy Policy Link</a>.
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <label class="terms_and_condition"></label>
-                    </div>
-                    <div class="ta-center fl">
-                        <div class="ct-loading-main-complete_booking" style="display: none;">
-                            <div class="loader-complete_booking">Loading...</div>
-                        </div>
-                        <button type="submit" data-currency_symbol="$" id="submitBooking" class="ct-button ct-btn-big ct_remove_id">Complete Booking</button>
-                    </div>
-                </div>
 
 
                 <a href="javascript:void(0)" class="ct-back-to-top br-2" style="display: none;"><i class="icon-arrow-up icons"></i></a>

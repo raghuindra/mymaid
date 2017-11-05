@@ -61,19 +61,15 @@
         <div class="col-lg-12">
             <h2 class="text-center">About Us</h2>
             <div class="row">              
-                <p>“MyMaidz.com” is brainchild of 3 young entrepreneurs after realized the problem
-                    faced by homeowners to keep home in tiptop condition.</p>
+                <p>“MyMaidz.com” is a not cleaning company or cleaning service provider. “MyMaidz.com” is a bridge or online platform service system between customer and cleaning service provider whereby we are enable customers to book cleaning service through online within 60 secs from any location.</p>
 
-                <p >“MyMaidz.com” is not cleaning company or cleaning provider. “MyMaidz.com” is
-                a bridge or Service now system between customer and cleaning provider, we use
-                Information Technology as platform and enable customer to book cleaning
-                service within 60 sec from any point of location</p>
+                <p >We believe that “MyMaidz.com” not only will ease customers but also improve the productivity of small businesses, micro-entrepreneurs and create more entrepreneurs in market. MyMaidz.com will definitely give a massive impact to Malaysian Entrepreneurs and Customers.</p>
             </div>
             
         </div>
     </div>
     
-    <!--Reviews  -->
+    <!--Reviews 
     <div class="review-container">
         <div class="container">
             <h2>What our customers say</h2>
@@ -153,6 +149,7 @@
             </div>
         </div>
     </div>
+     -->
 
     <div class="container container-home">
         <div class="col-lg-12">
@@ -184,10 +181,15 @@
             </div>
         </div>
         <p class="actions text-center">
-            <span class="link_to_another_page"><a class="btn btn-success btn-lg" href="/apply">Get to know your cleaners!</a></span>
+       <!-- <span class="link_to_another_page"><a class="btn btn-success btn-lg" href="/apply">Get to know your cleaners!</a></span> -->
         </p>
     </div>
-    <div class="quick-book">
+    <div class="review-container">
+        <div class="container">
+            
+        </div>
+    </div>
+<!--     <div class="quick-book">
         <div class="container">
             <div class="search-container">
                 <div class="table-outer">
@@ -211,7 +213,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="container container-home">
         <div class="col-lg-12">
             <h2 class="text-center">Register to become a cleaner now!</h2>
@@ -250,11 +252,17 @@
 
             </div>
         </div>
+
         <p class="actions">
             <span class="link_to_another_page"><a class="btn btn-success btn-lg" href="#">Become a cleaner</a></span>
         </p>
     </div>
 
+    <div class="review-container">
+        <div class="container">
+            
+        </div>
+    </div>
 
     <!--==========================
       Contact Section
@@ -278,12 +286,12 @@
 
                         <div>
 
-                            <p style="font-size: 14px">Email: mymaidz16@gmail.com</p>
+                            <p style="font-size: 14px">Email: marketing@mymaidz.com</p>
                         </div>
 
                         <div>
             <!--              <i class="fa fa-phone"></i>-->
-                            <p style="font-size: 14px">Tel: 0125918491</p>
+                            <p style="font-size: 14px">Tel: 0175374794</p>
                         </div>
 
                     </div>
@@ -318,9 +326,9 @@
                         <div>
 
                             <p style="font-size: 14px">
-                                9 am to 5 pm (Daily)
-
-                                We're Closed on Public Holidays
+                                9 am to 5 pm (Monday to Friday)<br/>
+                                9 am to 1pm (Saturdays)<br/>
+                                <i>We're Closed on Public Holidays</i>
                             </p>
                         </div>
 

@@ -125,7 +125,29 @@ $(function(){
                     return string;
                 }
             },
+            {"responsivePriority": '2', "targets": [4], searchable: true, orderable: true, data: null,
+                "render": function (data, type, row) {
+                    
+                    var string = ' <td>';
+
+                    string += 'RM '+row.vendor_wallet_amount;
+             
+                    string += '</td>';
+                    return string;
+                }
+            },
             {"responsivePriority": '2', "targets": [6], searchable: true, orderable: true, data: null,
+                "render": function (data, type, row) {
+                    
+                    var string = ' <td>';
+
+                    string += 'RM '+row.vendor_wallet_withdrawal_amount;
+             
+                    string += '</td>';
+                    return string;
+                }
+            },
+            {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
                 "render": function (data, type, row) {
                     
                     var string = ' <td>';
@@ -144,7 +166,7 @@ $(function(){
                     return string;
                 }
             },
-            {"responsivePriority": '2', "targets": [7], searchable: true, orderable: true, data: null,
+            {"responsivePriority": '2', "targets": [8], searchable: true, orderable: true, data: null,
                 "render": function (data, type, row) {
 
                     var string = ' <td>';

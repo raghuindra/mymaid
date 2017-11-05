@@ -389,8 +389,32 @@ $this->load->view("block/vendor_leftMenu");
             }
 
             $.confirm({
+                icon: 'fa fa-warning',
                 title: 'Confirm!',
                 content: message,
+                content: function(){
+                    var self = this;
+                    //self.setContent('Checking callback flow');
+                    return $.ajax({
+                        url: '<?php echo base_url() . 'check_active_service_for_pincode.html'; ?>',
+                        dataType: 'html',
+                        method: 'post',
+                        data:{'archive':archive, 'locationId': locationId}
+                    }).done(function (response) {
+                        var res = JSON.parse(response);
+                        self.setContentAppend(res.message);
+                    }).fail(function(){
+                        self.setContentAppend('<br>Fail to load!');
+                    }).always(function(){
+                        //self.setContentAppend("sdsa");
+                    });
+                },
+                contentLoaded: function(data, status, xhr){
+                    //self.setContentAppend(data);
+                },
+                onContentReady: function(){
+                    
+                },
                 'useBootstrap': true,
                 'type': 'blue',
                 'typeAnimated': true,

@@ -7,6 +7,13 @@ class Globals
     const ROLE_VENDOR               = 'ROLE_VENDOR';
     const ROLE_ADMIN                = 'ROLE_ADMIN';
     const ROLE_FREELANCER           = 'ROLE_FREELANCER';
+    const ROLE_SUPER_ADMIN          = 'ROLE_SUPER_ADMIN';
+
+    const ROLE_USER_ID              = 1;
+    const ROLE_VENDOR_ID            = 3;
+    const ROLE_ADMIN_ID             = 2;
+    const ROLE_FREELANCER_ID        = 4;
+    const ROLE_SUPER_ADMIN_ID       = 5;
     
     const PERSON_TYPE_USER          = 1;
     const PERSON_TYPE_VENDOR        = 2;

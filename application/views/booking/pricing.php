@@ -34,17 +34,18 @@
                 <div class="content">
                     <p class="price">
                         <sup>RM</sup>
-                        <span>15</span>
+                        <span>14</span>
                         <sub>/Hour.</sub>
                     </p>
 <!--                    <p class="hint">Perfect for freelancers</p>-->
                 </div>
                 <!-- /CONTENT -->
                 <!-- FEATURES -->
-                <ul class="features">
+                <ul class="features" style="height: 300px;">
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Min 4 Hour session</li>
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Price may vary per area, check price based on postcode.</li>
-                    <li><br />&nbsp;<br /><br /></li>
+                    <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Equipment and material provide by owner</li>
+                    <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Work will arrive plus minus within 1 hour. Clock start from the hour cleaner arrive</li>
                 </ul>
                 <!-- /FEATURES -->
                 <!-- PT-FOOTER -->
@@ -58,17 +59,18 @@
             <div class="block professional fl">
                 <h4 class="title">Move In/Move Out Cleaning</h4>
                 <!-- CONTENT -->
-                <div class="content">
-                    <p class="price">
+                <div class="content" style="height: 96px;">
+                    <!-- <p class="price"> 
                         <sup>RM</sup>
                         <span>250</span>
-                        <sub>/House Size.</sub>
-                    </p>
-<!--                    <p class="hint">Suitable for startups</p>-->
+                        <sub>/House Size.</sub>     
+                     </p> -->
+                    <div style="margin-top: 20px;">Coming Soon</div>
+<!--                     <p class="hint">Suitable for startups</p> -->
                 </div>
                 <!-- /CONTENT -->
                 <!-- FEATURES -->
-                <ul class="features">
+                <ul class="features" style="height: 300px;">
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Required 8 hours</li>
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Crew based on house size.</li>
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Price may vary per area, check price based on postcode</li>                    
@@ -76,7 +78,7 @@
                 <!-- /FEATURES -->
                 <!-- PT-FOOTER -->
                 <div class="pt-footer">
-                    <p style='font-size: 16px;'><a href='<?php echo base_url().'home.html';?>' style='text-decoration: none;color:white;'>Book Service</a></p>
+                    <p style='font-size: 16px;'><a href='javascript:void(0)' style='text-decoration: none;color:white;'>Book Service</a></p>
                 </div>
                 <!-- /PT-FOOTER -->
             </div>
@@ -85,18 +87,19 @@
             <div class="block business fl">
                 <h4 class="title">Deep Cleaning</h4>
                 <!-- CONTENT -->
-                <div class="content">
-                    <p class="price">
+                <div class="content" style="height: 96px;">
+                    <!-- <p class="price">
                         <sup>RM</sup>
                         <span>350</span>
                         <sub>/House Size.</sub>
-                    </p>
+                    </p> -->
+                    <div style="margin-top: 20px;">Coming Soon</div>
 <!--                    <p class="hint">For established business</p>-->
                 </div>
                 <!-- /CONTENT -->
 
                 <!-- FEATURES -->
-                <ul class="features">
+                <ul class="features" style="height: 300px;">
                    <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Required 8 hours</li>
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Crew based on house size.</li>
                     <li style='font-size: 14px;'><span class="fontawesome-cog"></span>Price may vary per area, check price based on postcode</li>                  
@@ -105,7 +108,7 @@
 
                 <!-- PT-FOOTER -->
                 <div class="pt-footer">
-                    <p style='font-size: 16px;'><a href='<?php echo base_url().'home.html';?>' style='text-decoration: none;color:white;'>Book Service</a></p>
+                    <p style='font-size: 16px;'><a href='javascript:void(0)' style='text-decoration: none;color:white;'>Book Service</a></p>
                 </div>
                 <!-- /PT-FOOTER -->
             </div>

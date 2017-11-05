@@ -51,6 +51,7 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 		<![endif]-->
 <!--        <script src="<?php //echo js_url('app.min'); ?>"></script>-->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->

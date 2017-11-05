@@ -13,7 +13,7 @@ class Person extends CI_Controller{
 
     public function __construct() {
         parent::__construct();
-        $this->load->library(array('person_lib', 'page_load_lib'));
+        $this->load->library(array('person_lib', 'page_load_lib', 'email_lib'));
         $this->load->helper(array('form', 'language'));
         $this->uLang = $this->session->userdata('user_lang'); 
         $this->person_lib->getMyAccountUrl();

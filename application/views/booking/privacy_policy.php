@@ -24,15 +24,14 @@
             <h2 class="text-center">Privacy Policy</h2>
             <div class="row" style='margin-bottom: 80px;'>
 
-                <h3>This Privacy Policy is effective as of 15 April 2017.</h3>
+                <h3>This Privacy Policy is effective as of 26 Sept 2017.</h3>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>ADVANCE DREAMS VENTURE SDN. BHD.(1211693-M) (“ADV”), may take your personal information when you communicate with us either by log in to our website or contact to our customer service and the information that we collected from you may be used and will be kept confidential. To protect your private information, we have established this Privacy Policy (the "Policy") in accordance with best practices in the industry and applicable laws and regulations. This Policy describes how we handle your personal information for our services on the mymaidz.com website and its related sites, services and tools (the "Website"). ADVANCE DREAMS VENTURE SDN. BHD is committed to complying with the Personal Data Protection Act 2010 (“PDPA”) of Malaysia.</p>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>By accepting the Policy, Terms & Conditions and the Seller Agreement in registration, you expressly consent to our collection, storage, use and disclosure of your personal information as described in this Policy.</p>
 
                 <h3>Collection of Personal Information</h3>
-                <p style='text-align: -webkit-auto;margin-bottom: 0px'>ADV does not sell, share or trade customer’s personal information collected online with third parties.
-                Personal information collected online will only be disclosed within our corporate group and to third parties for the purposes for which it was collected, as authorized and consented by you. For example, the conduct of a sales transaction of a service of your choice on our website.</p>
+                <p style='text-align: -webkit-auto;margin-bottom: 0px'>AADV does not sell, share or trade customer’s personal information collected online with third parties. Personal information collected online will only be disclosed within our corporate group and to third parties for the purposes for which it was collected, as authorized and consented by you. For example, the conduct of a sales transaction of a service of your choice on our website.</p>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>When you register a ADV account, the personal information we collect may include your:
-                    <br/>Name
+                <br/>Name
                 <br/>Delivery Address
                 <br/>Email Address
                 <br/>Telephone Number

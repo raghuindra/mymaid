@@ -124,18 +124,12 @@ class Person_lib extends Base_lib{
                         
                         $sender = $this->ci->data['config']['sender_email'];
                         $recipient = $info['person_email'];
-                        $subject = "Login Information";
-                        $message = "<html><body>";
-                        $message .= "<p>Dear User,</p><br>";
-                        $message .= "<p>Your Login Credentials:</p>";
-                        $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-                        //$message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
-                        $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
-                        $message .= "</body></html>";
-                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+
+                        //Registration Email
+                        $this-> ci -> email_lib-> user_registration_mail($sender, $recipient, $info);
                         
                         // SMS
-                        $this->sendSMS($info['person_mobile'], "Welcome to MyMaidz. Registration is successfull. Login to get service.");                     
+                        $this->sendSMS("+60".$info['person_mobile'], "Welcome to MyMaidz. Registration is successfull. Login to get service.");                     
                         
                         
                         redirect('home.html', 'refresh');
@@ -183,15 +177,10 @@ class Person_lib extends Base_lib{
                         
                         $sender = $this->ci->data['config']['sender_email'];
                         $recipient = $info['person_email'];
-                        $subject = "Login Information";
-                        $message = "<html><body>";
-                        $message .= "<p>Dear User,</p><br>";
-                        $message .= "<p>Your Login Credentials:</p>";
-                        $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-                        //$message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";
-                        $message .= "<p><a href='". base_url()."user_login.html'>Click here</a> to login</p>";
-                        $message .= "</body></html>";
-                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+
+                        $this->ci->load->library('email_lib');
+                        //Registration Email
+                        $this-> ci -> email_lib-> user_registration_mail($sender, $recipient, $info);                       
                         
                         // SMS
                         $this->sendSMS($info['person_mobile'], "Welcome to MyMaidz. Registration is successfull. Login to get service.");                     
@@ -215,13 +204,14 @@ class Person_lib extends Base_lib{
      */
 
     function _login_user() {
-
+        $response = array();
         $this->ci->load->library('form_validation');
         $this->ci->data['success_message'] = "";
         $this->ci->data['error_message'] = "";
 
         $this->ci->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|encode_php_tags|valid_email');
         $this->ci->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|encode_php_tags');
+        //$this->ci->form_validation->set_rules('g-recaptcha-response', 'Captcha', 'trim|required|xss_clean|encode_php_tags');
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
@@ -232,28 +222,71 @@ class Person_lib extends Base_lib{
 
             $user_data['email'] = $this->ci->input->post('email', true);
             $user_data['password'] = hash('sha512', $this->ci->input->post('password', true));
+            //$captcha = $this->ci->input->post('g-recaptcha-response', true);
 
-            $user = $this->model->getUserDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
+            //if($this->_validateCaptcha($captcha)){
 
-            if (isset($user->person_id) && strlen($user->person_id) > 0) {
+                $user = $this->model->getUserDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
 
-                $this->_set_last_ip_and_last_login($user->person_id);
-                $this->_set_session($user->person_type_name, $user);
+                if (isset($user->person_id) && strlen($user->person_id) > 0) {
 
-                $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
-                $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
-                $this->redirect_home();
-                exit;
-            } else {
+                    $this->_set_last_ip_and_last_login($user->person_id);
+                    $this->_set_session($user->person_type_name, $user);
 
-                $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
-                $this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
-                redirect('user_login.html', 'refresh');
-                exit;
-            }
+                    $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
+                    $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
+                    $this->redirect_home();
+                    exit;
+                } else {
+
+                    $this->ci->session->set_flashdata('error_message', $this->ci->lang->line('mm_frontend_login_error_login_incorrect'));
+                    redirect('user_login.html', 'refresh');
+                    exit;
+                }
+            // }else{
+            //     $this->ci->session->set_flashdata('error_message', 'Wrong Captcha...!!');
+            //         redirect('user_login.html', 'refresh');
+            //         exit;
+            // }
         }
     }
     
+    function _validateCaptcha($captch){
+        $data = array(
+            'secret'      => $this->ci->data['config']['captcha_secret_key'],
+            'response' => $captch,
+            'remoteip'    => ''
+        );
+
+        //$data_string = json_encode($data);
+
+        $curl = curl_init('https://www.google.com/recaptcha/api/siteverify');
+
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+
+        // curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        // 'Content-Type: application/json',
+        // 'Content-Length: ' . strlen($data_string))
+        // );
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);  // Insert the data
+
+        // Send the request
+        $result = curl_exec($curl);
+
+        // Free up the resources $curl is using
+        curl_close($curl);
+
+        $response = json_decode($result);
+        
+        if($response->success){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
     
     function _booking_login_user(){
         $this->ci->load->library('form_validation');
@@ -449,27 +482,15 @@ class Person_lib extends Base_lib{
                         
                         $sender = $this->ci->data['config']['sender_email'];
                         $recipient = $info['person_email'];
-                        $subject = "Login Information";
-                        $message = "<html><body>";
-                        $message .= "<p>Dear Vendor/Freelancer,</p><br>";
-                        $message .= "<p>You have registered in mymaidz as vendor - <b>pending for admin approval</b>.</p>";
-                        $message .= "<p>Your Login Credentials:</p>";
-                        $message .= "<p>Email: &nbsp; <b>".$info['person_email']."</b></p>";
-                        //$message .= "<p>Password: &nbsp; <b>".$this->ci->input->post('password', true)."</b></p>";                       
-                        $message .= "<p><a href='". base_url()."vendor_login.html'>Click here</a> to login</p>";
-                        $message .= "</body></html>";
-                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'alaken.adv@gmail.com',$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 's_thiba82@yahoo.com',$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'kkharish16@gmail.com',$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'praveen.dexter@gmail.com',$subject,$message,array('mailtype'=>'html'));
+
+                        //Registration Email
+                        $this-> ci -> email_lib-> vendor_registration_mail($sender, $recipient, $info);
+                    
                         
                         //SMS
-                                  $this->sendSMS('+60'.$user_info['vendor_mobile'], "Welcome to MyMaidz. Registration is successfull. Account is pending for admin approval.");                     
-                        /*Admin*/ $this->sendSMS('+601124129717', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
-                        /*Admin*/ $this->sendSMS('+60146771436', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
+                        $this->sendSMS('+60'.$user_info['vendor_mobile'], "Welcome to MyMaidz. Registration is successfull. Account is pending for admin approval.");                     
+                        /*Admin*/ $this->sendSMS('+60175374794', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
                         /*Admin*/ $this->sendSMS('+60125918491', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
-                        /*Admin*/ $this->sendSMS('+60126570387', "New request for vendor(".$user_info['vendor_first_name']." ".$user_info['vendor_last_name']."). Waiting for approval.");
                         
                         redirect('vendor_register.html', 'refresh');
                         exit;
@@ -497,6 +518,7 @@ class Person_lib extends Base_lib{
 
         $this->ci->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|encode_php_tags|valid_email');
         $this->ci->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|encode_php_tags');
+        //$this->ci->form_validation->set_rules('g-recaptcha-response', 'Captcha', 'trim|required|xss_clean|encode_php_tags');
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
@@ -506,24 +528,31 @@ class Person_lib extends Base_lib{
 
             $user_data['email'] = $this->ci->input->post('email', true);
             $user_data['password'] = hash('sha512', $this->ci->input->post('password', true));
+            //$captcha = $this->ci->input->post('g-recaptcha-response', true);
 
-            $user = $this->model->getVendorDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
+            //if($this->_validateCaptcha($captcha)){
+                $user = $this->model->getVendorDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
 
-            if (isset($user->person_id) && strlen($user->person_id) > 0) {
+                if (isset($user->person_id) && strlen($user->person_id) > 0) {
 
-                $this->_set_last_ip_and_last_login($user->person_id);
-                $this->_set_session($user->person_type_name, $user);
+                    $this->_set_last_ip_and_last_login($user->person_id);
+                    $this->_set_session($user->person_type_name, $user);
 
-                $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
-                $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
-                $this->redirect_home();
-                exit;
-            } else {
+                    $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
+                    $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
+                    $this->redirect_home();
+                    exit;
+                } else {
 
-                $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
-                $this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
-                return false;
-            }
+                    $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
+                    $this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+                    return false;
+                }
+            // }else{
+            //     $this->ci->session->set_flashdata('error_message', 'Wrong Captcha...!!');
+            //         redirect('user_login.html', 'refresh');
+            //         exit;
+            // }
         }
     }
 
@@ -535,6 +564,7 @@ class Person_lib extends Base_lib{
 
         $this->ci->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|encode_php_tags|valid_email');
         $this->ci->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|encode_php_tags');
+        //$this->ci->form_validation->set_rules('g-recaptcha-response', 'Captcha', 'trim|required|xss_clean|encode_php_tags');
 
         if ($this->ci->form_validation->run() == FALSE) {
             $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
@@ -544,24 +574,31 @@ class Person_lib extends Base_lib{
 
             $user_data['email'] = $this->ci->input->post('email', true);
             $user_data['password'] = hash('sha512', $this->ci->input->post('password', true));
+            //$captcha = $this->ci->input->post('g-recaptcha-response', true);
 
-            $user = $this->model->getAdminDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
+            //if($this->_validateCaptcha($captcha)){
+                $user = $this->model->getAdminDetails('person_id, person_email, person_first_name, person_last_name, person_id, person_type_name, person_lang_code, person_status, person_profile_image, person_country_code, person_type, person_type_name', array('person_email' => $user_data['email'], 'person_password' => $user_data['password'], 'person_status' => 1))->row();
 
-            if (isset($user->person_id) && strlen($user->person_id) > 0) {
+                if (isset($user->person_id) && strlen($user->person_id) > 0) {
 
-                $this->_set_last_ip_and_last_login($user->person_id);
-                $this->_set_session($user->person_type_name, $user);
+                    $this->_set_last_ip_and_last_login($user->person_id);
+                    $this->_set_session($user->person_type_name, $user);
 
-                $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
-                $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
-                $this->redirect_home();
-                exit;
-            } else {
+                    $this->ci->data['success_message'] = $this->ci->lang->line('mm_user_login_welcome');
+                    $this->ci->session->set_flashdata('success_message', $this->ci->data['success_message']);
+                    $this->redirect_home();
+                    exit;
+                } else {
 
-                $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
-                $this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
-                return false;
-            }
+                    $this->ci->data['error_message'] = $this->ci->lang->line('mm_frontend_login_error_login_incorrect');
+                    $this->ci->session->set_flashdata('error_message', $this->ci->data['error_message']);
+                    return false;
+                }
+            // }else{
+            //     $this->ci->session->set_flashdata('error_message', 'Wrong Captcha...!!');
+            //         redirect('user_login.html', 'refresh');
+            //         exit;
+            // }
         }
     }
 
@@ -748,23 +785,10 @@ print_r($response); exit;
 
                 $sender = $this->ci->data['config']['sender_email'];
                 $recipient = $user->person_email;
-                $reset_token_key = $reset_data['pass_reset_token_key'];
-                $subject = "Change your MyMaidz Password";
-                $message = "<html><body>";
-                $message .= "<p>Dear Member,</p><br>";
-                $message .= "<p>You have requested to change your MyMaidz password. If you did not make this request, please just ignore this email. This link will be active for only 24 hours.</p>";
-                $message .= "<p><a href='" . base_url() . "reset_password.html/" . $reset_token_key . "'>Click here to change your password.</a></p><br />";
-                $message .= "<p>Otherwise, please copy the link below and paste it into your browser.</p>";
-                $message .= "<p><span style='color:#295CC2;'>" . base_url() . "reset_password.html/" . $reset_token_key . "</span></p><br/>";
-                $message .= "<p>If you have any questions, do not hesitate to contact us.</p><br/>";
-                $message .= "<p>Sincerely,</p><br>";
-                $message .= "<p>The MyMaidz Team</p><br>";
-                //$message .= "<p><img src='".base_url()."/assets/img/Find_Out.png' alt='MyMaidz'/></p>";
-                $message .= "<p><a href='" . base_url() . "'>" . base_url() . "</a></p><br>";
-                $message .= "<p>Copyright &copy; 2017 MyMaidz. All Rights Reserved.</p><br>";
-                $message .= "</body></html>";
-                //$attachement = "assets/img/Find_Out.png";
-                $this->ci->page_load_lib->send_np_email($sender, $recipient, $subject, $message, array('mailtype' => 'html'));
+                
+                // Reset password link Email
+                $this-> ci -> email_lib-> reset_password_link_mail($recipient, $reset_data['pass_reset_token_key']);
+                
                 
                 $this->ci->session->set_flashdata('success_message', $this->ci->lang->line('mm_forgotpass_resetlink_sent'));
                 redirect('forgotPass.html', 'refresh');
@@ -1079,6 +1103,12 @@ print_r($response); exit;
                 $respo_2 = $this->model->getServiceBookings($now);
                 //echo $this->model->last_query();
                 $dataArray['new_orders'] = count($respo_2);
+
+                $resp = $this->model->get_tb('mm_permission', 'person_id', array('permission_permission_type_id' => Globals::ROLE_SUPER_ADMIN_ID))->result();
+                if($resp){
+                    $respo_1 = $this->model->get('person_wallet_amount', array('person_id'=>$resp[0]->person_id))->result();
+                    $dataArray['wallet_balance'] = number_format((float) ($respo_1[0]->person_wallet_amount), 2, '.', '');
+                }
                 
             }else if($this->ci->session->userdata('user_type') == Globals::PERSON_TYPE_USER_NAME){
                 // $respo_3 = $this->model->getAllUserServiceBookingsUnderProcess($person_id);

@@ -1586,7 +1586,9 @@ class Admin_lib extends Base_lib{
                         $date = date_format($dateObj, 'd-m-Y');                    
                         $result[$i]['booking_service_date'] = $date;
 
-                        $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                        $dateObj = date_create($service->booking_booked_on);
+                        $date = date_format($dateObj, 'd-m-Y H:i:s');
+                        $result[$i]['booking_booked_on'] = $date;
                         $result[$i]['booking_status'] = $service->booking_status;
                         $result[$i]['booking_amount'] = $service->booking_amount;
                         $result[$i]['company_name'] = $service->company_name;
@@ -1720,7 +1722,9 @@ class Admin_lib extends Base_lib{
                     $date = date_format($dateObj, 'd-m-Y');                    
                     $result[$i]['booking_service_date'] = $date;
 
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');
+                    $result[$i]['booking_booked_on'] = $date;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     
@@ -1771,6 +1775,7 @@ class Admin_lib extends Base_lib{
     function _confirmOrderCompletion(){
         $this->ci->load->library('form_validation');
         $person_id = $this->ci->session->userdata('user_id');
+        $super_admin_id = $person_id;
         $this->resetResponse();
 
         $this->ci->form_validation->set_rules('bookingId', 'Booking Id', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
@@ -1802,7 +1807,13 @@ class Admin_lib extends Base_lib{
                         //get the Vendor and Admin Share for the service price
                         $profit_share = $this->calculateCutoffAmount($info[0]->booking_amount, $person_type[0]->person_type_name);
                         $this->updateVendorWallet($profit_share['vendor_share'], $booking_id, Globals::WALLET_CREDIT, $info[0]->company_person_id, "Service completion payment");
-                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, $person_id, "Service completion payment");
+
+                        $resp = $this->model->get_tb('mm_permission', 'person_id', array('permission_permission_type_id' => Globals::ROLE_SUPER_ADMIN_ID))->result();
+                        if($resp){
+                            $super_admin_id = $resp[0]->person_id;
+                        }
+
+                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, $super_admin_id[0]->person_id, "Service completion payment");
                         //Send Emails to Vendor 
                         //$this->ci->email_lib->order_completion_confirmation_mail($info[0]->person_email, $info[0]);
                         $this->ci->email_lib->order_completion_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0], $profit_share['vendor_share']);
@@ -1859,7 +1870,9 @@ class Admin_lib extends Base_lib{
                     $date = date_format($dateObj, 'd-m-Y');                    
                     $result[$i]['booking_service_date'] = $date;
 
-                    $result[$i]['booking_booked_on'] = $service->booking_booked_on;
+                    $dateObj = date_create($service->booking_booked_on);
+                    $date = date_format($dateObj, 'd-m-Y H:i:s');
+                    $result[$i]['booking_booked_on'] = $date;
                     $result[$i]['booking_status'] = $service->booking_status;
                     $result[$i]['booking_amount'] = $service->booking_amount;
                     $result[$i]['booking_completion_company_confirmed'] = $service->booking_completion_company_confirmed;
@@ -2129,10 +2142,8 @@ class Admin_lib extends Base_lib{
                                        
                     // SMS
                     $this->sendSMS("+60" . $booking_detail[0]->person_mobile, "Your Service request has been accepted by company: " . $company[0]->company_name);
-                    /* Admin */ $this->sendSMS('+601124129717', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
-                    /* Admin */ $this->sendSMS('+60146771436', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
+                    /* Admin */ $this->sendSMS('+60175374794', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
                     /* Admin */ $this->sendSMS('+60125918491', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
-                    /* Admin */ $this->sendSMS('+60126570387', "New Service request has been accepted by vendor: " . $company[0]->company_name . " of User: " . $booking_detail[0]->person_email);
 
 
                     $this->_message = $this->ci->lang->line('service_assigned_successfully');

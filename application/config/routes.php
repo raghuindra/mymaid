@@ -213,6 +213,7 @@ $route['listActiveServiceBookings.html']        = "vendor/listActiveServiceBooki
 $route['confirmOrderCompletionByVendor.html']   = "vendor/confirmOrderCompletion";
 $route['vendor_listCompletedOrders.html']       = "vendor/listCompletedOrders";
 $route['listCanceledOrdersOfVendor.html']       = "vendor/listCanceledOrders";
+$route['check_active_service_for_pincode.html']	= "vendor/checkActiveServiceForPincode";
 
 
 /* ........Freelance Module Routing................... */

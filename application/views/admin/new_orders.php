@@ -40,7 +40,8 @@ $this->load->view("block/admin_leftMenu");
                                         <th>Amount </th>
                                         <th>Package</th>
                                         <th>Frequency</th>
-                                        <th>Service date</th>
+                                        <th>Service Date</th>
+                                        <th>Requested On</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -99,10 +100,11 @@ $(function(){
                 {"data": null},
                 {"data": "frequency_name"},
                 {"data": "booking_service_date"},
+                {"data": "booking_booked_on"},
                 {"data": null}
             ],
             "columnDefs": [
-                {"responsivePriority": '2', "targets": [1, 3, 6, 7], searchable: true, orderable: true},
+                {"responsivePriority": '2', "targets": [1, 3, 6, 7, 8], searchable: true, orderable: true},
                 {"responsivePriority": '1', "targets": [0], searchable: true, orderable: true, data: null,
                     "render": function (data, type, row) {
                         
@@ -138,7 +140,7 @@ $(function(){
                         return string;
                     }
                 },
-                {"responsivePriority": '1', "targets": [8], searchable: false, orderable: false, data: null,
+                {"responsivePriority": '1', "targets": [9], searchable: false, orderable: false, data: null,
                     "render": function (data, type, row) {
                         
                         var string = ' <td class=""> <div class="text-center">';                                                      

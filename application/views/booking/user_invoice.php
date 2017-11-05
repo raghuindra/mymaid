@@ -115,13 +115,16 @@ if($response['other']){
                     </div>
                 </div>
 
+                <?php if($response['other'][0]->service_name != 'Basic Home Cleaning') {?>
                 <div class='form-group'>
                     <label for='inputEmail3' class='col-sm-3 control-label'>Package :</label>
                     <div class='col-sm-6' id='venEmail'>
-                        <?php echo ($response['other'])? $response['other'][0]->building_name.", ".$response['other'][0]->service_package_bedroom." Bedroom(s), ".$response['other'][0]->service_package_bathroom." Bathroom(s), ".$response['other'][0]->area_size." ".$response['other'][0]->area_measurement: '';?>
+                        <?php       
+                        echo ($response['other'])? $response['other'][0]->building_name.", ".$response['other'][0]->service_package_bedroom." Bedroom(s), ".$response['other'][0]->service_package_bathroom." Bathroom(s), ".$response['other'][0]->area_size." ".$response['other'][0]->area_measurement: '';?>
                     </div>
                 </div>
-                
+                <?php } ?>
+
                 <?php if(!empty($response['session'])){ 
                     $sessions = $response['session'];
                 ?>

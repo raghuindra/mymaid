@@ -8,14 +8,14 @@ var selectedDates = Array();
 
 postcode = $("#postcodeSearch").data('val');
 function ajaxCall(url, data, successCallback, failureCallback) {
-    console.log("AJAx Call Params: "); console.log(data);
+    //console.log("AJAx Call Params: "); console.log(data);
     $.ajax({
         type: "POST",
         url: base_url+url,
         data: data,
         cache: false,
         success: function (res) {
-    console.log('Json Response' +res);
+    //console.log('Json Response' +res);
             var result = JSON.parse(res);
 
             if (result.status === true) {
@@ -589,7 +589,7 @@ var RenderView = {
         if( (servicesObj !== null) && (packagesObj !== null)){  
             var services = servicesObj.getAllServices();
             var packages = packagesObj.getAllServicePackages();
-            console.log(packages);
+            //console.log(packages);
             for(var i=0; i<services.length; i++ ){
                 var id = services[i].service_id;
                 if(packages[id] !== undefined){
@@ -868,7 +868,7 @@ var RenderView = {
         var service = ServiceObjects.ServiceObject.getServiceById(servId);
         for(var i=0; i< count; i++){
 
-            var string='<div class="row"><div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row"><label for="ct-first-name">Service Date</label><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input type="text" class="form-control pull-right add_show_error_class error date_selection" id="service_date_'+i+'" required></div></div>';
+            var string='<div class="row"><div class="ct-md-6 ct-sm-6 ct-xs-12 ct-form-row"><label for="ct-first-name">Service Date</label><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input type="text" class="form-control pull-right add_show_error_class error date_selection" id="service_date_'+i+'" readonly required></div></div>';
                 string += '<div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row"><label for="ct-session">Session</label> <div class="input-group date"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div>';
                 
             if(service.service_name == 'Basic Home Cleaning'){
@@ -1000,7 +1000,7 @@ $(function () {
             for(var i=0; i<services.length; i++ ){                
                 if( services[i].service_id == serviceId){
                     if(services[i].service_name == 'Basic Home Cleaning'){
-                        $(".ct_service_package_"+services[i].service_id+" .package-radio").trigger('click');
+                        $(".ct_service_package_"+services[i].service_id+" li:first .package-radio").trigger('click');
                         //$(".ct_service_frequency_"+services[i].service_id+" .ct-discount-often li .cart_frequently_discount").trigger('click');
                         $(".ct_service_frequency_"+services[i].service_id).hide();
                         $(".tax_display, .total_price_display, .sub_total_display").show();
@@ -1039,9 +1039,7 @@ $(function () {
             $(".cart_frequently_discount").prop('checked', false);
             //$(".ct_service_package_"+services[0].service_id+" .package-radio").trigger('click');
         });
-        $('.service-radio').trigger('click');
-        //$('.services-list .ser_details .service-radio:eq(0)').trigger('click');
-        $('.session_selection').val('1');
+        
         
         //Service package Selection Event Handling
         $(document).on("click", ".packageDiv .services-list .package-radio", function(e){           
@@ -1205,7 +1203,13 @@ $(function () {
  
        });
 
-    }, 2000);
+       //Initial Selection
+        $("#booking_service_list li:first .service-radio").trigger('click');
+        $(".packageDiv ul:first li:first .package-radio").trigger('click');
+        $('.session_selection').val('1');$('.session_selection').trigger('change');
+        
+
+    }, 1500);
     
     $("#paymentForm").submit( function(e){
         e.preventDefault();
@@ -1231,9 +1235,9 @@ function checkEmployeeAvailability(serviceDate, sessionId){
     let now = new Date();
     let date = new Date(serviceDate);
     let hour = getSessionHour(sessionId);
+    now.setDate(now.getDate() +2);
     if(now.getDate() === date.getDate()){
-        now.setHours(now.getHours() + 2);
-
+        
         if( now.getHours() >= hour){
             $(self).val('');
             $(self).parentsUntil('row').next().next('.error_message').html('');

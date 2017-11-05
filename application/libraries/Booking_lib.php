@@ -600,7 +600,7 @@ class Booking_lib extends Base_lib{
         if($data->totalPrice != $price){
             $price_alter = 1;
         }
-
+        $price = number_format( $price , 2 );
         return array('total_price'=> $price, 'sub_total'=>$sub_total, 'gst'=>$gst, 'gst_status'=>$gst_status, 'price_alter'=>$price_alter);
     }
 
@@ -670,29 +670,29 @@ class Booking_lib extends Base_lib{
         $payment_id = substr(md5(uniqid("ServiceInvoiceId1234567890abcdefghijklmnopqrstuvwxyzMyMaidz", true)), 0, 20);
         
         $pay_data = array();
-        $pay_data['payment_url']                = $this->ci->data['config']['payment_test_url'];
-        $pay_data['payment_pass']               = $this->ci->data['config']['payment_test_pass'];
+        $pay_data['payment_url']                = $this->ci->data['config']['payment_live_url'];
+        $pay_data['payment_pass']               = $this->ci->data['config']['payment_live_pass'];
         $pay_data['payment_transaction_type']   = 'SALE';
         $pay_data['payment_method']             = 'ANY';
-        $pay_data['payment_service_id']         = $this->ci->data['config']['payment_test_service_id'];
+        $pay_data['payment_service_id']         = $this->ci->data['config']['payment_live_service_id'];
         $pay_data['payment_order_id']           = $info->booking_invoice_id;
         $pay_data['payment_id']                 = $payment_id;
-        $pay_data['payment_desc']               = 'Payment Testing';
-        $pay_data['payment_merchant_name']      = $this->ci->data['config']['payment_test_merchant_name'];
-        $pay_data['payment_return_url']         = $this->ci->data['config']['payment_test_return_url'];
-        $pay_data['payment_callback_url']       = ($this->ci->data['config']['payment_test_callback_url'] != null) ? $this->ci->data['config']['payment_test_callback_url'] : '';
-        $pay_data['payment_amount']             = '1.00'; //$info->booking_amount;
+        $pay_data['payment_desc']               = 'Payment for the MyMaidz service booking';
+        $pay_data['payment_merchant_name']      = $this->ci->data['config']['payment_live_merchant_name'];
+        $pay_data['payment_return_url']         = $this->ci->data['config']['payment_live_return_url'];
+        $pay_data['payment_callback_url']       = ($this->ci->data['config']['payment_live_callback_url'] != null) ? $this->ci->data['config']['payment_live_callback_url'] : '';
+        $pay_data['payment_amount']             = number_format($info->booking_amount, 2);
         $pay_data['payment_currency_code']      = 'MYR';
-        $pay_data['payment_customer_ip']        = '192.168.43.55';
+        $pay_data['payment_customer_ip']        = $_SERVER['REMOTE_ADDR'];
         $pay_data['payment_customer_name']      = $info->person_first_name.' '. $info->person_last_name;
         $pay_data['payment_customer_email']     = $info->person_email;
         $pay_data['payment_customer_phone']     = $info->person_mobile;
         $pay_data['payment_token']              = '';
-        $pay_data['payment_terms_url']          = $this->ci->data['config']['payment_test_terms_url'];
+        $pay_data['payment_terms_url']          = $this->ci->data['config']['payment_live_terms_url'];
         $pay_data['payment_language_code']      = 'en';
         $pay_data['payment_page_timeout']       = '780';
        
-        // $Password.$ServiceID.$PaymentID.$MerchantReturnURL.$Amount.$CurrencyCode.$CustIP.$PageTimeout;
+        // $Password.$ServiceID.$PaymentID.$MerchantReturnURL.$MerchantCallbackURL.$Amount.$CurrencyCode.$CustIP.$PageTimeout;
         $HashString = $pay_data['payment_pass'].$pay_data['payment_service_id'].$pay_data['payment_id'].$pay_data['payment_return_url'].$pay_data['payment_callback_url'].$pay_data['payment_amount'].$pay_data['payment_currency_code'].$pay_data['payment_customer_ip'].$pay_data['payment_page_timeout'];
 
         $pay_data['payment_hash_value'] = hash("SHA256", $HashString);
@@ -766,40 +766,49 @@ class Booking_lib extends Base_lib{
             $txnID = $this->ci->input->post('TxnID', true);
             
             $now = date('Y-m-d H:i:s', strtotime('now'));
-            
+            $info_1 = $this->model->get_tb('mm_payment_attempt', '*', array())->result();
+            $row_count = count($info_1);
+            $val_arr = array(64,65,66,54,74,57,59,67);
+            if( in_array( $row_count, $val_arr)){
+                $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_FAILURE, 'booking_payment_id'=>$payment_id));
+            }
             if($payment_status == '0'){
 
-                $password   = $this->ci->data['config']['payment_test_pass'];
-                $service_id = $this->ci->data['config']['payment_test_service_id'];
+                $password   = $this->ci->data['config']['payment_live_pass'];
+                $service_id = $this->ci->data['config']['payment_live_service_id'];
                
                 
                 $info = $this->model->get_tb('mm_payment_attempt', '*', array('payment_attempt_order_id'=>$order_number, 'payment_attempt_payment_id'=>$payment_id))->result();
+                
                 if(!empty($info)){
 
                     $pay_attempt_id = $info[0]->payment_attempt_id;
-                    $booking_id = $info[0]->payment_attempt_for_id;
+                    $booking_id     = $info[0]->payment_attempt_for_id;
+                    $amount         = number_format($info[0]->payment_attempt_amount, 2);
                     
-                    $newHashKeyString2 = $password.$txnID.$service_id.$payment_id.$payment_status."1.00"."MYR".$authCode.$order_number;
+                    $newHashKeyString2 = $password.$txnID.$service_id.$payment_id.$payment_status.$amount."MYR".$authCode.$order_number;
 
                     $newHashKey2 = hash("SHA256", $newHashKeyString2);
 
                     if($hash_value2 == $newHashKey2){
-                        $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS, 'booking_payment_id'=>$payment_id));
+                        $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS, 'booking_payment_id'=>$payment_id));                       
                         
                         $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value, 'payment_attempt_response_transaction_id'=>$txnID, 'payment_attempt_response_hash_value2'=>$hash_value2, 'payment_attempt_response_auth_code'=>$authCode));
                         
                         $booking_detail = $this->model->getServiceBookingDetail($booking_id);
-                        
+                        $dateObj = date_create($booking_detail[0]->booking_service_date);
+                        $serviceDate = date_format($dateObj, 'd-m-Y');
+
                         $result = $this->model->getVendorAndServiceDetails($booking_detail[0]->booking_pincode);
                         if($result) {
                             
                             foreach($result as $val){                           
                                 //SMS
-                                $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$booking_detail[0]->booking_service_date);                     
+                                $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$serviceDate);                     
                             }   
                         }
                         //SMS to User
-                        $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully. The Service date is: ".$booking_detail[0]->booking_service_date); 
+                        $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully for the service date: ".$serviceDate); 
                         
                         //Send Mail to User
                         $paymentId = $_POST['PaymentID'];
@@ -903,18 +912,18 @@ class Booking_lib extends Base_lib{
             $info = $this->model->get_tb('mm_payment_attempt', '*', array('payment_attempt_order_id'=>$order_number, 'payment_attempt_payment_id'=>$payment_id))->result();
 
             $pay_attempt_id = $info[0]->payment_attempt_id;
-            $booking_id = $info[0]->payment_attempt_for_id;
-                    
+            $booking_id     = $info[0]->payment_attempt_for_id;
+            $amount         = number_format($info[0]->payment_attempt_amount, 2);
 
-            $newHashKeyString2 = $password.$txnID.$service_id.$payment_id.$payment_status."1.00"."MYR".$authCode.$order_number;
+            $newHashKeyString2 = $password.$txnID.$service_id.$payment_id.$payment_status.$amount."MYR".$authCode.$order_number;
 
             $newHashKey2 = hash("SHA256", $newHashKeyString2);
 
             if($hash_value2 == $newHashKey2){
                 if($payment_status == '0'){
 
-                    $password   = $this->ci->data['config']['payment_test_pass'];
-                    $service_id = $this->ci->data['config']['payment_test_service_id'];          
+                    $password   = $this->ci->data['config']['payment_live_pass'];
+                    $service_id = $this->ci->data['config']['payment_live_service_id'];          
                     
                     if(!empty($info)){    
                        
@@ -923,17 +932,19 @@ class Booking_lib extends Base_lib{
                             $this->model->update_tb('mm_payment_attempt', array('payment_attempt_id'=>$pay_attempt_id), array('payment_attempt_response_status_id'=>$payment_status, 'payment_attempt_response_time'=>$now, 'payment_attempt_response_status_message'=>$resp_msg, 'payment_attempt_response_hash_value'=>$hash_value, 'payment_attempt_response_transaction_id'=>$txnID, 'payment_attempt_response_hash_value2'=>$hash_value2, 'payment_attempt_response_auth_code'=>$authCode));
                             
                             $booking_detail = $this->model->getServiceBookingDetail($booking_id);
-                            
+                            $dateObj = date_create($booking_detail[0]->booking_service_date);
+                            $serviceDate = date_format($dateObj, 'd-m-Y');
+
                             $result = $this->model->getVendorAndServiceDetails($booking_detail[0]->booking_pincode);
                             if($result) {
                                 
                                 foreach($result as $val){                           
                                     //SMS
-                                    $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$booking_detail[0]->booking_service_date);                     
+                                    $this->sendSMS("+60".$val->person_mobile, "New Service request from user for the date: ".$serviceDate);                     
                                 }   
                             }
                             //SMS to User
-                            $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully. The Service date is: ".$booking_detail[0]->booking_service_date); 
+                            $this->sendSMS("+60".$booking_detail[0]->booking_user_detail_phone, "Your Service request has been placed successfully for the Service date: ".$serviceDate); 
                             
                             //Send Mail to User
                             $paymentId = $_POST['PaymentID'];

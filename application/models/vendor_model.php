@@ -148,6 +148,7 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
 //                        ->join($this->_booking_spl_request, 'booking_spl_request_booking_id = booking_id','left')
                         ->join($this->_services, 'service_id = booking_service_id','left')
                         ->join($this->_person, 'person_id = booking_user_id','left')
+                        ->join($this->_vendor_company, "company_id = booking_vendor_company_id", 'left')
                         ->where('booking_id ', $bookingId)
                         ->group_by('booking_id')       
                         ->get()
@@ -256,6 +257,22 @@ AND `booking_pincode` IN ( SELECT `vendor_service_location_postcode` from `mm_ve
     
     function _getBookingSessionDetail($booking_id){
         return $this->db->query("SELECT * from mm_booking_sessions LEFT JOIN mm_session ON session_id = booking_sessions_session_id WHERE booking_sessions_booking_id = $booking_id")->result();
+    }
+
+
+    function checkVendorServiceBookingsForPostcode($companyId, $pincode){
+    return $this->db->select('*')
+                    ->from($this->_booking)
+                    ->where('booking_vendor_company_id', $companyId)
+                    ->where('booking_pincode', $pincode)
+                    ->where('booking_payment_status', Globals::PAYMENT_SUCCESS)
+                    ->where('booking_completion_company_confirmed', 0)
+                    ->where('booking_completion_admin_confirmed', 0)
+                    ->where('booking_cancelled_approved_by_admin', 0)
+                    ->group_by('booking_id')
+                    ->order_by("booking_id", "DESC")
+                    ->get()
+                    ->result();
     }
         
         

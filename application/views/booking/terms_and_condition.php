@@ -28,8 +28,7 @@
                 <h3>Agreement between user and mymaidz.com </h3>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>Welcome to mymaidz.com. The mymaidz.com website (the "Site") is comprised of various web pages operated by ADVANCE DREAMS VENTURE SDN. BHD. (1211693-M) ("ADV"). mymaidz.com is offered to you conditioned on your acceptance without modification of the terms, conditions, and notices contained herein (the "Terms"). Your use of mymaidz.com constitutes your agreement to all such Terms. Please read these terms carefully, and keep a copy of them for your reference. </p>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>  
-                MyMaidz.com is a E-commerce Site 
-                MyMaidz.com is a communications platform for enabling the connection between individuals seeking to obtain services ("MyMaidz.com") and/or individuals seeking to provide services ("MyMaidz.com"). 
+                MyMaidz.com is a E-commerce Site MyMaidz.com is a communications platform for enabling the connection between individuals seeking to obtain services ("MyMaidz.com") and/or individuals seeking to provide services ("MyMaidz.com"). 
                 </p>  
                 
                 <h3>Privacy </h3>
@@ -49,8 +48,7 @@
                 <h3>Cleaning Services</h3>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>ADV operates the mymaidz.com website as an independent third party facilitator for the Cleaning Services and provides you with the platform to purchase the Cleaning Services. ADV is not an agent or broker for you or the Cleaning Service Provider. You enter into any transaction with a Cleaning Service Provider entirely at your own risk. ADV uses its best efforts to monitor the Cleaning Services offered by a Cleaning Service Provider.</p>
 
-                <p style='text-align: -webkit-auto;margin-bottom: 0px'>However, as Cleaning Service Providers act as independent contractors, ADV does not make any
-                    representations relating to the safety, quality, condition, or description of the Cleaning Services provided by the Cleaning Service Provider. Any issues regarding safety, quality, condition or description of the Cleaning Services should be notified to ADV, who will then pass the issue onto the Cleaning Service Provider designated to your Booking Request. You should refer to the terms and conditions of your Cleaning Agreement for further information.</p>
+                <p style='text-align: -webkit-auto;margin-bottom: 0px'>However, as Cleaning Service Providers act as independent contractors, ADV does not make any representations relating to the safety, quality, condition, or description of the Cleaning Services provided by the Cleaning Service Provider. Any issues regarding safety, quality, condition or description of the Cleaning Services should be notified to ADV, who will then pass the issue onto the Cleaning Service Provider designated to your Booking Request. You should refer to the terms and conditions of your Cleaning Agreement for further information.</p>
 
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>All Cleaning Service Providers are independent contractors and are not employees of ADV. All bookings are subject to Cleaning Service Provider’s availability.</p>
 
@@ -103,8 +101,8 @@
                     160A, Jln. Kilang Lama, Pusat Perniagaan Putra, Kilang Lama <br/>Kulim, Kedah 09000 </p>
                   
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>
-                <span style='text-decoration: underline;'>Email Address:</span> mymaidz16@gmail.com <br/><br/>
-                <span style='text-decoration: underline;'>Telephone number:</span> 0125918491<br/><br/>Effective as of April 01, 2017to April 15,2017
+                <span style='text-decoration: underline;'>Email Address:</span> marketing@mymaidz.com <br/><br/>
+                <span style='text-decoration: underline;'>Telephone number:</span> 0175374794<br/><br/>Effective as of Sept 26, 2017
                 </p>
 
             </div>

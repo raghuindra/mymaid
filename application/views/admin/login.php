@@ -28,10 +28,11 @@
         <a href="<?php echo base_url().'home.html'; ?>"><img class="profile-user-img img-responsive" src="<?php echo img_url('YellowMM_240.png');?>" style="width:85%;" alt="MyMaidz"></a>
     </div>
     <!-- /.login-logo -->
+    <form action="<?php base_url().'admin_login.html'; ?>" method="post" id="login_box">
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="<?php base_url().'admin_login.html'; ?>" method="post">
+        
             <div class="form-group has-feedback">
                 <input type="email" class="form-control" placeholder="Email" name="email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -57,7 +58,7 @@
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div>
             </div>
-        </form>
+        
 
        <div class="social-auth-links text-center">
             <p>- OR -</p>
@@ -73,12 +74,20 @@
                     <div class=" g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </div>
+       <!--  <div class="row"><div class="col-lg-12" style="text-align: -webkit-center;">&nbsp</div></div>
+        <div class="row">
+          <div class="col-lg-12" style="text-align: -webkit-center;">
+            <div class="g-recaptcha" data-sitekey="<?php //echo $config['captcha_site_key']; ?>"></div>
+          </div>
+        </div> -->
+        <div class="row"><div class="col-lg-12" style="text-align: -webkit-center;"></div></div>
         <!-- /.social-auth-links-->
 
         
 <!--        <a href="register.html" class="text-center">Register a new membership</a>-->
 
     </div>
+    </form>
     <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
@@ -92,5 +101,15 @@
          $(document).ajaxStart(function(){
              $("#ajax_loader").show();
          });    
-    });    
+    });
+
+    // $(function(){
+    //   $("#login_box").submit(function(event) {
+    //     var recaptcha = $("#g-recaptcha-response").val();
+    //      if (recaptcha === "") {
+    //         event.preventDefault();
+    //         notifyMessage('error', 'Please check the reCaptcha.!!');
+    //      }
+    //    });
+    // });    
 </script>

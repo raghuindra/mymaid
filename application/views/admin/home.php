@@ -88,7 +88,9 @@ $this->load->view("block/admin_leftMenu");
             <!-- ./col -->
         </div>
         <!-- /.row -->
+
         <!-- Main row -->
+        <?php /* ?>
         <div class="row">
             <!-- Left col -->
             <section class="col-lg-12 connectedSortable">
@@ -502,6 +504,7 @@ $this->load->view("block/admin_leftMenu");
                     </div>
                     <!-- /.row -->
                 </div>
+                <?php */ ?>
         </div>
         <!-- /.box -->
 
