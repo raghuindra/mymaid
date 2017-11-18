@@ -62,7 +62,7 @@ $this->load->view("block/admin_leftMenu");
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Vendor Margin: <span class="text-red">*</span></label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" name="profit_cutoff" class="form-control" required id="profit_cutoff" placeholder="margin" value="<?php echo ($config) ? $config['profit_cutoff'] : '';?>">
+                                                            <input type="number" maxlength = "6" name="profit_cutoff" class="form-control" step="0.01" required id="profit_cutoff" placeholder="0.00" value="<?php echo ($config) ? $config['profit_cutoff'] : '';?>">
                                                         </div>
 
                                                     </div>
@@ -70,7 +70,7 @@ $this->load->view("block/admin_leftMenu");
                                                     <div class="form-group">
                                                         <label for="inputEmail3" class="col-sm-3 control-label">Freelancer Margin: <span class="text-red">*</span></label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "6" name="freelance_profit_cutoff" class="form-control" required id="freelance_profit_cutoff" placeholder="margin" value="<?php echo ($config) ? $config['freelance_profit_cutoff'] : '';?>">
+                                                            <input type="number" maxlength = "6" name="freelance_profit_cutoff" class="form-control" step="0.01" required id="freelance_profit_cutoff" placeholder="0.00" value="<?php echo ($config) ? $config['freelance_profit_cutoff'] : '';?>" >
                                                         </div>
 
                                                     </div>

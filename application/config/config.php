@@ -31,9 +31,7 @@ $config['base_url']	= 'http://localhost/mymaid/';
 if($_SERVER['SERVER_NAME']=="localhost"){
         $config['base_url']	= 'http://localhost/mymaid/';
 }else{
-    
     $config['base_url']	= 'https://mymaidz.com/';
-    
 }
 
 /*

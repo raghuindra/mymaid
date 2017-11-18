@@ -1447,10 +1447,10 @@ class Admin_lib extends Base_lib{
         $this->resetResponse();
 
         $this->ci->form_validation->set_rules('senderEmail', 'Sender Email', 'trim|required|xss_clean|encode_php_tags|valid_email', array('required' => 'You must provide a valid %s.'));
-        $this->ci->form_validation->set_rules('gst', 'GST', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('gst', 'GST', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         $this->ci->form_validation->set_rules('gstStatus', 'GST Status', 'trim|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('profit_cutoff', 'Vendor Margin', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
-        $this->ci->form_validation->set_rules('freelance_profit_cutoff', 'Freelancer Margin', 'trim|required|xss_clean|encode_php_tags|integer', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('profit_cutoff', 'Vendor Margin', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
+        $this->ci->form_validation->set_rules('freelance_profit_cutoff', 'Freelancer Margin', 'trim|required|xss_clean|encode_php_tags', array('required' => 'You must provide a %s.'));
         
         if ($this->ci->form_validation->run() == FALSE) {
                 $this->_status = FALSE;
@@ -2359,7 +2359,7 @@ class Admin_lib extends Base_lib{
                         $result[$i]['person_address1'] = $request->person_address1;
                         $result[$i]['person_city']     = $request->person_city;
                         $result[$i]['person_state'] = $request->state_name;
-                        $result[$i]['person_mobile'] = "+61 ".$request->person_mobile;
+                        $result[$i]['person_mobile'] = "+60 ".$request->person_mobile;
                         $result[$i]['person_postal_code'] = $request->person_postal_code;
 
                         $dateObj = date_create($request->person_creation_date);
