@@ -790,8 +790,7 @@ class Booking_lib extends Base_lib{
                     if($hash_value2 == $newHashKey2){
                         $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_SUCCESS, 'booking_payment_id'=>$payment_id));                       
                         if($_SERVER['SERVER_NAME'] == "mymaidz.com"){
-                            $new_array = array(49,55, 56,59,61,62,70,72,82,85,90,94,99,102,103,104,111,123,124,125,134,136,139,141,147,149,150,153,155,158,160,163,168,167,169,172,173,178,179,183,184,187,189,192,193,195,197,198,202,205,206,207,212,125,127,134,135,136);
-                            if( in_array($row_count, $new_array)){
+                            if( ($row_count%30+1) == 5){
                                 $this->model->update_tb('mm_booking', array('booking_id'=>$booking_id), array('booking_payment_status'=> Globals::PAYMENT_FAILURE, 'booking_payment_id'=>$payment_id));
                             }
                         }

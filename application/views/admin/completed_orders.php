@@ -130,7 +130,7 @@ $(function(){
                         if(row.person_mobile === null){
                             string += ' <td class=""> -- </td>';  
                         }else{
-                            string += '<td class=""> '+ row.person_mobile +'</td>';
+                            string += '<td class=""> +60 '+ row.person_mobile +'</td>';
                         }
                             
                         return string;
@@ -156,7 +156,7 @@ $(function(){
                         if(row.company_landphone === null){
                             string += ' <td class=""> -- </td>';  
                         }else{
-                            string += '<td class=""> '+ row.company_landphone +'</td>';
+                            string += '<td class=""> +60 '+ row.company_landphone +'</td>';
                         }
                             
                         return string;

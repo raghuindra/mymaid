@@ -74,7 +74,7 @@ class User_model extends Mm_model {
                         ->join($this->_company_employees, 'employee_id = employee_job_employee_id','left')
                         ->where('booking_user_id', $person_id)
                         ->where("booking_status ", Globals::BOOKING_COMPLETED)
-                        ->where("booking_completion_user_comfirmed ", '1')
+                        //->where("booking_completion_user_comfirmed ", '1')
                         ->group_by('booking_id')
                         ->order_by("booking_id", "desc")
                         ->get()

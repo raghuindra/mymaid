@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:400,100,500,700);
+@import url('google_font.css');
 @font-face {
     font-family: OpenSansRegular;
     src: url("font/OpenSans-Regular.ttf");

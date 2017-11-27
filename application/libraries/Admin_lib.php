@@ -1813,7 +1813,7 @@ class Admin_lib extends Base_lib{
                             $super_admin_id = $resp[0]->person_id;
                         }
 
-                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, $super_admin_id[0]->person_id, "Service completion payment");
+                        $this->updateAdminWallet($profit_share['admin_share'], $booking_id, Globals::WALLET_CREDIT, $super_admin_id, "Service completion payment");
                         //Send Emails to Vendor 
                         //$this->ci->email_lib->order_completion_confirmation_mail($info[0]->person_email, $info[0]);
                         $this->ci->email_lib->order_completion_confirmation_mail_to_vendor($info[0]->company_email_id, $info[0], $profit_share['vendor_share']);
