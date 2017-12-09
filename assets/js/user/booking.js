@@ -872,9 +872,9 @@ var RenderView = {
                 string += '<div class="ct-md-4 ct-sm-4 ct-xs-12 ct-form-row"><label for="ct-session">Session</label> <div class="input-group date"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div>';
                 
             if(service.service_name == 'Basic Home Cleaning'){
-                string += '<select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required ><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option><option value="4">2 hours - Evening</option></select>';
+                string += '<select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required ><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option></select>';
             }else{
-                string += '<select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required disabled><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option><option value="4">2 hours - Evening</option></select>';
+                string += '<select placeholder="Select session" name="ct_session" id="service_session_'+i+'" class="add_show_error_class error session_selection" required disabled><option value="1" selected>Full-day (9am - 6pm)</option><option value="2" >4 hours - Morning</option><option value="3">4 hours - Afternoon</option></select>';
             }
                 
                 string += '</div></div><div class="text-red error_message" style="clear:both;"> </div></div>';

@@ -71,6 +71,11 @@ service";
         $message .= "<p>Like our page at <a href='https://www.facebook.com/mymaidz/'>https://www.facebook.com/mymaidz/</a></p>";
         $message .= "</body></html>";
         $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
+                      
+        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'alaken.adv@gmail.com',$subject,$message,array('mailtype'=>'html'));
+        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 's_thiba82@yahoo.com',$subject,$message,array('mailtype'=>'html'));
+        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'kkharish16@gmail.com',$subject,$message,array('mailtype'=>'html'));
+        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'praveen.dexter@gmail.com',$subject,$message,array('mailtype'=>'html'));
 
     }
     

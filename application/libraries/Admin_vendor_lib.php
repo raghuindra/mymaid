@@ -142,13 +142,6 @@ class Admin_vendor_lib extends Base_lib{
                         //Account Approval Email
                         $this-> ci -> email_lib-> vendor_registration_approval_mail($sender, $recipient);
                         
-                        $this->ci->load->library('page_load_lib');
-                        $this -> ci -> page_load_lib-> send_np_email ($sender,$recipient,$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'alaken.adv@gmail.com',$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 's_thiba82@yahoo.com',$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'kkharish16@gmail.com',$subject,$message,array('mailtype'=>'html'));
-                        /*Admin*/$this -> ci -> page_load_lib-> send_np_email ($sender, 'praveen.dexter@gmail.com',$subject,$message,array('mailtype'=>'html'));
-                        
                     
                     $this->_status = true;
                     $this->_message = $this->ci->lang->line('vendor_approved');                   
