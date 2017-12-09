@@ -61,7 +61,7 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                    <input type="number" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control" name="mobile" id="" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('mobile'); ?>"> </div></div>
+                                    <input type="text" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control isPhoneNumeric" name="mobile" id="" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('mobile'); ?>"> </div></div>
                             <!-- <div class="col-lg-6">
                                 <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
                                 </select>     -->

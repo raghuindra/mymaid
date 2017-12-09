@@ -33,7 +33,8 @@
                                 <div class="table-inner">
                                     <div class="div-inline">
                                         <form id="search_service" action="<?php echo base_url() . 'booking.html'; ?>" method="post">
-                                            <h1>Book your Maid now </h1>
+                                            <h1> Cleaning Your Worries Away</h1>
+                                            
                                             <hr>
                                             <div class="col-lg-3">
                                                 <div class="row">
@@ -69,114 +70,33 @@
         </div>
     </div>
     
-    <!--Reviews 
-    <div class="review-container">
-        <div class="container">
-            <h2>What our customers say</h2>
-            <div class="owl-carousel owl-theme">
-                <div class="col-lg-3 owlfix">
-                    <div class="reviews">
-                        <div class="outer-table">
-                            <div class="inner-table">
-                                <div class="content">was extremely easy to use and I usually book a cleaning when I'm commuting, using the app. And, my cleaner is fantastic! She always makes sure my house is left sparking clean! I am sold and will definitely book
-                                    Helpling again!
-                                </div>
-                                <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 owlfix">
-                    <div class="reviews">
-                        <div class="outer-table">
-                            <div class="inner-table">
-                                <div class="content">was extremely easy to use and I usually book a cleaning when I'm commuting, using the app. And, my cleaner is fantastic! She always makes sure my house is left sparking clean! I am sold and will definitely book
-                                    Helpling again!
-                                </div>
-                                <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 owlfix">
-                    <div class="reviews">
-                        <div class="outer-table">
-                            <div class="inner-table">
-                                <div class="content">was extremely easy to use and I usually book a cleaning when I'm commuting, using the app. And, my cleaner is fantastic! She always makes sure my house is left sparking clean! I am sold and will definitely book
-                                    Helpling again!
-                                </div>
-                                <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 owlfix">
-                    <div class="reviews">
-                        <div class="outer-table">
-                            <div class="inner-table">
-                                <div class="content">was extremely easy to use and I usually book a cleaning when I'm commuting, using the app. And, my cleaner is fantastic! She always makes sure my house is left sparking clean! I am sold and will definitely book
-                                    Helpling again!
-                                </div>
-                                <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 owlfix">
-                    <div class="reviews">
-                        <div class="outer-table">
-                            <div class="inner-table">
-                                <div class="content">was extremely easy to use and I usually book a cleaning when I'm commuting, using the app. And, my cleaner is fantastic! She always makes sure my house is left sparking clean! I am sold and will definitely book
-                                    Helpling again!
-                                </div>
-                                <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 owlfix">
-                    <div class="reviews">
-                        <div class="outer-table">
-                            <div class="inner-table">
-                                <div class="content">was extremely easy to use and I usually book a cleaning when I'm commuting, using the app. And, my cleaner is fantastic! She always makes sure my house is left sparking clean! I am sold and will definitely book
-                                    Helpling again!
-                                </div>
-                                <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-     -->
-
+    
     <div class="container container-home">
         <div class="col-lg-12">
-            <h2 class="text-center">About the cleaners</h2>
+            <h2 class="text-center">How It Works ?</h2>
             <div class="col-lg-4">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("envelope.png"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>Vetted cleaners</p>
+                <p>1.FILL IN YOUR POSTAL CODE</p>
             </div>
             <div class="col-lg-4">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("checklist.png"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>Individual multi-level selection process</p>
+                <p>2.CHOOSE PACKAGE</p>
             </div>
             <div class="col-lg-4">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("credit_card.jpg"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>Excellent customer reviews</p>
+                <p>3.MAKE PAYMENT</p>
 
             </div>
         </div>
@@ -216,39 +136,39 @@
     </div> -->
     <div class="container container-home">
         <div class="col-lg-12">
-            <h2 class="text-center">Register to become a cleaner now!</h2>
+            <h2 class="text-center">WHY MYMAIDZ.COM ?</h2>
             <div class="col-lg-3">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("guaranteed.png"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>100% flexible</p>
+                <p>GUARANTEED</p>
             </div>
             <div class="col-lg-3">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("paddlock.png"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>Access to new customers</p>
+                <p>SECURE</p>
             </div>
             <div class="col-lg-3">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("coffe.jpg"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>Attractive prices</p>
+                <p>RELAX</p>
 
             </div>
             <div class="col-lg-3">
                 <div class="circle">
                     <div class="content">
-                        <img src="<?php echo img_url("cleaner.png"); ?>" alt="text" />
+                        <img src="<?php echo img_url("trust.png"); ?>" alt="text" />
                     </div>
                 </div>
-                <p>Professional support</p>
+                <p>TRUST</p>
 
             </div>
         </div>

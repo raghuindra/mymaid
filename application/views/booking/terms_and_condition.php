@@ -66,10 +66,8 @@
                   
                 <h3>Third Party Accounts </h3>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>You will be able to connect your ADV account to third party accounts. By connecting your ADV account to your third party account, you acknowledge and agree that you are consenting to the continuous release of information about you to others (in accordance with your privacy settings on those third party sites). If you do not want information about you to be shared in this manner, do not use this feature. </p>
-                  
-                <h3>International Users </h3>
-                <p style='text-align: -webkit-auto;margin-bottom: 0px'>The Service is controlled, operated and administered by ADV from our offices within the USA. If you access the Service from a location outside the USA, you are responsible for compliance with all local laws. You agree that you will not use the ADV Content accessed through mymaidz.com in any country or in any manner prohibited by any applicable laws, restrictions or regulations. </p>
-                  
+                 
+                                    
                 <h3>Indemnification </h3>
                 <p style='text-align: -webkit-auto;margin-bottom: 0px'>You agree to indemnify, defend and hold harmless ADV, its officers, directors, employees, agents and third parties, for any losses, costs, liabilities and expenses (including reasonable attorneys' fees) relating to or arising out of your use of or inability to use the Site or services, any user postings made by you, your violation of any terms of this Agreement or your violation of any rights of a third party, or your violation of any applicable laws, rules or regulations. ADV reserves the right, at its own cost, to assume the exclusive defense and control of any matter otherwise subject to indemnification by you, in which event you will fully cooperate with ADV in asserting any available defenses. </p>
                   

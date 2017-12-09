@@ -114,7 +114,7 @@
     <script src="<?php echo js_url('jquery.sticky-kit.min');?>" type="text/javascript"></script>
     <script src="<?php echo js_url('booking');?>"></script>
 <?php } ?>
-    <script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+  
 </body>
 <!-- END BODY -->
 </html>

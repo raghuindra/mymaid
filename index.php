@@ -53,9 +53,10 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
-
+	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+define('ENVIRONMENT','production');
 date_default_timezone_set('Asia/Kuala_Lumpur');
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

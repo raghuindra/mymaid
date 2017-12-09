@@ -95,7 +95,6 @@
 <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
 <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
 <script src="<?php echo js_url('app_utils');?>"></script>
-<script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
 </body>
 <!-- END BODY -->
 </html>

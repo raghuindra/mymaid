@@ -80,7 +80,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         <div class="col-sm-6">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">+60</span>
-                                                                <input type="text" name="employee_housephone" class="form-control" id="employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" placeholder="Employee House Phone">
+                                                                <input type="text" name="employee_housephone" class="form-control isPhoneNumeric" id="employee_housephone" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" placeholder="Employee House Phone">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -90,7 +90,7 @@ $vendorId = $this->session->userdata('user_id');
                                                         <div class="col-sm-6">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">+60</span>
-                                                                <input type="text" name="employee_hp_phone" class="form-control" required id="employee_hp_phone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" placeholder="Employee H/P Phone">
+                                                                <input type="text" name="employee_hp_phone" class="form-control isPhoneNumeric" required id="employee_hp_phone" oninput="maxLengthCheck(this)" maxlength = "10" pattern=".{8,10}" required title="8 to 10 numbers" placeholder="Employee H/P Phone">
                                                             </div>
                                                         </div>
                                                     </div>

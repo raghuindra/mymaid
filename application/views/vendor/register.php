@@ -66,7 +66,7 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control" name="mobile" id="" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('mobile'); ?>"> </div></div>
+                                <input type="text" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile number" class="form-control isPhoneNumeric" name="mobile" id="" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('mobile'); ?>"> </div></div>
                             <!-- <div class="col-lg-6">
                                 <select  placeholder="Select country" name="country" id="country" class="form-control" required> 
                                 </select>     -->
@@ -110,16 +110,16 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile" class="form-control" name="compMobile" id="compMobile" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('compMobile'); ?>"></div></div>
+                                <input type="text" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Mobile" class="form-control isPhoneNumeric" name="compMobile" id="compMobile" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('compMobile'); ?>"></div></div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Land phone" class="form-control" name="compLandPhone" id="compLandPhone" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('compLandPhone'); ?>"> </div>
+                                <input type="text" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Land phone" class="form-control isPhoneNumeric" name="compLandPhone" id="compLandPhone" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('compLandPhone'); ?>"> </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">+60</span>
-                                <input type="text" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="FAX" class="form-control" name="compFax" id="compFax" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('compFax'); ?>"> </div>
+                                <input type="text" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="FAX" class="form-control isPhoneNumeric" name="compFax" id="compFax" pattern=".{8,10}" required title="8 to 10 numbers" required value="<?php echo set_value('compFax'); ?>"> </div>
                             </div>
                             <div class="col-lg-12">
                                 <label>Number of Employees Range</label>

@@ -171,7 +171,7 @@ $(function () {
 <!-- Notyfy Notifications Plugin -->
 <script src="<?php echo plugin_url("notifications/notyfy/packaged/jquery.noty.packaged.js") ?>"></script>
 <script src="<?php echo plugin_url("notifications/notyfy/themes/default.js") ?>"></script>
-<script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+
 
 <script type="text/javascript">
     var base_url = "<?php echo base_url();?>";

@@ -35,7 +35,7 @@ if ($employee_detail['status']) {
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <span class="input-group-addon">+60</span>
-                                <input type="text" name="edit_employee_housephone" class="form-control" id="edit_employee_housephone" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee House Phone" value="<?php echo ($employee) ? $employee[0]->employee_house_phone : ''; ?>">
+                                <input type="text" name="edit_employee_housephone" class="form-control isPhoneNumeric" id="edit_employee_housephone" oninput="maxLengthCheck(this)" maxlength = "10" placeholder="Employee House Phone" value="<?php echo ($employee) ? $employee[0]->employee_house_phone : ''; ?>">
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@ if ($employee_detail['status']) {
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <span class="input-group-addon">+60</span>
-                                <input type="text" name="edit_employee_hp_phone" class="form-control" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" maxlength = "10" required id="edit_employee_hp_phone" placeholder="Employee H/P Phone" pattern=".{8,10}" required title="8 to 10 numbers" value="<?php echo ($employee) ? $employee[0]->employee_hp_phone : ''; ?>">
+                                <input type="text" name="edit_employee_hp_phone" class="form-control isPhoneNumeric" oninput="maxLengthCheck(this)" maxlength = "10" required id="edit_employee_hp_phone" placeholder="Employee H/P Phone" pattern=".{8,10}" required title="8 to 10 numbers" value="<?php echo ($employee) ? $employee[0]->employee_hp_phone : ''; ?>">
                             </div>
                         </div>
                     </div>

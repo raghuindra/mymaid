@@ -113,9 +113,9 @@
                         <!-- Start Package Div Section -->
                         <div class="packageDiv">
                             <!-- 1.box style services Package selection radio selection -->
-                            <!-- <ul class="services-list">
+                            <ul class="services-list">
 
-                            </ul> -->
+                            </ul>
 
                         </div>
                         <!-- end Package Div Section -->

@@ -20,6 +20,31 @@
         }
     }
 
+// Function to check numbers
+    $(".isPhoneNumeric").keydown(function(event) {
+        // Allow only backspace and delete
+        if ( event.keyCode == 46 || event.keyCode == 8) {
+            // let it happen, don't do anything
+           
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if ((event.keyCode !==9) && (event.keyCode < 48 || event.keyCode > 57 )) {
+                event.preventDefault(); 
+            }   
+                else{
+                 
+              if($.trim($(this).val()) =='')
+            {
+                if(event.keyCode == 48){
+                event.preventDefault(); 
+                }
+            }
+                    
+            }
+        }
+    });
+
     // Function to check letters and numbers  
     function isAlphaNumeric(evt)
     {
